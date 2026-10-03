@@ -285,7 +285,7 @@ try {
     assert.ok(tel.t > 1.5, `el video del teléfono va en ${tel.t.toFixed(2)} s tras 3,5 s`);
   });
 
-  await paso('la portada: la foto del producto no tapa el titular y en el teléfono el buscador entra antes que ella', async () => {
+  await paso('la portada: la foto del producto va al lado del texto, centrada y sin pisarlo; en el teléfono el buscador entra antes que ella', async () => {
     // el héroe con la vitrina (placa, teléfono y tableta con las pantallas de las demos) reemplazó a la caja de avisos
     const c5 = await b.newContext({ viewport: { width: 390, height: 664 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
     const t = await c5.newPage();
@@ -299,9 +299,16 @@ try {
     const r = await c6.newPage();
     await r.goto(BASE, { waitUntil: 'load' });
     await r.waitForFunction(() => { const i = document.querySelector('.heroe-vitrina img'); return i && i.complete && i.naturalWidth > 0; });
-    const [titulo, img] = await r.evaluate(() => ['.heroe__titulo', '.heroe-vitrina img'].map((x) => document.querySelector(x).getBoundingClientRect().toJSON()));
-    assert.ok(img.top >= titulo.bottom - 1, `la foto (y=${Math.round(img.top)}) se monta sobre el titular (termina en ${Math.round(titulo.bottom)})`);
-    assert.ok(img.right <= 1440 && img.width >= 400, `la foto mide ${Math.round(img.width)} px y termina en ${Math.round(img.right)}`);
+    const [titulo, img, diag, cta] = await r.evaluate(() => ['.heroe__titulo', '.heroe-vitrina img', '.heroe__diagnostico', '.cabecera__cta'].map((x) => document.querySelector(x).getBoundingClientRect().toJSON()));
+    // al lado del texto, sin pisar el titular
+    assert.ok(img.left >= titulo.right - 1, `la foto (x=${Math.round(img.left)}) se monta sobre el titular (llega a ${Math.round(titulo.right)})`);
+    // centrada en el alto del texto (titular → «¿No sabes qué pedir?»): antes quedaba más abajo, con un hueco bajo el
+    // texto y la nota casi al pie (Jonathan: «me incomoda algo del hero»)
+    const centroTexto = (titulo.top + diag.bottom) / 2, centroFoto = (img.top + img.bottom) / 2;
+    assert.ok(Math.abs(centroFoto - centroTexto) <= 60, `la foto está ${Math.round(centroFoto - centroTexto)} px corrida del centro del texto`);
+    // su borde derecho, en el de «Pregúntanos» de la cabecera
+    assert.ok(Math.abs(img.right - cta.right) <= 2, `la foto termina en ${Math.round(img.right)} y la cabecera en ${Math.round(cta.right)}`);
+    assert.ok(img.width >= 400, `la foto mide ${Math.round(img.width)} px`);
     await c6.close();
   });
 

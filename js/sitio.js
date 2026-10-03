@@ -165,9 +165,9 @@ function itemPreguntar(consulta, i, { dudosa = false, arriba = false } = {}) {
 // En una pantalla táctil, con el teclado abierto, solo se ve la parte de arriba del diálogo: ahí va la salida para
 // preguntar, con 4 resultados como mucho (la revisión del 3-oct la vio debajo del teclado, en y=624 a 717).
 const tactil = () => matchMedia('(pointer: coarse)').matches;
-function filasResultados(res, q) {
+function filasResultados(res, q, { dudosa = false } = {}) {
   if (!res.length) return [];
-  if (esDudosa(indice, q)) return [itemPreguntar(q, 0, { dudosa: true }), ...res.slice(0, 3).map((r, i) => itemResultado(r, i + 1, q))];
+  if (dudosa) return [itemPreguntar(q, 0, { dudosa: true }), ...res.slice(0, 3).map((r, i) => itemResultado(r, i + 1, q))];
   if (tactil()) return [itemPreguntar(q, 0, { arriba: true }), ...res.slice(0, 4).map((r, i) => itemResultado(r, i + 1, q))];
   return [...res.map((r, i) => itemResultado(r, i, q)), itemPreguntar(q, res.length)];
 }
@@ -245,6 +245,7 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
   let ultimo = '';
   let hubo = 0;
   let esperaVacio;
+  let esperaDudosa;
   const items = () => [...lista.querySelectorAll('[role="option"]')];
   function marcar(i) {
     const xs = items();
@@ -319,8 +320,10 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
     if (q !== ultimo) return;
     // Mientras se escribe, la última palabra cuenta como comienzo de palabra («cam» encuentra cámaras).
     const res = buscar(idx, q, { limite: 8, prefijo: true });
-    hubo = esDudosa(idx, q) ? 0 : res.length; // con una frase dudosa, Enter lleva a preguntar y no a la lista
+    const dudosa = esDudosa(idx, q);
+    hubo = dudosa ? 0 : res.length; // con una frase dudosa, Enter lleva a preguntar y no a la lista
     clearTimeout(esperaVacio);
+    clearTimeout(esperaDudosa);
     // Mientras se escribe una frase, una tecla que deja cero resultados no vacía la lista: los de antes quedan atenuados
     // hasta que lleguen otros o pasen 300 ms sin teclear. Antes la lista se encogía y crecía con cada tecla (la revisión
     // de interacción contó de 8 a 14 saltos de alto en una frase).
@@ -345,7 +348,17 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
     if (res.length) {
       if (sugerencias) sugerencias.hidden = true;
       if (vacio) { vacio.hidden = true; vacio.replaceChildren(); }
-      if (estado) estado.textContent = esDudosa(idx, q) ? 'No lo tenemos descrito así. Primero, la opción de preguntarnos; después, lo más parecido. Usa las flechas para elegir.' : `${res.length} ${res.length === 1 ? 'resultado' : 'resultados'}. Usa las flechas para elegir.`;
+      if (estado) estado.textContent = `${res.length} ${res.length === 1 ? 'resultado' : 'resultados'}. Usa las flechas para elegir.`;
+      // «No lo tenemos descrito así» llega cuando se deja de escribir 300 ms, como «No encontramos»: si cambiara la
+      // vista con cada tecla, el desplegable saltaría de alto mientras se escribe la frase
+      if (dudosa) {
+        esperaDudosa = setTimeout(() => {
+          if (campo.value.trim() !== q) return;
+          lista.replaceChildren(...filasResultados(res, q, { dudosa: true }));
+          marcar(-1);
+          if (estado) estado.textContent = 'No lo tenemos descrito así. Primero, la opción de preguntarnos; después, lo más parecido. Usa las flechas para elegir.';
+        }, 300);
+      }
       return;
     }
     // Sin resultados: no se dice «No encontramos» a media palabra. Con menos de 3 letras siguen las sugerencias;

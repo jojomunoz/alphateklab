@@ -4298,7 +4298,7 @@ html.sin-desplazar {
 .heroe-vitrina {
   margin: 0;
   display: grid;
-  gap: var(--e-2);
+  gap: 2px;
 }
 .heroe-vitrina img {
   display: block;
@@ -4332,14 +4332,32 @@ html.sin-desplazar {
     display: none;
   }
 }
+/* En la computadora, dos columnas parejas: el texto entero (con el titular) a la izquierda y la foto a la derecha,
+   centrada en el alto del texto. Con el titular a todo el ancho, la foto quedaba más abajo que el texto, con un hueco
+   bajo «¿No sabes qué pedir?» y la nota casi al pie de la pantalla (Jonathan, 3-oct: «me incomoda algo del hero»). */
 @media (min-width: 1040px) {
   .heroe--portada.heroe--vitrina .heroe__fila {
-    grid-template-rows: auto auto auto auto 1fr;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    grid-template-areas:
+      'titulo producto'
+      'bajada producto'
+      'buscar producto'
+      'prueba producto'
+      'diag producto';
+    grid-template-rows: auto auto auto auto auto;
+    column-gap: var(--e-8);
+    align-content: center;
   }
+  .heroe--portada.heroe--vitrina .heroe__titulo {
+    font-size: clamp(2.5rem, 3.2vw, 3rem);
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+  /* el borde derecho de la foto, en el mismo borde que «Pregúntanos» de la cabecera */
   .heroe--portada.heroe--vitrina .heroe-vitrina {
     width: min(100%, 520px);
     justify-self: end;
-    align-self: start;
+    align-self: center;
   }
 }
 
