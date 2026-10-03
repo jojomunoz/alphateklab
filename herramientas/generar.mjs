@@ -127,7 +127,7 @@ function destacados(so, n = 2) {
   const ids = [...new Set(so.problemas.map((p) => p.servicios[0]).concat(so.problemas.flatMap((p) => p.servicios)))].slice(0, n);
   return ids.map((id, i) => (i === 0 ? porId.get(id).corto : enMinuscula(porId.get(id).corto)));
 }
-function cabecera(prefijo) {
+function cabecera(prefijo, { sobreHeroe = false } = {}) {
   const soluciones = SOLUCIONES.map(
     (so) => `<li><a class="mega__item" href="${prefijo}soluciones/${so.slug}/">${icono(so.icono, 'ico ico--mega')}<span><strong>${esc(sectorPorId.get(so.sector).nombre)}</strong><small>${esc(destacados(so).join(', '))} y más</small></span></a></li>`,
   ).join('');
@@ -136,9 +136,9 @@ function cabecera(prefijo) {
   ).join('');
   return `<a class="saltar" href="#contenido">Saltar al contenido</a>
 <div hidden>${SPRITE}</div>
-<header class="cabecera" data-cabecera>
+<header class="cabecera${sobreHeroe ? ' cabecera--sobre-heroe' : ''}" data-cabecera>
   <div class="envoltura cabecera__fila">
-    <a class="marca" href="${prefijo}"><picture><source srcset="${prefijo}assets/marca/logo-oscuro.svg" media="(prefers-color-scheme: dark)" /><img src="${prefijo}assets/marca/logo-claro.svg" alt="alphateklab, inicio" width="142" height="32" /></picture></a>
+    <a class="marca" href="${prefijo}"><picture><source srcset="${prefijo}assets/marca/logo-oscuro.svg" media="(prefers-color-scheme: dark)" /><img src="${prefijo}assets/marca/logo-claro.svg" alt="alphateklab, inicio" width="142" height="32" /></picture><img class="marca__sobre-oscuro" src="${prefijo}assets/marca/logo-oscuro.svg" alt="" width="142" height="32" /></a>
     <nav class="menu" aria-label="Principal" data-menu>
       <ul class="menu__lista">
         <li class="menu__grupo">
@@ -269,7 +269,7 @@ function documento({ titulo, descripcion, prefijo, cuerpo, scripts = '', canonic
 ${mapaImportacion(prefijo)}
 </head>
 <body class="${clase}">
-${cabecera(prefijo)}
+${cabecera(prefijo, { sobreHeroe: /class="heroe [^"]*heroe--producto/.test(cuerpo) })}
 ${cuerpo}
 ${pie(prefijo)}
 ${dialogoBuscador()}
@@ -827,8 +827,9 @@ function paginaServicio(s) {
       <p class="ficha-heroe__acciones">
         <a class="boton boton--senal" href="${prefijo}cotizar/?servicio=${s.id}">${icono('chat-circle-dots')}Preguntar por este servicio</a>
         ${s.demo ? `<a class="boton boton--linea" href="${enlace(s.demo, prefijo)}">${icono('play-circle')}Probar la demo</a>` : ''}
-        <button class="enlace-boton ficha-heroe__agregar" type="button" data-cotizar="${s.id}" aria-pressed="false">Agregar a mi lista</button>
+        <button class="enlace-boton ficha-heroe__agregar" type="button" data-cotizar="${s.id}" data-fijo aria-pressed="false" aria-label="Agregar a mi lista"><span class="agregar__no">Agregar a mi lista</span><span class="agregar__si" aria-hidden="true">${icono('check')}En tu lista</span></button>
       </p>
+      <p class="nota-lista ficha-heroe__nota" role="status"></p>
       ${s.precio ? `<p class="ficha-heroe__precio"><span class="num">${esc(s.precio.texto)}</span>${s.precio.nota ? ` · ${esc(s.precio.nota)}` : ''}</p>` : ''}
     </div>
     ${visual ? `<div class="ficha-heroe__visual">${visual}</div>` : ''}

@@ -271,6 +271,55 @@ try {
     await c6.close();
   });
 
+  await paso('el desplegable de la portada no salta mientras se escribe una frase (ni queda una franja vacía)', async () => {
+    const c7 = await b.newContext({ viewport: { width: 1440, height: 900 } });
+    const t = await c7.newPage();
+    await t.goto(BASE, { waitUntil: 'load' });
+    await t.evaluate(() => {
+      window.__altos = [];
+      const caja = document.getElementById('heroe-resultados');
+      new ResizeObserver(() => window.__altos.push(Math.round(caja.getBoundingClientRect().height))).observe(caja);
+    });
+    await t.click('#heroe-campo');
+    await t.keyboard.type('sistema para mi gimnasio con membresias', { delay: 110 });
+    await t.waitForTimeout(800);
+    const altos = await t.evaluate(() => window.__altos);
+    await c7.close();
+    const cambios = altos.filter((h, i) => i && h !== altos[i - 1]).length;
+    assert.ok(cambios <= 4, `cambió de alto ${cambios} veces: ${altos.join(' ')}`);
+    assert.ok(!altos.some((h) => h > 0 && h < 40), `quedó una franja vacía: ${altos.join(' ')}`);
+  });
+
+  await paso('la cabecera se funde con el héroe oscuro y al bajar vuelve a ser clara, con un solo logo a la vista', async () => {
+    const c8 = await b.newContext({ viewport: { width: 1440, height: 900 } });
+    const t = await c8.newPage();
+    await t.goto(BASE, { waitUntil: 'load' });
+    const logos = () => t.$$eval('.cabecera .marca img', (is) => is.filter((i) => i.offsetParent !== null).length);
+    assert.match(await t.$eval('[data-cabecera]', (e) => e.className), /cabecera--sobre-heroe/);
+    assert.equal(await logos(), 1, 'sobre el héroe se ven dos logos');
+    await t.evaluate(() => scrollTo(0, 1400));
+    await t.waitForTimeout(500);
+    assert.doesNotMatch(await t.$eval('[data-cabecera]', (e) => e.className), /cabecera--sobre-heroe/);
+    assert.equal(await logos(), 1, 'al bajar se ven dos logos');
+    await c8.close();
+  });
+
+  await paso('«Agregar a mi lista» de la ficha no se mueve ni cambia de ancho, y el logo no se achica en el teléfono', async () => {
+    for (const [w, movil] of [[1440, false], [390, true]]) {
+      const c9 = await b.newContext({ viewport: { width: w, height: 844 }, isMobile: movil, hasTouch: movil });
+      const t = await c9.newPage();
+      await t.goto(`${BASE}servicios/menu-qr/`, { waitUntil: 'load' });
+      const medir = () => t.evaluate(() => { const a = document.querySelector('.ficha-heroe__agregar').getBoundingClientRect(); const l = document.querySelector('.cabecera .marca').getBoundingClientRect(); return [Math.round(a.x), Math.round(a.y), Math.round(a.width), Math.round(l.width)].join(','); });
+      const antes = await medir();
+      await t.click('.ficha-heroe__agregar');
+      await t.waitForTimeout(250);
+      assert.equal(await medir(), antes, `${w} px: cambió botón o logo`);
+      assert.equal(await t.getAttribute('.ficha-heroe__agregar', 'aria-pressed'), 'true');
+      assert.equal(await t.getByRole('button', { name: 'Agregar a mi lista', exact: true }).count(), 1, 'el nombre del botón no es fijo');
+      await c9.close();
+    }
+  });
+
   await paso('Pregúntanos no muestra códigos internos en la lista', async () => {
     await p.goto(`${BASE}cotizar/?servicio=R02`, { waitUntil: 'networkidle' });
     const texto = await p.$eval('#cot-elegidos', (r) => r.innerText);
@@ -282,6 +331,9 @@ try {
     const o = await b.newContext({ viewport: { width: 1280, height: 800 }, colorScheme: 'dark' });
     const q = await o.newPage();
     await q.goto(BASE, { waitUntil: 'networkidle' });
+    // pasado el héroe, que es donde «Pregúntanos» es el botón ámbar (sobre el héroe va con contorno claro)
+    await q.evaluate(() => scrollTo(0, 1400));
+    await q.waitForTimeout(400);
     await q.hover('.cabecera__cta');
     await q.waitForTimeout(400);
     const [fg, bg] = await q.$eval('.cabecera__cta', (x) => [getComputedStyle(x).color, getComputedStyle(x).backgroundColor]);

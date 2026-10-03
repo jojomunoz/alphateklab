@@ -264,6 +264,24 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
     const res = buscar(idx, q, { limite: 8, prefijo: true });
     hubo = res.length;
     clearTimeout(esperaVacio);
+    // Mientras se escribe una frase, una tecla que deja cero resultados no vacía la lista: los de antes quedan atenuados
+    // hasta que lleguen otros o pasen 300 ms sin teclear. Antes la lista se encogía y crecía con cada tecla (la revisión
+    // de interacción contó de 8 a 14 saltos de alto en una frase).
+    if (!res.length && lista.querySelector('[role="option"]') && q.replace(/\s/g, '').length >= 3) {
+      lista.classList.add('buscador__resultados--viejos');
+      esperaVacio = setTimeout(() => {
+        if (campo.value.trim() !== q) return;
+        lista.classList.remove('buscador__resultados--viejos');
+        lista.replaceChildren();
+        campo.setAttribute('aria-expanded', 'false');
+        marcar(-1);
+        if (sugerencias) sugerencias.hidden = true;
+        if (vacio) { vacio.hidden = false; vacio.replaceChildren(bloqueVacio(q)); }
+        if (estado) estado.textContent = `Sin resultados para «${q}». Puedes preguntarnos.`;
+      }, 300);
+      return;
+    }
+    lista.classList.remove('buscador__resultados--viejos');
     lista.replaceChildren(...res.map((r, i) => itemResultado(r, i, q)), ...(res.length ? [itemPreguntar(q, res.length)] : []));
     campo.setAttribute('aria-expanded', String(res.length > 0));
     marcar(-1);
@@ -428,8 +446,9 @@ if (formHeroe) {
 if ('requestIdleCallback' in window) requestIdleCallback(() => cargarIndice().catch(() => {}), { timeout: 4000 });
 else setTimeout(() => cargarIndice().catch(() => {}), 2000);
 
-// mientras el héroe de la portada está a la vista, un solo botón ámbar: «Pregúntanos» de la cabecera va con contorno
-const heroePortada = document.querySelector('.heroe--portada');
+// Mientras el héroe oscuro (portada y páginas de negocio) está bajo la cabecera, la cabecera es del mismo petróleo y
+// se funde con él; al pasarlo vuelve a ser clara. La clase ya viene puesta en el HTML para que no parpadee al cargar.
+const heroePortada = document.querySelector('.heroe--producto');
 const cabeceraEl = document.querySelector('[data-cabecera]');
 if (heroePortada && cabeceraEl && 'IntersectionObserver' in window) {
   new IntersectionObserver(([e]) => cabeceraEl.classList.toggle('cabecera--sobre-heroe', e.isIntersecting), { rootMargin: '-80px 0px 0px 0px' }).observe(heroePortada);
@@ -503,6 +522,9 @@ function pintarCotizacion() {
   for (const b of document.querySelectorAll('[data-cotizar]')) {
     const en = elegidos.includes(b.dataset.cotizar);
     b.setAttribute('aria-pressed', String(en));
+    // el de la ficha lleva los dos textos en la misma celda (no cambia de ancho) y su nombre es fijo: solo cambia
+    // aria-pressed; los chicos cambian el texto, con su aria-label fijo
+    if (b.hasAttribute('data-fijo')) continue;
     if (b.classList.contains('boton-chico')) b.textContent = en ? 'Agregado' : 'Agregar';
     else b.textContent = en ? 'En mi lista' : 'Agregar a mi lista';
   }
@@ -510,7 +532,7 @@ function pintarCotizacion() {
   if (cuenta) {
     cuenta.hidden = elegidos.length === 0;
     cuenta.textContent = elegidos.length;
-    cuenta.setAttribute('aria-label', `${elegidos.length} servicios en tu lista`);
+    cuenta.setAttribute('aria-label', `${elegidos.length} ${elegidos.length === 1 ? 'servicio' : 'servicios'} en tu lista`);
   }
 }
 document.addEventListener('click', (e) => {
@@ -529,7 +551,8 @@ document.addEventListener('click', (e) => {
   // junto al botón grande de la ficha, una línea que dice dónde quedó y cuántos van
   {
     const { elegidos } = leerCotizacion();
-    let nota = b.parentElement.querySelector('.nota-lista');
+    // la ficha trae su renglón ya reservado bajo los botones (al agregar, nada se corre); en las demás, junto al botón
+    let nota = b.closest('.ficha-heroe__texto')?.querySelector('.ficha-heroe__nota') || b.parentElement.querySelector('.nota-lista');
     if (!nota) {
       nota = Object.assign(document.createElement('span'), { className: 'nota-lista' });
       nota.setAttribute('role', 'status');

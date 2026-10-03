@@ -4263,3 +4263,118 @@ html.sin-desplazar {
     min-height: 5.5rem;
   }
 }
+
+/* buscador: los resultados de la tecla anterior, atenuados mientras se escribe (ver actualizar() en js/sitio.js) */
+.buscador__resultados--viejos {
+  opacity: 0.55;
+  transition: opacity 120ms linear;
+}
+/* el desplegable de la portada no se muestra vacío (quedaba una franja blanca entre teclas) */
+.heroe__resultados:not(:has([role="option"], .sin-resultados)) {
+  display: none;
+}
+
+/* «Agregar a mi lista» de la ficha: los dos textos en la misma celda, así el botón no cambia de ancho ni se corre de
+   debajo del puntero; la nota va en su renglón reservado. */
+.ficha-heroe__agregar {
+  display: inline-grid;
+  align-items: center;
+}
+.ficha-heroe__agregar > span {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ficha-heroe__agregar .agregar__si,
+.ficha-heroe__agregar[aria-pressed="true"] .agregar__no {
+  visibility: hidden;
+}
+.ficha-heroe__agregar[aria-pressed="true"] .agregar__si {
+  visibility: visible;
+}
+.ficha-heroe__agregar .ico {
+  width: 18px;
+  height: 18px;
+}
+.ficha-heroe__nota {
+  min-height: 1.5em;
+  margin-top: var(--e-2);
+}
+/* el contador de la lista flota sobre la esquina de «Pregúntanos»: dentro del botón lo ensanchaba y en el teléfono
+   achicaba el logo de la cabecera (de 112 a 83 px) */
+.cabecera__cta {
+  position: relative;
+}
+.cabecera__cuenta {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  margin: 0;
+  box-shadow: 0 0 0 2px var(--fondo);
+}
+
+/* ── cabecera sobre el héroe oscuro: del mismo petróleo, se funde con él (como Stripe, Linear o Vercel); al bajar, clara ── */
+.cabecera {
+  transition:
+    background-color var(--dur-estado) var(--ease-salida),
+    border-color var(--dur-estado) var(--ease-salida);
+}
+/* .marca img (atk.css) pone display: block; hace falta la misma especificidad o más para ocultarlo */
+.marca .marca__sobre-oscuro {
+  display: none;
+}
+.cabecera--sobre-heroe {
+  --foco: var(--senal);
+  background: var(--petroleo-hondo);
+  border-bottom-color: transparent;
+}
+.cabecera--sobre-heroe .marca picture {
+  display: none;
+}
+.cabecera--sobre-heroe .marca .marca__sobre-oscuro {
+  display: block;
+}
+.cabecera--sobre-heroe .menu__boton,
+.cabecera--sobre-heroe .menu__enlace {
+  color: #f7f5ef;
+}
+.cabecera--sobre-heroe .buscar-boton,
+.cabecera--sobre-heroe .hamburguesa {
+  background: rgb(255 255 255 / 0.06);
+  border-color: rgb(255 255 255 / 0.2);
+  color: #f7f5ef;
+}
+.cabecera--sobre-heroe .buscar-boton {
+  color: #c3d3cf;
+}
+.cabecera--sobre-heroe .buscar-boton kbd {
+  border-color: rgb(255 255 255 / 0.25);
+  color: #c3d3cf;
+}
+.cabecera--sobre-heroe .cabecera__cta {
+  --b-fondo: transparent;
+  --b-texto: #f7f5ef;
+  border-color: rgb(247 245 239 / 0.75);
+}
+.cabecera--sobre-heroe .cabecera__cuenta {
+  box-shadow: 0 0 0 2px var(--petroleo-hondo);
+}
+@media (hover: hover) and (pointer: fine) {
+  .cabecera--sobre-heroe .menu__boton:hover,
+  .cabecera--sobre-heroe .menu__enlace:hover,
+  .cabecera--sobre-heroe .buscar-boton:hover {
+    background: rgb(255 255 255 / 0.1);
+  }
+  .cabecera--sobre-heroe .cabecera__cta:hover {
+    --b-fondo: rgb(255 255 255 / 0.12);
+    border-color: #f7f5ef;
+  }
+}
+/* el foco del teclado en ámbar en todas las franjas oscuras (el petróleo claro de --foco no llegaba a 3:1) */
+.heroe--producto,
+.seccion--oscura,
+.banda-pregunta,
+.pie {
+  --foco: var(--senal);
+}
