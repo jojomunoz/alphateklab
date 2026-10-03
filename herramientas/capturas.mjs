@@ -15,6 +15,13 @@ const solo = process.argv[3];
 
 // Qué hacer en cada demo antes de la foto, para que se vea trabajando y no vacía.
 const PREPARAR = {
+  // el recorrido 3D por dentro (no la portada con el botón «Entrar»): la escena es lo que se captura
+  'recorrido-3d': async (p) => {
+    await p.click('#entrar');
+    await p.waitForFunction(() => document.getElementById('visor')?.dataset.estado === 'listo', null, { timeout: 60000 });
+    await p.waitForTimeout(2500);
+    await p.evaluate(() => document.getElementById('visor').setAttribute('data-captura', ''));
+  },
   sensores: async (p) => {
     await p.waitForSelector('[data-falla="puerta"]:not([disabled])', { timeout: 30000 });
     await p.click('[data-falla="puerta"]');

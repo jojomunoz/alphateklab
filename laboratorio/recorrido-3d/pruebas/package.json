@@ -1,0 +1,5 @@
+{
+  "//": "Para que «node --test pruebas/» funcione en Node 22: el runner ejecuta la carpeta como módulo y entra por «main».",
+  "type": "module",
+  "main": "todas.mjs"
+}
