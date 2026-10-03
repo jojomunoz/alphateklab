@@ -885,6 +885,13 @@ function pintarCifras(c) {
   texto('c-entradas', numero(c.entradas));
   texto('c-salidas', numero(c.salidas));
   texto('c-dentro', numero(c.dentro));
+  // La cuenta completa a la vista: si «Dentro ahora» no es entradas menos salidas, se dice de dónde sale la diferencia
+  // (quien sale sin que la cámara lo viera entrar ya estaba dentro al empezar; o un +1/−1 puesto a mano).
+  const dif = c.dentro - (c.entradas - c.salidas);
+  const plural = (n, uno, varios) => `${numero(n)} ${n === 1 ? uno : varios}`;
+  texto('c-cuenta', `${plural(c.entradas, 'entrada', 'entradas')} menos ${plural(c.salidas, 'salida', 'salidas')}${
+    dif > 0 ? `, más ${plural(dif, 'que salió sin que la cámara la viera entrar (ya estaba dentro) o que sumaste a mano', 'que salieron sin que la cámara las viera entrar (ya estaban dentro) o que sumaste a mano')}`
+    : dif < 0 ? `, menos ${plural(-dif, 'persona que restaste a mano', 'personas que restaste a mano')}` : ''}.`);
   texto('c-aforo-de', `de ${numero(c.aforoMax)}`);
   texto('c-maximo', numero(c.maximo));
   $('medidor-barra').style.transform = `scaleX(${Math.min(1, Math.max(0, c.proporcion)).toFixed(3)})`;
