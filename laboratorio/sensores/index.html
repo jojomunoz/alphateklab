@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="../../assets/atk.css">
   <link rel="stylesheet" href="demo.css">
   <script type="module" src="js/app.mjs"></script>
+  <script type="module" src="js/resumen.mjs"></script>
   <noscript><style>.demo__rejilla { display: none; }</style></noscript>
 </head>
 <body>
@@ -82,6 +83,11 @@
           <a class="general" id="general" href="#telefono" data-estado="pausa"><span class="punto" aria-hidden="true"></span><span id="general-texto">Cargando…</span></a>
           <p class="consola__nota" id="velocidad-nota" role="status">Cargando la simulación…</p>
         </div>
+
+        <section class="resumen-sensores" aria-labelledby="resumen-titulo">
+          <h3 class="demo__titulo" id="resumen-titulo">Ahora en el local</h3>
+          <ul class="resumen-sensores__lista" id="resumen-sensores"></ul>
+        </section>
 
         <div class="demo__lado">
         <section class="fallas" aria-labelledby="fallas-titulo">
@@ -312,7 +318,8 @@
         </section>
 
         <section class="ficha__bloque">
-          <h2 class="ficha__titulo">Cómo se instala en tu local</h2>
+          <details class="ficha__plegable">
+          <summary><h2 class="ficha__titulo">Cómo se instala en tu local</h2> <span class="ficha__plegable-pista">Equipo, ejemplos y precios de lista</span></summary>
           <p>Equipo típico para un local como este. Los modelos son ejemplos con el precio de lista que consultamos el 3 de octubre de 2026 en tiendas de Estados Unidos, sin envío ni impuestos.</p>
           <dl class="equipo">
             <div><dt><span class="etiqueta etiqueta--hueca">T1–T3</span><span>Sensor de temperatura inalámbrico</span></dt>
@@ -332,6 +339,7 @@
           </dl>
           <p>Lo que necesita tu local: conexión a internet y un tomacorriente para la puerta de enlace; los sensores de temperatura, de puertas y de humedad van con baterías. Para vacunas o medicamentos, la sonda va dentro de un frasco con glicol para que mida como el producto y no salte cada vez que abren, como recomienda la <a href="https://www.cdc.gov/vaccines/hcp/downloads/storage-handling-toolkit.pdf" rel="noopener">guía de almacenamiento de vacunas de los CDC</a>.</p>
           <p>El precio de la instalación, del tablero y de los avisos se cotiza después de ver el local: depende de cuántos equipos haya y de dónde estén.</p>
+          </details>
         </section>
 
         <section class="ficha__bloque">

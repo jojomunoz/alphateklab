@@ -1384,3 +1384,90 @@ thead th {
 .pagina-telefono .relevo__aviso {
   font-size: var(--t-xs);
 }
+
+/* ── «Ahora en el local»: en el teléfono, los sensores en dos columnas debajo del reloj ── */
+.resumen-sensores__lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--e-2);
+}
+.resumen-sensor {
+  display: grid;
+  gap: 2px;
+  align-content: start;
+  height: 100%;
+  padding: var(--e-3);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  background: var(--papel);
+  color: var(--tinta);
+  text-decoration: none;
+}
+.resumen-sensor:focus-visible {
+  outline: 3px solid var(--foco);
+  outline-offset: 2px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .resumen-sensor:hover {
+    border-color: var(--linea-fuerte, var(--tinta-3));
+  }
+}
+.resumen-sensor__nombre {
+  font-size: var(--t-xs);
+  color: var(--tinta-2);
+}
+.resumen-sensor__valor {
+  font-size: var(--t-l, 1.25rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.resumen-sensor__valor--lista {
+  display: grid;
+  gap: 2px;
+  font-size: var(--t-s);
+  font-weight: 400;
+}
+.resumen-sensor__estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  font-size: var(--t-xs);
+  color: var(--tinta-2);
+}
+.resumen-sensor__estado[data-tipo="aviso"] {
+  color: var(--peligro);
+  font-weight: 650;
+}
+.resumen-sensor__estado[data-tipo="fuera"] {
+  color: var(--aviso);
+  font-weight: 650;
+}
+/* En pantallas anchas las lecturas ya están junto al reloj: el resumen sobra. */
+@container demo (min-width: 760px) {
+  .resumen-sensores {
+    display: none;
+  }
+}
+
+/* «Cómo se instala»: plegado, para que el catálogo de equipos con precios no compita con el tablero. */
+.ficha__plegable > summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--e-3);
+  min-height: 44px;
+  cursor: pointer;
+}
+.ficha__plegable > summary .ficha__titulo {
+  display: inline;
+}
+.ficha__plegable-pista {
+  font-size: var(--t-xs);
+  color: var(--tinta-2);
+}
+.ficha__plegable[open] > summary {
+  margin-bottom: var(--e-3);
+}
