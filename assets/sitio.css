@@ -2567,3 +2567,6 @@ main:has(> .banda-pregunta:last-child) + .pie {
   border-radius: 0 10px 10px 0;
   font-size: var(--t-s);
 }
+.ficha-detalle__bloque .lista-check {
+  font-size: var(--t-s);
+}
