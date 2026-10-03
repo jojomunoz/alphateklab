@@ -4062,3 +4062,157 @@ html.sin-desplazar {
     text-align: left;
   }
 }
+
+/* ── héroe de la portada: avisos de ejemplo de los sistemas que hacemos ── */
+.avisos-heroe {
+  display: grid;
+  gap: var(--e-3);
+  align-content: start;
+}
+.avisos-heroe__marco {
+  width: min(100%, 390px);
+  justify-self: center;
+  padding: 16px 12px 18px;
+  border-radius: 30px;
+  background: #0a1f1c;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.07), 0 30px 60px -24px rgb(0 0 0 / 0.65);
+}
+.avisos-heroe__cabeza {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-3);
+  margin: 0 4px 10px;
+}
+.avisos-heroe__cabeza p {
+  margin: 0;
+  font-size: var(--t-xs);
+  color: var(--h-texto-2);
+  letter-spacing: 0.02em;
+}
+.avisos-heroe__pausa {
+  width: 32px;
+  height: 32px;
+}
+@media (pointer: coarse) {
+  /* el círculo se ve de 32 px pero el toque alcanza 44 */
+  .avisos-heroe__pausa {
+    width: 32px;
+    height: 32px;
+    position: relative;
+  }
+  .avisos-heroe__pausa::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+  }
+}
+@media (max-width: 360px) {
+  .aviso-heroe__texto {
+    font-size: 14px;
+  }
+}
+.avisos-heroe__lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.aviso-heroe {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #f7f5ef;
+  color: #202729;
+  text-decoration: none;
+  transition: background-color var(--dur-estado) var(--ease-salida);
+}
+.aviso-heroe:focus-visible {
+  outline: 2px solid var(--senal);
+  outline-offset: 2px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .aviso-heroe:hover {
+    background: #ffffff;
+  }
+  .aviso-heroe:hover .aviso-heroe__texto {
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, #202729 35%, transparent);
+    text-underline-offset: 3px;
+  }
+}
+/* en la computadora, la caja más grande y el texto a 17 px */
+@media (min-width: 1040px) {
+  .avisos-heroe__marco {
+    width: min(100%, 460px);
+  }
+  .aviso-heroe__texto {
+    font-size: var(--t-m);
+  }
+}
+.aviso-heroe__icono {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #176b64;
+  color: #f7f5ef;
+}
+.aviso-heroe__icono .ico {
+  width: 20px;
+  height: 20px;
+}
+.aviso-heroe__cabeza {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: var(--t-xs);
+  color: #5b6466;
+}
+.aviso-heroe__cabeza strong {
+  color: #202729;
+  font-weight: 750;
+}
+.aviso-heroe__texto {
+  /* dos renglones en todos: si un aviso midiera más, la caja crecería al entrar y movería el buscador de abajo */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(2 * 1.35em);
+  margin-top: 2px;
+  font-size: var(--t-s);
+  line-height: 1.35;
+}
+.aviso-heroe__texto .num {
+  font-weight: 750;
+  white-space: nowrap;
+}
+.avisos-heroe .heroe__pie-video {
+  justify-self: center;
+  max-width: 46ch;
+  font-size: var(--t-xs);
+  color: var(--h-texto-2);
+}
+@media (max-width: 1039px) {
+  /* en el teléfono, todo el ancho; en una tableta, sin estirarse: alineada con el texto */
+  .heroe--portada.heroe--avisos .avisos-heroe__marco {
+    width: min(100%, 560px);
+    justify-self: start;
+    border-radius: 22px;
+  }
+}
+/* con los avisos, el buscador entra completo en la primera pantalla de un teléfono de 390 × 844 */
+@media (max-width: 1039px) {
+  .heroe--portada.heroe--avisos {
+    padding-top: var(--e-5);
+  }
+  .heroe--portada.heroe--avisos .heroe__buscar {
+    margin-top: 0;
+  }
+}

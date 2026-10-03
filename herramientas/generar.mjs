@@ -389,9 +389,57 @@ const NUMEROS = ['cero', 'una', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete
 const enLetras = (n) => NUMEROS[n] ?? String(n);
 const mayuscula = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 
+// ── héroe de la portada ──
+// Avisos de ejemplo de los sistemas que hacemos, de distintos negocios; el nuevo entra arriba, así lo que se mueve
+// queda a la vista en el teléfono. Reemplazó (3-oct) al video de la mesa: con él, tres de cuatro dueños de negocio que
+// no tenían restaurante concluyeron «hacen menús QR para restaurantes» y no seguían bajando; ahora va en la página de
+// restaurantes. Comparado a ciegas con unas pestañas por negocio y con el video: ganó con los dos jueces.
+const AVISOS = [
+  { servicio: 'C01', icono: 'storefront', quien: 'Tienda', texto: 'Van 214 personas hoy, 18 % más que el sábado pasado.' },
+  { servicio: 'S01', icono: 'calendar-check', quien: 'Clínica', texto: 'La paciente de mañana a las 10:30 a. m. confirmó su cita.' },
+  { servicio: 'T07', icono: 'credit-card', quien: 'Facturación', texto: 'La factura 0001-0245 fue autorizada por la DGI.' },
+  { servicio: 'R02', icono: 'fork-knife', quien: 'Restaurante', texto: 'Mesa 7 pidió 2 hojaldras y una chicha de saril. B/. 6.50' },
+  { servicio: 'R10', icono: 'thermometer-simple', quien: 'Cocina', texto: 'La nevera va en 8.9 °C y sube. El límite es 5 °C.' },
+  { servicio: 'H01', icono: 'bed', quien: 'Cabañas', texto: 'Cabaña 2: reserva directa, con depósito por Yappy.' },
+  { servicio: 'E01', icono: 'graduation-cap', quien: 'Colegio', texto: '12 familias ya pagaron la mensualidad con Yappy.' },
+  { servicio: 'I02', icono: 'car', quien: 'Reparto', texto: 'El camión 3 lleva 25 minutos detenido fuera de su ruta.' },
+];
+// hora de cada aviso: fija (no envejece al bajar en la pila); el de arriba es el más reciente
+const HORAS_AVISOS = ['10:42', '10:38', '10:31', '10:25'];
+const sinCorte = (t) => t.replace(/(\d) (a\. m\.|p\. m\.|°C|%)/g, '$1 $2').replace(/a\. m\./g, 'a. m.').replace(/p\. m\./g, 'p. m.');
+// El video de la demo de mesa (herramientas/video-producto.mjs): el teléfono pide y el salón recibe. AV1 para quien lo
+// decodifica y H.264 para el resto; el póster es su primer cuadro.
+const hayVideoMesa = () => existe('assets/producto/video-codecs.json') && ['mesa-pedido-telefono', 'mesa-pedido-salon'].every((v) => ['av1.mp4', 'mp4', 'webp'].every((x) => existe(`assets/producto/${v}.${x}`)));
+function videoMesa(prefijo, demoUrl) {
+  const codecs = JSON.parse(readFileSync(join(RAIZ, 'assets/producto/video-codecs.json'), 'utf8'));
+  const video = (nombre, ancho, alto, alt) => `<video data-video-producto muted loop playsinline preload="metadata" poster="${prefijo}assets/producto/${nombre}.webp" width="${ancho}" height="${alto}" aria-label="${esc(alt)}"><source src="${prefijo}assets/producto/${nombre}.av1.mp4" type='video/mp4; codecs="${codecs[nombre]}"' /><source src="${prefijo}assets/producto/${nombre}.mp4" type="video/mp4" /></video>`;
+  return `<figure class="heroe__producto" data-producto-video>
+        <div class="heroe__dispositivos">
+          <div class="dispositivo dispositivo--portatil"><div class="dispositivo__pantalla">${video('mesa-pedido-salon', 1280, 800, 'El salón de un restaurante de ejemplo en la computadora de la caja: entra el pedido de la mesa 7.')}</div></div>
+          <div class="dispositivo dispositivo--telefono"><div class="dispositivo__pantalla">${video('mesa-pedido-telefono', 720, 1560, 'La carta QR de la mesa 7 en el teléfono: se elige un plato, se agrega al pedido y se envía.')}</div></div>
+        </div>
+        <figcaption class="heroe__pie-video"><button type="button" class="heroe__pausa" data-pausa-video aria-pressed="false" aria-label="Pausar la demo">${icono('pausa', 'ico ico--pausa')}${icono('reproducir', 'ico ico--reproducir')}</button><span>Demo con un restaurante de ejemplo: se pide desde la mesa 7 y el salón lo ve al instante. <a href="${enlace(demoUrl, prefijo)}">Pruébala</a></span></figcaption>
+      </figure>`;
+}
+
+function heroeAvisos(prefijo) {
+  // Cada aviso lleva a su demo o, si no hay, a la ficha del servicio. «Avisos de ejemplo de lo que hacemos» va arriba
+  // de la caja, con la pausa al lado (abajo empujaba el buscador fuera de la primera pantalla del teléfono).
+  const destino = (id) => {
+    const sv = SERVICIOS.find((x) => x.id === id);
+    return sv.demo ? enlace(sv.demo, prefijo) : `${prefijo}servicios/${sv.slug}/`;
+  };
+  return `<figure class="heroe__producto avisos-heroe" data-avisos>
+        <div class="avisos-heroe__marco">
+          <div class="avisos-heroe__cabeza"><p>Avisos de ejemplo de lo que hacemos</p><button type="button" class="heroe__pausa avisos-heroe__pausa" data-pausa-avisos aria-pressed="false" aria-label="Pausar los avisos">${icono('pausa', 'ico ico--pausa')}${icono('reproducir', 'ico ico--reproducir')}</button></div>
+          <ol class="avisos-heroe__lista" aria-label="Avisos de ejemplo de los sistemas que hacemos, de distintos negocios">${AVISOS.map((a, i) => `
+            <li${i > 3 ? ' hidden' : ''}><a class="aviso-heroe" href="${destino(a.servicio)}"><span class="aviso-heroe__icono">${icono(a.icono)}</span><span class="aviso-heroe__cuerpo"><span class="aviso-heroe__cabeza"><strong>${esc(a.quien)}</strong><span class="aviso-heroe__hora">${HORAS_AVISOS[i] ? sinCorte(`${HORAS_AVISOS[i]} a. m.`) : ''}</span></span><span class="aviso-heroe__texto">${esc(sinCorte(a.texto))}</span></span></a></li>`).join('')}
+          </ol>
+        </div>
+      </figure>`;
+}
+
 // ── portada ──
-// Una sola escena (el tríptico tenía costuras): dos técnicos instalando una pantalla en un local, que es el titular.
-const FOTO_HEROE = existe('assets/fotos/equipo-instalando.webp') ? 'equipo-instalando' : 'marca-heroe';
 function paginaInicio() {
   const prefijo = '';
   const chips = [
@@ -400,39 +448,7 @@ function paginaInicio() {
     ['Recordar citas', 'recordar citas a pacientes'],
     ['Página web', 'página web'],
   ];
-  const fotosHeroe = ['sector-restaurantes', 'sector-comercio', 'sector-salud', 'sector-hospedaje'].filter((s) => existe(`assets/fotos/${s}.webp`));
-  const conProducto = demoPorClave.has('sensores') && existe('assets/producto/sensores-tablero.webp') && existe('assets/producto/sensores-aviso.webp');
-  // En el teléfono, la carta QR de la demo de mesa si está publicada; si no, el aviso de WhatsApp de la de sensores.
-  const conCarta = demoPorClave.has('mesa') && existe('assets/producto/mesa-carta.webp');
-  // con los videos de la demo de mesa, el héroe cuenta una sola historia: se pide en el teléfono y el salón lo recibe
-  // (herramientas/video-producto.mjs): AV1 para quien lo decodifica y H.264 para el resto; el póster es su primer cuadro
-  const conVideo = conCarta && existe('assets/producto/video-codecs.json') && ['mesa-pedido-telefono', 'mesa-pedido-salon'].every((v) => ['av1.mp4', 'mp4', 'webp'].every((x) => existe(`assets/producto/${v}.${x}`)));
-  const codecs = conVideo ? JSON.parse(readFileSync(join(RAIZ, 'assets/producto/video-codecs.json'), 'utf8')) : {};
-  const video = (nombre, ancho, alto, alt) => `<video data-video-producto muted loop playsinline preload="metadata" poster="${prefijo}assets/producto/${nombre}.webp" width="${ancho}" height="${alto}" aria-label="${esc(alt)}"><source src="${prefijo}assets/producto/${nombre}.av1.mp4" type='video/mp4; codecs="${codecs[nombre]}"' /><source src="${prefijo}assets/producto/${nombre}.mp4" type="video/mp4" /></video>`;
-  const producto = conVideo
-    ? `<figure class="heroe__producto" data-producto-video>
-        <div class="heroe__dispositivos">
-          <div class="dispositivo dispositivo--portatil"><div class="dispositivo__pantalla">${video('mesa-pedido-salon', 1280, 800, 'El salón de un restaurante de ejemplo en la computadora de la caja: entra el pedido de la mesa 7.')}</div></div>
-          <div class="dispositivo dispositivo--telefono"><div class="dispositivo__pantalla">${video('mesa-pedido-telefono', 720, 1560, 'La carta QR de la mesa 7 en el teléfono: se elige un plato, se agrega al pedido y se envía.')}</div></div>
-        </div>
-        <figcaption class="heroe__pie-video"><button type="button" class="heroe__pausa" data-pausa-video aria-pressed="false" aria-label="Pausar la demo">${icono('pausa', 'ico ico--pausa')}${icono('reproducir', 'ico ico--reproducir')}</button><span>Demo con un restaurante de ejemplo: se pide desde la mesa 7 y el salón lo ve al instante. <a href="${enlace(demoPorClave.get('mesa').url, prefijo)}">Pruébala</a></span></figcaption>
-      </figure>`
-    : `<figure class="heroe__producto">
-        <div class="heroe__dispositivos">
-          <div class="dispositivo dispositivo--portatil"><div class="dispositivo__pantalla"><img src="${prefijo}assets/producto/sensores-tablero.webp" alt="Tablero de sensores de un restaurante de ejemplo: la nevera de la cocina sale de rango y aparecen dos avisos activos." width="1600" height="1000" fetchpriority="high" decoding="async" /></div></div>
-          ${
-            conCarta
-              ? `<div class="dispositivo dispositivo--telefono"><div class="dispositivo__pantalla"><img src="${prefijo}assets/producto/mesa-carta.webp" alt="La carta QR de la mesa 7 de un restaurante de ejemplo: carimañolas a B/. 4.50, patacones con ceviche de corvina a B/. 8.50, con los botones para llamar al mesero y pedir la cuenta." width="780" height="1688" decoding="async" /></div></div>`
-              : `<div class="dispositivo dispositivo--telefono"><div class="dispositivo__pantalla"><img src="${prefijo}assets/producto/sensores-aviso.webp" alt="El aviso que llega al WhatsApp del encargado: la puerta de la nevera lleva 4 minutos abierta." width="780" height="1440" decoding="async" /></div></div>`
-          }
-        </div>
-        <figcaption>${
-          conCarta
-            ? `Dos de nuestras demos, con restaurantes de ejemplo: <a href="${enlace(demoPorClave.get('mesa').url, prefijo)}">la carta QR de la mesa</a> y <a href="${prefijo}laboratorio/sensores/">el tablero de sensores de la cocina</a>.`
-            : `Una de nuestras demos, con un restaurante de ejemplo: el tablero de sensores y el aviso que llega al WhatsApp. <a href="${prefijo}laboratorio/sensores/">Pruébala</a>`
-        }</figcaption>
-      </figure>`;
-  const heroe = `<section class="heroe${conProducto ? ' heroe--producto heroe--portada' : ''}" aria-labelledby="heroe-titulo">
+  const heroe = `<section class="heroe heroe--producto heroe--portada heroe--avisos" aria-labelledby="heroe-titulo">
   <div class="envoltura heroe__fila">
     <div class="heroe__texto">
       <h1 id="heroe-titulo" class="display heroe__titulo">Hacemos la tecnología de tu negocio y la instalamos en tu local.</h1>
@@ -447,13 +463,7 @@ function paginaInicio() {
       <p class="heroe__prueba">Prueba con: ${chips.map(([t, q], i) => `<span class="sin-corte"><button type="button" class="chip-texto" data-buscar="${esc(q)}">${esc(t)}</button>${i < chips.length - 1 ? ',' : '.'}</span>`).join(' ')}</p>
       <p class="heroe__diagnostico"><a class="boton boton--linea" href="${prefijo}diagnostico/">${icono('question')}¿No sabes qué pedir? Responde 3 preguntas</a></p>
     </div>
-    ${conProducto ? producto : `<div class="heroe__visual" aria-hidden="true">
-      ${
-        existe(`assets/fotos/${FOTO_HEROE}.webp`)
-          ? `<div class="heroe__imagen">${foto(FOTO_HEROE, prefijo, { sizes: '(min-width: 1040px) 44vw, 100vw', alt: '', carga: 'eager', prioridad: true })}</div>`
-          : `<div class="mosaico">${fotosHeroe.map((s, i) => `<div class="mosaico__foto mosaico__foto--${i + 1}">${foto(s, prefijo, { sizes: '(min-width: 1000px) 25vw, 50vw', alt: '', carga: 'eager', prioridad: i === 0 })}</div>`).join('')}</div>`
-      }
-    </div>`}
+    ${heroeAvisos(prefijo)}
   </div>
 </section>`;
 
@@ -596,6 +606,7 @@ function productoDeNegocio(so, prefijo) {
     return `<ul class="heroe__problemas" role="list" aria-label="Lo que te resolvemos">${so.problemas.slice(0, 3).map((p) => `<li>«${esc(p.problema.replace(/\.$/, ''))}»</li>`).join('')}</ul>`;
   }
   const d = demoPorClave.get(pr.demo);
+  if (pr.demo === 'mesa' && hayVideoMesa()) return videoMesa(prefijo, d.url);
   const tel = pr.telefono && existe(`assets/producto/${pr.telefono}.webp`) ? pr.telefono : null;
   return `<figure class="heroe__producto">
         <div class="heroe__dispositivos${tel ? '' : ' heroe__dispositivos--solo'}">

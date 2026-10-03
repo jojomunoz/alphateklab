@@ -207,10 +207,10 @@ try {
     assert.equal(await p.isVisible('#catalogo-vacio'), false);
   });
 
-  await paso('el producto en movimiento: arrancan los dos videos, se pausan con el botón y no arrancan con «reducir movimiento»', async () => {
+  await paso('el video de restaurantes: arrancan los dos, se pausan con el botón y no arrancan con «reducir movimiento»', async () => {
     const c2 = await b.newContext({ viewport: { width: 1280, height: 800 } });
     const q = await c2.newPage();
-    await q.goto(BASE, { waitUntil: 'networkidle' });
+    await q.goto(`${BASE}soluciones/restaurantes/`, { waitUntil: 'networkidle' });
     await q.waitForTimeout(1800);
     const andando = await q.$$eval('[data-video-producto]', (vs) => vs.map((v) => !v.paused && v.currentTime > 0.3));
     assert.deepEqual(andando, [true, true], 'no corren los dos');
@@ -220,22 +220,55 @@ try {
     await c2.close();
     const c3 = await b.newContext({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
     const r = await c3.newPage();
-    await r.goto(BASE, { waitUntil: 'networkidle' });
+    await r.goto(`${BASE}soluciones/restaurantes/`, { waitUntil: 'networkidle' });
     await r.waitForTimeout(1200);
     assert.equal(await r.$$eval('[data-video-producto]', (vs) => vs.every((v) => v.paused)), true, 'con reducir movimiento corren');
     await c3.close();
   });
 
-  await paso('en el teléfono el video de la portada avanza (no lo devuelve a 0 el salón oculto)', async () => {
+  await paso('en el teléfono el video de restaurantes avanza (la sincronía no lo devuelve a 0)', async () => {
     const c4 = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
     const t = await c4.newPage();
-    await t.goto(BASE, { waitUntil: 'load' });
+    await t.goto(`${BASE}soluciones/restaurantes/`, { waitUntil: 'load' });
     await t.waitForTimeout(3500);
     const tel = await t.$eval('.dispositivo--telefono [data-video-producto]', (v) => ({ t: v.currentTime, pausado: v.paused, visible: v.offsetParent !== null }));
     await c4.close();
     assert.equal(tel.visible, true, 'el video del teléfono no se ve');
     assert.equal(tel.pausado, false, 'el video del teléfono está pausado');
     assert.ok(tel.t > 1.5, `el video del teléfono va en ${tel.t.toFixed(2)} s tras 3,5 s`);
+  });
+
+  await paso('la portada: avisos de distintos negocios; entra uno nuevo arriba, la pausa lo detiene, el buscador no se mueve', async () => {
+    const c5 = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const t = await c5.newPage();
+    await t.goto(BASE, { waitUntil: 'load' });
+    const arriba = () => t.$eval('.avisos-heroe__lista > li:not([hidden]) strong', (e) => e.textContent);
+    const visibles = await t.$$eval('.avisos-heroe__lista > li:not([hidden])', (ls) => ls.map((l) => l.querySelector('strong').textContent));
+    assert.equal(visibles.length, 3, `en el teléfono se ven ${visibles.length} avisos`);
+    assert.equal(new Set(visibles).size, 3, 'los avisos visibles son de negocios distintos');
+    assert.notEqual(visibles[0], 'Restaurante', 'la portada no abre con el restaurante');
+    const y0 = await t.$eval('.heroe__buscar', (e) => e.getBoundingClientRect().bottom);
+    assert.ok(y0 <= 844, `el buscador no entra en la primera pantalla (termina en ${Math.round(y0)})`);
+    const primero = await arriba();
+    await t.waitForTimeout(5600);
+    assert.notEqual(await arriba(), primero, 'no entró un aviso nuevo en 5,6 s');
+    assert.equal(Math.round(await t.$eval('.heroe__buscar', (e) => e.getBoundingClientRect().bottom)), Math.round(y0), 'el buscador se movió al entrar un aviso');
+    for (const href of await t.$$eval('.aviso-heroe', (as) => as.map((a) => a.href))) {
+      const r = await t.request.get(href);
+      assert.ok(r.ok(), `aviso con enlace roto: ${href}`);
+    }
+    await t.click('[data-pausa-avisos]');
+    const quieto = await arriba();
+    await t.waitForTimeout(5600);
+    assert.equal(await arriba(), quieto, 'con pausa siguió cambiando');
+    await c5.close();
+    const c6 = await b.newContext({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
+    const r = await c6.newPage();
+    await r.goto(BASE, { waitUntil: 'load' });
+    const fijo = await r.$eval('.avisos-heroe__lista > li:not([hidden]) strong', (e) => e.textContent);
+    await r.waitForTimeout(5600);
+    assert.equal(await r.$eval('.avisos-heroe__lista > li:not([hidden]) strong', (e) => e.textContent), fijo, 'con reducir movimiento rota');
+    await c6.close();
   });
 
   await paso('Pregúntanos no muestra códigos internos en la lista', async () => {

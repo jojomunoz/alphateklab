@@ -542,3 +542,70 @@ window.addEventListener('storage', pintarCotizacion);
 pintarCotizacion();
 
 export { guardarCotizacion, reducir };
+
+// ── héroe de la portada: avisos de ejemplo de los sistemas que hacemos; el nuevo entra arriba cada 5 s ──
+// Hora fija por aviso (no envejece al bajar), pausa al tocar, al pasar el puntero o con el botón, y se detiene sola
+// tras una vuelta completa. Con «reducir movimiento» no rota.
+const avisosHeroe = document.querySelector('[data-avisos]');
+if (avisosHeroe) {
+  const lista = avisosHeroe.querySelector('.avisos-heroe__lista');
+  const todos = [...lista.children];
+  const botonPausa = avisosHeroe.querySelector('[data-pausa-avisos]');
+  // en el teléfono, tres: con cuatro, el buscador quedaba fuera de la primera pantalla
+  const VISIBLES = matchMedia('(max-width: 639px)').matches ? 3 : 4;
+  todos.forEach((li, i) => { li.hidden = i >= VISIBLES; });
+  let siguiente = VISIBLES;
+  let minutos = 10 * 60 + 42; // la hora del de arriba
+  const PASOS = [4, 6, 3, 7, 5];
+  const hora = (m) => {
+    const h = Math.floor(m / 60) % 24;
+    return `${((h + 11) % 12) + 1}:${String(m % 60).padStart(2, '0')} ${h < 12 ? 'a. m.' : 'p. m.'}`;
+  };
+  let pausadoPorPersona = reducir;
+  let encima = false;
+  let reloj = null;
+  const visibles = () => [...lista.children].filter((li) => !li.hidden);
+  function paso() {
+    if (encima) return;
+    const antes = new Map(visibles().map((li) => [li, li.getBoundingClientRect().top]));
+    const nuevo = todos[siguiente % todos.length];
+    siguiente++;
+    visibles().at(-1).hidden = true;
+    nuevo.hidden = false;
+    lista.prepend(nuevo);
+    minutos += PASOS[siguiente % PASOS.length];
+    nuevo.querySelector('.aviso-heroe__hora').textContent = hora(minutos);
+    for (const li of visibles()) {
+      if (li === nuevo) continue;
+      const dy = antes.get(li) - li.getBoundingClientRect().top;
+      if (dy) li.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 480, easing: 'cubic-bezier(.16,1,.3,1)' });
+    }
+    nuevo.animate([{ opacity: 0, transform: 'translateY(-14px) scale(.98)' }, { opacity: 1, transform: 'none' }], { duration: 480, easing: 'cubic-bezier(.16,1,.3,1)' });
+    // una vuelta completa y se queda quieto (el botón la retoma)
+    if (siguiente >= VISIBLES + todos.length) {
+      pausadoPorPersona = true;
+      andar();
+      pintarPausa();
+    }
+  }
+  function andar() {
+    clearInterval(reloj);
+    reloj = pausadoPorPersona ? null : setInterval(paso, 5000);
+  }
+  const pintarPausa = () => botonPausa?.setAttribute('aria-pressed', String(pausadoPorPersona));
+  botonPausa?.addEventListener('click', () => {
+    pausadoPorPersona = !pausadoPorPersona;
+    if (!pausadoPorPersona && siguiente >= VISIBLES + todos.length) siguiente = VISIBLES; // otra vuelta
+    andar();
+    pintarPausa();
+  });
+  // mientras el puntero, el dedo o el foco están en la lista, no cambia (se puede leer y tocar un aviso)
+  lista.addEventListener('pointerenter', () => { encima = true; });
+  lista.addEventListener('pointerleave', () => { encima = false; });
+  lista.addEventListener('touchstart', () => { encima = true; }, { passive: true });
+  lista.addEventListener('focusin', () => { encima = true; });
+  lista.addEventListener('focusout', (e) => { if (!lista.contains(e.relatedTarget)) encima = false; });
+  if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => (e.isIntersecting ? andar() : clearInterval(reloj))).observe(avisosHeroe);
+  else andar();
+  pintarPausa();
+}

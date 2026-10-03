@@ -22,9 +22,9 @@
 <link rel="preload" href="assets/fuentes/manrope-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="assets/fuentes/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="assets/atk.css?v=7b2f825a1a" />
-<link rel="stylesheet" href="assets/sitio.css?v=085970848e" />
+<link rel="stylesheet" href="assets/sitio.css?v=a32d8d99f1" />
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://jojomunoz.github.io/alphateklab/#organizacion","name":"alphateklab","url":"https://jojomunoz.github.io/alphateklab/","logo":"https://jojomunoz.github.io/alphateklab/assets/marca/favicon-180.png","areaServed":{"@type":"Country","name":"Panamá"},"description":"Software a medida, páginas, apps e inteligencia artificial, e instalación de pantallas, cámaras, sensores y QR en negocios de Panamá."},{"@type":"WebSite","url":"https://jojomunoz.github.io/alphateklab/","name":"alphateklab","inLanguage":"es-PA"}]}</script>
-<script type="importmap">{"imports":{"./js/buscador.mjs":"./js/buscador.mjs?v=83fb6d6576","./js/catalogo-reglas.mjs":"./js/catalogo-reglas.mjs?v=74e6e30e30","./js/catalogo.js":"./js/catalogo.js?v=6a150d8aa7","./js/cotizacion.mjs":"./js/cotizacion.mjs?v=93604fe019","./js/cotizar.js":"./js/cotizar.js?v=9406cdf2aa","./js/diagnostico-nucleo.mjs":"./js/diagnostico-nucleo.mjs?v=bf1890372f","./js/diagnostico.js":"./js/diagnostico.js?v=81b35bbcb9","./js/indice.mjs":"./js/indice.mjs?v=3490b023ce","./js/nucleo.mjs":"./js/nucleo.mjs?v=42810858ec","./js/sitio.js":"./js/sitio.js?v=f4f3262d3c"}}</script>
+<script type="importmap">{"imports":{"./js/buscador.mjs":"./js/buscador.mjs?v=83fb6d6576","./js/catalogo-reglas.mjs":"./js/catalogo-reglas.mjs?v=74e6e30e30","./js/catalogo.js":"./js/catalogo.js?v=6a150d8aa7","./js/cotizacion.mjs":"./js/cotizacion.mjs?v=93604fe019","./js/cotizar.js":"./js/cotizar.js?v=9406cdf2aa","./js/diagnostico-nucleo.mjs":"./js/diagnostico-nucleo.mjs?v=bf1890372f","./js/diagnostico.js":"./js/diagnostico.js?v=81b35bbcb9","./js/indice.mjs":"./js/indice.mjs?v=3490b023ce","./js/nucleo.mjs":"./js/nucleo.mjs?v=42810858ec","./js/sitio.js":"./js/sitio.js?v=8dde47862a"}}</script>
 </head>
 <body class="pagina-inicio">
 <a class="saltar" href="#contenido">Saltar al contenido</a>
@@ -112,7 +112,7 @@
   </div>
 </header>
 <main id="contenido">
-<section class="heroe heroe--producto heroe--portada" aria-labelledby="heroe-titulo">
+<section class="heroe heroe--producto heroe--portada heroe--avisos" aria-labelledby="heroe-titulo">
   <div class="envoltura heroe__fila">
     <div class="heroe__texto">
       <h1 id="heroe-titulo" class="display heroe__titulo">Hacemos la tecnología de tu negocio y la instalamos en tu local<span class="modulo" aria-hidden="true"></span></h1>
@@ -127,12 +127,20 @@
       <p class="heroe__prueba">Prueba con: <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="pedir desde la mesa con qr">Pedidos con QR</button>,</span> <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="contar personas que entran">Contar clientes</button>,</span> <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="recordar citas a pacientes">Recordar citas</button>,</span> <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="página web">Página web</button>.</span></p>
       <p class="heroe__diagnostico"><a class="boton boton--linea" href="diagnostico/"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-question"></use></svg>¿No sabes qué pedir? Responde 3 preguntas</a></p>
     </div>
-    <figure class="heroe__producto" data-producto-video>
-        <div class="heroe__dispositivos">
-          <div class="dispositivo dispositivo--portatil"><div class="dispositivo__pantalla"><video data-video-producto muted loop playsinline preload="metadata" poster="assets/producto/mesa-pedido-salon.webp" width="1280" height="800" aria-label="El salón de un restaurante de ejemplo en la computadora de la caja: entra el pedido de la mesa 7."><source src="assets/producto/mesa-pedido-salon.av1.mp4" type='video/mp4; codecs="av01.0.05M.08"' /><source src="assets/producto/mesa-pedido-salon.mp4" type="video/mp4" /></video></div></div>
-          <div class="dispositivo dispositivo--telefono"><div class="dispositivo__pantalla"><video data-video-producto muted loop playsinline preload="metadata" poster="assets/producto/mesa-pedido-telefono.webp" width="720" height="1560" aria-label="La carta QR de la mesa 7 en el teléfono: se elige un plato, se agrega al pedido y se envía."><source src="assets/producto/mesa-pedido-telefono.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' /><source src="assets/producto/mesa-pedido-telefono.mp4" type="video/mp4" /></video></div></div>
+    <figure class="heroe__producto avisos-heroe" data-avisos>
+        <div class="avisos-heroe__marco">
+          <div class="avisos-heroe__cabeza"><p>Avisos de ejemplo de lo que hacemos</p><button type="button" class="heroe__pausa avisos-heroe__pausa" data-pausa-avisos aria-pressed="false" aria-label="Pausar los avisos"><svg class="ico ico--pausa" aria-hidden="true" focusable="false"><use href="#i-pausa"></use></svg><svg class="ico ico--reproducir" aria-hidden="true" focusable="false"><use href="#i-reproducir"></use></svg></button></div>
+          <ol class="avisos-heroe__lista" aria-label="Avisos de ejemplo de los sistemas que hacemos, de distintos negocios">
+            <li><a class="aviso-heroe" href="laboratorio/camara/"><span class="aviso-heroe__icono"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-storefront"></use></svg></span><span class="aviso-heroe__cuerpo"><span class="aviso-heroe__cabeza"><strong>Tienda</strong><span class="aviso-heroe__hora">10:42 a. m.</span></span><span class="aviso-heroe__texto">Van 214 personas hoy, 18 % más que el sábado pasado.</span></span></a></li>
+            <li><a class="aviso-heroe" href="https://jojomunoz.github.io/alphateklab-reservas/"><span class="aviso-heroe__icono"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-calendar-check"></use></svg></span><span class="aviso-heroe__cuerpo"><span class="aviso-heroe__cabeza"><strong>Clínica</strong><span class="aviso-heroe__hora">10:38 a. m.</span></span><span class="aviso-heroe__texto">La paciente de mañana a las 10:30 a. m. confirmó su cita.</span></span></a></li>
+            <li><a class="aviso-heroe" href="servicios/factura-electronica/"><span class="aviso-heroe__icono"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-credit-card"></use></svg></span><span class="aviso-heroe__cuerpo"><span class="aviso-heroe__cabeza"><strong>Facturación</strong><span class="aviso-heroe__hora">10:31 a. m.</span></span><span class="aviso-heroe__texto">La factura 0001-0245 fue autorizada por la DGI.</span></span></a></li>
+            <li><a class="aviso-heroe" href="https://jojomunoz.github.io/alphateklab-mesa/"><span class="aviso-heroe__icono"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-fork-knife"></use></svg></span><span class="aviso-heroe__cuerpo"><span class="aviso-heroe__cabeza"><strong>Restaurante</strong><span class="aviso-heroe__hora">10:25 a. m.</span></span><span class="aviso-heroe__texto">Mesa 7 pidió 2 hojaldras y una chicha de saril. B/. 6.50</span></span></a></li>
+            <li hidden><a class="aviso-heroe" href="laboratorio/sensores/"><span class="aviso-heroe__icono"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-thermometer-simple"></use></svg></span><span class="aviso-heroe__cuerpo"><span class="aviso-heroe__cabeza"><strong>Cocina</strong><span class="aviso-heroe__hora"></span></span><span class="aviso-heroe__texto">La nevera va en 8.9 °C y sube. El límite es 5 °C.</span></span></a></li>
+            <li hidden><a class="aviso-heroe" href="https://jojomunoz.github.io/alphateklab-reservas/alojamiento.html"><span class="aviso-heroe__icono"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-bed"></use></svg></span><span class="aviso-heroe__cuerpo"><span class="aviso-heroe__cabeza"><strong>Cabañas</strong><span class="aviso-heroe__hora"></span></span><span class="aviso-heroe__texto">Cabaña 2: reserva directa, con depósito por Yappy.</span></span></a></li>
+            <li hidden><a class="aviso-heroe" href="servicios/matricula-y-mensualidades/"><span class="aviso-heroe__icono"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-graduation-cap"></use></svg></span><span class="aviso-heroe__cuerpo"><span class="aviso-heroe__cabeza"><strong>Colegio</strong><span class="aviso-heroe__hora"></span></span><span class="aviso-heroe__texto">12 familias ya pagaron la mensualidad con Yappy.</span></span></a></li>
+            <li hidden><a class="aviso-heroe" href="servicios/gps-de-flota/"><span class="aviso-heroe__icono"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-car"></use></svg></span><span class="aviso-heroe__cuerpo"><span class="aviso-heroe__cabeza"><strong>Reparto</strong><span class="aviso-heroe__hora"></span></span><span class="aviso-heroe__texto">El camión 3 lleva 25 minutos detenido fuera de su ruta.</span></span></a></li>
+          </ol>
         </div>
-        <figcaption class="heroe__pie-video"><button type="button" class="heroe__pausa" data-pausa-video aria-pressed="false" aria-label="Pausar la demo"><svg class="ico ico--pausa" aria-hidden="true" focusable="false"><use href="#i-pausa"></use></svg><svg class="ico ico--reproducir" aria-hidden="true" focusable="false"><use href="#i-reproducir"></use></svg></button><span>Demo con un restaurante de ejemplo: se pide desde la mesa 7 y el salón lo ve al instante. <a href="https://jojomunoz.github.io/alphateklab-mesa/">Pruébala</a></span></figcaption>
       </figure>
   </div>
 </section>
@@ -334,7 +342,7 @@
     <p class="sr" role="status" data-buscador-estado></p>
   </div>
 </dialog>
-<script type="module" src="js/sitio.js?v=f4f3262d3c"></script>
+<script type="module" src="js/sitio.js?v=8dde47862a"></script>
 
 </body>
 </html>
