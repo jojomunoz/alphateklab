@@ -135,8 +135,16 @@ try {
       await tel.evaluate((v) => window.scrollTo(0, v), y);
     }
     if (s >= CAMARA.desde) {
+      // la primera vez: el centro de la tarjeta del pedido nuevo, y un contorno ámbar que aparece sobre ella (como el
+      // anillo de los toques, es una marca del video, no de la demo); sin él, la tarjeta roja de otra mesa se llevaba
+      // la mirada
       foco ??= await salon.evaluate(() => {
-        const r = ([...document.querySelectorAll('.pendiente')].find((x) => /Mesa 7/.test(x.textContent)) || document.body).getBoundingClientRect();
+        const tarjeta = [...document.querySelectorAll('.pendiente')].find((x) => /Mesa 7/.test(x.textContent));
+        if (tarjeta) {
+          Object.assign(tarjeta.style, { outline: '3px solid rgba(242,181,68,0)', outlineOffset: '3px' });
+          tarjeta.animate([{ outlineColor: 'rgba(242,181,68,0)' }, { outlineColor: 'rgba(242,181,68,1)', offset: 0.3 }, { outlineColor: 'rgba(242,181,68,1)' }], { duration: 1500, fill: 'forwards' });
+        }
+        const r = (tarjeta || document.body).getBoundingClientRect();
         return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
       });
       await salon.evaluate(({ foco, p, c }) => {
