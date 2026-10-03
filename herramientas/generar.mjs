@@ -114,7 +114,8 @@ function foto(slot, prefijo, { clase = '', sizes = '(min-width: 1000px) 50vw, 10
   const c = CREDITOS_FOTOS[slot] || {};
   const texto = alt ?? c.alt ?? '';
   const hayChico = existe(`assets/fotos/${slot}-800.webp`);
-  const srcset = hayChico ? `${prefijo}assets/fotos/${slot}-800.webp 800w, ${prefijo}assets/fotos/${slot}.webp 1600w` : `${prefijo}assets/fotos/${slot}.webp 1600w`;
+  const hayMini = existe(`assets/fotos/${slot}-264.webp`);
+  const srcset = [hayMini && `${prefijo}assets/fotos/${slot}-264.webp 264w`, hayChico && `${prefijo}assets/fotos/${slot}-800.webp 800w`, `${prefijo}assets/fotos/${slot}.webp 1600w`].filter(Boolean).join(', ');
   return `<img class="${clase}" src="${prefijo}assets/fotos/${slot}${hayChico ? '-800' : ''}.webp" srcset="${srcset}" sizes="${sizes}" alt="${esc(texto)}" width="1600" height="1000" loading="${carga}" decoding="async"${prioridad ? ' fetchpriority="high"' : ''} />`;
 }
 
@@ -159,7 +160,7 @@ function cabecera(prefijo) {
     <div class="cabecera__acciones">
       <button class="buscar-boton" type="button" data-abrir-buscador aria-label="Buscar en el sitio">${icono('magnifying-glass')}<span class="buscar-boton__texto">Buscar</span><kbd>/</kbd></button>
       <a class="boton boton--senal cabecera__cta" href="${prefijo}cotizar/">Pregúntanos<span class="cabecera__cuenta" data-cuenta-cotizacion hidden></span></a>
-      <button class="hamburguesa" type="button" aria-expanded="false" aria-controls="menu-movil" data-hamburguesa aria-label="Abrir el menú">${icono('list')}</button>
+      <button class="hamburguesa" type="button" aria-expanded="false" aria-controls="menu-movil" data-hamburguesa aria-label="Abrir el menú">${icono('list', 'ico ico--abrir')}${icono('x', 'ico ico--cerrar')}</button>
     </div>
   </div>
   <div class="menu-movil" id="menu-movil" hidden>
@@ -178,7 +179,7 @@ function dialogoBuscador() {
   <form class="buscador__barra" role="search" data-buscador-form>
     ${icono('magnifying-glass')}
     <label class="sr" for="buscador-campo">¿Qué necesitas?</label>
-    <input id="buscador-campo" type="search" placeholder="¿Qué necesitas? Escríbelo con tus palabras" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="buscador-resultados" aria-autocomplete="list" />
+    <input id="buscador-campo" type="search" enterkeyhint="search" placeholder="¿Qué necesitas? Escríbelo con tus palabras" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="buscador-resultados" aria-autocomplete="list" />
     <button class="buscador__cerrar" type="button" data-cerrar-buscador aria-label="Cerrar el buscador"><span class="solo-teclado">Esc</span><span class="solo-tactil">Cerrar</span></button>
   </form>
   <div class="buscador__cuerpo">
@@ -270,7 +271,7 @@ function tarjetaServicio(s, prefijo) {
   <h3 class="tarjeta-servicio__nombre"><a href="${prefijo}servicios/${s.slug}/">${esc(s.nombre)}</a></h3>
   <p class="tarjeta-servicio__para">${esc(s.para)}</p>
   <div class="tarjeta-servicio__insignias">${insignias(s)}</div>
-  <div class="tarjeta-servicio__pie"><span class="tarjeta-servicio__precio num">${esc(precioTexto(s))}</span><button class="boton-chico" type="button" data-cotizar="${s.id}" aria-pressed="false" aria-label="Agregar ${esc(s.nombre)} a mi lista">Agregar</button></div>
+  <div class="tarjeta-servicio__pie"><span class="tarjeta-servicio__precio num">${s.precio ? esc(s.precio.texto) : ''}</span><button class="boton-chico" type="button" data-cotizar="${s.id}" aria-pressed="false" aria-label="Agregar ${esc(s.nombre)} a mi lista">Agregar</button></div>
 </article>`;
 }
 
@@ -341,6 +342,23 @@ const PREGUNTAS = [
   ['¿Y los datos de mis clientes?', 'Lo que hacemos cumple la Ley 81 de 2019 de protección de datos personales: pide el consentimiento cuando guarda datos de personas y no los comparte con terceros.'],
 ];
 
+// Los tipos de negocio como índice tipográfico: el nombre, el problema que más se repite y cuántos servicios hay.
+// Sin fotos ni íconos (la revisión del 3-oct: la rejilla de 9 fotos generadas se leía como plantilla de IA).
+function indiceNegocios(prefijo, nivel = 'h3', { conBajada = false } = {}) {
+  return `<ul class="negocios negocios--indice" role="list">
+    ${SOLUCIONES.map(
+      (so) => `<li><a class="negocio" href="${prefijo}soluciones/${so.slug}/">
+      <${nivel} class="negocio__nombre">${esc(sectorPorId.get(so.sector).nombre)}</${nivel}>
+      <p class="negocio__problema">${esc(conBajada ? so.bajada : so.problemas[0].problema)}</p>
+      <span class="negocio__mas">${contar(serviciosDeSector(so.sector).length, 'servicio', 'servicios')}</span>
+    </a></li>`,
+    ).join('\n    ')}
+  </ul>`;
+}
+const NUMEROS = ['cero', 'una', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve'];
+const enLetras = (n) => NUMEROS[n] ?? String(n);
+const mayuscula = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+
 // ── portada ──
 // Una sola escena (el tríptico tenía costuras): dos técnicos instalando una pantalla en un local, que es el titular.
 const FOTO_HEROE = existe('assets/fotos/equipo-instalando.webp') ? 'equipo-instalando' : 'marca-heroe';
@@ -357,28 +375,36 @@ function paginaInicio() {
     ['Chatbot', 'chatbot de whatsapp'],
   ];
   const fotosHeroe = ['sector-restaurantes', 'sector-comercio', 'sector-salud', 'sector-hospedaje'].filter((s) => existe(`assets/fotos/${s}.webp`));
-  const heroe = `<section class="heroe" aria-labelledby="heroe-titulo">
+  const conProducto = demoPorClave.has('sensores') && existe('assets/producto/sensores-tablero.webp') && existe('assets/producto/sensores-aviso.webp');
+  const producto = `<figure class="heroe__producto">
+        <div class="heroe__dispositivos">
+          <div class="dispositivo dispositivo--portatil"><div class="dispositivo__pantalla"><img src="${prefijo}assets/producto/sensores-tablero.webp" alt="Tablero de sensores de un restaurante de ejemplo: la nevera de la cocina sale de rango y aparecen dos avisos activos." width="1600" height="1000" fetchpriority="high" decoding="async" /></div></div>
+          <div class="dispositivo dispositivo--telefono"><div class="dispositivo__pantalla"><img src="${prefijo}assets/producto/sensores-aviso.webp" alt="El aviso que llega al WhatsApp del encargado: la puerta de la nevera lleva 4 minutos abierta." width="780" height="1440" decoding="async" /></div></div>
+        </div>
+        <figcaption>Una de nuestras demos, con un restaurante de ejemplo: el tablero de sensores y el aviso que llega al WhatsApp. <a href="${prefijo}laboratorio/sensores/">Pruébala</a></figcaption>
+      </figure>`;
+  const heroe = `<section class="heroe${conProducto ? ' heroe--producto' : ''}" aria-labelledby="heroe-titulo">
   <div class="envoltura heroe__fila">
     <div class="heroe__texto">
       <h1 id="heroe-titulo" class="display heroe__titulo">Hacemos la tecnología de tu negocio y la instalamos en tu local.</h1>
-      <p class="heroe__bajada">Software a medida, páginas y apps, inteligencia artificial, cámaras, sensores, pantallas y recorridos 3D para negocios en Panamá.</p>
+      <p class="heroe__bajada">Software, apps e inteligencia artificial, y las cámaras, sensores y pantallas instalados en tu local. Cobros con Yappy, factura electrónica con un PAC autorizado por la DGI y menú QR a $10 al mes.</p>
       <form class="heroe__buscar" role="search" data-buscar-en-linea action="${prefijo}servicios/">
         ${icono('magnifying-glass')}
         <label class="sr" for="heroe-campo">¿Qué necesitas?</label>
-        <input id="heroe-campo" name="q" type="search" placeholder="¿Qué necesitas? Ej.: un menú QR" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="heroe-resultados" aria-autocomplete="list" />
+        <input id="heroe-campo" name="q" type="search" enterkeyhint="search" placeholder="¿Qué necesitas? Ej.: un menú QR" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="heroe-resultados" aria-autocomplete="list" />
         <button class="boton boton--senal" type="submit">Buscar</button>
         <div class="heroe__resultados" id="heroe-resultados" hidden></div>
       </form>
       <p class="heroe__prueba">Prueba con: ${chips.map(([t, q], i) => `<span class="sin-corte"><button type="button" class="chip-texto" data-buscar="${esc(q)}">${esc(t)}</button>${i < chips.length - 1 ? ',' : '.'}</span>`).join(' ')}</p>
       <p class="heroe__diagnostico"><a class="boton boton--linea" href="${prefijo}diagnostico/">${icono('question')}¿No sabes qué pedir? Responde 3 preguntas</a></p>
     </div>
-    <div class="heroe__visual" aria-hidden="true">
+    ${conProducto ? producto : `<div class="heroe__visual" aria-hidden="true">
       ${
         existe(`assets/fotos/${FOTO_HEROE}.webp`)
           ? `<div class="heroe__imagen">${foto(FOTO_HEROE, prefijo, { sizes: '(min-width: 1040px) 44vw, 100vw', alt: '', carga: 'eager', prioridad: true })}</div>`
           : `<div class="mosaico">${fotosHeroe.map((s, i) => `<div class="mosaico__foto mosaico__foto--${i + 1}">${foto(s, prefijo, { sizes: '(min-width: 1000px) 25vw, 50vw', alt: '', carga: 'eager', prioridad: i === 0 })}</div>`).join('')}</div>`
       }
-    </div>
+    </div>`}
   </div>
 </section>`;
 
@@ -390,20 +416,7 @@ function paginaInicio() {
   ].filter(([, , , u]) => !u.includes('/servicios/') || u.includes('?') || existeServicio(u));
   const entradas = `<section class="situaciones envoltura" aria-labelledby="sit-titulo">
   <h2 id="sit-titulo" class="situaciones__titulo">¿En qué punto estás?</h2>
-  <ul class="situaciones__lista" role="list">${situaciones.map(([i, t, d, u]) => `<li><a class="situacion" href="${u}">${icono(i)}<span><strong>${t}</strong><small>${d}</small></span></a></li>`).join('')}</ul>
-</section>`;
-
-  const instalamos = [
-    ['qr-code', 'QR y NFC en cada mesa'],
-    ['monitor', 'Pantallas táctiles y de cocina'],
-    ['security-camera', 'Cámaras con IA'],
-    ['thermometer-simple', 'Sensores de temperatura y energía'],
-    ['shield-check', 'Cerraduras y control de acceso'],
-    ['broadcast', 'Redes y Wi-Fi'],
-    ['cube-focus', 'Escaneo 3D y 360'],
-  ];
-  const tira = `<section class="tira" aria-labelledby="tira-titulo">
-  <div class="envoltura tira__fila"><p class="tira__titulo" id="tira-titulo">${icono('wrench')}Además de programarlo, lo instalamos:</p><ul>${instalamos.map(([i, t]) => `<li>${icono(i)}${t}</li>`).join('')}</ul></div>
+  <ul class="situaciones__lista" role="list">${situaciones.map(([, t, d, u]) => `<li><a class="situacion" href="${u}"><span><strong>${t}</strong><small>${d}</small></span></a></li>`).join('')}</ul>
 </section>`;
 
   const negocios = `<section class="seccion envoltura" id="soluciones" aria-labelledby="sol-titulo">
@@ -411,18 +424,7 @@ function paginaInicio() {
     <h2 id="sol-titulo" class="display seccion__titulo">¿Qué tipo de negocio tienes?</h2>
     <p class="seccion__bajada">Elige el tuyo: verás los problemas que resolvemos en ese tipo de negocio y con qué.</p>
   </div>
-  <ul class="negocios" role="list">
-    ${SOLUCIONES.map(
-      (so) => `<li><a class="negocio" href="${prefijo}soluciones/${so.slug}/">
-      <div class="negocio__foto">${foto(so.foto, prefijo, { sizes: '(min-width: 1000px) 33vw, (min-width: 640px) 50vw, 100vw', alt: '' }) || `<div class="negocio__sinfoto">${icono(so.icono, 'ico ico--grande')}</div>`}</div>
-      <div class="negocio__texto">
-        <h3 class="negocio__nombre">${icono(so.icono)}${esc(sectorPorId.get(so.sector).nombre)}</h3>
-        <ul class="negocio__lista">${so.problemas.slice(0, 2).map((p) => `<li>${esc(p.problema)}</li>`).join('')}</ul>
-        <span class="negocio__mas">${contar(serviciosDeSector(so.sector).length, 'servicio', 'servicios')}</span>
-      </div>
-    </a></li>`,
-    ).join('\n    ')}
-  </ul>
+  ${indiceNegocios(prefijo, 'h3')}
 </section>`;
 
   const proximas = DEMOS_TODAS.filter((d) => !DEMOS.some((x) => x.clave === d.clave));
@@ -430,8 +432,8 @@ function paginaInicio() {
     ? `<section class="seccion seccion--oscura" id="demos" aria-labelledby="demos-titulo">
   <div class="envoltura">
     <div class="seccion__cabeza">
-      <h2 id="demos-titulo" class="display seccion__titulo">Míralo funcionando</h2>
-      <p class="seccion__bajada">Demos que funcionan en tu navegador, con negocios de ejemplo. Algunas se abren mejor en el teléfono.</p>
+      <h2 id="demos-titulo" class="display seccion__titulo">${mayuscula(enLetras(DEMOS.length))} ${DEMOS.length === 1 ? 'demo que puedes abrir' : 'demos que puedes abrir'} ahora</h2>
+      <p class="seccion__bajada">Funcionan en tu navegador, con negocios de ejemplo; cada una dice qué parte es simulada.${proximas.length ? ` Hay ${enLetras(proximas.length).replace(/^una$/, 'una')} más en preparación.` : ''}</p>
     </div>
     <ul class="demos" role="list">
       ${DEMOS.map((d, i) => tarjetaDemo(d, prefijo, { grande: i === 0 && DEMOS.length > 2 })).join('\n      ')}
@@ -444,13 +446,12 @@ function paginaInicio() {
 
   const capacidades = `<section class="seccion envoltura" id="servicios" aria-labelledby="cap-titulo">
   <div class="seccion__cabeza">
-    <h2 id="cap-titulo" class="display seccion__titulo">Lo que hacemos</h2>
-    <p class="seccion__bajada">${SERVICIOS.length} servicios en ${TIPOS.length} tipos de solución. Elige uno para ver todo lo que incluye.</p>
+    <h2 id="cap-titulo" class="display seccion__titulo">${SERVICIOS.length} servicios, del menú QR de $10 al mes al software a medida</h2>
+    <p class="seccion__bajada">En ${enLetras(TIPOS.length)} tipos de solución; un servicio puede estar en más de uno. Elige un tipo para ver todo lo que incluye.</p>
   </div>
   <ul class="indice" role="list">
     ${TIPOS.map(
       (t) => `<li><a class="indice__fila" href="${prefijo}servicios/?tipo=${t.id}">
-      <span class="indice__icono">${icono(t.icono)}</span>
       <span class="indice__texto"><span class="indice__nombre">${esc(t.nombre)}</span><span class="indice__desc">${esc(t.desc)}</span></span>
       <span class="indice__cuenta num">${serviciosDeTipo(t.id).length}</span>
     </a></li>`,
@@ -459,8 +460,8 @@ function paginaInicio() {
   <p class="seccion__pie"><a class="boton boton--linea" href="${prefijo}servicios/">${icono('list')}Ver los ${SERVICIOS.length} servicios</a></p>
 </section>`;
 
-  // El héroe ya muestra a los técnicos instalando; aquí va el resultado: la pantalla de comandas trabajando en la cocina.
-  const fotoInst = foto(existe('assets/fotos/cocina.webp') ? 'cocina' : 'instalacion', prefijo, {});
+  // El héroe muestra el producto; aquí, la instalación: dos técnicos poniendo una pantalla en un local.
+  const fotoInst = foto(existe('assets/fotos/equipo-instalando.webp') ? 'equipo-instalando' : 'instalacion', prefijo, {});
   const instalacion = `<section class="seccion envoltura dividida${fotoInst ? '' : ' dividida--sinfoto'}" aria-labelledby="inst-titulo">
   ${fotoInst ? `<div class="dividida__foto">${fotoInst}</div>` : ''}
   <div class="dividida__texto">
@@ -481,7 +482,7 @@ function paginaInicio() {
     ['Lo usas', 'Le enseñamos a tu equipo y quedamos de soporte según lo acordado en la propuesta.'],
   ];
   const como = `<section class="seccion envoltura" id="como-trabajamos" aria-labelledby="como-titulo">
-  <div class="seccion__cabeza"><h2 id="como-titulo" class="display seccion__titulo">Cómo trabajamos</h2></div>
+  <div class="seccion__cabeza"><h2 id="como-titulo" class="display seccion__titulo">Primero, la propuesta por escrito</h2><p class="seccion__bajada">El equipo se compra cuando la apruebas. Así trabajamos:</p></div>
   <ol class="pasos">${pasos.map(([t, p]) => `<li class="paso"><h3 class="paso__titulo">${t}</h3><p>${p}</p></li>`).join('')}</ol>
 </section>`;
 
@@ -500,12 +501,11 @@ function paginaInicio() {
     cuerpo: `<main id="contenido">
 ${heroe}
 ${entradas}
-${tira}
 ${negocios}
 ${demos}
-${como}
 ${capacidades}
 ${instalacion}
+${como}
 ${preguntas}
 ${bandaPreguntanos(prefijo)}
 </main>`,
@@ -576,7 +576,7 @@ ${
     : ''
 }
 <section class="seccion envoltura" aria-labelledby="todos-titulo">
-  <div class="seccion__cabeza"><h2 id="todos-titulo" class="display seccion__titulo">Todos los servicios para tu ${esc(nombreCorto)}</h2><p class="seccion__bajada">${contar(lista.length, 'servicio', 'servicios')}. Agrega los que te interesen y pídenos la cotización de una vez.</p></div>
+  <div class="seccion__cabeza"><h2 id="todos-titulo" class="display seccion__titulo">Todos los servicios para tu ${esc(nombreCorto)}</h2><p class="seccion__bajada">${contar(lista.length, 'servicio', 'servicios')}. Se cotizan según tu negocio, salvo los que muestran precio. Agrega los que te interesen y pídenos la cotización de una vez.</p></div>
   <div class="rejilla-servicios">${lista.map((s) => tarjetaServicio(s, prefijo)).join('\n')}</div>
 </section>
 ${bandaPreguntanos(prefijo, { titulo: `¿Tu ${nombreCorto} necesita otra cosa?` })}
@@ -594,14 +594,8 @@ function paginaSoluciones() {
     cuerpo: `<main id="contenido" class="envoltura pagina-simple">
   ${migas(prefijo, [['Soluciones', null]])}
   <h1 class="display pagina-simple__titulo">Soluciones por tipo de negocio</h1>
-  <ul class="negocios" role="list">
-    ${SOLUCIONES.map(
-      (so) => `<li><a class="negocio" href="${prefijo}soluciones/${so.slug}/">
-      <div class="negocio__foto">${foto(so.foto, prefijo, { sizes: '(min-width: 1000px) 33vw, 100vw', alt: '' }) || `<div class="negocio__sinfoto">${icono(so.icono, 'ico ico--grande')}</div>`}</div>
-      <div class="negocio__texto"><h2 class="negocio__nombre">${icono(so.icono)}${esc(sectorPorId.get(so.sector).nombre)}</h2><p>${esc(so.bajada)}</p><span class="negocio__mas">${contar(serviciosDeSector(so.sector).length, 'servicio', 'servicios')}</span></div>
-    </a></li>`,
-    ).join('\n    ')}
-  </ul>
+  <p class="seccion__bajada">Elige el tuyo: verás los problemas que resolvemos en ese tipo de negocio, con qué, y por dónde empezar.</p>
+  ${indiceNegocios(prefijo, 'h2', { conBajada: true })}
 </main>
 ${bandaPreguntanos(prefijo)}`,
   });
@@ -620,10 +614,10 @@ function paginaServicios() {
   ${migas(prefijo, [['Servicios', null]])}
   <div class="catalogo__cabeza">
     <h1 class="display pagina-simple__titulo">Todos los servicios</h1>
-    <p class="seccion__bajada">${SERVICIOS.length} servicios. Busca con tus palabras o filtra por tu tipo de negocio; si no está, pregúntanos.</p>
+    <p class="seccion__bajada">${SERVICIOS.length} servicios. Busca con tus palabras o filtra por tu tipo de negocio; si no está, pregúntanos. Se cotizan según tu negocio, salvo los que muestran precio.</p>
   </div>
   <form class="filtros" id="filtros" role="search" aria-label="Buscar y filtrar servicios">
-    <div class="filtros__buscar">${icono('magnifying-glass')}<label class="sr" for="filtro-q">Buscar</label><input id="filtro-q" name="q" type="search" placeholder="Busca con tus palabras: inventario, cámara, pedir desde la mesa…" autocomplete="off" /></div>
+    <div class="filtros__buscar">${icono('magnifying-glass')}<label class="sr" for="filtro-q">Buscar</label><input id="filtro-q" name="q" type="search" enterkeyhint="search" placeholder="Busca con tus palabras: inventario, cámara, pedir desde la mesa…" autocomplete="off" /></div>
     <fieldset class="filtros__grupo">
       <legend>Tu negocio</legend>
       <div class="filtros__opciones">
@@ -704,7 +698,7 @@ function paginaServicio(s) {
   const so = solucionPorSector.get(s.sectores[0]);
   const relacionados = SERVICIOS.filter((x) => x.id !== s.id && x.sectores.some((y) => s.sectores.includes(y)) && x.tipos.some((y) => s.tipos.includes(y))).slice(0, 3);
   const d = s.demo ? demoPorClave.get(claveDeDemo(s.demo)) : null;
-  const opcionesFoto = { clase: 'ficha-heroe__foto', sizes: '(min-width: 1000px) 40vw, 100vw', alt: '' };
+  const opcionesFoto = { clase: 'ficha-heroe__foto', sizes: '(min-width: 1000px) 40vw, 100vw', alt: '', carga: 'eager', prioridad: true };
   const visual = d && capturaDemo(d, prefijo) ? marcoDispositivo('portatil', capturaDemo(d, prefijo)) : foto(so?.foto, prefijo, opcionesFoto) || foto(t.foto, prefijo, opcionesFoto);
   return documento({
     titulo: `${s.nombre} · alphateklab`,

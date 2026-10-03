@@ -90,6 +90,12 @@ hamburguesa?.addEventListener('click', () => {
   hamburguesa.setAttribute('aria-label', abrir ? 'Cerrar el menú' : 'Abrir el menú');
   menuMovil.hidden = !abrir;
   document.body.classList.toggle('menu-abierto', abrir);
+  // con el menú abierto, la página de atrás no recibe el foco del teclado ni los toques
+  for (const el of document.querySelectorAll('main, footer')) el.inert = abrir;
+});
+// un enlace del menú (también los que van a una sección de la misma página) lo cierra
+menuMovil?.addEventListener('click', (e) => {
+  if (e.target.closest('a') && hamburguesa.getAttribute('aria-expanded') === 'true') hamburguesa.click();
 });
 
 // ── buscador ──

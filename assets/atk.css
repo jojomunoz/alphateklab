@@ -6,7 +6,7 @@
 @font-face {
   font-family: "Manrope";
   font-style: normal;
-  font-weight: 600 800;
+  font-weight: 400 800;
   font-display: swap;
   src: url("fuentes/manrope-latin.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -14,7 +14,7 @@
 @font-face {
   font-family: "Manrope";
   font-style: normal;
-  font-weight: 600 800;
+  font-weight: 400 800;
   font-display: swap;
   src: url("fuentes/manrope-latin-ext.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
@@ -22,7 +22,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-weight: 400 600;
+  font-weight: 400 800;
   font-display: swap;
   src: url("fuentes/inter-latin.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -30,7 +30,7 @@
 @font-face {
   font-family: "Inter";
   font-style: normal;
-  font-weight: 400 600;
+  font-weight: 400 800;
   font-display: swap;
   src: url("fuentes/inter-latin-ext.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
@@ -50,6 +50,7 @@
   --senal-suave: #fbecc9;
   --sobre-senal: #202729;
   --acento: #176b64;
+  --petroleo-hondo: #0f2c29; /* superficie de marca: el petróleo del logo, oscuro */
   --apoyo: #dce9e5;
   --foco: #176b64;
   --enlace: #176b64;
@@ -71,8 +72,9 @@
   --t-l: 1.25rem;
   --t-xl: 1.5625rem;
   --t-2xl: 2rem;
-  --t-3xl: clamp(2.2rem, 4.6vw, 3.25rem);
-  --t-4xl: clamp(2.6rem, 6.4vw, 4.5rem);
+  --t-3xl: clamp(1.875rem, 3.2vw, 2.5rem); /* títulos de sección: 30 → 40 px */
+  --t-sub: clamp(1.25rem, 1.8vw, 1.625rem); /* subtítulos y h3 de bloque: 20 → 26 px */
+  --t-4xl: clamp(2.5rem, 4.2vw, 3.4rem); /* titular de portada: 40 → 54 px (los títulos de sección llegan a 40) */
 
   /* espacio base 4 px */
   --e-1: 4px;
@@ -189,6 +191,12 @@ h4 {
   text-wrap: balance;
   font-weight: 700;
   letter-spacing: -0.01em;
+  /* Manrope deja poco aire entre palabras («Mapa demesas» a 17 px): un poco más */
+  word-spacing: 0.06em;
+}
+h3,
+h4 {
+  letter-spacing: 0;
 }
 
 .display {
@@ -196,6 +204,7 @@ h4 {
   font-weight: 800;
   letter-spacing: -0.025em;
   line-height: 1.04;
+  word-spacing: 0.04em;
 }
 
 p {
@@ -294,7 +303,7 @@ kbd {
   min-height: 46px;
   padding: 0.7em 1.15em;
   border: 1px solid var(--b-fondo);
-  border-radius: var(--radio);
+  border-radius: var(--r-control, 8px);
   background: var(--b-fondo);
   color: var(--b-texto);
   font: inherit;
@@ -440,7 +449,7 @@ kbd {
   padding: var(--e-3) var(--e-4);
   background: var(--senal-suave);
   border: 1px solid var(--linea-fuerte);
-  border-radius: var(--radio);
+  border-radius: var(--r-control, 8px);
   font-size: var(--t-s);
   color: var(--tinta);
 }
