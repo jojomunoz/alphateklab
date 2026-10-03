@@ -164,3 +164,8 @@ export const EQUIVALENCIAS = [
 
 // Relleno propio de cómo se escribe aquí («buco», «rato», «xopa»), además de las palabras vacías de js/buscador.mjs.
 export const VACIAS = 'buco rantan pocoton rato ratito toca chuleta chuzo ayala xopa ofi fren mopri compa bro loco nitido priti vaina vainas pilla ahorita chevere osea porfa porfavor xfa plis pls favor ok oki okey dale ya jaja jajaja jeje xd sq bn aprox etc grax demasiao hola buenas saludos gracias oye mira fijate imaginate bueno pues entonces digamos este verdad cierto cosa cosas tema asunto problema problemas quiero quisiera queremos necesito necesitamos busco tengo tenemos hacer puedo podemos podria gustaria saber creo ayudar mucho mucha muchos muchas demasiado demasiados bastante poco poca pocos pocas tanto tantos monton varios varias'.split(' ');
+
+// Palabras de dos sentidos: «contador» es quien lleva la contabilidad y también el contador de personas; «caja», la
+// registradora y la de cartón. Si lo único que una búsqueda sin resultados tiene en común con el catálogo es una de
+// estas, no se ofrece «lo más parecido» (le ofrecía el contador de personas a quien buscaba un contador).
+export const AMBIGUAS = 'contador contadora contadores caja cajas cuenta cuentas mesa mesas pantalla pantallas red redes reloj relojes plano planos'.split(' ');

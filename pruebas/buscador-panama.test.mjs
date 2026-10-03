@@ -3,7 +3,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { SECTORES, TIPOS, SERVICIOS } from '../datos/catalogo.mjs';
-import { PALABRAS, PALABRAS_NEGOCIO, EQUIVALENCIAS, VACIAS } from '../datos/busqueda.mjs';
+import { PALABRAS, PALABRAS_NEGOCIO, EQUIVALENCIAS, VACIAS, AMBIGUAS } from '../datos/busqueda.mjs';
 import { SITUACIONES } from '../datos/situaciones.mjs';
 import { SOLUCIONES } from '../datos/soluciones.mjs';
 import { DEMOS } from '../datos/demos.mjs';
@@ -12,7 +12,7 @@ import { FICHAS } from '../datos/fichas.mjs';
 import { construirIndice } from '../js/indice.mjs';
 import { prepararIndice, buscar } from '../js/buscador.mjs';
 
-const indice = prepararIndice(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO, GUIAS, FICHAS, SITUACIONES, EQUIVALENCIAS, VACIAS }));
+const indice = prepararIndice(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO, GUIAS, FICHAS, SITUACIONES, EQUIVALENCIAS, VACIAS, AMBIGUAS }));
 const ids = (q, o) => buscar(indice, q, o).map((r) => r.id).join(',');
 
 test('cada servicio tiene frases de situación y ninguna repite el nombre del servicio tal cual', () => {

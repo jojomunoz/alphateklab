@@ -10,7 +10,7 @@ import { SECTORES, TIPOS, SERVICIOS } from '../datos/catalogo.mjs';
 import { DEMOS } from '../datos/demos.mjs';
 import { PAQUETES, ESCALONES } from '../datos/paquetes.mjs';
 import { SOLUCIONES } from '../datos/soluciones.mjs';
-import { PALABRAS, PALABRAS_NEGOCIO, EQUIVALENCIAS, VACIAS } from '../datos/busqueda.mjs';
+import { PALABRAS, PALABRAS_NEGOCIO, EQUIVALENCIAS, VACIAS, AMBIGUAS } from '../datos/busqueda.mjs';
 import { SITUACIONES } from '../datos/situaciones.mjs';
 import { FICHAS } from '../datos/fichas.mjs';
 import { GUIAS } from '../datos/guias.mjs';
@@ -212,19 +212,19 @@ function pie(prefijo) {
 </footer>`;
 }
 
-// El recurso de la marca: el cuadrado ámbar del logo como punto final de los titulares que afirman algo (no en los que
-// preguntan). Se aplica al HTML ya armado para que sea igual en todas las páginas.
+// El recurso de la marca: el cuadrado ámbar del logo como punto final del titular principal (no en los que preguntan).
+// Estuvo también en los títulos de sección y dos revisiones lo vieron como tic (6 de 9 títulos): ahora solo el H1.
+// Se aplica al HTML ya armado para que sea igual en todas las páginas.
 const MODULO = '<span class="modulo" aria-hidden="true"></span>';
 function conModulo(html) {
   return html
-    .replace(/(<h1 [^>]*class="(?![^"]*ficha-heroe)[^"]*heroe__titulo[^"]*"[^>]*>)([^<]*[^?<\s])(<\/h1>)/, (_, a, t, c) => `${a}${t.replace(/\.$/, '')}${MODULO}${c}`)
-    .replace(/(<h2 [^>]*class="(?![^"]*--chico)[^"]*seccion__titulo[^"]*"[^>]*>)([^<]*[^?<\s])(<\/h2>)/g, (_, a, t, c) => `${a}${t.replace(/\.$/, '')}${MODULO}${c}`);
+    .replace(/(<h1 [^>]*class="(?![^"]*ficha-heroe)[^"]*heroe__titulo[^"]*"[^>]*>)([^<]*[^?<\s])(<\/h1>)/, (_, a, t, c) => `${a}${t.replace(/\.$/, '')}${MODULO}${c}`);
 }
 
 // Versión por contenido de CSS, JS y del índice del buscador: GitHub Pages deja guardar 10 minutos (max-age=600) y,
 // sin versión en la dirección, un cambio publicado podía tardar eso en verse. El mapa de importación versiona también
 // los módulos que se importan entre sí (sitio.js → buscador.mjs…).
-const INDICE_JSON = JSON.stringify(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO, GUIAS, FICHAS, SITUACIONES, EQUIVALENCIAS, VACIAS }));
+const INDICE_JSON = JSON.stringify(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO, GUIAS, FICHAS, SITUACIONES, EQUIVALENCIAS, VACIAS, AMBIGUAS }));
 const huella = (contenido) => createHash('sha1').update(contenido).digest('hex').slice(0, 10);
 const HUELLAS = Object.fromEntries(
   [...readdirSync(join(RAIZ, 'js')).filter((f) => /\.m?js$/.test(f)).map((f) => `js/${f}`), 'assets/atk.css', 'assets/sitio.css'].map((r) => [r, huella(readFileSync(join(RAIZ, r)))]),
@@ -396,17 +396,17 @@ const mayuscula = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 // restaurantes. Comparado a ciegas con unas pestañas por negocio y con el video: ganó con los dos jueces.
 const AVISOS = [
   { servicio: 'C01', icono: 'storefront', quien: 'Tienda', texto: '214 personas hoy, 18 % más que el sábado pasado.' },
-  { servicio: 'S01', icono: 'calendar-check', quien: 'Clínica', texto: 'La paciente de mañana a las 10:30 a. m. confirmó su cita.' },
   { servicio: 'T07', icono: 'credit-card', quien: 'Facturación', texto: 'La factura 0001-0245 fue autorizada por la DGI.' },
+  { servicio: 'E01', icono: 'graduation-cap', quien: 'Colegio', texto: '12 familias ya pagaron la mensualidad con Yappy.' },
+  { servicio: 'S01', icono: 'calendar-check', quien: 'Clínica', texto: 'La paciente de mañana a las 10:30 a. m. confirmó su cita.' },
   { servicio: 'R02', icono: 'fork-knife', quien: 'Restaurante', texto: 'Mesa 7 pidió 2 hojaldras y una chicha de saril. B/. 6.50' },
   { servicio: 'R10', icono: 'thermometer-simple', quien: 'Cocina', texto: 'La nevera va en 8.9 °C y sube. El límite es 5 °C.' },
   { servicio: 'H01', icono: 'bed', quien: 'Cabañas', texto: 'Cabaña 2: reserva directa, con depósito por Yappy.' },
-  { servicio: 'E01', icono: 'graduation-cap', quien: 'Colegio', texto: '12 familias ya pagaron la mensualidad con Yappy.' },
   { servicio: 'I02', icono: 'car', quien: 'Reparto', texto: 'El camión 3 lleva 25 minutos detenido fuera de su ruta.' },
 ];
 // hora de cada aviso: fija (no envejece al bajar en la pila); el de arriba es el más reciente
 const HORAS_AVISOS = ['10:42', '10:38', '10:31', '10:25'];
-const sinCorte = (t) => t.replace(/(\d) (a\. m\.|p\. m\.|°C|%)/g, '$1 $2').replace(/a\. m\./g, 'a. m.').replace(/p\. m\./g, 'p. m.');
+const sinCorte = (t) => t.replace(/(\d) (a\. m\.|p\. m\.|°C|%)/g, '$1\u00a0$2').replace(/a\. m\./g, 'a.\u00a0m.').replace(/p\. m\./g, 'p.\u00a0m.').replace(/B\/\. /g, 'B/.\u00a0');
 // El video de la demo de mesa (herramientas/video-producto.mjs): el teléfono pide y el salón recibe. AV1 para quien lo
 // decodifica y H.264 para el resto; el póster es su primer cuadro.
 const hayVideoMesa = () => existe('assets/producto/video-codecs.json') && ['mesa-pedido-telefono', 'mesa-pedido-salon'].every((v) => ['av1.mp4', 'mp4', 'webp'].every((x) => existe(`assets/producto/${v}.${x}`)));
@@ -452,7 +452,7 @@ function paginaInicio() {
   <div class="envoltura heroe__fila">
     <div class="heroe__texto">
       <h1 id="heroe-titulo" class="display heroe__titulo">Hacemos la tecnología de tu negocio y la instalamos en tu local.</h1>
-      <p class="heroe__bajada">Software, apps e inteligencia artificial a la medida de tu negocio, y equipos como cámaras, sensores, pantallas y QR.</p>
+      <p class="heroe__bajada">Software, apps e inteligencia artificial para negocios de Panamá, y los equipos que instalamos en tu local: cámaras, sensores, pantallas y QR.</p>
       <form class="heroe__buscar" role="search" data-buscar-en-linea action="${prefijo}servicios/">
         ${icono('magnifying-glass')}
         <label class="sr" for="heroe-campo">¿Qué necesitas?</label>

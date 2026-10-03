@@ -100,7 +100,7 @@ const FUERTES = ['nombre', 'corto', 'palabras', 'problemas', 'situaciones'];
 // datos: lo que escribe herramientas/generar.mjs en assets/indice.json ({ equivalencias, vacias, entradas }) o, como
 // antes, la lista de entradas sola. Devuelve la lista con las equivalencias y el relleno colgados de ella.
 export function prepararIndice(datos) {
-  const { entradas, equivalencias = [], vacias = [] } = Array.isArray(datos) ? { entradas: datos } : datos;
+  const { entradas, equivalencias = [], vacias = [], ambiguas = [] } = Array.isArray(datos) ? { entradas: datos } : datos;
   const lista = entradas.map((e) => ({
     ...e,
     _fichas: Object.fromEntries(Object.entries(e.campos).map(([campo, texto]) => [campo, [...new Set(fichas(texto))].map((t) => [t, fonetica(t)])])),
@@ -114,6 +114,7 @@ export function prepararIndice(datos) {
     (normalizar(dice).includes(' ') || !vocabulario.has(normalizar(dice))) && fichas(significa).some((t) => vocabulario.has(t));
   lista.equivalencias = prepararEquivalencias(equivalencias.filter(util));
   lista.vacias = new Set(vacias.map(normalizar));
+  lista.ambiguas = new Set(ambiguas.map(normalizar));
   return lista;
 }
 
@@ -149,18 +150,23 @@ const PESO_COMUN = 0.5;
 // rareza[i]: cuánto distingue la palabra i, de 0 (aparece en todas las entradas) a 1 (en una sola). Una palabra
 // común («equipo», «clientes») pesa menos que una que solo dice una cosa («imprimir», «yappy»): sin esto, «imprimir
 // camisetas para mi equipo» salía como firma electrónica porque sus frases dicen «imprimir» y «equipo».
-function puntuar(m, conocidas, rareza) {
+function puntuar(m, conocidas, rareza, ambigua = []) {
   let total = 0;
   let encontradas = 0;
   let fuertes = 0;
+  let claras = 0;
   const n = conocidas.reduce((a, c) => a + (c ? 1 : PESO_DESCONOCIDA), 0);
   m.forEach(([mejor, campo], i) => {
     if (!mejor || !conocidas[i]) return;
     encontradas++;
+    if (!ambigua[i]) claras++;
     total += mejor * (PESO_COMUN + (1 - PESO_COMUN) * rareza[i]);
     if (FUERTES.includes(campo)) fuertes++;
   });
   if (!encontradas) return 0;
+  // una palabra de dos sentidos («pantalla», «red», «caja») sola no sostiene un resultado si la persona escribió más:
+  // «pantalla rota del celular» no es «Turnos en pantalla», ni «red de pesca» es la red wifi
+  if (m.length > 1 && !claras) return 0;
   // si parte de la frase no se reconoce, solo se responde cuando lo que sí coincide es central en la entrada (nombre,
   // palabras de búsqueda o problemas), no una mención de pasada en la descripción: «imprimir camisetas» no es soporte
   // técnico aunque su ficha diga «la impresora no imprime»
@@ -195,8 +201,9 @@ export function buscar(indice, texto, { limite = 8, prefijo = false, minimo } = 
   const df = consulta.map((_, i) => filas.filter((f) => f.m[i][0] > 0).length);
   const conocidas = df.map((d) => d > 0);
   const rareza = df.map((d) => (d ? Math.log(N / d) / Math.log(N) : 0));
+  const ambigua = palabras.map((q) => Boolean(indice.ambiguas?.has(q)));
   return filas
-    .map(({ e, m }) => ({ e, puntos: puntuar(m, conocidas, rareza) * (e.tipo === 'servicio' ? 1 : 0.9) }))
+    .map(({ e, m }) => ({ e, puntos: puntuar(m, conocidas, rareza, ambigua) * (e.tipo === 'servicio' ? 1 : 0.9) }))
     .filter((x) => x.puntos >= minimo)
     .sort((a, b) => b.puntos - a.puntos || a.e.titulo.localeCompare(b.e.titulo))
     .slice(0, limite)

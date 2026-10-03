@@ -320,6 +320,18 @@ try {
     }
   });
 
+  await paso('una palabra de dos sentidos sola no trae «lo más parecido»: «red de pesca» no es la red wifi', async () => {
+    const c10 = await b.newContext({ viewport: { width: 1280, height: 800 } });
+    const t = await c10.newPage();
+    await t.goto(BASE, { waitUntil: 'load' });
+    await t.keyboard.press('/');
+    await t.keyboard.type('red de pesca para el bote', { delay: 30 });
+    await t.waitForSelector('.buscador .sin-resultados', { timeout: 4000 });
+    const cerca = await t.$$eval('.buscador .sin-resultados__cerca', (xs) => xs.map((x) => x.textContent));
+    await c10.close();
+    assert.equal(cerca.length, 0, `ofreció: ${cerca.join(' | ')}`);
+  });
+
   await paso('Pregúntanos no muestra códigos internos en la lista', async () => {
     await p.goto(`${BASE}cotizar/?servicio=R02`, { waitUntil: 'networkidle' });
     const texto = await p.$eval('#cot-elegidos', (r) => r.innerText);

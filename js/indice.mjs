@@ -3,7 +3,7 @@
 // eso significa en el catálogo, y el relleno que no sirve para buscar; viajan en el índice porque el buscador corre en
 // el navegador.
 
-export function construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES = [], DEMOS = [], PALABRAS_NEGOCIO = {}, GUIAS = [], FICHAS = {}, SITUACIONES = {}, EQUIVALENCIAS = [], VACIAS = [] }) {
+export function construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES = [], DEMOS = [], PALABRAS_NEGOCIO = {}, GUIAS = [], FICHAS = {}, SITUACIONES = {}, EQUIVALENCIAS = [], VACIAS = [], AMBIGUAS = [] }) {
   // Cada servicio hereda los problemas (dichos como los dice el cliente) de las páginas de negocio que lo enlazan.
   const problemasDe = {};
   for (const so of SOLUCIONES) for (const p of so.problemas) for (const id of p.servicios) (problemasDe[id] ||= []).push(p.problema);
@@ -71,5 +71,5 @@ export function construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCION
     etiqueta: 'Guía',
     campos: { nombre: g.titulo, corto: 'guia', palabras: '', para: g.bajada, incluye: g.secciones.map((x) => x.titulo).join(' ') },
   }));
-  return { equivalencias: EQUIVALENCIAS, vacias: VACIAS, entradas: [...servicios, ...soluciones, ...demos, ...guias] };
+  return { equivalencias: EQUIVALENCIAS, vacias: VACIAS, ambiguas: AMBIGUAS, entradas: [...servicios, ...soluciones, ...demos, ...guias] };
 }

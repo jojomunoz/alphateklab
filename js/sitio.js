@@ -1,5 +1,5 @@
 // Comportamiento común a todas las páginas: menú, buscador, «Pregúntanos» y la lista de la cotización.
-import { buscar, mensajePregunta, resaltar, cargarIndice as descargarIndice } from './buscador.mjs';
+import { buscar, mensajePregunta, resaltar, normalizar, fichas, cargarIndice as descargarIndice } from './buscador.mjs';
 import { enlaceWhatsApp } from './nucleo.mjs';
 import { leerCotizacion, guardarCotizacion, alternarEnCotizacion, agregarVarios } from './cotizacion.mjs';
 
@@ -162,11 +162,14 @@ function itemPreguntar(consulta, i) {
 // bajo (entre 3 y el mínimo de frase), y si no hay nada, palabra por palabra.
 function parecidos(consulta) {
   if (!indice) return [];
-  const debiles = buscar(indice, consulta, { limite: 3, minimo: 3 }).filter((r) => r.tipo === 'servicio');
+  // sin las palabras de dos sentidos («contador», «caja»): si no queda nada, no hay nada parecido que ofrecer
+  const sinAmbiguas = consulta.split(/\s+/).filter((w) => !indice.ambiguas?.has(normalizar(w))).join(' ');
+  if (!fichas(sinAmbiguas, indice.vacias).length) return [];
+  const debiles = buscar(indice, sinAmbiguas, { limite: 3, minimo: 3 }).filter((r) => r.tipo === 'servicio');
   if (debiles.length) return debiles;
   const vistos = new Set();
   const salida = [];
-  for (const palabra of consulta.split(/\s+/).filter((x) => x.length > 3)) {
+  for (const palabra of sinAmbiguas.split(/\s+/).filter((x) => x.length > 3)) {
     for (const r of buscar(indice, palabra, { limite: 2 })) {
       if (r.tipo !== 'servicio' || vistos.has(r.id)) continue;
       vistos.add(r.id);

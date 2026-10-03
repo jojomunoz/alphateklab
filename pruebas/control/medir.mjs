@@ -3,7 +3,7 @@
 // una por una solo de la mitad «desarrollo» (ver la regla dentro del JSON). Uso: node pruebas/control/medir.mjs
 import { readFileSync } from 'node:fs';
 import { SECTORES, TIPOS, SERVICIOS } from '../../datos/catalogo.mjs';
-import { PALABRAS, PALABRAS_NEGOCIO, EQUIVALENCIAS, VACIAS } from '../../datos/busqueda.mjs';
+import { PALABRAS, PALABRAS_NEGOCIO, EQUIVALENCIAS, VACIAS, AMBIGUAS } from '../../datos/busqueda.mjs';
 import { SITUACIONES } from '../../datos/situaciones.mjs';
 import { SOLUCIONES } from '../../datos/soluciones.mjs';
 import { DEMOS } from '../../datos/demos.mjs';
@@ -12,7 +12,7 @@ import { FICHAS } from '../../datos/fichas.mjs';
 import { construirIndice } from '../../js/indice.mjs';
 import { prepararIndice, buscar } from '../../js/buscador.mjs';
 
-const indice = prepararIndice(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO, GUIAS, FICHAS, SITUACIONES, EQUIVALENCIAS, VACIAS }));
+const indice = prepararIndice(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO, GUIAS, FICHAS, SITUACIONES, EQUIVALENCIAS, VACIAS, AMBIGUAS }));
 const { frases } = JSON.parse(readFileSync(new URL('./bateria.json', import.meta.url), 'utf8'));
 
 export function medir(mitad) {
