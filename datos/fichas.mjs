@@ -1,6 +1,503 @@
 // Detalle de cada servicio (cómo funciona, qué necesitas, qué no incluye, preguntas, ejemplo).
 // Redactado por agentes con los datos del catálogo y revisado por otro agente; se junta con herramientas/juntar-fichas.mjs.
 export const FICHAS = {
+  C01: {
+    "como": [
+      {
+        "titulo": "Visita a la puerta",
+        "texto": "Vamos al local a ver la entrada: el ancho, la altura del techo y si hay toma eléctrica cerca. De eso depende si va una cámara sobre la puerta o un sensor en el techo."
+      },
+      {
+        "titulo": "Instalación y línea de conteo",
+        "texto": "Montamos el equipo y marcamos la línea que la gente cruza al entrar y al salir. Se prueba contando a mano un rato y comparando con lo que marca el equipo."
+      },
+      {
+        "titulo": "Aforo y cruce con la caja",
+        "texto": "Fijas el máximo de personas adentro para el aviso de aforo. Con el número de ventas por hora de tu caja sale cuántos de los que entraron compraron."
+      },
+      {
+        "titulo": "El reporte del día",
+        "texto": "Ves en el teléfono o la computadora cuánta gente entró hoy, por hora, y la comparas con la semana pasada. Si se llena, te llega el aviso."
+      }
+    ],
+    "necesitas": [
+      "Una toma eléctrica cerca de la puerta e internet en el local",
+      "El reporte de ventas por hora de tu caja, para sacar cuántos compraron",
+      "El máximo de personas que aceptas adentro, si quieres el aviso de aforo"
+    ],
+    "no_incluye": [
+      "El sistema de caja: se usan las ventas del que ya tienes",
+      "Obras eléctricas si no hay toma cerca de la puerta",
+      "Reconocer quién es cada persona: el equipo cuenta cruces, sin nombres"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Cuenta dos veces a la misma persona?",
+        "r": "Cuenta cada vez que alguien cruza la puerta. Quien sale y vuelve a entrar suma dos, y tus empleados también cruzan; cómo separarlos depende de tu local y se ve en la visita."
+      },
+      {
+        "p": "¿Puedo verlo funcionar antes?",
+        "r": "Sí. En el laboratorio del sitio hay una demo que cuenta personas con la cámara de tu computadora, sin que el video salga de tu equipo."
+      },
+      {
+        "p": "¿Cuánto cuesta?",
+        "r": "Depende de cuántas puertas tengas y de si va cámara o sensor de techo. La cifra va cerrada en la propuesta."
+      }
+    ],
+    "ejemplo": "Ejemplo: una zapatería de David con una sola entrada pone el contador sobre la puerta. Un sábado ve que entre las 3 y las 5 de la tarde entraron muchas más personas que las ventas que marcó la caja, y decide poner una vendedora más en ese horario."
+  },
+  C02: {
+    "como": [
+      {
+        "titulo": "Recorrido por el local",
+        "texto": "Caminamos el local contigo y marcamos los pasillos, exhibidores y zonas que te interesa medir. Revisamos si tus cámaras actuales ven esas zonas desde arriba."
+      },
+      {
+        "titulo": "Cámaras de techo",
+        "texto": "Usamos las cámaras que sirvan y ponemos las que falten para cubrir el piso de venta. Cada zona queda con su nombre en el sistema."
+      },
+      {
+        "titulo": "Primer mapa",
+        "texto": "Con los datos que se van juntando ves por hora dónde se detiene la gente, cuánto tiempo y qué pasillos casi nadie recorre."
+      },
+      {
+        "titulo": "Mover y comparar",
+        "texto": "Cuando cambias un exhibidor de lugar, anotas la fecha y comparas el mapa de antes con el de después."
+      }
+    ],
+    "necesitas": [
+      "Internet en el local",
+      "Acceso a tus cámaras actuales, si quieres que revisemos si sirven",
+      "Anotar la fecha de cada cambio de exhibidor, para comparar"
+    ],
+    "no_incluye": [
+      "Decidir dónde va cada producto: el mapa muestra el recorrido y la decisión es tuya",
+      "Saber quién es cada persona: el mapa mide presencia por zona",
+      "Cuántos de los que entran compran: eso lo da el contador de personas en la entrada"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Sirven las cámaras que ya tengo?",
+        "r": "Depende de dónde están y de si se pueden conectar por la red. Las revisamos en la visita; las que sirven se usan y solo se compran las que falten."
+      },
+      {
+        "p": "¿Mis clientes van a saber que los miden?",
+        "r": "Deben saberlo. La Ley 81 de 2019 protege los datos personales y la ANTAI ha tratado el video de vigilancia como dato sensible, así que el local lleva un aviso visible de que hay cámaras y para qué se usan."
+      },
+      {
+        "p": "¿Y si mi local es pequeño?",
+        "r": "Con un solo pasillo el mapa dice poco. Te lo decimos en la conversación antes de proponerte nada."
+      }
+    ],
+    "ejemplo": "Ejemplo: un almacén de ropa en Santiago, con cuatro pasillos, ve en el mapa que casi nadie llega al fondo donde están los jeans. Pasa los jeans al frente y compara en el reporte el antes y el después."
+  },
+  C03: {
+    "como": [
+      {
+        "titulo": "Visita a las cajas",
+        "texto": "Vemos dónde se forma la fila y desde dónde una cámara la ve completa. Si ya hay una cámara que la cubre, se usa."
+      },
+      {
+        "titulo": "Marcar la zona de fila",
+        "texto": "En la imagen de la cámara se marca el área de la fila, sin tomar pasillos ni vitrinas. Tú decides con cuántas personas esperando salta el aviso."
+      },
+      {
+        "titulo": "Quién recibe el aviso",
+        "texto": "Eliges si el aviso llega al WhatsApp del encargado, a una pantalla en el local o a los dos. Se prueba con gente del local haciendo fila."
+      },
+      {
+        "titulo": "En el día a día",
+        "texto": "Cuando la fila pasa del número, el encargado recibe el aviso y abre otra caja. Al final de la semana ves los tiempos de espera por hora."
+      }
+    ],
+    "necesitas": [
+      "Internet en el local",
+      "El número de personas en fila que para ti ya es demasiado",
+      "Alguien que reciba el aviso y pueda abrir otra caja"
+    ],
+    "no_incluye": [
+      "El costo de los avisos por WhatsApp: Meta lo cobra por mensaje, unos US$0,011 cada uno en Panamá según su tarifa de octubre de 2026; el aviso en pantalla no tiene ese costo",
+      "Personal para abrir la otra caja: el aviso solo dice cuándo hace falta",
+      "La pantalla del local, si eliges ese aviso y no tienes una"
+    ],
+    "preguntas": [
+      {
+        "p": "¿La cámara va a contar a los que miran la vitrina junto a la caja?",
+        "r": "Cuenta a quien esté dentro de la zona marcada. Por eso la zona se ajusta en la visita para que no tome pasillos ni vitrinas."
+      },
+      {
+        "p": "¿Me van a llegar avisos todo el día?",
+        "r": "Solo cuando la fila pasa del número que fijaste. Si llegan demasiados, se sube el número."
+      },
+      {
+        "p": "¿Necesito una cámara nueva?",
+        "r": "Solo si ninguna de las tuyas ve la fila completa. Eso se ve en la visita."
+      }
+    ],
+    "ejemplo": "Ejemplo: en una farmacia de La Chorrera con tres cajas y una sola abierta al mediodía, la cámara avisa al WhatsApp del encargado cuando hay más de cinco personas esperando. El encargado abre la segunda caja y el reporte de la semana muestra a qué hora se repite la fila."
+  },
+  C04: {
+    "como": [
+      {
+        "titulo": "Ver tu mercancía",
+        "texto": "Vemos tu mercancía y cómo la cuentas hoy. Si es ropa, la vía es una etiqueta RFID por pieza; si son abarrotes, el teléfono lee las etiquetas del estante."
+      },
+      {
+        "titulo": "Etiquetas y lector",
+        "texto": "Se etiqueta la mercancía, o se registran las etiquetas del estante, y se deja el lector RFID de mano o el teléfono listo para escanear."
+      },
+      {
+        "titulo": "Conexión con tu sistema",
+        "texto": "El escaneo se conecta al sistema de inventario. Lo que cuentas se compara contra lo que dice tu sistema y sale la lista de diferencias."
+      },
+      {
+        "titulo": "Contar en un recorrido",
+        "texto": "Para contar, alguien recorre la tienda con el lector o el teléfono. Al terminar ves qué falta, qué sobra y dónde."
+      }
+    ],
+    "necesitas": [
+      "Tu lista de productos con su código y las existencias de tu sistema actual",
+      "Que la mercancía nueva entre con su etiqueta, si usas RFID",
+      "Internet o red en la tienda para subir cada conteo"
+    ],
+    "no_incluye": [
+      "Las etiquetas RFID de la mercancía que llegue después: se compran con cada pedido",
+      "El punto de venta y la factura electrónica: son otros servicios",
+      "Hacer el conteo por ti: el recorrido con el lector lo hace tu personal"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Sirve para una tienda de abarrotes?",
+        "r": "Sí, por otra vía. En vez de poner una etiqueta RFID a cada producto, la cámara del teléfono lee las etiquetas del estante."
+      },
+      {
+        "p": "¿Tengo que cambiar el sistema que uso?",
+        "r": "No necesariamente. El conteo se compara contra lo que dice tu sistema. Cómo se conectan depende de tu sistema y va en la propuesta."
+      },
+      {
+        "p": "¿Quién pone las etiquetas la primera vez?",
+        "r": "Depende de cuánta mercancía tengas. En la propuesta queda quién lo hace y cuánto cuesta."
+      }
+    ],
+    "ejemplo": "Ejemplo: una tienda de ropa en Los Andes con dos pisos etiqueta cada prenda con RFID. El conteo de fin de mes se hace pasando el lector de mano por los colgadores, y el sistema muestra qué tallas faltan contra lo que dice el inventario."
+  },
+  C05: {
+    "como": [
+      {
+        "titulo": "Qué pérdidas te preocupan",
+        "texto": "Nos cuentas dónde crees que se va la mercancía o el efectivo: la caja, la bodega o la puerta de atrás. Revisamos las cámaras que ya tienes."
+      },
+      {
+        "titulo": "Cámaras y grabador",
+        "texto": "Instalamos las cámaras que falten y un grabador que analiza el video en el local. Se definen los momentos a marcar, como el cajón abierto sin venta o mercancía saliendo por atrás."
+      },
+      {
+        "titulo": "Revisión de eventos",
+        "texto": "Cada momento marcado queda con su clip de video. Lo revisas desde el teléfono o la computadora, sin ver horas de grabación."
+      },
+      {
+        "titulo": "Buscar cuando pasa algo",
+        "texto": "Si falta algo en el cierre, buscas por hora y por cámara y vas directo al momento."
+      }
+    ],
+    "necesitas": [
+      "Internet en el local y un lugar seguro para el grabador",
+      "Que tu caja registre ventas y aperturas del cajón, si quieres cruzarlas con el video",
+      "Un letrero visible de que hay cámaras y el aviso por escrito a tu personal"
+    ],
+    "no_incluye": [
+      "Alguien vigilando el video en vivo: el sistema marca los momentos y los revisas tú",
+      "Reconocer caras o identificar personas por nombre",
+      "Concluir quién se llevó algo: eso lo decides tú con el clip"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Puedo grabar a mis empleados?",
+        "r": "La Ley 81 de 2019 protege los datos personales, y la ANTAI ha tratado el video de vigilancia como dato sensible. Pon letreros visibles y avisa a tu personal por escrito; para tu reglamento interno, consulta a tu abogado."
+      },
+      {
+        "p": "¿El video sale de mi local?",
+        "r": "El análisis se hace en el grabador del local, sin mandar el video a otro servicio. Verlo desde el teléfono es opcional y tú decides quién tiene acceso."
+      },
+      {
+        "p": "¿Sirven mis cámaras actuales?",
+        "r": "Depende de su ubicación y de si se pueden conectar por la red. Las revisamos en la visita y solo se compran las que falten."
+      }
+    ],
+    "ejemplo": "Ejemplo: un minisúper de Chitré con dos cajas y una bodega atrás no cuadra el efectivo algunos cierres. Las cámaras marcan cada vez que el cajón se abre sin venta y cada salida por la puerta de la bodega fuera de la hora de carga, y el dueño revisa esos clips desde su teléfono."
+  },
+  C06: {
+    "como": [
+      {
+        "titulo": "Catálogo y envíos",
+        "texto": "Revisamos qué vendes, con qué tallas o colores, y cómo entregas: envío a domicilio, retiro en tienda o los dos."
+      },
+      {
+        "titulo": "Carga de productos",
+        "texto": "Se suben tus productos con fotos, precios, variantes y existencias. Tú revisas la tienda antes de abrirla."
+      },
+      {
+        "titulo": "Cobro de prueba",
+        "texto": "Conectamos la pasarela panameña para cobrar con tarjeta y Yappy, y hacemos una compra de prueba de punta a punta."
+      },
+      {
+        "titulo": "Pedidos del día",
+        "texto": "Cada pedido te llega por correo y por WhatsApp, y la existencia del producto baja sola. Tú preparas y entregas."
+      }
+    ],
+    "necesitas": [
+      "Tu lista de productos con precios, tallas o colores y existencias",
+      "Fotos de los productos",
+      "Una cuenta para recibir cobros a nombre de tu negocio; si no la tienes, te decimos cuál abrir",
+      "Tus reglas de entrega: zonas, cargo de envío y horario de retiro"
+    ],
+    "no_incluye": [
+      "La comisión de cada cobro, que la cobra la pasarela o el banco: Yappy Comercial, por ejemplo, cobra 1 % más ITBMS por transacción",
+      "El reparto: la tienda te pasa la dirección y quién lleva el pedido lo decides tú",
+      "La factura electrónica de cada venta: se conecta con el servicio de factura electrónica",
+      "El dominio con el nombre de tu negocio, si no tienes uno: va en el servicio de correo y dominio"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Puedo cambiar precios y productos yo mismo?",
+        "r": "Sí, desde el panel de la tienda. Te enseñamos a usarlo al entregarla."
+      },
+      {
+        "p": "Ya vendo por Instagram y WhatsApp, ¿me sirve?",
+        "r": "Sí. Pones el enlace de la tienda en tu perfil y en tus respuestas, y el cliente compra y paga sin que tengas que anotar el pedido."
+      },
+      {
+        "p": "¿Cuánto cuesta?",
+        "r": "Depende de cuántos productos tengas y de cómo entregas. La cifra va cerrada en la propuesta."
+      }
+    ],
+    "ejemplo": "Ejemplo: una tienda de artículos de cocina en Vía España con unos 300 productos abre su tienda en línea con retiro en el local y envío dentro de la ciudad. El cliente paga con Yappy, al dueño le llega el aviso al WhatsApp y la existencia baja sola."
+  },
+  C07: {
+    "como": [
+      {
+        "titulo": "Recorrido por los estantes",
+        "texto": "Vemos tus estantes, cuántos precios hay que cambiar y de dónde sale hoy tu lista de precios."
+      },
+      {
+        "titulo": "Etiquetas y antena",
+        "texto": "Ponemos las etiquetas de tinta electrónica en el borde de cada estante y la antena en el techo, que les manda los precios."
+      },
+      {
+        "titulo": "Conexión con tu lista",
+        "texto": "Cada etiqueta queda unida a su producto en tu lista de precios. Se prueba cambiando un precio en la computadora y viéndolo en el estante."
+      },
+      {
+        "titulo": "Cambiar y programar ofertas",
+        "texto": "Cambias el precio en la computadora y el estante muestra el mismo que la caja. Las ofertas del fin de semana se programan con su fecha de inicio y de fin."
+      }
+    ],
+    "necesitas": [
+      "Tu lista de precios en un sistema o archivo que se pueda conectar",
+      "Corriente cerca de donde va la antena en el techo, e internet en el local",
+      "Qué producto va en cada espacio del estante"
+    ],
+    "no_incluye": [
+      "El sistema de caja: las etiquetas toman los precios del que ya usas",
+      "Pantallas con ofertas en el local: son otro servicio",
+      "Cambiar o comprar estantes"
+    ],
+    "preguntas": [
+      {
+        "p": "¿El precio del estante puede quedar distinto al de la caja?",
+        "r": "Los dos salen de la misma lista de precios. Cómo se conecta tu caja a esa lista depende de tu sistema y va en la propuesta."
+      },
+      {
+        "p": "¿Y si se va la luz?",
+        "r": "La tinta electrónica mantiene lo que muestra sin corriente, así que el precio sigue a la vista. Los cambios llegan cuando vuelve la conexión."
+      },
+      {
+        "p": "¿Tengo que poner etiqueta electrónica en toda la tienda?",
+        "r": "No. Puedes empezar por los pasillos donde más cambian los precios y dejar papel en el resto."
+      }
+    ],
+    "ejemplo": "Ejemplo: un supermercado pequeño de Penonomé que cambia precios de granos y aceite casi cada semana pone etiquetas electrónicas en esos dos pasillos. El encargado cambia el precio en la computadora de la oficina y no tiene que imprimir ni pegar etiquetas."
+  },
+  C08: {
+    "como": [
+      {
+        "titulo": "La regla del premio",
+        "texto": "Decides cómo se gana: por visitas (la décima taza gratis) o por monto comprado, y cuántos días sin volver activan el mensaje."
+      },
+      {
+        "titulo": "Tarjeta con tu marca",
+        "texto": "Preparamos la tarjeta digital con tu logo y el QR que va en la caja para que el cliente se inscriba, con su consentimiento."
+      },
+      {
+        "titulo": "Sellos en la caja",
+        "texto": "En cada compra se lee el QR de la tarjeta del cliente y se suma el sello o los puntos. El cliente ve en su teléfono cuánto le falta."
+      },
+      {
+        "titulo": "Volver a llamar",
+        "texto": "Cuando alguien lleva el tiempo que fijaste sin volver, le llega un mensaje. Tu lista de clientes con permiso queda lista para tus promociones."
+      }
+    ],
+    "necesitas": [
+      "La regla del premio: qué se regala y cada cuánto",
+      "Tu logo y los colores de tu negocio",
+      "Que en la caja haya un teléfono o tableta para leer el QR del cliente"
+    ],
+    "no_incluye": [
+      "El costo de los mensajes por WhatsApp a clientes que no vuelven: Meta cobra por cada mensaje de promoción, unos US$0,074 en Panamá según su tarifa de octubre de 2026",
+      "Lo que regalas: el premio lo pone tu negocio",
+      "Tarjetas plásticas o de cartón impresas"
+    ],
+    "preguntas": [
+      {
+        "p": "¿El cliente tiene que bajar una app?",
+        "r": "No. La tarjeta se abre desde un enlace en su teléfono."
+      },
+      {
+        "p": "¿Puedo mandarle promociones a toda la lista?",
+        "r": "Solo a quienes dieron su permiso al inscribirse. La Ley 81 de 2019 y su reglamento les permiten oponerse a recibir promociones en cualquier momento, y la tarjeta trae esa opción."
+      },
+      {
+        "p": "¿Sirve si mis clientes vienen una vez al mes?",
+        "r": "Sí, con premios por monto en vez de por visitas. Lo vemos en la conversación según cómo compran tus clientes."
+      }
+    ],
+    "ejemplo": "Ejemplo: una cafetería de Boquete da la décima bebida gratis. Cuando un cliente que venía cada semana pasa un mes sin aparecer, le llega un mensaje con un pan de regalo en su próxima visita."
+  },
+  C09: {
+    "como": [
+      {
+        "titulo": "Visita al local",
+        "texto": "Vemos dónde está tu módem, el tamaño del local y dónde se sientan o esperan los clientes, para ubicar el punto de acceso."
+      },
+      {
+        "titulo": "Red de clientes aparte",
+        "texto": "Instalamos el punto de acceso y dejamos la red de clientes separada de la de la caja y tus equipos. Tú eliges el límite de tiempo o de velocidad por cliente."
+      },
+      {
+        "titulo": "Página de entrada",
+        "texto": "Armamos la página con tu marca donde el cliente pone su correo o su WhatsApp y acepta el aviso de privacidad."
+      },
+      {
+        "titulo": "Ver quién vuelve",
+        "texto": "El cliente se conecta como en cualquier Wi-Fi. Tú ves cuántos se registran y cuántos vuelven."
+      }
+    ],
+    "necesitas": [
+      "Internet contratado en el local",
+      "Una toma eléctrica donde va el punto de acceso",
+      "El nombre y los datos de contacto de tu negocio, que aparecen en el aviso de privacidad como responsable de los datos"
+    ],
+    "no_incluye": [
+      "El plan de internet: lo sigue pagando tu negocio a su proveedor",
+      "Puntos de acceso adicionales si uno no cubre todo el local: se cotizan aparte",
+      "Mandar promociones a la lista: eso lo hace el programa de clientes frecuentes u otra herramienta"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Mis clientes pueden entrar a la red de la caja?",
+        "r": "No. La red de clientes va separada de la de la caja y de tus equipos."
+      },
+      {
+        "p": "¿Qué pide la ley para guardar sus datos?",
+        "r": "La Ley 81 de 2019 pide un consentimiento previo, informado y que se pueda comprobar. La página de entrada muestra para qué usas los datos y guarda la aceptación de cada cliente."
+      },
+      {
+        "p": "¿Uso el módem que ya tengo?",
+        "r": "El punto de acceso se conecta a tu internet actual. Si tu plan se queda corto para los clientes, te lo decimos en la visita."
+      }
+    ],
+    "ejemplo": "Ejemplo: una heladería de Las Tablas cambia la clave del Wi-Fi escrita en la pared por una página de entrada con su logo. Cada cliente entra con su WhatsApp, tiene una hora de conexión, y la dueña ve cuántos de los que se conectaron en un mes volvieron al siguiente."
+  },
+  C10: {
+    "como": [
+      {
+        "titulo": "Elegir los productos",
+        "texto": "Vemos qué productos vale la pena mostrar en 3D y si el fabricante tiene el modelo 3D. Si no lo tiene, se arma con fotos del producto desde todos los lados."
+      },
+      {
+        "titulo": "Armar el modelo",
+        "texto": "Se hace el modelo 3D con las medidas reales del producto. Lo revisas en tu teléfono antes de publicarlo."
+      },
+      {
+        "titulo": "Ponerlo en tu página",
+        "texto": "El visor se coloca en la ficha del producto de tu página o tienda en línea, junto a las fotos que ya tienes."
+      },
+      {
+        "titulo": "El cliente en su casa",
+        "texto": "El cliente gira el producto en la pantalla y, con la cámara del teléfono, lo pone en su sala para ver cómo queda."
+      }
+    ],
+    "necesitas": [
+      "Una página o tienda en línea donde mostrarlo",
+      "El producto a mano para fotografiarlo, o el modelo 3D del fabricante",
+      "Las medidas reales de cada producto"
+    ],
+    "no_incluye": [
+      "La página o la tienda en línea: si no la tienes, es otro servicio",
+      "Lentes o equipos de realidad virtual: todo se ve con el teléfono",
+      "Videos o animaciones del producto"
+    ],
+    "preguntas": [
+      {
+        "p": "¿El cliente tiene que bajar una app?",
+        "r": "No. Se abre desde tu página en el teléfono, con Android o iPhone. En un teléfono que no permite la vista en su sala, igual puede girar el modelo."
+      },
+      {
+        "p": "¿Se ve del tamaño real?",
+        "r": "Sí, si el modelo se hace con las medidas reales del producto. Por eso te las pedimos."
+      },
+      {
+        "p": "¿Sirve para cualquier producto?",
+        "r": "Depende. Los productos brillantes, transparentes o muy finos son más difíciles de sacar de fotos; lo vemos con los tuyos antes de proponerte nada."
+      }
+    ],
+    "ejemplo": "Ejemplo: una mueblería de Arraiján pone en 3D sus cinco sofás más vendidos. Un cliente abre la ficha desde el celular, pone el sofá en su sala con la cámara y escribe para preguntar si hay en gris."
+  },
+  C11: {
+    "como": [
+      {
+        "titulo": "Tu catálogo en un enlace",
+        "texto": "Nos pasas tus productos con fotos, precios y existencias, y armamos el catálogo en un enlace que puedes compartir."
+      },
+      {
+        "titulo": "El enlace en tus redes",
+        "texto": "Pones el enlace en tu estado de WhatsApp, en tu perfil de Instagram y en tus respuestas."
+      },
+      {
+        "titulo": "El pedido llega armado",
+        "texto": "El cliente escoge productos y cantidades, y el pedido te llega al WhatsApp con todo listado y el total."
+      },
+      {
+        "titulo": "Cobrar con un enlace",
+        "texto": "Respondes con el enlace de pago y despachas cuando se confirma el cobro."
+      }
+    ],
+    "necesitas": [
+      "Un número de WhatsApp del negocio",
+      "Tus productos con fotos, precios y existencias",
+      "Una cuenta para recibir cobros a nombre de tu negocio"
+    ],
+    "no_incluye": [
+      "La comisión de cada cobro con el enlace de pago, que la cobra la pasarela o el banco",
+      "El reparto de los pedidos",
+      "Un asistente que converse solo con tus clientes: eso es el asistente de WhatsApp con IA"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Qué pasa si piden algo que ya no tengo?",
+        "r": "Lo agotado se marca en el catálogo y no se puede pedir. Si se te pasa marcarlo, lo aclaras con el cliente al confirmar el pedido."
+      },
+      {
+        "p": "¿Me cobran por cada pedido que llega?",
+        "r": "Meta no cobra por los mensajes que el cliente te escribe. Lo que se paga por cada venta es la comisión del enlace de pago; lo nuestro va cerrado en la propuesta."
+      },
+      {
+        "p": "¿Puedo actualizar precios y existencias yo?",
+        "r": "Sí, desde el teléfono o la computadora. Te enseñamos a hacerlo al entregarlo."
+      }
+    ],
+    "ejemplo": "Ejemplo: una tienda de repuestos de moto en Colón que vende sobre todo por WhatsApp comparte el enlace del catálogo en su estado. El pedido le llega con la pieza, la cantidad y el total, y el cliente paga con el enlace antes de que salga el mensajero."
+  },
   R01: {
     "como": [
       {
