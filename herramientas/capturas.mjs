@@ -15,6 +15,11 @@ const solo = process.argv[3];
 
 // Qué hacer en cada demo antes de la foto, para que se vea trabajando y no vacía.
 const PREPARAR = {
+  // reservas: la agenda de recepción con el día lleno, no la portada de la demo (que es casi todo texto)
+  reservas: async (p) => {
+    await p.goto(new URL('citas.html', p.url()).href, { waitUntil: 'load' });
+    await p.waitForTimeout(1500);
+  },
   // el recorrido 3D por dentro (no la portada con el botón «Entrar»): la escena es lo que se captura
   'recorrido-3d': async (p) => {
     await p.click('#entrar');
