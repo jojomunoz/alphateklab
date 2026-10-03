@@ -1,0 +1,453 @@
+/* alphateklab · sistema visual
+   Grafito sobre papel frío y una sola señal amarilla, la de las etiquetas de cable.
+   La señal se usa como RELLENO (etiquetas, botón principal, resaltado); nunca como color de texto
+   sobre fondo claro. Ver CLAUDE.md del repo. */
+
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url("fuentes/archivo-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url("fuentes/archivo-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  --papel: #f4f5f2;
+  --papel-2: #e9ebe6;
+  --papel-3: #dfe2dc;
+  --tinta: #15171b;
+  --tinta-2: #3b4048;
+  --tinta-3: #5a6069;
+  --linea: #c6cbc3;
+  --linea-fuerte: #9aa198;
+  --senal: #ffc72c;
+  --senal-suave: #fff1c4;
+  --sobre-senal: #15171b;
+  --foco: #1f4fd8;
+  --enlace: #1d46c4;
+  --ok: #157a3c;
+  --aviso: #a3530a;
+  --peligro: #b42318;
+  --ok-fondo: #e3f2e7;
+  --aviso-fondo: #fbeedd;
+  --peligro-fondo: #fbe6e3;
+
+  --f-texto: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; /* solo para código */
+
+  /* escala 1.25 sobre 16 px */
+  --t-xs: 0.8125rem;
+  --t-s: 0.9375rem;
+  --t-m: 1.0625rem;
+  --t-l: 1.25rem;
+  --t-xl: 1.5625rem;
+  --t-2xl: 2rem;
+  --t-3xl: clamp(2.2rem, 4.6vw, 3.25rem);
+  --t-4xl: clamp(2.6rem, 6.4vw, 4.5rem);
+
+  /* espacio base 4 px */
+  --e-1: 4px;
+  --e-2: 8px;
+  --e-3: 12px;
+  --e-4: 16px;
+  --e-5: 24px;
+  --e-6: 32px;
+  --e-7: 48px;
+  --e-8: 72px;
+  --e-9: 112px;
+
+  --radio: 3px;
+  --ancho: 1240px;
+  --medida: 64ch;
+  /* movimiento (guía sin slop §6.3): responder, estado, vista; salida más rápida que la entrada */
+  --dur-respuesta: 120ms;
+  --dur-estado: 220ms;
+  --dur-vista: 340ms;
+  --ease-salida: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-mover: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-irse: cubic-bezier(0.4, 0, 1, 1);
+  --mov-dist: 10px;
+  --mov: var(--dur-estado) var(--ease-salida);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --papel: #111316;
+    --papel-2: #191c20;
+    --papel-3: #22262b;
+    --tinta: #eef0ec;
+    --tinta-2: #c5cac3;
+    --tinta-3: #9ba29b;
+    --linea: #2f343a;
+    --linea-fuerte: #4a5058;
+    --senal-suave: #3a3218;
+    --foco: #8fb0ff;
+    --enlace: #9bb8ff;
+    --ok: #5fcf8a;
+    --aviso: #f0a35a;
+    --peligro: #ff8a7a;
+    --ok-fondo: #12301f;
+    --aviso-fondo: #33240f;
+    --peligro-fondo: #3a1714;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --papel: #111316;
+  --papel-2: #191c20;
+  --papel-3: #22262b;
+  --tinta: #eef0ec;
+  --tinta-2: #c5cac3;
+  --tinta-3: #9ba29b;
+  --linea: #2f343a;
+  --linea-fuerte: #4a5058;
+  --senal-suave: #3a3218;
+  --foco: #8fb0ff;
+  --enlace: #9bb8ff;
+  --ok: #5fcf8a;
+  --aviso: #f0a35a;
+  --peligro: #ff8a7a;
+  --ok-fondo: #12301f;
+  --aviso-fondo: #33240f;
+  --peligro-fondo: #3a1714;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--f-texto);
+  font-size: var(--t-m);
+  line-height: 1.55;
+  font-variation-settings: "wdth" 100;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  line-height: 1.08;
+  text-wrap: balance;
+  font-weight: 760;
+}
+
+.display {
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 820;
+  letter-spacing: -0.012em;
+  line-height: 1.02;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--enlace);
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--foco);
+  outline-offset: 2px;
+}
+
+.mono,
+code,
+kbd {
+  font-family: var(--f-mono);
+  font-size: 0.86em;
+  letter-spacing: 0;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.envoltura {
+  width: 100%;
+  max-width: var(--ancho);
+  margin-inline: auto;
+  padding-inline: max(16px, 4vw);
+}
+
+.saltar {
+  position: absolute;
+  left: 8px;
+  top: -60px;
+  z-index: 100;
+  background: var(--senal);
+  color: var(--sobre-senal);
+  padding: var(--e-2) var(--e-3);
+  font-weight: 700;
+}
+.saltar:focus {
+  top: 8px;
+}
+
+/* ── etiqueta de cable: rectángulo amarillo con su ojal ── */
+.etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  background: var(--senal);
+  color: var(--sobre-senal);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  font-stretch: 85%;
+  font-variation-settings: "wdth" 85;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  padding: 0.4em 0.6em 0.4em 0.5em;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.etiqueta::before {
+  content: "";
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: var(--papel);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.25);
+}
+.etiqueta--hueca {
+  background: transparent;
+  color: var(--tinta-2);
+  box-shadow: inset 0 0 0 1px var(--linea-fuerte);
+}
+.etiqueta--hueca::before {
+  background: var(--linea-fuerte);
+  box-shadow: none;
+}
+
+/* ── botones ── */
+.boton {
+  --b-fondo: var(--tinta);
+  --b-texto: var(--papel);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 46px;
+  padding: 0.7em 1.15em;
+  border: 1px solid var(--b-fondo);
+  border-radius: var(--radio);
+  background: var(--b-fondo);
+  color: var(--b-texto);
+  font: inherit;
+  font-weight: 650;
+  font-size: var(--t-s);
+  line-height: 1.1;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--mov),
+    color var(--mov),
+    border-color var(--mov),
+    transform var(--dur-respuesta) var(--ease-salida);
+}
+@media (hover: hover) and (pointer: fine) {
+  .boton:hover {
+    --b-fondo: var(--senal);
+    --b-texto: var(--sobre-senal);
+    border-color: var(--tinta);
+  }
+  .boton--senal:hover {
+    --b-fondo: var(--tinta);
+    --b-texto: var(--senal);
+  }
+  .boton--linea:hover {
+    --b-fondo: var(--papel-2);
+    --b-texto: var(--tinta);
+    border-color: var(--tinta);
+  }
+}
+.boton:active {
+  transform: scale(0.97);
+  transition-duration: var(--dur-respuesta);
+}
+.boton--senal {
+  --b-fondo: var(--senal);
+  --b-texto: var(--sobre-senal);
+  border-color: var(--tinta);
+}
+.boton--linea {
+  --b-fondo: transparent;
+  --b-texto: var(--tinta);
+  border-color: var(--linea-fuerte);
+}
+.boton[disabled],
+.boton[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── cabecera común ── */
+.cabecera {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 40;
+  background: color-mix(in srgb, var(--papel) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--linea);
+}
+.cabecera__fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-4);
+  min-height: 60px;
+}
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--tinta);
+  text-decoration: none;
+  font-weight: 830;
+  font-variation-settings: "wdth" 125;
+  font-stretch: 125%;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+.marca__lab {
+  background: var(--senal);
+  color: var(--sobre-senal);
+  padding: 0.05em 0.28em 0.08em;
+  border-radius: 2px;
+  margin-left: 1px;
+}
+.marca:hover {
+  text-decoration: none;
+}
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-1) var(--e-4);
+  font-size: var(--t-s);
+}
+.nav a {
+  color: var(--tinta-2);
+  text-decoration: none;
+  padding: var(--e-2) 0;
+  border-bottom: 2px solid transparent;
+}
+@media (max-width: 600px) {
+  .nav {
+    gap: var(--e-1) var(--e-3);
+    font-size: 0.875rem;
+  }
+  .nav .nav__opcional {
+    display: none;
+  }
+  .marca {
+    font-size: 1rem;
+  }
+}
+.nav a:hover,
+.nav a[aria-current="page"] {
+  color: var(--tinta);
+  border-bottom-color: var(--senal);
+}
+
+/* ── migas del laboratorio ── */
+.migas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+  font-size: var(--t-xs);
+  color: var(--tinta-3);
+}
+.migas a {
+  color: var(--tinta-2);
+}
+
+/* ── aviso de demostración ── */
+.aviso-demo {
+  display: flex;
+  gap: var(--e-3);
+  align-items: flex-start;
+  padding: var(--e-3) var(--e-4);
+  background: var(--senal-suave);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--radio);
+  font-size: var(--t-s);
+  color: var(--tinta);
+}
+
+/* ── pie ── */
+.pie {
+  margin-top: var(--e-9);
+  border-top: 1px solid var(--linea);
+  padding-block: var(--e-6) var(--e-7);
+  font-size: var(--t-s);
+  color: var(--tinta-2);
+}
+.pie__fila {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--e-5);
+}
+
+.sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --mov-dist: 0px;
+  }
+  .boton:active {
+    transform: none;
+  }
+}
+
+::selection {
+  background: var(--senal);
+  color: var(--sobre-senal);
+}

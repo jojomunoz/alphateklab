@@ -1,0 +1,7 @@
+# Nunca al repo público: chats, credenciales, exportaciones
+fuentes/
+*.zip
+*.env
+.env*
+node_modules/
+.DS_Store
