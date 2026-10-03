@@ -1002,4 +1002,32 @@ export const SERVICIOS = [
     incluye: ['Taller con ejemplos de tu propio negocio', 'Guía de qué datos no subir', 'Plantillas para las tareas de siempre'],
     equipo: [], precio: null, demo: null,
   },
+
+  // ── añadidos del 3-oct (3): delivery propio y pedidos automáticos por WhatsApp ──
+  {
+    id: 'R12', slug: 'app-de-delivery-propia', nombre: 'App de delivery propia, para tu restaurante o tu grupo', corto: 'App de delivery propia',
+    sectores: ['restaurantes'], tipos: ['web', 'software', 'pagos'], instala: false,
+    para: 'Una app de pedidos a domicilio como PedidosYa o Uber Eats, pero tuya: para tu restaurante, tus sucursales o un grupo de restaurantes que venden juntos, con tus motorizados y sin comisión por pedido.',
+    incluye: [
+      'App para Android y iPhone, y la misma tienda en la web',
+      'Varias sucursales o varios restaurantes en un mismo pedido, con la cuenta separada para cada uno',
+      'Zonas de entrega por barrio con su costo y tiempo',
+      'App para tus motorizados con la ruta, y seguimiento del pedido para el cliente',
+      'Cobro con Yappy y tarjeta, o en efectivo al entregar',
+    ],
+    equipo: [], precio: null, demo: null,
+  },
+  {
+    id: 'R13', slug: 'pedidos-por-whatsapp-automaticos', nombre: 'Pedidos por WhatsApp automáticos, con la comanda directo a la cocina', corto: 'Pedidos por WhatsApp a cocina',
+    sectores: ['restaurantes'], tipos: ['ia', 'software', 'pantallas'], instala: true,
+    para: 'El cliente pide por WhatsApp como siempre, un asistente toma el pedido con tu carta, confirma la dirección y el pago, y la comanda sale sola en la impresora o la pantalla de la cocina.',
+    incluye: [
+      'Asistente que toma el pedido con tu carta, precios y agotados del día',
+      'Confirmación de la dirección, la zona de entrega y la forma de pago (Yappy, tarjeta o efectivo)',
+      'Comanda impresa o en pantalla en la cocina, sin que nadie la copie a mano',
+      'Paso a una persona cuando el cliente lo pide o algo no cuadra',
+    ],
+    equipo: ['Impresora de comandas o pantalla de cocina'], precio: null, demo: null,
+    aparte: 'Los mensajes de WhatsApp Business los cobra Meta por conversación según su tarifa vigente.',
+  },
 ];

@@ -12,6 +12,8 @@ export const PALABRAS = {
   R08: 'reservas reservar mesa reservacion restaurante turno lista de espera',
   R09: 'menu pantallas televisor tv senalizacion digital menu board plato del dia',
   R10: 'temperatura nevera refrigerador congelador cuarto frio cadena de frio sensor alarma puerta abierta',
+  R12: 'app delivery propia pedidosya ubereats uber eats appetito domicilio motorizados repartidores sucursales varios restaurantes collab marca propia sin comision app de pedidos',
+  R13: 'pedidos whatsapp automaticos bot chatbot comanda cocina impresora automatico delivery domicilio tomar pedidos',
   R11: 'pos punto de venta caja registradora cajero cierre de caja ventas impresora tickets cajon codigo de barras',
   C01: 'contar personas contador clientes entran visitas trafico aforo conversion puerta afluencia',
   C02: 'mapa de calor heatmap recorrido pasillos zonas calientes permanencia exhibidor',

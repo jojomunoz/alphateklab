@@ -2063,6 +2063,96 @@ export const FICHAS = {
     ],
     "ejemplo": "Ejemplo: en una panadería con cafetería en Las Tablas, con dos cajeros al día, cada uno cierra su turno con lo vendido y el efectivo del cajón. Al vender un pan con jamón se descuentan el pan y el jamón del inventario, y la factura sale electrónica."
   },
+  R12: {
+    "como": [
+      {
+        "titulo": "Cómo vendes hoy",
+        "texto": "Vemos tus sucursales, tus zonas de entrega, cuántos motorizados tienes y qué te cobran hoy las apps por pedido. Si son varios restaurantes, cómo se reparten las ventas."
+      },
+      {
+        "titulo": "Tu app y tu carta",
+        "texto": "Armamos la app con tu marca, tu carta y tus fotos, las zonas por barrio con su costo, y el cobro con Yappy y tarjeta conectado a tu cuenta."
+      },
+      {
+        "titulo": "Motorizados y cocina",
+        "texto": "Cada pedido entra a la cocina de la sucursal que corresponde y se asigna a un motorizado, que ve la ruta en su app. El cliente sigue el pedido en su teléfono."
+      },
+      {
+        "titulo": "Publicación",
+        "texto": "Subimos la app a Google Play y App Store a nombre de tu negocio. Desde tu panel cambias precios, agotados, horarios y zonas."
+      }
+    ],
+    "necesitas": [
+      "Tus motorizados o una empresa de reparto de confianza",
+      "Una cuenta para cobrar en línea: Yappy Comercial o una pasarela de tarjeta",
+      "Tu carta con precios y fotos"
+    ],
+    "no_incluye": [
+      "Las comisiones de cada pago: las cobra Yappy, el banco o la pasarela",
+      "Las cuentas de desarrollador de Google Play y App Store, que se pagan a nombre de tu negocio",
+      "La publicidad para que la gente descargue la app"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Tengo que dejar PedidosYa o Uber Eats?",
+        "r": "No. Muchos restaurantes siguen en las apps para que los encuentren clientes nuevos, y mandan a los que ya los conocen a su propia app, donde no pagan comisión."
+      },
+      {
+        "p": "¿Puedo hacerla con otros restaurantes?",
+        "r": "Sí. Varios restaurantes pueden vender en la misma app, con un pedido que junta platos de varios y la cuenta separada para cada uno. Cómo se reparten los costos lo acuerdan entre ustedes."
+      },
+      {
+        "p": "¿Cuánto tarda?",
+        "r": "Depende de cuántas sucursales y restaurantes entren y de si ya tienes la carta digital. La fecha va en la propuesta."
+      }
+    ],
+    "ejemplo": "Ejemplo: dos restaurantes de comida rápida y una heladería de la misma plaza en Brisas del Golf venden en una sola app. El cliente pide hamburguesa y helado en un mismo pedido, un solo motorizado lo lleva, y cada local ve solo sus ventas."
+  },
+  R13: {
+    "como": [
+      {
+        "titulo": "Tu carta y tus reglas",
+        "texto": "Cargamos tu carta con precios y agotados, tus zonas de entrega por barrio con su costo, tu horario y las formas de pago que aceptas."
+      },
+      {
+        "titulo": "El asistente en tu WhatsApp",
+        "texto": "Conectamos el asistente a tu número de WhatsApp Business. Toma el pedido, pregunta lo que falte (término de la carne, sin cebolla), confirma la dirección y manda el enlace de pago."
+      },
+      {
+        "titulo": "La comanda sale sola",
+        "texto": "Con el pedido confirmado, la comanda se imprime en la cocina o aparece en la pantalla, con la hora y la dirección para el motorizado."
+      },
+      {
+        "titulo": "Cuando hace falta una persona",
+        "texto": "Si el cliente pide hablar con alguien o algo no cuadra, el chat pasa a tu equipo con todo lo que se habló."
+      }
+    ],
+    "necesitas": [
+      "Un número de WhatsApp Business para el local",
+      "Internet estable en la cocina para la impresora o la pantalla",
+      "Tu carta con precios"
+    ],
+    "no_incluye": [
+      "El costo de las conversaciones de WhatsApp Business, que cobra Meta",
+      "Las comisiones de cada pago en línea",
+      "Los motorizados"
+    ],
+    "preguntas": [
+      {
+        "p": "¿El cliente se da cuenta de que le contesta un asistente?",
+        "r": "Sí, se lo decimos desde el primer mensaje. Puede pedir hablar con una persona cuando quiera."
+      },
+      {
+        "p": "¿Qué pasa si se acaba un plato a media noche?",
+        "r": "Lo marcas agotado en tu panel y el asistente deja de ofrecerlo en ese momento."
+      },
+      {
+        "p": "¿Sirve si también vendo por PedidosYa?",
+        "r": "Sí. Esto es para los pedidos que ya te llegan por WhatsApp; las apps siguen como están."
+      }
+    ],
+    "ejemplo": "Ejemplo: una pizzería de San Francisco que recibe 60 pedidos por WhatsApp un viernes deja de tener a una persona copiando cada uno. El asistente toma el pedido, cobra con Yappy y la comanda sale impresa en la cocina con la dirección."
+  },
   S01: {
     "como": [
       {
@@ -2276,6 +2366,988 @@ export const FICHAS = {
       }
     ],
     "ejemplo": "Ejemplo: en una clínica de nutrición en Chitré con dos nutricionistas y una asistente, cada paciente tiene su ficha con peso, medidas y fotos de control por fecha. La asistente ve las citas y el teléfono; la historia la ven solo las nutricionistas."
+  },
+  T01: {
+    "como": [
+      {
+        "titulo": "Conversación sobre tu negocio",
+        "texto": "Nos cuentas qué vendes, en qué zona y qué quieres que haga la gente al entrar: escribirte por WhatsApp o llegar al local."
+      },
+      {
+        "titulo": "Textos y fotos reales",
+        "texto": "Tomamos tu horario, tus servicios, tu dirección y tus fotos, y escribimos los textos contigo. Cada frase habla de tu negocio."
+      },
+      {
+        "titulo": "Revisas en tu teléfono",
+        "texto": "Te mandamos un enlace de prueba para que la veas en el teléfono y pidas cambios. Se publica en tu dominio cuando la apruebas."
+      },
+      {
+        "titulo": "Te escriben desde la página",
+        "texto": "El botón abre WhatsApp con tu número y un mensaje ya escrito. La página queda lista para que Google la muestre cuando buscan tu nombre y tu zona."
+      }
+    ],
+    "necesitas": [
+      "Fotos de tu local, tus productos o tu trabajo; las del teléfono sirven para empezar",
+      "Tu horario, tu dirección y tu número de WhatsApp",
+      "La lista de lo que vendes o de los servicios que das",
+      "Tu logo, si tienes"
+    ],
+    "no_incluye": [
+      "Tienda en línea con carrito y cobro: es otro servicio",
+      "Anuncios pagados en Google, Facebook o Instagram",
+      "El manejo de tus redes sociales"
+    ],
+    "preguntas": [
+      {
+        "p": "¿El dominio queda a mi nombre?",
+        "r": "Sí. Se registra a nombre de tu negocio, así que la página y el correo siguen siendo tuyos aunque un día cambies de proveedor."
+      },
+      {
+        "p": "¿Puedo cambiar yo el horario o un precio?",
+        "r": "Depende de cuánto cambia tu información. Si cambia seguido, se deja una forma de editarla tú; si casi no cambia, nos escribes y lo cambiamos. Va en la propuesta."
+      },
+      {
+        "p": "Ya tengo una página vieja. ¿Hay que empezar de cero?",
+        "r": "El dominio y el contenido que sirva se aprovechan. El diseño sí se hace nuevo."
+      }
+    ],
+    "ejemplo": "Ejemplo: una clínica veterinaria de Penonomé con una sola sede. La página muestra los servicios con su horario, la dirección con el mapa y un botón que abre WhatsApp con «Hola, quiero una cita para mi perro». Quien la abre en el teléfono ve primero el horario y ese botón."
+  },
+  T02: {
+    "como": [
+      {
+        "titulo": "Visita para ver el proceso",
+        "texto": "Vamos a tu negocio y vemos cómo se hace hoy la tarea: el Excel, el cuaderno o las tres aplicaciones. Hablamos también con quien la hace todos los días."
+      },
+      {
+        "titulo": "Propuesta de la primera versión",
+        "texto": "Te decimos qué hará la primera versión, quién la va a usar, qué queda para después y cuánto cuesta."
+      },
+      {
+        "titulo": "Tu equipo la prueba",
+        "texto": "Cada persona entra con su usuario y ve lo que le toca a su puesto. Con lo que digan se ajusta antes de dejar el Excel."
+      },
+      {
+        "titulo": "Uso diario con respaldo",
+        "texto": "El sistema queda en uso con tus datos y un respaldo diario. Lo que vaya haciendo falta se agrega por partes."
+      }
+    ],
+    "necesitas": [
+      "Una persona de tu equipo que conozca el proceso y tenga tiempo para las pruebas",
+      "Tus hojas de Excel, formularios o cuadernos de hoy",
+      "Computadoras, tabletas o teléfonos con internet donde se va a usar"
+    ],
+    "no_incluye": [
+      "Las computadoras o tabletas del equipo",
+      "Pasar a mano años de papeles viejos; si hace falta, se cotiza aparte",
+      "Las licencias de otros programas que ya usas"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Cuánto tarda?",
+        "r": "Depende del tamaño del proceso. Se arranca con una versión pequeña que tu equipo ya pueda usar y se crece desde ahí; el plazo va en la propuesta."
+      },
+      {
+        "p": "¿Qué pasa con lo que tengo en Excel?",
+        "r": "Se pasa al sistema al arrancar. Y lo que necesites en Excel para tu contador se puede exportar."
+      },
+      {
+        "p": "¿Por qué no comprar un programa hecho?",
+        "r": "Si hay uno que te sirve, te lo decimos. A la medida conviene cuando los programas hechos te obligan a cambiar cómo trabajas o a usar tres a la vez."
+      }
+    ],
+    "ejemplo": "Ejemplo: una empresa de mantenimiento de aires acondicionados en Arraiján lleva las visitas en un Excel compartido y los técnicos llaman a la oficina para saber a dónde van. Con el sistema, la oficina asigna las visitas y cada técnico ve las suyas en el teléfono y marca cuáles terminó."
+  },
+  T03: {
+    "como": [
+      {
+        "titulo": "Conversación sobre el uso",
+        "texto": "Vemos quién la va a usar, para qué y cada cuánto. Si una página web te resuelve lo mismo, te lo decimos antes de cotizar."
+      },
+      {
+        "titulo": "Pantallas que pruebas",
+        "texto": "Diseñamos las pantallas y las pruebas en tu teléfono antes de terminarla, incluido lo que pasa cuando no hay señal."
+      },
+      {
+        "titulo": "Publicación en las tiendas",
+        "texto": "La subimos a Google Play y al App Store con las cuentas de tu negocio. Apple y Google la revisan antes de aprobarla."
+      },
+      {
+        "titulo": "La descargan y la usan",
+        "texto": "La gente la busca con el nombre de tu negocio y la instala. Lo que se anota sin señal se envía cuando el teléfono vuelve a conectarse."
+      }
+    ],
+    "necesitas": [
+      "Cuentas de desarrollador de Apple y de Google a nombre de tu negocio",
+      "Tu logo y tus colores",
+      "El contenido que va a mostrar: productos, servicios, rutas o formularios"
+    ],
+    "no_incluye": [
+      "Lo que cobran Apple y Google por las cuentas de desarrollador",
+      "La aprobación en las tiendas: la deciden Apple y Google",
+      "Los teléfonos de tu equipo, si la app es para ellos"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Necesito una app o me basta una página?",
+        "r": "Si tus clientes te visitan de vez en cuando, te basta una página. La app vale la pena cuando la abren seguido o hay que usarla sin señal, como un vendedor en ruta."
+      },
+      {
+        "p": "¿Funciona en Android y en iPhone?",
+        "r": "Sí, en los dos."
+      },
+      {
+        "p": "¿Cuánto tarda en salir en las tiendas?",
+        "r": "La revisión la hacen Apple y Google, y ese tiempo no depende de nosotros. El tiempo de desarrollo va en la propuesta."
+      }
+    ],
+    "ejemplo": "Ejemplo: una distribuidora de productos de limpieza en Juan Díaz con cuatro vendedores en ruta por el interior. Cada vendedor toma los pedidos en la app aunque no tenga señal en la carretera, y los pedidos llegan a la oficina cuando el teléfono se conecta."
+  },
+  T04: {
+    "como": [
+      {
+        "titulo": "Nos muestras la tarea",
+        "texto": "La persona que la hace nos muestra cómo la hace cada día: de dónde copia, a dónde pega y qué revisa. Así vemos qué puede hacerse solo y qué necesita a alguien."
+      },
+      {
+        "titulo": "Conectamos tus herramientas",
+        "texto": "Unimos el correo, la hoja de cálculo, WhatsApp o tu sistema para que el dato pase de uno a otro sin copiarlo."
+      },
+      {
+        "titulo": "Corre en paralelo",
+        "texto": "Al principio la automatización trabaja mientras la persona sigue haciendo la tarea a mano, y se comparan los resultados."
+      },
+      {
+        "titulo": "Funciona sola y avisa",
+        "texto": "Los pedidos se registran y los reportes llegan a su hora. Si algo falla, te llega un aviso en vez de enterarte a fin de mes."
+      }
+    ],
+    "necesitas": [
+      "Acceso a las cuentas que se van a conectar: correo, hojas de cálculo, tu sistema",
+      "La persona que hace hoy la tarea, para que la muestre",
+      "Ejemplos reales de un pedido, una cotización o un reporte de los de siempre"
+    ],
+    "no_incluye": [
+      "La mensualidad de la herramienta donde corre, si es de pago (Make o Zapier, por ejemplo)",
+      "Cambiarte de sistema de ventas o de contabilidad",
+      "Las decisiones que piden criterio de una persona: esas quedan para revisión"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Qué tareas se pueden automatizar?",
+        "r": "Las que se repiten igual: copiar pedidos a una hoja, mandar el mismo reporte cada lunes, pasar los datos de un formulario al sistema. Si cada caso es distinto, se automatiza la parte que se repite."
+      },
+      {
+        "p": "¿Y si algo cambia y deja de funcionar?",
+        "r": "Está hecha para avisar cuando falla. Lo que cuesta mantenerla después va en la propuesta."
+      },
+      {
+        "p": "¿Tengo que pagar programas nuevos?",
+        "r": "Depende de dónde corra. Hay herramientas que se pagan por mes y otras que se instalan sin licencia, como n8n; te decimos cuál conviene y por qué."
+      }
+    ],
+    "ejemplo": "Ejemplo: una distribuidora de huevos en Chitré recibe los pedidos de las tiendas por correo y alguien los pasa a un Excel cada noche. La automatización arma sola la hoja del reparto del día siguiente y le manda el resumen al dueño a las 6 de la mañana."
+  },
+  T05: {
+    "como": [
+      {
+        "titulo": "Reunimos tu información",
+        "texto": "Juntamos las preguntas que tus clientes hacen siempre y sus respuestas: catálogo, precios, horario, ubicación y cómo pedir o agendar."
+      },
+      {
+        "titulo": "Escogemos dónde vive",
+        "texto": "Si te alcanza con el asistente que trae WhatsApp Business, lo configuramos ahí. Si tiene que tomar pedidos en tu sistema o agendar en tu agenda, se hace uno a la medida."
+      },
+      {
+        "titulo": "Prueba con preguntas reales",
+        "texto": "Antes de encenderlo le hacemos las preguntas que te mandaron tus clientes la semana pasada y corregimos lo que conteste mal."
+      },
+      {
+        "titulo": "Contesta y pasa el resto",
+        "texto": "Contesta a cualquier hora con tu información, toma pedidos o agenda citas. Si el cliente pide hablar con alguien o pregunta algo que no está en esa información, te pasa la conversación."
+      }
+    ],
+    "necesitas": [
+      "Un número con WhatsApp Business para el negocio",
+      "Tu lista de precios, tu horario y las preguntas que más te hacen",
+      "Alguien que atienda las conversaciones que el asistente le pasa"
+    ],
+    "no_incluye": [
+      "Lo que Meta cobra por los mensajes que se pagan, como las promociones; depende del tipo de mensaje",
+      "El teléfono o la línea del negocio",
+      "Respuestas sobre lo que no le diste: eso lo pasa a una persona"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Puede inventar un precio?",
+        "r": "Se configura para contestar solo con tu información y pasarte lo que no sabe. Igual, al principio revisamos contigo sus conversaciones para corregir lo que conteste mal."
+      },
+      {
+        "p": "¿WhatsApp cobra por esto?",
+        "r": "Depende del tipo de mensaje. Contestarle a un cliente que te escribió cuesta poco o nada; los mensajes que el negocio manda primero, como las promociones, Meta los cobra uno por uno."
+      },
+      {
+        "p": "¿Mis clientes van a saber que es un asistente?",
+        "r": "Sí. Se presenta como el asistente del negocio y ofrece pasar con una persona."
+      }
+    ],
+    "ejemplo": "Ejemplo: una tienda de repuestos de motos en La Chorrera recibe por WhatsApp las mismas preguntas hasta tarde: si hay una pieza, cuánto cuesta y a qué hora abren. El asistente contesta con la lista de precios y el horario, y deja para el encargado lo que no está en la lista."
+  },
+  T06: {
+    "como": [
+      {
+        "titulo": "Vemos cómo cotizas hoy",
+        "texto": "Revisamos una cotización tuya de las de siempre: renglones, descuentos, ITBMS y quién la aprueba."
+      },
+      {
+        "titulo": "Cargamos tu catálogo",
+        "texto": "Pasamos tus productos con precio y existencias al cotizador, desde tu sistema o desde tu Excel."
+      },
+      {
+        "titulo": "Arma y pide aprobación",
+        "texto": "El vendedor busca los productos, pone cantidades y descuentos, y la cotización pasa por quien aprueba antes de salir."
+      },
+      {
+        "titulo": "El cliente recibe el PDF",
+        "texto": "Sale en PDF con tu logo y queda en el historial del cliente, para encontrarla cuando vuelva a llamar."
+      }
+    ],
+    "necesitas": [
+      "Tu lista de productos con precios, en tu sistema o en Excel",
+      "Tu logo y lo que va en la cotización: RUC, condiciones, vigencia",
+      "Quién aprueba los descuentos y hasta cuánto puede dar cada vendedor"
+    ],
+    "no_incluye": [
+      "La factura electrónica: es otro servicio",
+      "El cobro en línea de la cotización aprobada",
+      "Contar la mercancía en la bodega: el cotizador muestra las existencias que tiene tu sistema"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Se conecta con mi sistema de inventario?",
+        "r": "Si tu sistema deja sacar los datos, sí, y las existencias se ven al día. Si no, el catálogo se mantiene en el cotizador. Lo vemos en la primera conversación."
+      },
+      {
+        "p": "¿Puedo cotizar desde el teléfono?",
+        "r": "Sí. El vendedor la puede armar en la visita al cliente."
+      },
+      {
+        "p": "¿Calcula el ITBMS?",
+        "r": "Sí, por renglón, con la tasa que le toca a cada producto."
+      }
+    ],
+    "ejemplo": "Ejemplo: una ferretería de Santiago con tres vendedores que cotizan a contratistas por WhatsApp. Cada vendedor arma la cotización con las existencias del día, el encargado aprueba los descuentos grandes y el contratista recibe el PDF con el logo de la ferretería."
+  },
+  T07: {
+    "como": [
+      {
+        "titulo": "Vemos cómo facturas hoy",
+        "texto": "Revisamos tu sistema de ventas, cuántas facturas haces al mes y si ya tienes un PAC, que es el proveedor autorizado por la DGI."
+      },
+      {
+        "titulo": "Escogemos el PAC",
+        "texto": "Si no tienes, te ayudamos a escoger uno de la lista oficial de la DGI. El contrato con el PAC queda a nombre de tu negocio."
+      },
+      {
+        "titulo": "Conectamos y probamos",
+        "texto": "Cada venta de tu sistema se manda al PAC sin volver a escribirla. Probamos facturas y notas de crédito antes de usarla con clientes."
+      },
+      {
+        "titulo": "Facturas al vender",
+        "texto": "El cliente recibe la factura por correo o WhatsApp. Si hay una devolución, la nota de crédito sale del mismo sistema."
+      }
+    ],
+    "necesitas": [
+      "Tu RUC y tu registro en la DGI al día",
+      "Un sistema de ventas o un punto de venta que se pueda conectar",
+      "Contrato con un PAC autorizado, o la decisión de cuál contratar"
+    ],
+    "no_incluye": [
+      "La mensualidad o el plan anual del PAC, que se le paga a ese proveedor",
+      "La asesoría contable o fiscal: eso lo ve tu contador",
+      "El punto de venta, si todavía no tienes uno: es otro servicio"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Estoy obligado a facturar electrónicamente?",
+        "r": "La DGI dice que desde el 1 de marzo de 2024 los únicos sistemas de facturación son la factura fiscal y la factura electrónica. Si te toca a ti y desde cuándo, confírmalo con tu contador."
+      },
+      {
+        "p": "¿Me sirve el facturador gratuito de la DGI?",
+        "r": "Es para negocios con ingresos de hasta B/.36.000 al año y no más de 100 documentos al mes. Si cumples las dos condiciones, puede que te alcance y no necesites este servicio; te lo decimos en la conversación."
+      },
+      {
+        "p": "Ya tengo un PAC. ¿Hay que cambiarlo?",
+        "r": "No necesariamente. Primero vemos si tu sistema se puede conectar con ese PAC."
+      }
+    ],
+    "ejemplo": "Ejemplo: una tienda de materiales eléctricos en Colón que vende desde su sistema y después vuelve a escribir cada factura en el portal del PAC. Con la conexión, la factura sale al confirmar la venta y le llega al cliente por WhatsApp."
+  },
+  T08: {
+    "como": [
+      {
+        "titulo": "Escoges tus cifras",
+        "texto": "Nos dices qué números miras cada semana y de dónde los sacas hoy: el sistema de ventas, un Excel o el cierre de caja."
+      },
+      {
+        "titulo": "Conectamos las fuentes",
+        "texto": "El tablero lee los datos de tu sistema o de tus hojas de cálculo, sin que nadie los copie."
+      },
+      {
+        "titulo": "Revisas que cuadre",
+        "texto": "Comparamos las cifras del tablero con un cierre que ya conoces. Si no cuadran, se busca por qué antes de usarlo."
+      },
+      {
+        "titulo": "Lo miras cuando quieras",
+        "texto": "Lo abres en el teléfono o en la computadora, con ventas por día, por producto y por vendedor frente a la semana y el mes anteriores. El resumen también te llega por correo."
+      }
+    ],
+    "necesitas": [
+      "Un sistema de ventas o unas hojas de cálculo que se llenen todos los días",
+      "Acceso a esos datos",
+      "La lista de las cifras que de verdad miras"
+    ],
+    "no_incluye": [
+      "Un televisor para la oficina: el tablero se ve en el teléfono y en la computadora",
+      "Pasar a digital las ventas que hoy se anotan en papel",
+      "Cambiar tu sistema de ventas"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Y si mis ventas están en papel?",
+        "r": "Primero tienen que estar en un sistema o en una hoja que se llene a diario. Si no lo están, conviene empezar por eso, con un punto de venta o un sistema a medida."
+      },
+      {
+        "p": "¿Cada cuánto se actualiza?",
+        "r": "Depende de la fuente: algunos sistemas dan los datos al momento y otros una vez al día. Te lo decimos al revisar tu sistema."
+      }
+    ],
+    "ejemplo": "Ejemplo: dos panaderías del mismo dueño en David, con caja en cada local. El lunes temprano le llega por correo cuánto vendió cada local la semana anterior y qué productos subieron o bajaron frente a la semana previa."
+  },
+  T09: {
+    "como": [
+      {
+        "titulo": "Abrimos tus cuentas de cobro",
+        "texto": "Te ayudamos a abrir Yappy Comercial y una pasarela de tarjeta a nombre de tu negocio, o usamos las que ya tengas."
+      },
+      {
+        "titulo": "Botón y enlaces de pago",
+        "texto": "Ponemos el botón de pago en tu página y te enseñamos a crear enlaces de pago para mandarlos por WhatsApp."
+      },
+      {
+        "titulo": "Confirmación automática",
+        "texto": "Cuando el cliente paga, la confirmación llega sola a tu sistema o a tu correo. Nadie tiene que revisar capturas de pantalla."
+      },
+      {
+        "titulo": "Cobras desde el chat",
+        "texto": "Mandas el enlace con el monto, el cliente paga con Yappy o con tarjeta y ves el pago confirmado."
+      }
+    ],
+    "necesitas": [
+      "Una cuenta bancaria a nombre del negocio",
+      "Yappy Comercial o una pasarela de tarjeta, o los papeles para abrirlas",
+      "Tu página web o tu sistema, si el pago se va a conectar ahí"
+    ],
+    "no_incluye": [
+      "La comisión que cobran Yappy o la pasarela por cada pago",
+      "Una tienda en línea con catálogo y carrito: es otro servicio",
+      "La factura electrónica de cada venta"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Puedo cobrar con Stripe?",
+        "r": "Stripe no opera en Panamá. Usamos medios que sí: Yappy y pasarelas de tarjeta que trabajan aquí, como Tilopay o PagueloFacil."
+      },
+      {
+        "p": "¿Cuánto me cobran por cada pago?",
+        "r": "Lo cobra Yappy o la pasarela, no nosotros. Yappy Comercial publica 1 % más ITBMS por transacción; con tarjeta la comisión es mayor y cambia según la pasarela."
+      },
+      {
+        "p": "¿Cuándo me llega la plata?",
+        "r": "Según su página, Yappy Comercial acredita al día siguiente. Con tarjeta depende de la pasarela que escojas."
+      }
+    ],
+    "ejemplo": "Ejemplo: una pastelería de encargos en Betania que pide un adelanto por transferencia y después revisa en WhatsApp las capturas que le mandan. Ahora manda el enlace de pago con el monto del adelanto, y el pedido queda confirmado cuando entra el pago."
+  },
+  T10: {
+    "como": [
+      {
+        "titulo": "Recorrido midiendo la señal",
+        "texto": "Vamos al local y medimos la señal en cada área: el salón, la caja, la bodega, la terraza. Vemos dónde está el módem del proveedor y por dónde puede pasar el cable."
+      },
+      {
+        "titulo": "Propuesta con ubicaciones",
+        "texto": "Te decimos cuántos puntos de acceso hacen falta, dónde va cada uno y por dónde pasa el cable, con el equipo detallado."
+      },
+      {
+        "titulo": "Instalación con dos redes",
+        "texto": "Instalamos los puntos de acceso, el enrutador y el cableado. La caja y las cámaras quedan en una red y los clientes en otra, con su propia clave."
+      },
+      {
+        "titulo": "Respaldo cuando se cae",
+        "texto": "Si se cae el internet principal, la caja pasa sola a la conexión de respaldo y sigue cobrando."
+      }
+    ],
+    "necesitas": [
+      "Internet contratado con un proveedor",
+      "Una segunda conexión para el respaldo, como otra línea o un chip de datos, a nombre del negocio",
+      "Tomacorrientes donde van el enrutador y los equipos",
+      "Permiso del dueño del local para pasar cable, si alquilas"
+    ],
+    "no_incluye": [
+      "La mensualidad de los proveedores de internet",
+      "Trabajos eléctricos, como tomacorrientes o circuitos nuevos",
+      "El registro de clientes al entrar al Wi-Fi: es otro servicio"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Hay que romper paredes?",
+        "r": "Lo normal es pasar el cable por canaletas o por el cielo raso. Lo vemos en la visita y queda escrito en la propuesta."
+      },
+      {
+        "p": "Con el respaldo, ¿ya no me quedo sin internet?",
+        "r": "La caja sigue en línea si se cae un proveedor. Si se caen los dos, o se va la luz, se cae igual."
+      },
+      {
+        "p": "¿Sigo usando el módem que me dio el proveedor?",
+        "r": "Sí, por ahí sigue entrando el internet. Lo que se agrega es lo que reparte la señal y separa las redes."
+      }
+    ],
+    "ejemplo": "Ejemplo: un restaurante de dos pisos en El Cangrejo donde el Wi-Fi no llega a la terraza y los clientes usan la misma red que la caja. Queda un punto de acceso por piso, una red para clientes con su clave, y la caja pasa al chip de datos cuando se cae el internet."
+  },
+  T11: {
+    "como": [
+      {
+        "titulo": "Visita al local",
+        "texto": "Recorremos el local contigo y vemos qué quieres cubrir: la caja, la puerta, la bodega o el estacionamiento."
+      },
+      {
+        "titulo": "Dónde va cada cámara",
+        "texto": "Te proponemos dónde va cada cámara y qué ve, con el equipo detallado: cámaras, grabador y disco."
+      },
+      {
+        "titulo": "Instalación y usuarios",
+        "texto": "Instalamos y dejamos el acceso en el teléfono de cada persona con su propio usuario. El encargado ve las cámaras sin tener la clave del dueño."
+      },
+      {
+        "titulo": "Ver y buscar grabaciones",
+        "texto": "Miras en vivo desde donde estés y, si pasa algo, buscas la grabación por día y hora."
+      }
+    ],
+    "necesitas": [
+      "Internet en el local para verlas desde el teléfono",
+      "Un lugar seguro y con corriente para el grabador",
+      "La lista de personas que van a tener acceso"
+    ],
+    "no_incluye": [
+      "Una central de monitoreo o un guardia mirando las cámaras",
+      "Batería de respaldo para los apagones; si la quieres, va en la propuesta",
+      "Avisos con IA de personas, filas o placas: son otros servicios",
+      "Trabajos eléctricos nuevos"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Cuántos días guarda la grabación?",
+        "r": "Depende de cuántas cámaras tengas, de la calidad de imagen y del tamaño del disco. Con esos datos te lo decimos en la propuesta."
+      },
+      {
+        "p": "¿Sirven las cámaras que ya tengo?",
+        "r": "Si son cámaras IP y funcionan, se revisan en la visita y se usan."
+      },
+      {
+        "p": "¿Tengo que poner un letrero?",
+        "r": "Te lo recomendamos. La imagen de una persona es un dato personal, y la Ley 81 de 2019 pide informar a la gente cuando se recogen sus datos."
+      }
+    ],
+    "ejemplo": "Ejemplo: un minisúper en San Miguelito con una caja, una bodega atrás y la puerta a la calle. Quedan cámaras en la caja, en la bodega y en la entrada, y el dueño revisa desde su casa la grabación de la hora del cierre."
+  },
+  T12: {
+    "como": [
+      {
+        "titulo": "Escoges el nombre",
+        "texto": "Buscamos qué nombres están libres en .com o en .com.pa, y escoges el que tus clientes van a recordar."
+      },
+      {
+        "titulo": "Registro a tu nombre",
+        "texto": "El dominio se registra a nombre de tu negocio, para que siga siendo tuyo pase lo que pase."
+      },
+      {
+        "titulo": "Una cuenta por persona",
+        "texto": "Creamos las cuentas (ventas@, administracion@ o el nombre de cada uno) y las configuramos en su teléfono y su computadora."
+      },
+      {
+        "titulo": "Escribes desde tu dominio",
+        "texto": "Tu equipo manda y recibe desde ventas@tunegocio.com en el mismo teléfono donde antes usaba el Gmail."
+      }
+    ],
+    "necesitas": [
+      "El nombre que quieres y una segunda opción",
+      "La lista de personas que necesitan correo",
+      "Los teléfonos y computadoras donde se va a configurar",
+      "Si ya tienes dominio, el acceso a la cuenta donde lo compraste"
+    ],
+    "no_incluye": [
+      "Lo que cobran cada año el registro del dominio y el proveedor del correo: va detallado aparte en la propuesta",
+      "La compra del dominio, si ya tienes uno: se usa el tuyo",
+      "La página web: es otro servicio"
+    ],
+    "preguntas": [
+      {
+        "p": "Ya tengo un dominio. ¿Lo pierdo?",
+        "r": "No. Usamos el tuyo; solo necesitamos acceso a la cuenta donde está registrado."
+      },
+      {
+        "p": "¿Puedo seguir usando mi Gmail?",
+        "r": "Sí. Lo que cambia es que tus clientes escriben a la dirección del negocio, y esa cuenta se queda con el negocio aunque un empleado se vaya."
+      },
+      {
+        "p": "¿.com o .com.pa?",
+        "r": "Los dos sirven. Escoge el que esté libre y se recuerde fácil; si vendes solo en Panamá, .com.pa deja claro de dónde eres."
+      }
+    ],
+    "ejemplo": "Ejemplo: una empresa de fumigación en Arraiján con tres personas que cotizan desde sus Gmail personales. Cada una queda con su cuenta del negocio configurada en el teléfono, y los clientes reciben las cotizaciones desde el dominio de la empresa."
+  },
+  T13: {
+    "como": [
+      {
+        "titulo": "Revisamos tu perfil",
+        "texto": "Buscamos si tu negocio ya aparece en Google Maps, quién creó el perfil y qué datos tiene mal: horario, teléfono o ubicación."
+      },
+      {
+        "titulo": "Completamos y verificamos",
+        "texto": "Llenamos el perfil con tu categoría, horario, fotos y teléfono. Google pide verificar que el negocio existe, y el método lo escoge Google."
+      },
+      {
+        "titulo": "Pedimos reseñas",
+        "texto": "Te dejamos un enlace directo para que tus clientes te dejen una reseña en Google, listo para mandarlo por WhatsApp después de cada compra."
+      },
+      {
+        "titulo": "Respondes cada reseña",
+        "texto": "Cuando entra una reseña, buena o mala, la respondes desde el teléfono. Las fotos y el horario quedan al día, también el de los feriados."
+      }
+    ],
+    "necesitas": [
+      "Una dirección donde atiendes al público, o la zona donde das servicio",
+      "Acceso al Gmail con el que se creó el perfil, si ya existe",
+      "Fotos de la fachada, del local y de tus productos o trabajos"
+    ],
+    "no_incluye": [
+      "Anuncios pagados en Google",
+      "Borrar reseñas malas: solo Google las quita, y solo si violan sus reglas",
+      "Reseñas escritas por nosotros o compradas: van contra las reglas de Google"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Me garantizan salir primero en el mapa?",
+        "r": "No. Nadie puede garantizarlo: Google ordena según lo cerca que está quien busca, lo bien que tu perfil coincide con lo que busca y lo conocido que es tu negocio, reseñas incluidas."
+      },
+      {
+        "p": "¿Pueden quitar una reseña mala?",
+        "r": "No. Solo Google la quita, y solo si viola sus reglas. Lo que sí puedes es responderla con calma y con los hechos, porque la leen los próximos clientes."
+      },
+      {
+        "p": "No tengo local. ¿Puedo aparecer?",
+        "r": "Sí. Google deja mostrar la zona donde das servicio sin publicar tu dirección."
+      }
+    ],
+    "ejemplo": "Ejemplo: un taller de bicicletas en Boquete que sale en Google con un horario viejo y sin fotos. Queda con el horario correcto, fotos del taller y un enlace que el dueño manda por WhatsApp después de cada reparación para pedir la reseña."
+  },
+  T14: {
+    "como": [
+      {
+        "titulo": "Visita a la bodega",
+        "texto": "Vemos cómo entra y sale hoy la mercancía, cuántas bodegas tienes y cómo anotas las compras."
+      },
+      {
+        "titulo": "Cargamos tus productos",
+        "texto": "Pasamos cada producto al sistema con su código, costo, mínimo y existencia, desde tu Excel o tu sistema actual."
+      },
+      {
+        "titulo": "Entradas y salidas con lector",
+        "texto": "Cada entrada y cada salida se registra pasando el código de barras, en la bodega que corresponde."
+      },
+      {
+        "titulo": "Aviso y orden de compra",
+        "texto": "Cuando un producto baja de su mínimo te llega el aviso, y la orden de compra al proveedor sale desde el mismo sistema."
+      }
+    ],
+    "necesitas": [
+      "La lista de tus productos con código y costo, aunque esté incompleta",
+      "Un conteo de lo que hay en cada bodega para arrancar",
+      "La lista de tus proveedores",
+      "Computadora, tableta o teléfono con internet en la bodega"
+    ],
+    "no_incluye": [
+      "La caja y el cobro: eso es el punto de venta",
+      "La contabilidad: el sistema lleva existencias y compras, no tus libros",
+      "La factura electrónica: es otro servicio"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Tengo que comprar lectores?",
+        "r": "El sistema lee el código de barras con un lector o con la cámara del teléfono. Si ya tienes lectores, se usan; si hacen falta más, van en la propuesta."
+      },
+      {
+        "p": "¿Se descuenta solo lo que vendo en caja?",
+        "r": "Si tu punto de venta deja sacar los datos, sí. Lo revisamos en la visita."
+      },
+      {
+        "p": "¿Sirve si tengo varias bodegas?",
+        "r": "Sí. Cada bodega lleva sus propias existencias."
+      }
+    ],
+    "ejemplo": "Ejemplo: una tienda de alimento para animales en Aguadulce, con dos bodegas, que se entera de que se acabó un alimento cuando un cliente lo pide. El sistema avisa cuando quedan pocos sacos y el encargado manda la orden de compra al proveedor desde ahí."
+  },
+  T15: {
+    "como": [
+      {
+        "titulo": "Repasamos tu forma de vender",
+        "texto": "Vemos los pasos de una venta tuya, desde el primer mensaje hasta el cobro, y quién hace cada uno."
+      },
+      {
+        "titulo": "Pasamos tus clientes",
+        "texto": "Cargamos tus clientes desde el Excel, la libreta o los contactos del teléfono, con lo que se sepa de cada uno."
+      },
+      {
+        "titulo": "Cada vendedor con su lista",
+        "texto": "Cada vendedor ve sus clientes, en qué etapa va cada venta y qué le toca hacer hoy."
+      },
+      {
+        "titulo": "Tú ves el embudo",
+        "texto": "Ves cuántas ventas hay en cada etapa y cómo va cada vendedor, sin pedir un reporte."
+      }
+    ],
+    "necesitas": [
+      "Tu lista de clientes, en el formato que la tengas",
+      "Los pasos de tu venta, aunque sea de palabra",
+      "Vendedores dispuestos a anotar cada contacto"
+    ],
+    "no_incluye": [
+      "Listas de prospectos compradas",
+      "Envíos masivos de promociones por correo o WhatsApp",
+      "La facturación y el cobro"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Mis vendedores lo van a usar?",
+        "r": "Si les toma más tiempo que la libreta, no. Por eso se arma con los pasos que ya siguen y se prueba con ellos antes de dejar lo de antes."
+      },
+      {
+        "p": "¿Se conecta con WhatsApp?",
+        "r": "Se puede. Cómo, depende de si usas WhatsApp Business en el teléfono o la conexión oficial de Meta; va en la propuesta."
+      },
+      {
+        "p": "¿Puedo guardar los datos de mis clientes?",
+        "r": "Sí. La Ley 81 de 2019 pide que la persona sepa para qué guardas sus datos y que pueda pedir que los corrijas o los borres. Si tienes dudas sobre tu caso, consúltalo con tu abogado."
+      }
+    ],
+    "ejemplo": "Ejemplo: una empresa de toldos y cortinas en Las Tablas con dos vendedores que anotan las visitas en una libreta. Cada cotización enviada queda en el sistema con fecha de seguimiento, y cada mañana el vendedor ve a quién tiene que llamar."
+  },
+  T16: {
+    "como": [
+      {
+        "titulo": "Qué ve tu cliente",
+        "texto": "Decidimos contigo qué puede ver cada cliente: pedidos, facturas, documentos y en qué va su trabajo."
+      },
+      {
+        "titulo": "De dónde salen los datos",
+        "texto": "El portal toma los datos de tu sistema o de donde los guardas hoy, para que nadie los suba dos veces."
+      },
+      {
+        "titulo": "Acceso por cliente",
+        "texto": "Cada cliente recibe su usuario y ve solo lo suyo."
+      },
+      {
+        "titulo": "El cliente lo ve solo",
+        "texto": "En vez de escribirte para preguntar en qué va su pedido o pedirte otra vez la factura, entra y lo ve."
+      }
+    ],
+    "necesitas": [
+      "Saber dónde están hoy tus pedidos, facturas y documentos",
+      "El correo o el teléfono de cada cliente que va a tener acceso",
+      "Una persona de tu equipo que actualice el estado de cada trabajo"
+    ],
+    "no_incluye": [
+      "Una app en las tiendas: el portal se abre en el navegador",
+      "El cobro en línea de las facturas: es otro servicio",
+      "Subir a mano los documentos de años anteriores"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Mi cliente tiene que instalar algo?",
+        "r": "No. Entra desde el navegador del teléfono o de la computadora con su usuario."
+      },
+      {
+        "p": "¿Quién sube los documentos?",
+        "r": "Tu equipo, o salen solos de tu sistema si se puede conectar. Lo vemos en la primera conversación."
+      },
+      {
+        "p": "¿Un cliente puede ver lo de otro?",
+        "r": "No. Cada usuario ve solo lo de su empresa."
+      }
+    ],
+    "ejemplo": "Ejemplo: una imprenta en Río Abajo que recibe llamadas todo el día preguntando si ya están listos los volantes. Cada cliente entra al portal, ve si su trabajo está en diseño, en impresión o listo para retirar, y descarga su factura."
+  },
+  T17: {
+    "como": [
+      {
+        "titulo": "Revisamos tus documentos",
+        "texto": "Vemos qué contratos y formularios firmas hoy en papel y quién los firma."
+      },
+      {
+        "titulo": "Preparamos el envío",
+        "texto": "Dejamos tus documentos listos para mandarlos por enlace, con los espacios que llena cada firmante."
+      },
+      {
+        "titulo": "Firma desde el teléfono",
+        "texto": "El cliente abre el enlace, lee el documento y firma en la pantalla del teléfono."
+      },
+      {
+        "titulo": "Registro de cada firma",
+        "texto": "Cada documento firmado queda guardado con quién firmó y cuándo, y lo encuentras por cliente cuando lo necesites."
+      }
+    ],
+    "necesitas": [
+      "Los contratos o formularios que quieres firmar en línea, ya revisados por tu abogado",
+      "El correo o el WhatsApp de quienes firman"
+    ],
+    "no_incluye": [
+      "Redactar o revisar los contratos: eso es de tu abogado",
+      "El costo del proveedor acreditado, si necesitas firma con pleno valor legal",
+      "Notariar documentos"
+    ],
+    "preguntas": [
+      {
+        "p": "¿La firma desde el teléfono vale legalmente?",
+        "r": "Deja registro de quién firmó y cuándo. Si un documento exige firma con pleno valor legal, se conecta con un proveedor acreditado. Qué firma pide cada documento lo confirma tu abogado."
+      },
+      {
+        "p": "¿El cliente necesita una cuenta?",
+        "r": "No para la firma desde el enlace. Con un proveedor acreditado puede que le pidan verificar su identidad."
+      }
+    ],
+    "ejemplo": "Ejemplo: una empresa de alquiler de equipo de construcción en Tocumen que hace firmar el contrato en papel cuando el cliente retira la mezcladora. El contrato le llega al cliente por WhatsApp antes de retirar, lo firma en el teléfono y la empresa guarda el registro con la hora de la firma."
+  },
+  T18: {
+    "como": [
+      {
+        "titulo": "Revisión de la oficina",
+        "texto": "Vemos qué es lo importante y dónde está: qué computadoras, qué carpetas, qué cuentas y quién tiene las contraseñas."
+      },
+      {
+        "titulo": "Copias automáticas",
+        "texto": "Instalamos el disco o el servicio de respaldo y programamos copias diarias de lo importante, con una copia fuera de la oficina."
+      },
+      {
+        "titulo": "Probamos que se recupera",
+        "texto": "Restauramos archivos de prueba para comprobar que la copia sirve. Un respaldo que nadie ha probado puede fallar el día que hace falta."
+      },
+      {
+        "titulo": "Claves y accesos en orden",
+        "texto": "Tu equipo guarda sus claves en un gestor de contraseñas, y cuando alguien se va es fácil quitarle los accesos."
+      }
+    ],
+    "necesitas": [
+      "Acceso a las computadoras y cuentas que se van a respaldar",
+      "Saber qué información no se puede perder: contabilidad, clientes, diseños",
+      "Internet en la oficina para la copia de afuera"
+    ],
+    "no_incluye": [
+      "Recuperar archivos de un disco que se dañó antes de empezar",
+      "Computadoras nuevas, si las actuales ya no reciben actualizaciones",
+      "La mensualidad del servicio de respaldo en la nube, si se usa uno: se le paga a ese proveedor"
+    ],
+    "preguntas": [
+      {
+        "p": "Ya copio todo a un disco externo. ¿No basta?",
+        "r": "Si ese disco está en la misma oficina, un robo, un incendio o un virus que bloquea los archivos se pueden llevar las dos cosas. Por eso una copia va afuera."
+      },
+      {
+        "p": "¿Cada cuánto se prueba el respaldo?",
+        "r": "La primera prueba se hace al instalarlo. Cada cuánto se repite va en la propuesta."
+      }
+    ],
+    "ejemplo": "Ejemplo: una oficina de contabilidad en Bella Vista con seis computadoras, donde los archivos de los clientes viven en la computadora de la contadora principal. Cada noche se copian solos, con una copia fuera de la oficina, y las claves de los portales de la DGI y la CSS pasan de una libreta a un gestor de contraseñas."
+  },
+  T19: {
+    "como": [
+      {
+        "titulo": "Inventario de tus equipos",
+        "texto": "Anotamos cada computadora, impresora y licencia de la oficina, quién la usa y cuándo se compró."
+      },
+      {
+        "titulo": "Acceso remoto con permiso",
+        "texto": "Instalamos el acceso remoto, con tu permiso, para resolver sin visita lo que no la necesita."
+      },
+      {
+        "titulo": "Escribes por WhatsApp",
+        "texto": "Cuando la impresora no imprime o el correo no sale, nos escribes por WhatsApp y lo vemos de forma remota."
+      },
+      {
+        "titulo": "Visita cuando hace falta",
+        "texto": "Si el problema es físico, vamos a la oficina. Lo que haya que comprar o cambiar te lo decimos antes y lo apruebas."
+      }
+    ],
+    "necesitas": [
+      "Una persona de contacto en la oficina",
+      "Permiso para instalar el acceso remoto en las computadoras",
+      "Las facturas o claves de las licencias que ya tienes, si las encuentras"
+    ],
+    "no_incluye": [
+      "Las piezas y los equipos nuevos: se aprueban antes y se cobran aparte",
+      "Las licencias de los programas que usas",
+      "El soporte interno de programas de otro proveedor, como tu sistema de contabilidad: ese lo da quien te lo vende"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Cuánto tardan en responder?",
+        "r": "Depende del acuerdo. El tiempo de respuesta queda escrito en la propuesta."
+      },
+      {
+        "p": "¿Se paga por mes o por visita?",
+        "r": "Depende del tamaño de tu oficina y de cuánto soporte necesitas. La forma de pago va en la propuesta."
+      },
+      {
+        "p": "¿Pueden entrar a mi computadora sin que yo sepa?",
+        "r": "No. Entramos cuando tú lo pides, y ves en tu pantalla lo que hacemos."
+      }
+    ],
+    "ejemplo": "Ejemplo: una agencia de viajes en Paitilla con ocho computadoras y una impresora compartida, sin nadie de sistemas. Cuando a una agente no le sale el correo, escribe por WhatsApp y se resuelve en remoto; cuando la impresora se daña, se agenda la visita."
+  },
+  T20: {
+    "como": [
+      {
+        "titulo": "Mapa de tus sistemas",
+        "texto": "Anotamos qué sistemas usas (tienda en línea, ventas, contabilidad, Yappy, banco) y qué datos copia alguien de uno a otro."
+      },
+      {
+        "titulo": "Vemos cómo se conectan",
+        "texto": "Revisamos si cada sistema tiene API o deja exportar archivos. Si alguno no deja sacar los datos, te lo decimos antes de cotizar."
+      },
+      {
+        "titulo": "Conexión en paralelo",
+        "texto": "Conectamos los sistemas y, por un tiempo, comparamos lo que pasan solos con lo que hacía la persona a mano."
+      },
+      {
+        "titulo": "Los datos se pasan solos",
+        "texto": "Los datos pasan de un sistema a otro a la hora programada. Si algo no cuadra, como un pago sin pedido, te llega un aviso."
+      }
+    ],
+    "necesitas": [
+      "Acceso de administrador a cada sistema",
+      "El contacto del soporte de cada sistema, por si hay que pedir una clave de API",
+      "Alguien que sepa qué tiene que cuadrar con qué"
+    ],
+    "no_incluye": [
+      "Lo que cobre tu sistema por dar acceso a su API, si cobra",
+      "Cambiarte de sistema",
+      "Arreglar fallas internas de los sistemas de otros proveedores"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Y si mi sistema no tiene API?",
+        "r": "A veces se puede con el archivo que el sistema exporta. Si no hay forma, te lo decimos antes de cotizar."
+      },
+      {
+        "p": "¿Se puede conectar con mi banco?",
+        "r": "Depende de lo que permita tu banco. Lo revisamos con tu caso y va en la propuesta."
+      },
+      {
+        "p": "¿Cada cuánto se pasan los datos?",
+        "r": "Depende de lo que permita cada sistema: al momento, cada hora o una vez al día."
+      }
+    ],
+    "ejemplo": "Ejemplo: una tienda de ropa en Calidonia que vende en el local y en su tienda en línea, donde cada noche alguien cuadra a mano las existencias de las dos. Con la conexión, una venta en cualquiera descuenta de las mismas existencias, y si entra un pago de Yappy sin pedido, llega un aviso."
+  },
+  T21: {
+    "como": [
+      {
+        "titulo": "Nos mandas ejemplos",
+        "texto": "Nos pasas ejemplos reales de lo que recibes, como facturas de proveedores, órdenes o formularios, en foto o en PDF."
+      },
+      {
+        "titulo": "Qué datos sacar",
+        "texto": "Escogemos contigo qué datos salen de cada documento (proveedor, RUC, fecha, total, ITBMS) y a dónde van."
+      },
+      {
+        "titulo": "Lo dudoso se marca",
+        "texto": "Lo que la IA no lee con seguridad, como una foto borrosa o un total que no cuadra, queda marcado para que una persona lo revise antes de guardarlo."
+      },
+      {
+        "titulo": "Subes la foto",
+        "texto": "Tu equipo sube la foto o el PDF y los datos aparecen en tu sistema o en tu Excel."
+      }
+    ],
+    "necesitas": [
+      "Ejemplos reales de cada tipo de documento",
+      "El sistema o la hoja de Excel donde deben quedar los datos",
+      "Una persona que revise lo que queda marcado"
+    ],
+    "no_incluye": [
+      "La contabilidad: los datos llegan a tu hoja, el registro contable lo hace tu contador",
+      "La garantía de que nunca se equivoca: por eso lo dudoso pasa por una persona",
+      "Digitalizar los archivos en papel de años anteriores"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Lee documentos escritos a mano?",
+        "r": "Depende de la letra, y lee con menos seguridad que un PDF impreso. Lo probamos con tus propios ejemplos antes de cotizar."
+      },
+      {
+        "p": "¿A dónde van mis documentos?",
+        "r": "Se procesan con un servicio de inteligencia artificial. En la propuesta te decimos cuál, dónde guarda los datos y por cuánto tiempo."
+      },
+      {
+        "p": "¿Qué pasa si se equivoca?",
+        "r": "Lo que no lee con seguridad se marca para revisión. Igual conviene que, al principio, alguien revise una muestra de lo que guarda."
+      }
+    ],
+    "ejemplo": "Ejemplo: un restaurante en Costa del Este que recibe las facturas de sus proveedores en papel, por correo y por WhatsApp, y la administradora las pasa a Excel cada fin de semana. Ahora les toma una foto y el proveedor, la fecha, el total y el ITBMS entran solos a la hoja; ella revisa solo las marcadas."
+  },
+  T22: {
+    "como": [
+      {
+        "titulo": "Nos cuentas las tareas",
+        "texto": "Antes del taller nos dices qué hace tu equipo cada día: correos, cotizaciones, resúmenes, reportes."
+      },
+      {
+        "titulo": "Ejercicios con tu negocio",
+        "texto": "Preparamos los ejercicios con documentos y casos de tu negocio, sin datos personales de clientes."
+      },
+      {
+        "titulo": "Taller práctico",
+        "texto": "Cada persona usa la IA en su computadora o su teléfono durante la sesión, con sus propias tareas."
+      },
+      {
+        "titulo": "Plantillas para cada día",
+        "texto": "Al terminar se quedan con plantillas para las tareas de siempre y con la guía de qué datos no subir."
+      }
+    ],
+    "necesitas": [
+      "La lista de las tareas que más tiempo le quitan a tu equipo",
+      "Una computadora o un teléfono con internet por persona",
+      "Un espacio donde todos vean la pantalla, si es en tu oficina"
+    ],
+    "no_incluye": [
+      "Las suscripciones de pago a las herramientas de IA",
+      "Configurar asistentes o automatizaciones para tu negocio: son otros servicios",
+      "Clases de computación básica"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Mi equipo tiene que saber de tecnología?",
+        "r": "No. Basta con que usen el correo y el teléfono a diario."
+      },
+      {
+        "p": "¿Qué datos no deben subir a la IA?",
+        "r": "Datos personales de clientes o pacientes, contraseñas y lo que firmaste como confidencial. La guía lo deja por escrito, con la Ley 81 de 2019 en cuenta."
+      },
+      {
+        "p": "¿Hay que pagar una herramienta?",
+        "r": "Para empezar, no: hay versiones gratuitas. Si a tu equipo le conviene una de pago, te decimos cuál y por qué."
+      }
+    ],
+    "ejemplo": "Ejemplo: un despacho de abogados de cinco personas en Obarrio. En el taller practican con un contrato de ejemplo: lo resumen, sacan las fechas de vencimiento y redactan el correo al cliente. Se quedan con la guía de qué expedientes no se suben."
   },
   V01: {
     "como": [
