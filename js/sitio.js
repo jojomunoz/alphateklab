@@ -551,8 +551,9 @@ if (avisosHeroe) {
   const lista = avisosHeroe.querySelector('.avisos-heroe__lista');
   const todos = [...lista.children];
   const botonPausa = avisosHeroe.querySelector('[data-pausa-avisos]');
-  // en el teléfono, tres: con cuatro, el buscador quedaba fuera de la primera pantalla
-  const VISIBLES = matchMedia('(max-width: 639px)').matches ? 3 : 4;
+  // tres: en el teléfono, con cuatro el buscador quedaba fuera de la primera pantalla; en la computadora, con cuatro la
+  // caja bajaba más que la columna de texto
+  const VISIBLES = 3;
   todos.forEach((li, i) => { li.hidden = i >= VISIBLES; });
   let siguiente = VISIBLES;
   let minutos = 10 * 60 + 42; // la hora del de arriba

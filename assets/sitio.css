@@ -4230,3 +4230,36 @@ html.sin-desplazar {
     display: none;
   }
 }
+
+/* Equilibrio del héroe (Jonathan, 3-oct: «algo no me cuadra»): las tarjetas con un renglón quedaban con un hueco abajo
+   y la caja bajaba ~115 px más que la columna de texto. Ahora el contenido de cada aviso va centrado en su tarjeta, y
+   en la computadora la caja va de la bajada al botón de las 3 preguntas, con tres avisos. */
+.aviso-heroe {
+  align-items: center;
+  min-height: 5.1rem;
+}
+.aviso-heroe__texto {
+  min-height: 0;
+}
+@media (min-width: 1040px) {
+  .heroe--portada.heroe--avisos .heroe__fila {
+    grid-template-rows: auto auto auto auto auto;
+  }
+  .heroe--portada.heroe--avisos .heroe__diagnostico {
+    align-self: end;
+  }
+  .heroe--avisos .avisos-heroe {
+    align-self: stretch;
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .heroe--avisos .avisos-heroe__marco {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: min(100%, 470px);
+    padding: 12px 12px 14px;
+  }
+  .aviso-heroe {
+    min-height: 5.5rem;
+  }
+}

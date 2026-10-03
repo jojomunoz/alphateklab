@@ -395,7 +395,7 @@ const mayuscula = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 // no tenían restaurante concluyeron «hacen menús QR para restaurantes» y no seguían bajando; ahora va en la página de
 // restaurantes. Comparado a ciegas con unas pestañas por negocio y con el video: ganó con los dos jueces.
 const AVISOS = [
-  { servicio: 'C01', icono: 'storefront', quien: 'Tienda', texto: 'Van 214 personas hoy, 18 % más que el sábado pasado.' },
+  { servicio: 'C01', icono: 'storefront', quien: 'Tienda', texto: '214 personas hoy, 18 % más que el sábado pasado.' },
   { servicio: 'S01', icono: 'calendar-check', quien: 'Clínica', texto: 'La paciente de mañana a las 10:30 a. m. confirmó su cita.' },
   { servicio: 'T07', icono: 'credit-card', quien: 'Facturación', texto: 'La factura 0001-0245 fue autorizada por la DGI.' },
   { servicio: 'R02', icono: 'fork-knife', quien: 'Restaurante', texto: 'Mesa 7 pidió 2 hojaldras y una chicha de saril. B/. 6.50' },
@@ -433,7 +433,7 @@ function heroeAvisos(prefijo) {
         <div class="avisos-heroe__marco">
           <div class="avisos-heroe__cabeza"><p>Avisos de ejemplo de lo que hacemos</p><button type="button" class="heroe__pausa avisos-heroe__pausa" data-pausa-avisos aria-pressed="false" aria-label="Pausar los avisos">${icono('pausa', 'ico ico--pausa')}${icono('reproducir', 'ico ico--reproducir')}</button></div>
           <ol class="avisos-heroe__lista" aria-label="Avisos de ejemplo de los sistemas que hacemos, de distintos negocios">${AVISOS.map((a, i) => `
-            <li${i > 3 ? ' hidden' : ''}><a class="aviso-heroe" href="${destino(a.servicio)}"><span class="aviso-heroe__icono">${icono(a.icono)}</span><span class="aviso-heroe__cuerpo"><span class="aviso-heroe__cabeza"><strong>${esc(a.quien)}</strong><span class="aviso-heroe__hora">${HORAS_AVISOS[i] ? sinCorte(`${HORAS_AVISOS[i]} a. m.`) : ''}</span></span><span class="aviso-heroe__texto">${esc(sinCorte(a.texto))}</span></span></a></li>`).join('')}
+            <li${i > 2 ? ' hidden' : ''}><a class="aviso-heroe" href="${destino(a.servicio)}"><span class="aviso-heroe__icono">${icono(a.icono)}</span><span class="aviso-heroe__cuerpo"><span class="aviso-heroe__cabeza"><strong>${esc(a.quien)}</strong><span class="aviso-heroe__hora">${HORAS_AVISOS[i] ? sinCorte(`${HORAS_AVISOS[i]} a. m.`) : ''}</span></span><span class="aviso-heroe__texto">${esc(sinCorte(a.texto))}</span></span></a></li>`).join('')}
           </ol>
         </div>
       </figure>`;
