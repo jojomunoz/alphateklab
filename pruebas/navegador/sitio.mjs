@@ -173,6 +173,22 @@ try {
     assert.ok(sw <= cw, `la página mide ${sw} px en una pantalla de ${cw}`);
   });
 
+  await paso('en un teléfono táctil las migas muestran solo el nivel de arriba («‹ Web y apps», «‹ Soluciones»)', async () => {
+    // con hasTouch: la regla de 44 px de toque de (pointer: coarse) le ganaba a la que esconde los niveles, y el
+    // emulador sin táctil no lo mostraba
+    const c = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const q = await c.newPage();
+    const vistas = {};
+    for (const ruta of ['servicios/menu-qr/', 'soluciones/restaurantes/', 'guias/factura-electronica/']) {
+      const r = await q.goto(`${BASE}${ruta}`, { waitUntil: 'load' });
+      if (!r || !r.ok()) continue;
+      vistas[ruta] = await q.evaluate(() => [...document.querySelectorAll('.migas > *')].filter((x) => getComputedStyle(x).display !== 'none').map((x) => x.textContent.trim()));
+    }
+    await c.close();
+    for (const [ruta, visibles] of Object.entries(vistas)) assert.equal(visibles.length, 1, `${ruta}: se ven ${JSON.stringify(visibles)}`);
+    assert.ok(Object.keys(vistas).length >= 2, 'se revisaron al menos dos páginas');
+  });
+
   await paso('nada se sale por la derecha a 320, 360 y 375 px', async () => {
     for (const ancho of [320, 360, 375]) {
       const m = await b.newContext({ viewport: { width: ancho, height: 800 } });

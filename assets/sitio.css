@@ -3548,6 +3548,11 @@ html.sin-desplazar {
 }
 
 /* páginas de negocio: el mismo héroe petróleo de la portada, con la demo del negocio */
+/* las páginas de negocio empiezan a la misma altura que las fichas: con el relleno del héroe de la portada (72 px)
+   quedaba una banda vacía arriba y el titular a y=234 en vez de 158 */
+.heroe--negocio {
+  padding-top: var(--e-6);
+}
 .heroe--negocio .migas,
 .heroe--negocio .migas a {
   color: var(--h-texto-2);
@@ -4462,6 +4467,11 @@ html.sin-desplazar {
 /* migas en el teléfono: solo el nivel de arriba con una flecha («‹ Soluciones»); el actual ya es el título */
 @media (max-width: 639px) {
   .migas > * {
+    display: none;
+  }
+  /* con :not() para ganarle a «.migas a { display: inline-block }» de las pantallas táctiles (pointer: coarse), que
+     volvía a mostrar «Inicio» y «Servicios» en un teléfono de verdad y no en el emulador sin táctil */
+  .migas > a:not(:last-of-type) {
     display: none;
   }
   .migas > a:last-of-type {
