@@ -91,7 +91,7 @@ async function cargarIndice() {
   return indice;
 }
 
-const ETIQUETA = { servicio: 'Servicio', solucion: 'Para tu negocio', demo: 'Demo' };
+const ETIQUETA = { servicio: 'Servicio', solucion: 'Para tu negocio', demo: 'Demo', guia: 'Guía' };
 const SUGERENCIAS = ['pedir desde la mesa', 'contar clientes', 'recordar citas', 'página web', 'inventario', 'cámaras de seguridad', 'recorrido 3D', 'chatbot de WhatsApp', 'factura electrónica', 'app para mi negocio'];
 const url = (u) => (/^https?:/.test(u) ? u : RAIZ + u);
 const contacto = () => document.documentElement.dataset.whatsapp || null;

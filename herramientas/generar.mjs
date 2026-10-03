@@ -11,6 +11,7 @@ import { PAQUETES, ESCALONES } from '../datos/paquetes.mjs';
 import { SOLUCIONES } from '../datos/soluciones.mjs';
 import { PALABRAS, PALABRAS_NEGOCIO } from '../datos/busqueda.mjs';
 import { FICHAS } from '../datos/fichas.mjs';
+import { GUIAS } from '../datos/guias.mjs';
 import { construirIndice } from '../js/indice.mjs';
 import { ACTUALIZADO, CONTACTO, URL_BASE } from '../datos/sitio.mjs';
 import { validarCatalogo, PALABRAS_PROHIBIDAS } from '../js/catalogo-reglas.mjs';
@@ -62,6 +63,14 @@ for (const [id, f] of Object.entries(FICHAS)) {
   if (/\$\s?\d/.test(texto.replace(/\$10 al mes|\+?\$300|US\$0\.\d+/g, ''))) errores.push(`ficha ${id}: menciona un precio no decidido`);
   if (!/^Ejemplo:/.test(f.ejemplo)) errores.push(`ficha ${id}: el ejemplo debe empezar con «Ejemplo:»`);
 }
+for (const g of GUIAS) {
+  for (const id of g.servicios) if (!idsServicios.has(id)) errores.push(`guía ${g.slug}: el servicio ${id} no existe`);
+  if (g.bajada.length > 160) errores.push(`guía ${g.slug}: la bajada pasa de 160 caracteres`);
+  const texto = g.secciones.flatMap((x) => [x.titulo, ...x.parrafos]).join('\n');
+  for (const re of PALABRAS_PROHIBIDAS) if (re.test(texto)) errores.push(`guía ${g.slug}: texto con «${texto.match(re)[0]}»`);
+  if (/[—–]/.test(texto)) errores.push(`guía ${g.slug}: lleva rayas`);
+  if (!g.fuentes.length) errores.push(`guía ${g.slug}: sin fuentes`);
+}
 if (process.env.PERMITIR_PENDIENTES === '1') {
   const pendientes = errores.filter((e) => /no existe en el repo|falta la captura/.test(e));
   if (pendientes.length) console.warn('Pendiente (no bloquea con PERMITIR_PENDIENTES=1):\n- ' + pendientes.join('\n- '));
@@ -84,6 +93,9 @@ const precioTexto = (s) => (s.precio ? s.precio.texto : 'A cotizar');
 const esExterna = (u) => /^https?:\/\//.test(u);
 const enlace = (u, prefijo) => (esExterna(u) ? u : prefijo + u);
 const contar = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const fechaLarga = (iso) => { const [a, m, d] = iso.split('-').map(Number); return `${d} de ${MESES[m - 1]} de ${a}`; };
+const guiasDe = (id) => GUIAS.filter((g) => g.servicios.includes(id));
 const existeServicio = (u) => SERVICIOS.some((s) => u.endsWith(`servicios/${s.slug}/`));
 const serviciosDeSector = (id) => SERVICIOS.filter((s) => s.sectores.includes(id));
 const serviciosDeTipo = (id) => SERVICIOS.filter((s) => s.tipos.includes(id));
@@ -155,7 +167,7 @@ function cabecera(prefijo) {
       <button class="buscar-campo-falso" type="button" data-abrir-buscador>${icono('magnifying-glass')} ¿Qué necesitas?</button>
       <details class="menu-movil__grupo" open><summary>Soluciones por negocio</summary><ul>${SOLUCIONES.map((so) => `<li><a href="${prefijo}soluciones/${so.slug}/">${icono(so.icono)}${esc(sectorPorId.get(so.sector).nombre)}</a></li>`).join('')}</ul></details>
       <details class="menu-movil__grupo"><summary>Servicios por tipo</summary><ul>${TIPOS.map((t) => `<li><a href="${prefijo}servicios/?tipo=${t.id}">${icono(t.icono)}${esc(t.nombre)}</a></li>`).join('')}<li><a href="${prefijo}servicios/">${icono('list')}Todos los servicios</a></li></ul></details>
-      <ul class="menu-movil__enlaces"><li><a href="${prefijo}diagnostico/">¿Qué necesita mi negocio?</a></li><li><a href="${prefijo}laboratorio/">Demos</a></li><li><a href="${prefijo}#como-trabajamos">Cómo trabajamos</a></li><li><a href="${prefijo}cotizar/">Pregúntanos</a></li></ul>
+      <ul class="menu-movil__enlaces"><li><a href="${prefijo}diagnostico/">¿Qué necesita mi negocio?</a></li><li><a href="${prefijo}laboratorio/">Demos</a></li><li><a href="${prefijo}guias/">Guías</a></li><li><a href="${prefijo}#como-trabajamos">Cómo trabajamos</a></li><li><a href="${prefijo}cotizar/">Pregúntanos</a></li></ul>
     </div>
   </div>
 </header>`;
@@ -190,7 +202,7 @@ function pie(prefijo) {
       <div><h2>Soluciones</h2><ul>${SOLUCIONES.map((so) => `<li><a href="${prefijo}soluciones/${so.slug}/">${esc(sectorPorId.get(so.sector).nombre)}</a></li>`).join('')}</ul></div>
       <div><h2>Servicios</h2><ul>${TIPOS.map((t) => `<li><a href="${prefijo}servicios/?tipo=${t.id}">${esc(t.nombre)}</a></li>`).join('')}<li><a href="${prefijo}servicios/">Todos los servicios</a></li></ul></div>
       <div><h2>Demos</h2><ul>${DEMOS.map((d) => `<li><a href="${enlace(d.url, prefijo)}">${esc(d.nombre)}</a></li>`).join('')}<li><a href="${prefijo}laboratorio/">Todas las demos</a></li></ul></div>
-      <div><h2>alphateklab</h2><ul><li><a href="${prefijo}diagnostico/">¿Qué necesita mi negocio?</a></li><li><a href="${prefijo}#como-trabajamos">Cómo trabajamos</a></li><li><a href="${prefijo}#preguntas">Preguntas frecuentes</a></li><li><a href="${prefijo}cotizar/">Pregúntanos</a></li><li><a href="${prefijo}privacidad/">Privacidad</a></li><li><a href="${prefijo}creditos/">Créditos de fotos e íconos</a></li></ul></div>
+      <div><h2>alphateklab</h2><ul><li><a href="${prefijo}diagnostico/">¿Qué necesita mi negocio?</a></li><li><a href="${prefijo}#como-trabajamos">Cómo trabajamos</a></li><li><a href="${prefijo}#preguntas">Preguntas frecuentes</a></li><li><a href="${prefijo}guias/">Guías</a></li><li><a href="${prefijo}cotizar/">Pregúntanos</a></li><li><a href="${prefijo}privacidad/">Privacidad</a></li><li><a href="${prefijo}creditos/">Créditos de fotos e íconos</a></li></ul></div>
     </div>
     <p class="pie__nota">Las demos usan negocios de ejemplo: sus nombres, platos, pacientes y reservas son ficticios. Actualizado el ${esc(ACTUALIZADO.texto)}.</p>
   </div>
@@ -740,6 +752,10 @@ function paginaServicio(s) {
   </div>
 </section>
 ${detalleFicha(s)}
+${guiasDe(s.id).length ? `<section class="seccion envoltura" aria-labelledby="guia-titulo">
+  <h2 id="guia-titulo" class="display seccion__titulo seccion__titulo--chico">Para entender el tema</h2>
+  <ul class="guias-lista" role="list">${guiasDe(s.id).map((g) => filaGuia(g, prefijo)).join('')}</ul>
+</section>` : ''}
 ${
   relacionados.length
     ? `<section class="seccion envoltura" aria-labelledby="rel-titulo">
@@ -772,6 +788,63 @@ function paginaLaboratorio() {
   </ul>
 </main>
 ${bandaPreguntanos(prefijo)}`,
+  });
+}
+
+// ── guías ──
+function filaGuia(g, prefijo) {
+  return `<li><a class="guia-fila" href="${prefijo}guias/${g.slug}/">${icono('book-open-text')}<span><strong>${esc(g.titulo)}</strong><small>${esc(g.bajada)}</small></span></a></li>`;
+}
+
+function paginaGuias() {
+  const prefijo = '../';
+  return documento({
+    titulo: 'Guías · alphateklab',
+    descripcion: 'Guías cortas con fuente oficial para negocios en Panamá: factura electrónica, Ley 81 y cámaras, ITBMS y propina, y cómo comparar una app propia con las plataformas.',
+    prefijo,
+    canonica: `${URL_BASE}guias/`,
+    datos: ld(migasLd([['Guías', null]])),
+    cuerpo: `<main id="contenido" class="envoltura pagina-simple">
+  ${migas(prefijo, [['Guías', null]])}
+  <h1 class="display pagina-simple__titulo">Guías</h1>
+  <p class="seccion__bajada">Lo que dice la norma o la fuente oficial, resumido para un negocio. Cada guía enlaza sus fuentes y dice cuándo se revisó.</p>
+  <ul class="guias-lista" role="list">${GUIAS.map((g) => filaGuia(g, prefijo)).join('')}</ul>
+</main>
+${bandaPreguntanos(prefijo)}`,
+  });
+}
+
+function paginaGuia(g) {
+  const prefijo = '../../';
+  const servicios = g.servicios.map((id) => porId.get(id));
+  const url = `${URL_BASE}guias/${g.slug}/`;
+  return documento({
+    titulo: `${g.titulo} · alphateklab`,
+    descripcion: g.bajada,
+    prefijo,
+    canonica: url,
+    datos: ld(
+      { '@type': 'Article', headline: g.titulo, description: g.bajada, dateModified: g.actualizada, inLanguage: 'es-PA', url, publisher: { '@id': `${URL_BASE}#organizacion` } },
+      migasLd([['Guías', `${URL_BASE}guias/`], [g.titulo, null]]),
+    ),
+    cuerpo: `<main id="contenido">
+<article class="envoltura texto-largo guia">
+  ${migas(prefijo, [['Guías', `${prefijo}guias/`], [g.titulo, null]])}
+  <h1 class="display">${esc(g.titulo)}</h1>
+  <p class="guia__bajada">${esc(g.bajada)}</p>
+  <p class="texto-largo__fecha">Revisada el ${fechaLarga(g.actualizada)} contra las fuentes de abajo. Es información general, no asesoría legal ni contable: confirma tu caso con tu contador o tu abogado.</p>
+  ${g.secciones.map((x) => `<h2>${esc(x.titulo)}</h2>${x.parrafos.map((t) => `<p>${esc(t)}</p>`).join('')}`).join('\n  ')}
+  <section class="fuentes fuentes--guia" aria-labelledby="fuentes-titulo">
+    <h2 id="fuentes-titulo">Fuentes</h2>
+    <ul>${g.fuentes.map((f) => `<li><a href="${esc(f.url)}" rel="noopener">${esc(f.nombre)}</a></li>`).join('')}</ul>
+  </section>
+</article>
+<section class="seccion envoltura" aria-labelledby="guia-serv-titulo">
+  <h2 id="guia-serv-titulo" class="display seccion__titulo seccion__titulo--chico">Lo que hacemos sobre este tema</h2>
+  <div class="rejilla-servicios">${servicios.map((s) => tarjetaServicio(s, prefijo)).join('\n')}</div>
+</section>
+${bandaPreguntanos(prefijo, { titulo: '¿Tu caso es distinto?', texto: 'Cuéntanos cómo funciona tu negocio y te decimos qué te sirve. Si es un tema legal o contable, te lo decimos también.' })}
+</main>`,
   });
 }
 
@@ -882,7 +955,7 @@ function pagina404() {
 }
 
 function sitemap() {
-  const urls = ['', 'diagnostico/', 'soluciones/', 'servicios/', 'laboratorio/', 'cotizar/', 'privacidad/', 'creditos/', ...SOLUCIONES.map((so) => `soluciones/${so.slug}/`), ...SERVICIOS.map((s) => `servicios/${s.slug}/`), ...DEMOS.filter((d) => !esExterna(d.url)).map((d) => d.url.replace(/\/?$/, '/'))];
+  const urls = ['', 'diagnostico/', 'soluciones/', 'servicios/', 'laboratorio/', 'cotizar/', 'privacidad/', 'creditos/', ...SOLUCIONES.map((so) => `soluciones/${so.slug}/`), ...SERVICIOS.map((s) => `servicios/${s.slug}/`), 'guias/', ...GUIAS.map((g) => `guias/${g.slug}/`), ...DEMOS.filter((d) => !esExterna(d.url)).map((d) => d.url.replace(/\/?$/, '/'))];
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map((u) => `  <url><loc>${URL_BASE}${u}</loc><lastmod>${ACTUALIZADO.iso}</lastmod></url>`).join('\n')}
@@ -966,6 +1039,9 @@ for (const so of SOLUCIONES) escribir(`soluciones/${so.slug}/index.html`, pagina
 limpiarCarpeta('servicios', new Set(SERVICIOS.map((s) => s.slug)));
 escribir('servicios/index.html', paginaServicios());
 for (const s of SERVICIOS) escribir(`servicios/${s.slug}/index.html`, paginaServicio(s));
+limpiarCarpeta('guias', new Set(GUIAS.map((g) => g.slug)));
+escribir('guias/index.html', paginaGuias());
+for (const g of GUIAS) escribir(`guias/${g.slug}/index.html`, paginaGuia(g));
 escribir('laboratorio/index.html', paginaLaboratorio());
 escribir('cotizar/index.html', paginaCotizar());
 escribir('diagnostico/index.html', paginaDiagnostico());
@@ -973,6 +1049,6 @@ escribir('privacidad/index.html', paginaPrivacidad());
 escribir('creditos/index.html', paginaCreditos());
 escribir('404.html', pagina404());
 escribir('sitemap.xml', sitemap());
-escribir('assets/indice.json', JSON.stringify(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO })));
+escribir('assets/indice.json', JSON.stringify(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO, GUIAS })));
 escribir('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${URL_BASE}sitemap.xml\n`);
 console.log(`Generado: portada, ${SOLUCIONES.length} soluciones, ${SERVICIOS.length} servicios, catálogo, demos, cotizar, privacidad, créditos, 404, sitemap e índice de búsqueda.`);

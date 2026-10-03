@@ -1,6 +1,6 @@
 // Arma las entradas del buscador a partir de los datos del sitio. Lo usan el generador (assets/indice.json) y las pruebas.
 
-export function construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES = [], DEMOS = [], PALABRAS_NEGOCIO = {} }) {
+export function construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES = [], DEMOS = [], PALABRAS_NEGOCIO = {}, GUIAS = [] }) {
   // Cada servicio hereda los problemas (dichos como los dice el cliente) de las páginas de negocio que lo enlazan.
   const problemasDe = {};
   for (const so of SOLUCIONES) for (const p of so.problemas) for (const id of p.servicios) (problemasDe[id] ||= []).push(p.problema);
@@ -54,5 +54,15 @@ export function construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCION
     etiqueta: 'Demo en vivo',
     campos: { nombre: d.nombre, corto: 'demo prueba ejemplo', palabras: '', para: d.que, incluye: '' },
   }));
-  return [...servicios, ...soluciones, ...demos];
+  const guias = GUIAS.map((g) => ({
+    id: `guia-${g.slug}`,
+    tipo: 'guia',
+    titulo: g.titulo,
+    url: `guias/${g.slug}/`,
+    resumen: g.bajada,
+    icono: 'book-open-text',
+    etiqueta: 'Guía',
+    campos: { nombre: g.titulo, corto: 'guia', palabras: '', para: g.bajada, incluye: g.secciones.map((x) => x.titulo).join(' ') },
+  }));
+  return [...servicios, ...soluciones, ...demos, ...guias];
 }

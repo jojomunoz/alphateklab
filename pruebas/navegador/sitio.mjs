@@ -146,6 +146,16 @@ try {
     await m.close();
   });
 
+  await paso('las guías: índice, una guía con fuentes, y la ficha relacionada que la enlaza', async () => {
+    await p.goto(`${BASE}guias/`, { waitUntil: 'networkidle' });
+    assert.ok((await p.$$('.guia-fila')).length >= 4);
+    await p.goto(`${BASE}servicios/factura-electronica/`, { waitUntil: 'networkidle' }).catch(() => {});
+    const enlace = await p.$('a.guia-fila[href*="guias/factura-electronica/"]');
+    assert.ok(enlace, 'la ficha de factura electrónica no enlaza su guía');
+    await Promise.all([p.waitForNavigation(), enlace.click()]);
+    assert.ok((await p.$$('.fuentes--guia li a[href^="https://"]')).length >= 5);
+  });
+
   await paso('nada se sale por la derecha a 320, 360 y 375 px', async () => {
     for (const ancho of [320, 360, 375]) {
       const m = await b.newContext({ viewport: { width: ancho, height: 800 } });
