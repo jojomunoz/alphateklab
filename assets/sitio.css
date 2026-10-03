@@ -4378,3 +4378,89 @@ html.sin-desplazar {
 .pie {
   --foco: var(--senal);
 }
+/* el selector «Tipo» medía lo que su opción más larga («Sensores que avisan al WhatsApp») y sacaba la página de la
+   pantalla a 320 y 360 px (revisión «encontrar»): en el teléfono ocupa su renglón sin pasarse */
+.campo--en-linea,
+.campo--en-linea select {
+  min-width: 0;
+  max-width: 100%;
+}
+@media (max-width: 520px) {
+  .filtros__fila .campo--en-linea {
+    flex: 1 1 100%;
+  }
+  .filtros__fila .campo--en-linea select {
+    flex: 1;
+    width: 100%;
+  }
+}
+/* ── detalles de la revisión de interacción (3-oct) ── */
+/* estados al pasar el puntero que faltaban o no se notaban */
+@media (hover: hover) and (pointer: fine) {
+  .pregunta summary:hover {
+    color: var(--acento-texto, var(--tinta));
+    text-decoration: underline;
+    text-decoration-color: var(--senal);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+  .opcion:hover span {
+    border-color: var(--tinta);
+    background: var(--tarjeta);
+  }
+  .diag-problema:hover .diag-problema__caja {
+    border-color: var(--tinta-2);
+  }
+  .diag-problema:hover .diag-problema__caja::before {
+    border-color: var(--tinta);
+  }
+  .ficha-heroe__agregar:hover .agregar__no,
+  .ficha-heroe__agregar:hover .agregar__si {
+    text-decoration: underline;
+    text-decoration-color: var(--senal);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+}
+/* el menú grande entra en 150 ms y su fondo está entero desde el primer cuadro (antes 220 ms, y el titular se veía a
+   través del panel mientras aparecía): solo el contenido sube la opacidad */
+.mega:not([hidden]) {
+  animation: none;
+}
+.mega:not([hidden]) > * {
+  animation: aparecer-contenido 150ms var(--ease-salida);
+}
+@keyframes aparecer-contenido {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+.mega--directo:not([hidden]) > * {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mega:not([hidden]) > * {
+    animation: none;
+  }
+}
+/* migas en el teléfono: solo el nivel de arriba con una flecha («‹ Soluciones»); el actual ya es el título */
+@media (max-width: 639px) {
+  .migas > * {
+    display: none;
+  }
+  .migas > a:last-of-type {
+    display: inline-flex;
+  }
+  .migas > a:last-of-type::before {
+    content: "‹";
+    margin-right: 6px;
+    font-weight: 700;
+  }
+}
+
+.buscador__cargando {
+  padding: var(--e-3) var(--e-4);
+  font-size: var(--t-s);
+  color: var(--tinta-3);
+}

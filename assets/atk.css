@@ -244,7 +244,8 @@ kbd {
   width: 100%;
   max-width: var(--ancho);
   margin-inline: auto;
-  padding-inline: max(16px, 4vw);
+  /* con viewport-fit=cover, en un iPhone de lado el contenido no debe quedar bajo la muesca */
+  padding-inline: max(16px, 4vw, env(safe-area-inset-left, 0px)) max(16px, 4vw, env(safe-area-inset-right, 0px));
 }
 
 .saltar {

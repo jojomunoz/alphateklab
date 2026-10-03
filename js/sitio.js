@@ -250,9 +250,24 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
       return;
     }
     let idx;
+    // si el índice tarda (datos lentos), «Cargando el buscador…» a los 150 ms en vez de nada
+    const cargando = indice
+      ? null
+      : setTimeout(() => {
+          if (campo.value.trim() !== q) return;
+          if (sugerencias) sugerencias.hidden = true;
+          lista.setAttribute('aria-busy', 'true');
+          const li = Object.assign(document.createElement('li'), { className: 'buscador__cargando', textContent: 'Cargando el buscador…' });
+          li.setAttribute('role', 'presentation');
+          lista.replaceChildren(li);
+        }, 150);
     try {
       idx = await cargarIndice();
     } catch {
+      clearTimeout(cargando);
+      lista.removeAttribute('aria-busy');
+      lista.replaceChildren();
+      if (sugerencias) sugerencias.hidden = true;
       if (vacio) {
         vacio.hidden = false;
         const bloque = bloqueVacio(q);
@@ -262,6 +277,9 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
       }
       return;
     }
+    clearTimeout(cargando);
+    lista.removeAttribute('aria-busy');
+    lista.querySelector('.buscador__cargando')?.remove();
     if (q !== ultimo) return;
     // Mientras se escribe, la última palabra cuenta como comienzo de palabra («cam» encuentra cámaras).
     const res = buscar(idx, q, { limite: 8, prefijo: true });

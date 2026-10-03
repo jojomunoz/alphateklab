@@ -160,6 +160,19 @@ try {
     assert.ok((await p.$$('.fuentes--guia li a[href^="https://"]')).length >= 5);
   });
 
+  await paso('el catálogo con «Filtrar» abierto no se sale de la pantalla a 320 px', async () => {
+    const c = await b.newContext({ viewport: { width: 320, height: 700 }, isMobile: true, hasTouch: true });
+    const q = await c.newPage();
+    await q.goto(`${BASE}servicios/?q=camaras`, { waitUntil: 'load' });
+    await q.waitForTimeout(1000);
+    const filtrar = await q.$('button:has-text("Filtrar")');
+    if (filtrar) await filtrar.click();
+    await q.waitForTimeout(300);
+    const [sw, cw] = await q.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
+    await c.close();
+    assert.ok(sw <= cw, `la página mide ${sw} px en una pantalla de ${cw}`);
+  });
+
   await paso('nada se sale por la derecha a 320, 360 y 375 px', async () => {
     for (const ancho of [320, 360, 375]) {
       const m = await b.newContext({ viewport: { width: ancho, height: 800 } });
