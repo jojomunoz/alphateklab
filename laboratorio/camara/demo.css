@@ -1074,3 +1074,25 @@
 .lab .visor .aviso-demo {
   margin-top: 0;
 }
+
+/* En el teléfono los avisos sobre el video van compactos (tapaban en promedio el 44 % del video y el 74 % de la zona
+   de fila, revisión del 3-oct): título y una línea, a lo ancho de dos tercios. El texto entero sigue en el elemento. */
+@media (max-width: 639px) {
+  .alerta {
+    max-width: 62%;
+    padding: 4px var(--e-2);
+    gap: 6px;
+  }
+  .alerta p {
+    min-width: 0;
+  }
+  .alerta strong {
+    font-size: var(--t-xs);
+  }
+  .alerta__texto {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
