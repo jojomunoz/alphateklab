@@ -35,6 +35,9 @@ Reglas del proyecto: `~/alphateklab/BRIEF.md`. Guía de diseño: `~/Documents/No
 - Cerrojos, contra local y contra el sitio en vivo después de cada push:
   `PERMITIR_PENDIENTES=1 node --test pruebas/*.test.mjs`, `node pruebas/navegador/sitio.mjs <url>` y
   `node pruebas/navegador/interaccion.mjs <url>` (cada falla que encontró la revisión de clase mundial es un paso).
+- Las dos de navegador también con el motor de Safari (iPhone). En esta Fedora el WebKit de Playwright pide ICU 74 y
+  libjpeg8, que el sistema no trae; hay un lanzador que los pone, y el Playwright de la versión que coincide:
+  `MOTOR=webkit WEBKIT_EXE=/home/jonathan/Documents/NovahWEB/proyectos/guia-anfibios/qa-2026-09-30/a11y/webkit-libs/run-webkit.sh PW=/home/jonathan/Documents/NovahWEB/proyectos/guia-anfibios-panama/node_modules/playwright-core/index.mjs node pruebas/navegador/sitio.mjs <url>`.
 - El buscador se mide con `pruebas/buscador-personas.test.mjs` (40 frases de personas; umbral 95 % al primer intento).
   Esas frases ya se usaron para afinarlo: para medir de verdad hace falta otra batería que nadie toque.
 
