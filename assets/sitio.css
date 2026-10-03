@@ -856,3 +856,14 @@ main {
     text-align: right;
   }
 }
+
+.ficha__aparte,
+.servicio__aparte {
+  font-size: var(--t-xs);
+  color: var(--tinta-2);
+  max-width: var(--medida);
+  padding-bottom: var(--e-3);
+}
+.servicio__aparte {
+  margin-top: var(--e-2);
+}

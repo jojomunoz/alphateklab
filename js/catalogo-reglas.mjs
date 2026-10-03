@@ -26,7 +26,7 @@ export const PALABRAS_PROHIBIDAS = [
 ];
 
 export function textoDelServicio(s) {
-  return [s.nombre, s.corto, s.para, ...(s.incluye || []), ...(s.equipo || []), s.precio?.texto, s.precio?.nota].filter(Boolean).join('\n');
+  return [s.nombre, s.corto, s.para, ...(s.incluye || []), ...(s.equipo || []), s.precio?.texto, s.precio?.nota, s.aparte].filter(Boolean).join('\n');
 }
 
 export function validarCatalogo({ SECTORES, TIPOS, SERVICIOS, DEMOS = [] }, existe = () => true) {
