@@ -1,5 +1,5 @@
 # Nunca al repo público: chats, credenciales, exportaciones
-fuentes/
+/fuentes/
 *.zip
 *.env
 .env*
