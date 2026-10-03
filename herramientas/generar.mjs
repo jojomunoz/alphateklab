@@ -465,10 +465,25 @@ function paginaInicio() {
   <p class="seccion__pie"><a class="boton boton--linea" href="${prefijo}servicios/">${icono('list')}Ver los ${SERVICIOS.length} servicios</a></p>
 </section>`;
 
-  // El héroe muestra el producto; aquí, la instalación: dos técnicos poniendo una pantalla en un local.
-  const fotoInst = foto(existe('assets/fotos/equipo-instalando.webp') ? 'equipo-instalando' : 'instalacion', prefijo, {});
-  const instalacion = `<section class="seccion envoltura dividida${fotoInst ? '' : ' dividida--sinfoto'}" aria-labelledby="inst-titulo">
-  ${fotoInst ? `<div class="dividida__foto">${fotoInst}</div>` : ''}
+  // Lo que se instala, sacado del catálogo (equipo de cada servicio), en vez de una foto generada: hasta que haya fotos
+  // reales de una instalación de los socios, el equipo con su nombre y dónde va dice más que una escena (revisión del 3-oct).
+  const EQUIPO_A_LA_VISTA = [
+    ['R03', 'en cada mesa'],
+    ['R05', 'en la cocina'],
+    ['R06', 'en el mostrador'],
+    ['C01', 'en la entrada'],
+    ['R10', 'en la nevera y el cuarto frío'],
+    ['H03', 'en la puerta de cada cabaña'],
+    ['I04', 'en el acceso del personal'],
+    ['T10', 'en todo el local'],
+  ].filter(([id]) => porId.has(id));
+  const listaEquipo = `<ul class="equipo-lista" role="list">${EQUIPO_A_LA_VISTA.map(([id, donde]) => {
+    const sv = porId.get(id);
+    const partes = sv.equipo.map((x, i) => (i ? x.charAt(0).toLowerCase() + x.slice(1) : x));
+    const eq = partes.length > 1 ? `${partes.slice(0, -1).join(', ')} y ${partes.at(-1)}` : partes[0];
+    return `<li><strong>${esc(eq)}</strong><span>${esc(donde)}</span><a href="${prefijo}servicios/${sv.slug}/">${esc(sv.corto)}</a></li>`;
+  }).join('')}</ul>`;
+  const instalacion = `<section class="seccion envoltura dividida dividida--equipo" aria-labelledby="inst-titulo">
   <div class="dividida__texto">
     <h2 id="inst-titulo" class="display seccion__titulo">Lo instalamos en tu local</h2>
     <p class="seccion__bajada">Además de programar, vamos al local: ponemos las placas QR en las mesas, la pantalla en la cocina, la cámara sobre la puerta y el sensor en la nevera, y le enseñamos a tu equipo a usarlo.</p>
@@ -478,6 +493,7 @@ function paginaInicio() {
       <li>${icono('check')}El dominio y los QR quedan a nombre de tu negocio.</li>
     </ul>
   </div>
+  <div class="dividida__foto">${listaEquipo}</div>
 </section>`;
 
   const pasos = [

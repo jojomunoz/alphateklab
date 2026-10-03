@@ -3756,3 +3756,51 @@ html.sin-desplazar {
     font-size: 1.5rem;
   }
 }
+
+/* «Lo instalamos en tu local»: el equipo con su nombre, dónde va y su servicio */
+.equipo-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 2px solid var(--tinta);
+}
+.equipo-lista li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px var(--e-4);
+  padding: var(--e-3) 0;
+  border-bottom: 1px solid var(--linea);
+}
+.equipo-lista strong {
+  font-weight: 650;
+}
+.equipo-lista span {
+  grid-column: 1;
+  font-size: var(--t-s);
+  color: var(--tinta-2);
+}
+.equipo-lista a {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  font-size: var(--t-s);
+  font-weight: 600;
+  text-align: right;
+}
+@media (max-width: 520px) {
+  .equipo-lista li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .equipo-lista a {
+    grid-column: 1;
+    grid-row: auto;
+    text-align: left;
+  }
+}
+.dividida--equipo .dividida__foto {
+  align-self: start;
+}
+
+.dividida--equipo .dividida__texto {
+  align-self: start;
+}
