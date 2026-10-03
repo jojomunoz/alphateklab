@@ -3642,3 +3642,107 @@ html.sin-desplazar {
   background: var(--tarjeta);
   box-shadow: 0 -1px 0 var(--linea);
 }
+
+/* ── portada: el titular a todo el ancho; abajo, la búsqueda y el producto (más grande) ── */
+.heroe--portada .heroe__fila {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'titulo' 'bajada' 'producto' 'buscar' 'prueba' 'diag';
+  gap: var(--e-4);
+  align-items: start;
+}
+.heroe--portada .heroe__texto {
+  display: contents;
+}
+.heroe--portada .heroe__titulo {
+  grid-area: titulo;
+  font-size: 2.125rem;
+  max-width: none;
+}
+.heroe--portada .heroe__bajada {
+  grid-area: bajada;
+  margin-top: 0;
+}
+.heroe--portada .heroe__buscar {
+  grid-area: buscar;
+  margin-top: var(--e-2);
+}
+.heroe--portada .heroe__prueba {
+  grid-area: prueba;
+  margin-top: 0;
+}
+.heroe--portada .heroe__diagnostico {
+  grid-area: diag;
+  margin-top: 0;
+}
+.heroe--portada .heroe__producto {
+  grid-area: producto;
+}
+/* en el teléfono, solo la carta QR, recortada arriba, para que el producto entre en la primera pantalla */
+@media (max-width: 1039px) {
+  .heroe--portada {
+    padding-block: var(--e-6) var(--e-8);
+  }
+  .heroe--portada .heroe__dispositivos {
+    padding: 0;
+    max-width: none;
+  }
+  .heroe--portada .dispositivo--portatil {
+    display: none;
+  }
+  .heroe--portada .dispositivo--telefono {
+    position: relative;
+    width: min(62%, 260px);
+    margin-inline: auto;
+    border-radius: 26px 26px 0 0;
+    padding-bottom: 0;
+  }
+  .heroe--portada .dispositivo--telefono .dispositivo__pantalla {
+    aspect-ratio: 9 / 8.5;
+    border-radius: 19px 19px 0 0;
+  }
+  .heroe--portada .heroe__producto figcaption {
+    padding-left: 0;
+    text-align: center;
+    margin-inline: auto;
+  }
+}
+@media (min-width: 1040px) {
+  .heroe--portada .heroe__fila {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr);
+    grid-template-areas:
+      'titulo titulo'
+      'bajada producto'
+      'buscar producto'
+      'prueba producto'
+      'diag producto';
+    grid-template-rows: auto auto auto auto 1fr;
+    column-gap: var(--e-8);
+    row-gap: var(--e-4);
+  }
+  .heroe--portada .heroe__titulo {
+    font-size: clamp(2.75rem, 4.2vw, 3.6rem);
+    max-width: 24ch;
+    margin-bottom: var(--e-2);
+  }
+  .heroe--portada .heroe__producto {
+    align-self: start;
+  }
+}
+/* mientras se ve el héroe (con su «Buscar» ámbar), «Pregúntanos» de la cabecera va con contorno */
+.cabecera--sobre-heroe .cabecera__cta {
+  --b-fondo: transparent;
+  --b-texto: var(--tinta);
+  border-color: var(--tinta);
+}
+@media (min-width: 1040px) {
+  /* el teléfono es más alto que el portátil: el bloque reserva ese alto arriba para no tapar el titular */
+  .heroe--portada .heroe__dispositivos {
+    padding-top: 12%;
+  }
+}
+@media (min-width: 1040px) {
+  .heroe--portada .heroe__titulo {
+    max-width: none;
+    font-size: clamp(2.75rem, 3.9vw, 3.5rem);
+  }
+}

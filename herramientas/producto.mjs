@@ -66,6 +66,9 @@ try {
   await carta.setViewportSize({ width: 390, height: 844 });
   await carta.goto(enlaceMesa, { waitUntil: 'load' });
   await carta.waitForTimeout(2500);
+  // la franja «Modo demostración…» de la demo no va en la foto: la portada ya dice que es una demo de ejemplo
+  await carta.addStyleTag({ content: '.barra-demo { display: none !important; }' });
+  await carta.waitForTimeout(200);
   await carta.screenshot({ path: join(tmp, 'carta.png') });
   aWebp(join(tmp, 'carta.png'), 'mesa-carta', 780);
   console.log('ok mesa-carta');
@@ -75,6 +78,8 @@ try {
   const enlaceSalon = await ini.$$eval('a', (as) => as.map((a) => a.href).find((h) => /salon\.html/.test(h)));
   await salon.goto(enlaceSalon, { waitUntil: 'load' });
   await salon.waitForTimeout(2000);
+  await salon.addStyleTag({ content: '.barra-demo { display: none !important; }' });
+  await salon.waitForTimeout(200);
   await salon.screenshot({ path: join(tmp, 'salon.png') });
   aWebp(join(tmp, 'salon.png'), 'mesa-salon', 1600);
   console.log('ok mesa-salon');

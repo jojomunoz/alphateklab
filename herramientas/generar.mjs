@@ -368,10 +368,6 @@ function paginaInicio() {
     ['Contar clientes', 'contar personas que entran'],
     ['Recordar citas', 'recordar citas a pacientes'],
     ['Página web', 'página web'],
-    ['Inventario', 'inventario'],
-    ['Recorrido 3D', 'recorrido 3d de una propiedad'],
-    ['Cámaras', 'cámaras de seguridad'],
-    ['Chatbot', 'chatbot de whatsapp'],
   ];
   const fotosHeroe = ['sector-restaurantes', 'sector-comercio', 'sector-salud', 'sector-hospedaje'].filter((s) => existe(`assets/fotos/${s}.webp`));
   const conProducto = demoPorClave.has('sensores') && existe('assets/producto/sensores-tablero.webp') && existe('assets/producto/sensores-aviso.webp');
@@ -392,11 +388,11 @@ function paginaInicio() {
             : `Una de nuestras demos, con un restaurante de ejemplo: el tablero de sensores y el aviso que llega al WhatsApp. <a href="${prefijo}laboratorio/sensores/">Pruébala</a>`
         }</figcaption>
       </figure>`;
-  const heroe = `<section class="heroe${conProducto ? ' heroe--producto' : ''}" aria-labelledby="heroe-titulo">
+  const heroe = `<section class="heroe${conProducto ? ' heroe--producto heroe--portada' : ''}" aria-labelledby="heroe-titulo">
   <div class="envoltura heroe__fila">
     <div class="heroe__texto">
       <h1 id="heroe-titulo" class="display heroe__titulo">Hacemos la tecnología de tu negocio y la instalamos en tu local.</h1>
-      <p class="heroe__bajada">Software, apps e inteligencia artificial, y las cámaras, sensores y pantallas instalados en tu local. Cobros con Yappy, factura electrónica con un PAC autorizado por la DGI y menú QR a $10 al mes.</p>
+      <p class="heroe__bajada">Software, apps e inteligencia artificial para tu negocio. Cobros con Yappy, factura electrónica con PAC y menú QR a $10 al mes.</p>
       <form class="heroe__buscar" role="search" data-buscar-en-linea action="${prefijo}servicios/">
         ${icono('magnifying-glass')}
         <label class="sr" for="heroe-campo">¿Qué necesitas?</label>

@@ -412,6 +412,13 @@ if (formHeroe) {
 if ('requestIdleCallback' in window) requestIdleCallback(() => cargarIndice().catch(() => {}), { timeout: 4000 });
 else setTimeout(() => cargarIndice().catch(() => {}), 2000);
 
+// mientras el héroe de la portada está a la vista, un solo botón ámbar: «Pregúntanos» de la cabecera va con contorno
+const heroePortada = document.querySelector('.heroe--portada');
+const cabeceraEl = document.querySelector('[data-cabecera]');
+if (heroePortada && cabeceraEl && 'IntersectionObserver' in window) {
+  new IntersectionObserver(([e]) => cabeceraEl.classList.toggle('cabecera--sobre-heroe', e.isIntersecting), { rootMargin: '-80px 0px 0px 0px' }).observe(heroePortada);
+}
+
 // ── «Pregúntanos» rápido (banda al final de las páginas) ──
 for (const form of document.querySelectorAll('[data-pregunta-rapida]')) {
   form.addEventListener('submit', (e) => {
