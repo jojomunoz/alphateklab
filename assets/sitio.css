@@ -76,8 +76,8 @@ main {
 
 /* ── cabecera ── */
 .cabecera {
-  background: color-mix(in srgb, var(--papel) 88%, transparent);
-  backdrop-filter: saturate(1.4) blur(12px);
+  /* fondo sólido: el vidrio esmerilado (transparencia + desenfoque) es una de las señales de plantilla de la guía */
+  background: var(--papel);
 }
 .cabecera__fila {
   min-height: var(--cabecera-alto);
@@ -387,8 +387,7 @@ body.menu-abierto {
   }
 }
 .buscador::backdrop {
-  background: rgb(10 12 14 / 0.55);
-  backdrop-filter: blur(3px);
+  background: rgb(10 12 14 / 0.6);
 }
 .buscador__barra {
   display: flex;

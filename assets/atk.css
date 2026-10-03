@@ -360,8 +360,7 @@ kbd {
   position: sticky;
   top: env(safe-area-inset-top, 0px);
   z-index: 40;
-  background: color-mix(in srgb, var(--papel) 92%, transparent);
-  backdrop-filter: blur(8px);
+  background: var(--papel);
   border-bottom: 1px solid var(--linea);
 }
 .cabecera__fila {
