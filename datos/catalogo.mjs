@@ -24,10 +24,10 @@ export const TIPOS = [
   { id: 'software', nombre: 'Software a medida', icono: 'code', foto: 'tipo-software', desc: 'Sistemas hechos para cómo trabaja tu negocio: inventario, clientes, agendas, cotizaciones.' },
   { id: 'web', nombre: 'Web y apps', icono: 'devices', foto: 'tipo-web', desc: 'Páginas, tiendas en línea y apps para Android y iPhone.' },
   { id: 'ia', nombre: 'Inteligencia artificial', icono: 'chat-circle-dots', foto: 'tipo-ia', desc: 'Asistentes que contestan por WhatsApp, lectura de documentos y automatizaciones.' },
-  { id: 'vision', nombre: 'Cámaras y visión', icono: 'security-camera', foto: 'tipo-vision', desc: 'Cámaras que cuentan personas, leen placas y avisan lo que vale la pena revisar.' },
-  { id: 'iot', nombre: 'Sensores e IoT', icono: 'broadcast', foto: 'tipo-iot', desc: 'Temperatura, energía, tanques, puertas y motores, con avisos al WhatsApp.' },
+  { id: 'vision', nombre: 'Cámaras que cuentan y avisan', icono: 'security-camera', foto: 'tipo-vision', desc: 'Conteo de personas en la puerta, lectura de placas y los momentos que vale la pena revisar.' },
+  { id: 'iot', nombre: 'Sensores que avisan al WhatsApp', icono: 'broadcast', foto: 'tipo-iot', desc: 'Temperatura, energía, tanques, puertas y motores, medidos todo el día.' },
   { id: 'pantallas', nombre: 'Pantallas y kioscos', icono: 'monitor', foto: 'tipo-pantallas', desc: 'Pantallas táctiles de pedidos, de cocina, de turnos y menús en el local.' },
-  { id: 'tresd', nombre: '3D y escaneo', icono: 'cube-focus', foto: 'tipo-tresd', desc: 'Recorridos 360 y 3D de propiedades, planos con medidas y tomas con dron.' },
+  { id: 'tresd', nombre: 'Recorridos 3D, planos y dron', icono: 'cube-focus', foto: 'tipo-tresd', desc: 'Para mostrar una propiedad a quien no puede ir: con medidas, por dentro y desde el aire.' },
   { id: 'pagos', nombre: 'Cobros y facturación', icono: 'credit-card', foto: 'tipo-pagos', desc: 'Pagos con Yappy y tarjeta, punto de venta y factura electrónica.' },
 ];
 
