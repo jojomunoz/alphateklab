@@ -69,7 +69,58 @@ try {
   await carta.screenshot({ path: join(tmp, 'carta.png') });
   aWebp(join(tmp, 'carta.png'), 'mesa-carta', 780);
   console.log('ok mesa-carta');
+  // el salón (mapa de mesas) en la computadora de la caja, con la misma sala
+  const salon = await m.newPage();
+  await salon.setViewportSize({ width: 1040, height: 650 });
+  const enlaceSalon = await ini.$$eval('a', (as) => as.map((a) => a.href).find((h) => /salon\.html/.test(h)));
+  await salon.goto(enlaceSalon, { waitUntil: 'load' });
+  await salon.waitForTimeout(2000);
+  await salon.screenshot({ path: join(tmp, 'salon.png') });
+  aWebp(join(tmp, 'salon.png'), 'mesa-salon', 1600);
+  console.log('ok mesa-salon');
   await m.close();
+
+  // Reservas: la agenda del consultorio, la de la barbería y el calendario de cabañas
+  const r = await b.newContext({ deviceScaleFactor: 2, locale: 'es-PA', viewport: { width: 1040, height: 650 } });
+  const ag = await r.newPage();
+  await ag.goto(`${BASE}/alphateklab-reservas/citas.html`, { waitUntil: 'load' });
+  await ag.waitForTimeout(1800);
+  await ag.screenshot({ path: join(tmp, 'agenda.png') });
+  aWebp(join(tmp, 'agenda.png'), 'reservas-agenda', 1600);
+  const barberia = await ag.$$eval('#sel-plantilla option', (os) => os.find((o) => /barber/i.test(o.textContent))?.value);
+  if (barberia) {
+    await ag.selectOption('#sel-plantilla', barberia);
+    await ag.waitForTimeout(2000);
+    await ag.screenshot({ path: join(tmp, 'barberia.png') });
+    aWebp(join(tmp, 'barberia.png'), 'reservas-barberia', 1600);
+  }
+  const aloj = await r.newPage();
+  await aloj.goto(`${BASE}/alphateklab-reservas/alojamiento.html`, { waitUntil: 'load' });
+  await aloj.waitForTimeout(1800);
+  await aloj.screenshot({ path: join(tmp, 'alojamiento.png') });
+  aWebp(join(tmp, 'alojamiento.png'), 'reservas-alojamiento', 1600);
+  console.log('ok reservas-agenda, reservas-barberia, reservas-alojamiento');
+  await r.close();
+
+  // Recorrido 3D por dentro y la cámara contando
+  const t = await b.newContext({ deviceScaleFactor: 2, locale: 'es-PA', viewport: { width: 1040, height: 650 } });
+  const d3 = await t.newPage();
+  await d3.goto(`${BASE}/alphateklab/laboratorio/recorrido-3d/`, { waitUntil: 'load' });
+  await d3.click('#entrar');
+  await d3.waitForFunction(() => document.getElementById('visor')?.dataset.estado === 'listo', null, { timeout: 60000 });
+  await d3.waitForTimeout(2500);
+  await d3.locator('#visor').screenshot({ path: join(tmp, '3d.png') });
+  aWebp(join(tmp, '3d.png'), 'recorrido-3d', 1600);
+  const cam = await t.newPage();
+  await cam.goto(`${BASE}/alphateklab/laboratorio/camara/`, { waitUntil: 'load' });
+  await cam.waitForTimeout(1500);
+  const zona = await cam.$('[data-captura]') || await cam.$('.escenario');
+  if (zona) {
+    await zona.screenshot({ path: join(tmp, 'camara.png') });
+    aWebp(join(tmp, 'camara.png'), 'camara', 1600);
+  }
+  console.log('ok recorrido-3d, camara');
+  await t.close();
 } finally {
   await b.close();
   rmSync(tmp, { recursive: true, force: true });

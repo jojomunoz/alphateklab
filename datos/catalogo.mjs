@@ -392,7 +392,7 @@ export const SERVICIOS = [
     id: 'H02',
     slug: 'sincronizacion-con-booking-y-airbnb',
     nombre: 'Calendario sincronizado con Booking, Airbnb y Expedia, con vigilante',
-    corto: 'Calendarios sin doble reserva',
+    corto: 'Aviso de calendario caído',
     sectores: ['hospedaje'],
     tipos: ['software'],
     instala: false,

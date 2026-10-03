@@ -6,6 +6,7 @@ export const SOLUCIONES = [
   {
     sector: 'restaurantes',
     slug: 'restaurantes',
+    h1: 'Menos espera en las mesas y comandas que no se pierden',
     singular: 'restaurante',
     icono: 'fork-knife',
     foto: 'sector-restaurantes',
@@ -24,6 +25,7 @@ export const SOLUCIONES = [
   {
     sector: 'comercio',
     slug: 'tiendas',
+    h1: 'Que la caja cuadre, el inventario también, y nadie se vaya de la fila',
     singular: 'tienda',
     icono: 'storefront',
     foto: 'sector-comercio',
@@ -41,11 +43,12 @@ export const SOLUCIONES = [
   {
     sector: 'salud',
     slug: 'clinicas',
+    h1: 'Pacientes que llegan a su cita y una recepción que no vive pegada al teléfono',
     singular: 'clínica',
     icono: 'stethoscope',
     foto: 'sector-salud',
     titulo: 'Tecnología para clínicas y consultorios',
-    bajada: 'Menos pacientes que no llegan, una agenda sin citas encimadas y la recepción libre de llamar uno por uno.',
+    bajada: 'Recordatorios por WhatsApp que el paciente confirma con un toque, una agenda sin citas encimadas y la lista de a quién llamar.',
     demo: 'reservas',
     problemas: [
       { problema: 'Los pacientes no llegan y el hueco se pierde.', respuesta: 'Recordatorio por WhatsApp 2 o 1 día antes, con botón para confirmar, y reintentos hasta tener respuesta.', servicios: ['S01'] },
@@ -58,11 +61,12 @@ export const SOLUCIONES = [
   {
     sector: 'hospedaje',
     slug: 'hospedaje',
+    h1: 'Reservas directas sin comisión, y un aviso antes de vender dos veces la misma noche',
     singular: 'alojamiento',
     icono: 'bed',
     foto: 'sector-hospedaje',
     titulo: 'Tecnología para cabañas, hostales y hoteles pequeños',
-    bajada: 'Vender en tu propia página sin comisión, sin dobles reservas con Booking o Airbnb, y con el huésped entrando solo con su código.',
+    bajada: 'Tu propia página de reservas con Yappy y tarjeta, un vigilante que avisa cuando Booking o Airbnb dejan de sincronizar, y el huésped entrando solo con su código.',
     demo: 'reservas',
     problemas: [
       { problema: 'Pagas comisión por reservas que podrían ser directas.', respuesta: 'Motor de reservas en tu página, con depósito en línea y varias unidades en una reserva.', servicios: ['H01', 'T09'] },
@@ -74,11 +78,12 @@ export const SOLUCIONES = [
   {
     sector: 'inmuebles',
     slug: 'bienes-raices',
+    h1: 'Que el cliente recorra el apartamento antes de ir a verlo',
     singular: 'inmobiliaria',
     icono: 'buildings',
     foto: 'sector-inmuebles',
     titulo: 'Tecnología para agentes de bienes raíces',
-    bajada: 'Que el comprador recorra la propiedad desde su teléfono antes de visitarla, y que nadie se quede sin respuesta a las 11 de la noche.',
+    bajada: 'Recorridos 360 y 3D con medidas, fotos profesionales y un agente de WhatsApp que contesta a las 11 de la noche.',
     demo: 'recorrido-360',
     problemas: [
       { problema: 'Las fotos no transmiten cómo es el espacio.', respuesta: 'Recorrido 360 de cada ambiente, o en 3D caminando como en un videojuego, para enlazar desde tu anuncio.', servicios: ['B01', 'B02'] },
@@ -90,11 +95,12 @@ export const SOLUCIONES = [
   {
     sector: 'operacion',
     slug: 'industria-y-oficinas',
+    h1: 'Enterarte de lo que pasa en la planta antes de que pare',
     singular: 'empresa',
     icono: 'factory',
     foto: 'sector-operacion',
     titulo: 'Tecnología para bodegas, plantas y oficinas',
-    bajada: 'Saber qué pasa en la planta sin estar ahí: motores, tanques, consumo, quién entra y cuánto se produjo.',
+    bajada: 'Sensores en motores, tanques y consumo, el registro de quién entra y el conteo de lo que se produce, con avisos al WhatsApp.',
     demo: 'sensores',
     problemas: [
       { problema: 'Un motor o una bomba se daña sin aviso y para todo.', respuesta: 'Sensores de vibración y temperatura que avisan antes de la falla.', servicios: ['I07', 'I01'] },
@@ -107,6 +113,7 @@ export const SOLUCIONES = [
   {
     sector: 'educacion',
     slug: 'escuelas',
+    h1: 'Mensualidades que se pagan a tiempo y circulares que llegan a la casa',
     singular: 'escuela',
     icono: 'graduation-cap',
     foto: 'sector-educacion',
@@ -122,11 +129,12 @@ export const SOLUCIONES = [
   {
     sector: 'servicios',
     slug: 'talleres-y-salones',
+    h1: 'Citas que no se cruzan y clientes que saben cuánto les falta',
     singular: 'taller o salón',
     icono: 'car',
     foto: 'sector-servicios',
     titulo: 'Tecnología para talleres, autolavados y salones',
-    bajada: 'Que el cliente saque turno, sepa cuánto le falta y reciba un mensaje cuando su carro o su cita esté lista.',
+    bajada: 'Turnos en línea, un aviso por WhatsApp cuando el carro o el servicio está listo, y presupuestos aprobados por escrito.',
     demo: 'reservas',
     problemas: [
       { problema: 'El cliente espera sin saber cuánto le falta.', respuesta: 'Turnos en línea con su lugar en la fila y aviso por WhatsApp cuando está listo.', servicios: ['V01'] },
@@ -137,6 +145,7 @@ export const SOLUCIONES = [
   {
     sector: 'todos',
     slug: 'cualquier-negocio',
+    h1: 'Que te encuentren en Google y que el trabajo repetido lo haga el sistema',
     singular: 'negocio',
     icono: 'briefcase',
     foto: 'sector-todos',

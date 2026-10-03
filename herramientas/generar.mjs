@@ -522,13 +522,38 @@ ${bandaPreguntanos(prefijo)}
 }
 
 // ── página de un tipo de negocio ──
+// El héroe de cada negocio muestra su demo real en un dispositivo (no una foto generada): la revisión del 3-oct vio que
+// las 9 páginas abrían con una foto de IA a sangre, «la segunda puerta del sitio». Sin demo, el héroe va solo con texto.
+const PRODUCTO_POR_NEGOCIO = {
+  restaurantes: { demo: 'mesa', portatil: 'mesa-salon', telefono: 'mesa-carta', texto: 'la carta QR de la mesa 7 y el salón en la caja, con un restaurante de ejemplo' },
+  tiendas: { demo: 'camara', portatil: 'camara', texto: 'la cámara que cuenta quién entra y sale y avisa cuando se forma fila' },
+  clinicas: { demo: 'reservas', portatil: 'reservas-agenda', texto: 'la agenda de un consultorio de ejemplo, con quién confirmó y a quién hay que llamar' },
+  hospedaje: { demo: 'reservas', portatil: 'reservas-alojamiento', texto: 'el calendario de cabañas de ejemplo, con Booking, Airbnb y la venta directa' },
+  'bienes-raices': { demo: 'recorrido-3d', portatil: 'recorrido-3d', texto: 'un apartamento de ejemplo que se recorre como un videojuego' },
+  'industria-y-oficinas': { demo: 'sensores', portatil: 'sensores-tablero', telefono: 'sensores-aviso', texto: 'el tablero de sensores y el aviso que llega al WhatsApp' },
+  'talleres-y-salones': { demo: 'reservas', portatil: 'reservas-barberia', texto: 'la agenda de una barbería de ejemplo, por barbero' },
+};
+function productoDeNegocio(so, prefijo) {
+  const pr = PRODUCTO_POR_NEGOCIO[so.slug];
+  if (!pr || !demoPorClave.has(pr.demo) || !existe(`assets/producto/${pr.portatil}.webp`)) return '';
+  const d = demoPorClave.get(pr.demo);
+  const tel = pr.telefono && existe(`assets/producto/${pr.telefono}.webp`) ? pr.telefono : null;
+  return `<figure class="heroe__producto">
+        <div class="heroe__dispositivos${tel ? '' : ' heroe__dispositivos--solo'}">
+          <div class="dispositivo dispositivo--portatil"><div class="dispositivo__pantalla"><img src="${prefijo}assets/producto/${pr.portatil}.webp" alt="Demo: ${esc(pr.texto)}." width="1600" height="1000" fetchpriority="high" decoding="async" /></div></div>
+          ${tel ? `<div class="dispositivo dispositivo--telefono"><div class="dispositivo__pantalla"><img src="${prefijo}assets/producto/${tel}.webp" alt="" width="780" height="1688" decoding="async" /></div></div>` : ''}
+        </div>
+        <figcaption>Demo con un negocio de ejemplo: ${esc(pr.texto)}. <a href="${enlace(d.url, prefijo)}">Pruébala</a></figcaption>
+      </figure>`;
+}
+
 function paginaSolucion(so) {
   const prefijo = '../../';
   const sector = sectorPorId.get(so.sector);
   const d = so.demo ? demoPorClave.get(so.demo) : null;
   const pq = PAQUETES.find((p) => p.sector === so.sector);
   const lista = serviciosDeSector(so.sector);
-  const fotoHeroe = foto(so.foto, prefijo, { clase: 'heroe-sector__foto', sizes: '100vw', carga: 'eager', prioridad: true, alt: '' });
+  const producto = productoDeNegocio(so, prefijo);
   const nombreCorto = so.singular;
   return documento({
     titulo: `${so.titulo} · alphateklab`,
@@ -538,13 +563,16 @@ function paginaSolucion(so) {
     imagen: existe(`assets/og/${so.slug}.jpg`) ? `assets/og/${so.slug}.jpg` : 'assets/og.jpg',
     datos: ld(migasLd([['Soluciones', `${URL_BASE}soluciones/`], [sector.nombre, null]])),
     cuerpo: `<main id="contenido">
-<section class="heroe-sector${fotoHeroe ? '' : ' heroe-sector--sinfoto'}">
-  ${fotoHeroe}
-  <div class="envoltura heroe-sector__texto">
-    ${migas(prefijo, [['Soluciones', `${prefijo}soluciones/`], [sector.nombre, null]])}
-    <h1 class="display heroe-sector__titulo">${esc(so.titulo)}</h1>
-    <p class="heroe-sector__bajada">${esc(so.bajada)}</p>
-    <p class="heroe-sector__acciones">${d ? `<a class="boton boton--senal" href="${enlace(d.url, prefijo)}">${icono('play-circle')}Probar la demo</a>` : ''}<a class="boton ${d ? 'boton--claro' : 'boton--senal'}" href="${prefijo}diagnostico/?n=${so.slug}">Ver qué necesita mi ${esc(nombreCorto)}</a></p>
+<section class="heroe heroe--producto heroe--negocio${producto ? '' : ' heroe--solo-texto'}" aria-labelledby="negocio-titulo">
+  <div class="envoltura heroe__fila">
+    <div class="heroe__texto">
+      ${migas(prefijo, [['Soluciones', `${prefijo}soluciones/`], [sector.nombre, null]])}
+      <p class="heroe__negocio">${esc(sector.nombre)}</p>
+      <h1 id="negocio-titulo" class="display heroe__titulo heroe__titulo--negocio">${esc(so.h1 || so.titulo)}</h1>
+      <p class="heroe__bajada">${esc(so.bajada)}</p>
+      <p class="heroe-sector__acciones"><a class="boton boton--senal" href="${prefijo}diagnostico/?n=${so.slug}">Ver qué necesita mi ${esc(nombreCorto)}</a>${d ? `<a class="boton boton--linea" href="${enlace(d.url, prefijo)}">${icono('play-circle')}Probar la demo</a>` : ''}</p>
+    </div>
+    ${producto}
   </div>
 </section>
 <section class="seccion envoltura" aria-labelledby="resolvemos-titulo">

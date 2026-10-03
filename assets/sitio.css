@@ -3542,3 +3542,46 @@ html.sin-desplazar {
   text-align: right;
   font-size: var(--t-xs);
 }
+
+/* páginas de negocio: el mismo héroe petróleo de la portada, con la demo del negocio */
+.heroe--negocio .migas,
+.heroe--negocio .migas a {
+  color: var(--h-texto-2);
+}
+.heroe--negocio .migas [aria-current] {
+  color: var(--h-texto);
+}
+.heroe__negocio {
+  margin-top: var(--e-4);
+  font-size: var(--t-s);
+  font-weight: 700;
+  color: var(--senal);
+}
+.heroe__titulo--negocio {
+  margin-top: var(--e-2);
+  font-size: clamp(2.1rem, 3.4vw, 3rem);
+  max-width: 20ch;
+}
+.heroe--negocio .heroe-sector__acciones {
+  margin-top: var(--e-5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-3);
+}
+.heroe--negocio .boton--linea {
+  --b-texto: var(--h-texto);
+  border-color: color-mix(in srgb, var(--h-texto) 45%, transparent);
+}
+.heroe__dispositivos--solo {
+  padding-left: 0;
+  padding-bottom: 0;
+}
+.heroe__dispositivos--solo + figcaption {
+  padding-left: 0;
+}
+.heroe--solo-texto .heroe__fila {
+  grid-template-columns: minmax(0, 1fr);
+}
+.heroe--solo-texto .heroe__titulo--negocio {
+  max-width: 24ch;
+}
