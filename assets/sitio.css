@@ -3848,3 +3848,76 @@ html.sin-desplazar {
   font-weight: 700;
   margin-right: 4px;
 }
+
+/* ── portada más corta en el teléfono (era 15.7 pantallas), sin quitar contenido ── */
+@media (max-width: 639px) {
+  /* demos: filas con miniatura en vez de tarjetas apiladas */
+  .demos {
+    gap: var(--e-2);
+  }
+  .demo__enlace {
+    grid-template-rows: none;
+    grid-template-columns: 112px minmax(0, 1fr);
+    align-items: center;
+  }
+  .demo__captura {
+    aspect-ratio: 4 / 3;
+    height: 100%;
+  }
+  .demo__texto {
+    padding: var(--e-3);
+    gap: 4px;
+  }
+  .demo__nombre {
+    font-size: var(--t-m);
+  }
+  .demo__texto p {
+    display: none;
+  }
+  /* «Lo que hacemos»: nombre y cuenta; la descripción está en el catálogo */
+  .indice__desc {
+    display: none;
+  }
+  /* «Cómo trabajamos»: dos columnas */
+  .pasos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--e-4);
+  }
+  .paso__titulo {
+    font-size: var(--t-m);
+  }
+  /* equipo: filas más bajas */
+  .equipo-lista li {
+    padding: var(--e-2) 0;
+  }
+  /* tipos de negocio: menos aire */
+  .negocios--indice .negocio {
+    padding-block: var(--e-3);
+    gap: 4px;
+  }
+  /* pie: dos columnas */
+  .pie__columnas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--e-5) var(--e-4);
+    margin-top: var(--e-6);
+  }
+}
+@media (max-width: 639px) {
+  /* en el teléfono bastan cinco ejemplos de equipo; los ocho siguen en escritorio y cada uno en su ficha */
+  .equipo-lista li:nth-child(n + 6) {
+    display: none;
+  }
+  .situacion small {
+    font-size: var(--t-xs);
+  }
+  .preguntas .pregunta summary {
+    padding-block: var(--e-3);
+  }
+}
+
+@media (max-width: 639px) {
+  .negocio__problema {
+    font-size: var(--t-s);
+    line-height: 1.4;
+  }
+}
