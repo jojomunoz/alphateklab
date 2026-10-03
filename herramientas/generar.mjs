@@ -583,7 +583,7 @@ function paginaSolucion(so) {
         (p) => `<li class="problema">
       <p class="problema__que">${esc(p.problema)}</p>
       <p class="problema__respuesta">${esc(p.respuesta)}</p>
-      <p class="problema__servicios">${p.servicios.map((id) => `<a class="chip chip--enlace" href="${prefijo}servicios/${porId.get(id).slug}/">${esc(porId.get(id).corto)}</a>`).join('')}</p>
+      <p class="problema__servicios"><span>Con:</span> ${p.servicios.map((id) => `<a href="${prefijo}servicios/${porId.get(id).slug}/">${esc(porId.get(id).corto)}</a>`).join(', ')}.</p>
     </li>`,
       )
       .join('\n    ')}

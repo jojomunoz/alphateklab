@@ -3585,3 +3585,49 @@ html.sin-desplazar {
 .heroe--solo-texto .heroe__titulo--negocio {
   max-width: 24ch;
 }
+
+/* «Lo que te resolvemos» como filas con filete (antes, cajas con píldoras) */
+.problemas {
+  gap: 0 var(--e-7);
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 900px) {
+  .problemas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.problema {
+  display: grid;
+  gap: var(--e-2);
+  align-content: start;
+  padding: var(--e-5) 0;
+  border: 0;
+  border-top: 2px solid var(--tinta);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.problema__que {
+  font-family: var(--f-titulo);
+  font-weight: 800;
+  font-size: var(--t-l);
+  line-height: 1.25;
+}
+.problema__respuesta {
+  color: var(--tinta-2);
+}
+.problema__servicios {
+  font-size: var(--t-s);
+  color: var(--tinta-2);
+}
+.problema__servicios span {
+  font-weight: 700;
+  color: var(--tinta);
+}
+.problema__servicios a {
+  color: var(--enlace, var(--acento));
+  font-weight: 600;
+}
+.problema__servicios {
+  display: block;
+}
