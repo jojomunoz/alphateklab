@@ -5,6 +5,7 @@
 // - precio: solo los que decidieron los socios. Todo lo demás va como null y se muestra «A cotizar».
 // - demo: ruta relativa a una demo que existe en este repo o URL de otro repo de alphateklab.
 // - instala: true si el servicio incluye ir al local a instalar algo físico.
+// - visita: true si hay que ir a la propiedad (fotos, escaneo) aunque no se instale nada.
 
 export const SECTORES = [
   { id: 'restaurantes', nombre: 'Restaurantes y cafés' },
@@ -448,7 +449,8 @@ export const SERVICIOS = [
     corto: 'Recorrido 360 y 3D',
     sectores: ['inmuebles', 'hospedaje'],
     tipos: ['tresd', 'web'],
-    instala: true,
+    instala: false,
+    visita: true,
     para: 'El comprador recorre la propiedad desde su teléfono: con una foto 360 de cada ambiente, o en 3D, caminando por las habitaciones como en un videojuego y con las medidas reales.',
     incluye: ['Fotos 360 de cada ambiente con cámara 360, o escaneo 3D con LiDAR', 'Recorrido para tu página o tu anuncio, en tu dominio', 'Medidas de cada ambiente en la versión 3D'],
     equipo: ['Cámara 360 o teléfono con LiDAR (lo llevamos nosotros)'],
@@ -462,11 +464,12 @@ export const SERVICIOS = [
     corto: 'Fotos profesionales',
     sectores: ['inmuebles', 'hospedaje'],
     tipos: ['tresd'],
-    instala: true,
-    para: 'Fotos de cada ambiente con buena luz, para sumar al recorrido 3D.',
+    instala: false,
+    visita: true,
+    para: 'Fotos de cada ambiente con buena luz, tomadas en la misma visita del recorrido 360 o 3D, listas para tu anuncio.',
     incluye: ['Sesión en la propiedad', 'Fotos editadas listas para anunciar'],
     equipo: [],
-    precio: { texto: '+$300', nota: 'como extra del recorrido 3D' },
+    precio: { texto: '+$300', nota: 'como extra del recorrido 360 o 3D' },
     demo: null,
   },
   {
@@ -476,7 +479,8 @@ export const SERVICIOS = [
     corto: 'Planos con medidas',
     sectores: ['inmuebles', 'operacion'],
     tipos: ['tresd'],
-    instala: true,
+    instala: false,
+    visita: true,
     para: 'Del mismo escaneo sale el plano en planta con las medidas de cada ambiente, para el anuncio o para remodelar.',
     incluye: ['Plano en planta en PDF', 'Metros cuadrados por ambiente'],
     equipo: [],
@@ -518,7 +522,8 @@ export const SERVICIOS = [
     corto: 'Tomas con dron',
     sectores: ['inmuebles', 'hospedaje'],
     tipos: ['tresd'],
-    instala: true,
+    instala: false,
+    visita: true,
     para: 'Vista aérea del terreno, del edificio o del proyecto, para mostrar el entorno y los accesos.',
     incluye: ['Fotos y video aéreo', 'Mapa del terreno a partir de las fotos'],
     equipo: ['Dron (lo llevamos nosotros)'],

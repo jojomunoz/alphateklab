@@ -47,6 +47,7 @@ const esExterna = (u) => /^https?:\/\//.test(u);
 // rutas de demo relativas a la raíz del sitio → relativas a la página que las enlaza
 const enlaceDemo = (u, prefijo) => (esExterna(u) ? u : prefijo + u);
 
+const ICONO_VISITA = `<svg class="ico-instala" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M8 15s5-4.6 5-8.5A5 5 0 0 0 3 6.5C3 10.4 8 15 8 15Zm0-6.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>`;
 const ICONO_INSTALA = `<svg class="ico-instala" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M6 1v4M10 1v4M3.5 5h9v3.2a4.5 4.5 0 0 1-9 0V5Zm4.5 7.6V15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>`;
 
 function cabecera(prefijo, actual) {
@@ -70,8 +71,8 @@ function cabecera(prefijo, actual) {
 function pie(prefijo) {
   return `<footer class="pie">
   <div class="envoltura pie__fila">
-    <p><a class="marca" href="${prefijo}">alphatek<span class="marca__lab">lab</span></a><br />Soluciones tecnológicas para negocios · Panamá</p>
-    <p class="pie__nota">Las demos usan negocios de ejemplo: sus nombres, platos, pacientes y reservas son ficticios.<br />Actualizado el ${esc(ACTUALIZADO.texto)} · <a href="${prefijo}privacidad/">Privacidad</a></p>
+    <p><a class="marca" href="${prefijo}">alphatek<span class="marca__lab">lab</span></a><br />Soluciones tecnológicas para negocios en Panamá</p>
+    <p class="pie__nota">Las demos usan negocios de ejemplo: sus nombres, platos, pacientes y reservas son ficticios.<br />Actualizado el ${esc(ACTUALIZADO.texto)}.<br /><a href="${prefijo}privacidad/">Privacidad</a></p>
   </div>
 </footer>`;
 }
@@ -122,7 +123,7 @@ function fichaServicio(s) {
     ? `<a class="boton boton--linea" href="${enlaceDemo(s.demo, '')}">Probar la demo<span class="sr"> de ${esc(s.nombre)}</span></a>`
     : '';
   const equipo = s.equipo.length
-    ? `<div><h4>Equipo que se instala</h4><ul>${s.equipo.map((e) => `<li>${esc(e)}</li>`).join('')}</ul></div>`
+    ? `<div><h4>${s.instala ? 'Equipo que se instala' : 'Equipo'}</h4><ul>${s.equipo.map((e) => `<li>${esc(e)}</li>`).join('')}</ul></div>`
     : `<div><h4>Equipo</h4><p class="ficha__nada">No necesita equipo en el local.</p></div>`;
   return `<article class="ficha" id="${s.slug}" data-sectores="${s.sectores.join(' ')}" data-tipos="${s.tipos.join(' ')}" data-demo="${s.demo ? 1 : 0}" data-instala="${s.instala ? 1 : 0}">
   <div class="ficha__cabeza">
@@ -131,7 +132,7 @@ function fichaServicio(s) {
     <p class="ficha__precio num">${esc(precioTexto(s))}${s.precio?.nota ? `<span class="ficha__nota">${esc(s.precio.nota)}</span>` : ''}</p>
   </div>
   <p class="ficha__para">${esc(s.para)}</p>
-  <p class="ficha__meta"><span>${s.tipos.map((t) => esc(nombreTipo[t])).join(', ')}</span>${s.instala ? `<span class="ficha__instala">${ICONO_INSTALA}Lo instalamos en tu local</span>` : ''}</p>
+  <p class="ficha__meta"><span>${s.tipos.map((t) => esc(nombreTipo[t])).join(', ')}</span>${s.instala ? `<span class="ficha__instala">${ICONO_INSTALA}Lo instalamos en tu local</span>` : ''}${s.visita ? `<span class="ficha__instala">${ICONO_VISITA}Vamos a tu propiedad</span>` : ''}</p>
   <details class="ficha__detalle">
     <summary>Qué incluye</summary>
     <div class="ficha__columnas">
@@ -292,7 +293,7 @@ function seccionCotizar() {
           <option value="">Elige un servicio…</option>
           ${SECTORES.map(
             (sec) => `<optgroup label="${esc(sec.nombre)}">${SERVICIOS.filter((s) => s.sectores[0] === sec.id)
-              .map((s) => `<option value="${s.id}">${s.id} · ${esc(s.nombre)}</option>`)
+              .map((s) => `<option value="${s.id}">${s.id} ${esc(s.nombre)}</option>`)
               .join('')}</optgroup>`,
           ).join('\n          ')}
         </select>
@@ -391,7 +392,7 @@ function paginaServicio(s) {
     <span class="${s.demo ? 'etiqueta' : 'etiqueta etiqueta--hueca'}">${s.id}</span>
     <h1 class="display servicio__titulo">${esc(s.nombre)}</h1>
     <p class="servicio__para">${esc(s.para)}</p>
-    <p class="servicio__meta">Para: ${s.sectores.map((x) => esc(nombreSector[x])).join(', ')} · ${s.tipos.map((t) => esc(nombreTipo[t])).join(', ')}</p>
+    <p class="servicio__meta">Para ${s.sectores.map((x) => esc(nombreSector[x].toLowerCase())).join(', ')}. ${s.tipos.map((t) => esc(nombreTipo[t])).join(', ')}.</p>
   </div>
   <div class="servicio__cuerpo">
     <div>
@@ -399,9 +400,10 @@ function paginaServicio(s) {
       <ul>${s.incluye.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
     </div>
     <div>
-      <h2>${s.equipo.length ? 'Equipo que se instala' : 'Equipo'}</h2>
+      <h2>${s.equipo.length ? (s.instala ? 'Equipo que se instala' : 'Equipo') : 'Equipo'}</h2>
       ${s.equipo.length ? `<ul>${s.equipo.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '<p>No necesita equipo en el local.</p>'}
       ${s.instala ? `<p class="ficha__instala">${ICONO_INSTALA}Lo instalamos nosotros en tu local.</p>` : ''}
+      ${s.visita ? `<p class="ficha__instala">${ICONO_VISITA}Vamos nosotros a la propiedad con el equipo.</p>` : ''}
     </div>
     <div class="servicio__precio">
       <h2>Precio</h2>

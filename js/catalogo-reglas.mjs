@@ -49,7 +49,9 @@ export function validarCatalogo({ SECTORES, TIPOS, SERVICIOS, DEMOS = [] }, exis
     if (!s.para || s.para.length < 40 || s.para.length > 260) errores.push(`${q}: «para» debe tener entre 40 y 260 caracteres`);
     if (!Array.isArray(s.incluye) || s.incluye.length < 2) errores.push(`${q}: «incluye» necesita al menos 2 renglones`);
     if (!Array.isArray(s.equipo)) errores.push(`${q}: «equipo» debe ser una lista (vacía si no hay)`);
-    if (s.instala && !s.equipo?.length && !['B01', 'B02', 'B03', 'B06'].includes(s.id)) errores.push(`${q}: dice que se instala pero no lista equipo`);
+    if (s.instala && !s.equipo?.length) errores.push(`${q}: dice que se instala pero no lista equipo`);
+    if (s.visita !== undefined && typeof s.visita !== 'boolean') errores.push(`${q}: «visita» debe ser true o false`);
+    if (s.instala && s.visita) errores.push(`${q}: o se instala o es solo visita, no las dos`);
     if (!s.sectores?.length || s.sectores.some((x) => !sectores.has(x))) errores.push(`${q}: sector desconocido`);
     if (!s.tipos?.length || s.tipos.some((x) => !tipos.has(x))) errores.push(`${q}: tipo desconocido`);
     const letra = { restaurantes: 'R', comercio: 'C', salud: 'S', hospedaje: 'H', inmuebles: 'B', operacion: 'I', todos: 'T' }[s.sectores?.[0]];

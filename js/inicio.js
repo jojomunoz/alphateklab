@@ -116,7 +116,7 @@ function pintar() {
       const s = porId.get(id);
       const li = document.createElement('li');
       const txt = document.createElement('span');
-      txt.textContent = `${s.id} · ${s.nombre}`;
+      txt.textContent = `${s.id} ${s.nombre}`;
       const b = document.createElement('button');
       b.type = 'button';
       b.className = 'quitar';
