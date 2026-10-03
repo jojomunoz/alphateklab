@@ -4004,3 +4004,12 @@ html.sin-desplazar {
     transition: none;
   }
 }
+
+/* catálogo: con una búsqueda, la descripción vuelve (explica por qué salió cada resultado), debajo de nombre y botón */
+@media (max-width: 639px) {
+  .catalogo--buscando .rejilla-servicios--indice .tarjeta-servicio__para {
+    display: -webkit-box;
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+}

@@ -713,7 +713,7 @@ function paginaServicios() {
       <div class="grupo__cabeza grupo__cabeza--texto">
         <h2 class="grupo__titulo" id="grupo-${g.t.id}">${esc(g.t.nombre)}</h2><p class="grupo__desc">${esc(g.t.desc)}</p>
       </div>
-      <div class="rejilla-servicios">${g.lista.map((s) => tarjetaServicio(s, prefijo)).join('\n')}</div>
+      <div class="rejilla-servicios rejilla-servicios--indice">${g.lista.map((s) => tarjetaServicio(s, prefijo)).join('\n')}</div>
     </section>`,
       )
       .join('\n    ')}
