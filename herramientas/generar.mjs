@@ -355,7 +355,7 @@ function paginaInicio() {
         <button class="boton boton--senal" type="submit">Buscar</button>
         <div class="heroe__resultados" id="heroe-resultados" hidden></div>
       </form>
-      <p class="heroe__prueba">Prueba con: ${chips.map(([t, q]) => `<button type="button" class="chip-texto" data-buscar="${esc(q)}">${esc(t)}</button>`).join(', ')}.</p>
+      <p class="heroe__prueba">Prueba con: ${chips.map(([t, q], i) => `<span class="sin-corte"><button type="button" class="chip-texto" data-buscar="${esc(q)}">${esc(t)}</button>${i < chips.length - 1 ? ',' : '.'}</span>`).join(' ')}</p>
       <p class="heroe__diagnostico"><a class="boton boton--linea" href="${prefijo}diagnostico/">${icono('question')}¿No sabes qué pedir? Responde 3 preguntas</a></p>
     </div>
     <div class="heroe__visual" aria-hidden="true">
