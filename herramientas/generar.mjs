@@ -786,8 +786,11 @@ function paginaLaboratorio() {
   <p class="seccion__bajada">Funcionan en tu navegador con negocios de ejemplo. Cada una dice qué parte es simulada.</p>
   <ul class="demos demos--claras" role="list">
     ${DEMOS.map((d) => tarjetaDemo(d, prefijo, { nivel: 'h2' })).join('\n    ')}
-    ${DEMOS_TODAS.filter((d) => !DEMOS.some((x) => x.clave === d.clave)).map((d) => demoPendiente(d).replace(/<h3 class="demo__nombre">(.*?)<\/h3>/, '<h2 class="demo__nombre">$1</h2>')).join('\n    ')}
   </ul>
+  ${(() => {
+    const pendientes = DEMOS_TODAS.filter((d) => !DEMOS.some((x) => x.clave === d.clave));
+    return pendientes.length ? `<p class="demos__proximas">${icono('wrench')}<span><strong>En preparación:</strong> ${pendientes.map((d) => esc(d.nombre)).join(', ')}. Aparecen aquí cuando pasan su revisión.</span></p>` : '';
+  })()}
 </main>
 ${bandaPreguntanos(prefijo)}`,
   });
