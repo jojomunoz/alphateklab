@@ -601,7 +601,10 @@ function paginaServicios() {
     ${grupos
       .map(
         (g) => `<section class="grupo" data-grupo="${g.t.id}" aria-labelledby="grupo-${g.t.id}">
-      <h2 class="grupo__titulo" id="grupo-${g.t.id}">${icono(g.t.icono)}${esc(g.t.nombre)}</h2>
+      <div class="grupo__cabeza">
+        ${foto(g.t.foto, prefijo, { clase: 'grupo__foto', sizes: '(min-width: 900px) 30vw, 100vw', alt: '' })}
+        <div><h2 class="grupo__titulo" id="grupo-${g.t.id}">${icono(g.t.icono)}${esc(g.t.nombre)}</h2><p class="grupo__desc">${esc(g.t.desc)}</p></div>
+      </div>
       <div class="rejilla-servicios">${g.lista.map((s) => tarjetaServicio(s, prefijo)).join('\n')}</div>
     </section>`,
       )
@@ -790,7 +793,7 @@ function paginaPrivacidad() {
 
 function paginaCreditos() {
   const prefijo = '../';
-  const filas = Object.entries(CREDITOS_FOTOS);
+  const filas = Object.entries(CREDITOS_FOTOS).filter(([slot]) => existe(`assets/fotos/${slot}.webp`));
   return documento({
     titulo: 'Créditos · alphateklab',
     descripcion: 'Autores y licencias de las fotos, los íconos y las librerías del sitio de alphateklab.',

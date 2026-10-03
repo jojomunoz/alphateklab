@@ -2570,3 +2570,28 @@ main:has(> .banda-pregunta:last-child) + .pie {
 .ficha-detalle__bloque .lista-check {
   font-size: var(--t-s);
 }
+
+.grupo__cabeza {
+  display: grid;
+  gap: var(--e-4);
+  align-items: center;
+}
+@media (min-width: 700px) {
+  .grupo__cabeza {
+    grid-template-columns: 220px 1fr;
+  }
+}
+.grupo__foto {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: var(--radio-tarjeta);
+}
+.grupo__desc {
+  color: var(--tinta-2);
+  margin-top: var(--e-1);
+}
+.catalogo--buscando .grupo__cabeza {
+  display: none;
+}

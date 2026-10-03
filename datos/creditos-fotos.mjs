@@ -213,3 +213,17 @@ Object.assign(CREDITOS_FOTOS, {
   'sector-todos': MARCA('Dueña de negocio revisando su sistema', 'Dueña de una tienda revisando su sistema en una tableta detrás del mostrador.'),
   'instalacion': MARCA('Instalación de cámara de seguridad en un local', 'Técnico instalando una cámara de seguridad en un local mientras su compañero configura una tableta.'),
 });
+
+Object.assign(CREDITOS_FOTOS, {
+  'tipo-software': MARCA('Revisión de un sistema de inventario en una oficina', 'Un desarrollador y la dueña de un negocio revisan juntos un sistema de inventario en una pantalla.'),
+  'tipo-web': MARCA('Página de un café en teléfono y laptop', 'Teléfono y laptop sobre una mesa de madera mostrando la misma página de un café.'),
+  'tipo-ia': MARCA('Dueño de tienda revisando un chat automático', 'Dueño de una tienda revisando en su teléfono las respuestas automáticas a sus clientes.'),
+  'tipo-iot': MARCA('Sensor en la nevera de un restaurante', 'Sensor pequeño en la puerta de una nevera de cocina de restaurante.'),
+  'tipo-vision': MARCA('Cámara compacta en la entrada de una tienda', 'Entrada de una tienda con una cámara pequeña sobre la puerta y clientes entrando.'),
+  'tipo-tresd': MARCA('Cámara 360 en una sala con vista a la ciudad', 'Cámara 360 sobre un trípode en una sala vacía con ventanales hacia la ciudad de Panamá.'),
+  'clientes-entrando': MARCA('Clientes entrando a una tienda', 'Clientes entrando a una tienda iluminada por el sol.'),
+  'tipo-pantallas': MARCA('Pedido en la pantalla táctil de un café', 'Clienta eligiendo su almuerzo en la pantalla táctil de un café.'),
+  'tipo-pagos': MARCA('Pago sin contacto en un restaurante', 'Clienta pagando con el teléfono en la terminal que le acerca el mesero.'),
+  'cocina': MARCA('Cocina con pantalla de comandas', 'Cocinero preparando platos frente a una pantalla con las comandas del día.'),
+  'equipo-instalando': MARCA('Instalación de una tableta en una recepción', 'Dos técnicos instalan una tableta en la pared de una recepción.'),
+});
