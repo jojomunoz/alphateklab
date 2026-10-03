@@ -48,14 +48,15 @@ export function recomendar(solucion, elegidos, tengo = []) {
     const p = solucion.problemas[i];
     p.servicios.forEach((id, orden) => {
       if (quitar.has(id)) return;
-      const r = porId.get(id) || { id, motivos: [], peso: 0, primero: Infinity };
+      const r = porId.get(id) || { id, motivos: [], peso: 0, primero: Infinity, principal: false };
       r.motivos.push(p.problema);
+      if (orden === 0) r.principal = true; // es la respuesta principal de al menos un problema marcado
       r.peso += orden === 0 ? 2 : 1; // el primer servicio de cada problema es la respuesta principal
       r.primero = Math.min(r.primero, i * 10 + orden);
       porId.set(id, r);
     });
   }
-  return [...porId.values()].sort((a, b) => b.peso - a.peso || a.primero - b.primero).map(({ id, motivos }) => ({ id, motivos }));
+  return [...porId.values()].sort((a, b) => b.peso - a.peso || a.primero - b.primero).map(({ id, motivos, principal }) => ({ id, motivos, principal }));
 }
 
 export function mensajeDiagnostico({ negocio, problemas = [], servicios = [], otro = '' }) {

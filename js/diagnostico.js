@@ -83,7 +83,9 @@ async function mostrarResultado({ guardar = true } = {}) {
   const e = leer();
   const so = SOL.get(e.negocio);
   const recs = recomendar(so, e.problemas, e.tengo);
-  const servicios = recs.map((r) => ({ id: r.id, ...SERV[r.id], motivos: r.motivos.map((m) => `Porque marcaste «${m}»`) }));
+  // la respuesta principal de un problema dice «Porque marcaste…»; lo que la complementa, «También ayuda con…»
+  const sinPunto = (t) => t.replace(/\.$/, '');
+  const servicios = recs.map((r) => ({ id: r.id, ...SERV[r.id], motivos: [`${r.principal ? 'Porque marcaste' : 'También ayuda con'} ${r.motivos.map((m) => `«${sinPunto(m)}»`).join(' y ')}`] }));
   // Lo escrito en «¿Algo más?» también se busca en el catálogo: decir «no está en la lista» solo si de verdad no está.
   let porTexto = [];
   if (e.otro) {

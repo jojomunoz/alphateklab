@@ -57,3 +57,9 @@ test('lo que ya tiene cada negocio quita su servicio: un restaurante con pantall
   assert.ok(!r.some((x) => x.id === 'R05'));
   assert.ok(recomendar(restaurante, [1]).some((x) => x.id === 'R05'));
 });
+
+test('cada recomendación dice si es la respuesta principal de lo que se marcó o un complemento', () => {
+  const r = recomendar(restaurante, [0]);
+  assert.equal(r.find((x) => x.id === 'R02').principal, true);
+  assert.equal(r.find((x) => x.id === 'R01').principal, false);
+});

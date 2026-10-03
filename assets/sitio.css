@@ -3826,3 +3826,11 @@ html.sin-desplazar {
 .heroe__problemas li:last-child {
   border-bottom: 1px solid color-mix(in srgb, var(--h-texto) 25%, transparent);
 }
+
+.mega--directo:not([hidden]) {
+  animation: none;
+}
+.ficha-heroe__agregar {
+  align-self: center;
+  font-weight: 600;
+}

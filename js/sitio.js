@@ -27,8 +27,10 @@ for (const g of grupos) {
       g.dataset.abierto = 'clic';
       return;
     }
+    const habiaOtro = grupos.some((x) => x !== g && x.querySelector('.menu__boton').getAttribute('aria-expanded') === 'true');
     cerrarMenus(b);
     b.setAttribute('aria-expanded', String(!abierto));
+    panel.classList.toggle('mega--directo', habiaOtro); // de un panel a otro, sin repetir la entrada
     panel.hidden = abierto;
     g.dataset.abierto = abierto ? '' : 'clic';
   });
@@ -39,6 +41,7 @@ for (const g of grupos) {
       clearTimeout(t);
       t = setTimeout(() => {
         if (b.getAttribute('aria-expanded') === 'true') return;
+        panel.classList.toggle('mega--directo', grupos.some((x) => x !== g && x.querySelector('.menu__boton').getAttribute('aria-expanded') === 'true'));
         cerrarMenus(b);
         b.setAttribute('aria-expanded', 'true');
         panel.hidden = false;

@@ -772,7 +772,7 @@ function paginaServicio(s) {
       <p class="ficha-heroe__acciones">
         <a class="boton boton--senal" href="${prefijo}cotizar/?servicio=${s.id}">${icono('chat-circle-dots')}Preguntar por este servicio</a>
         ${s.demo ? `<a class="boton boton--linea" href="${enlace(s.demo, prefijo)}">${icono('play-circle')}Probar la demo</a>` : ''}
-        <button class="boton boton--linea" type="button" data-cotizar="${s.id}" aria-pressed="false">Agregar a mi lista</button>
+        <button class="enlace-boton ficha-heroe__agregar" type="button" data-cotizar="${s.id}" aria-pressed="false">Agregar a mi lista</button>
       </p>
       ${s.precio ? `<p class="ficha-heroe__precio"><span class="num">${esc(s.precio.texto)}</span>${s.precio.nota ? ` · ${esc(s.precio.nota)}` : ''}</p>` : ''}
     </div>
