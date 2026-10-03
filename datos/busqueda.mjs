@@ -47,7 +47,7 @@ export const PALABRAS = {
   I02: 'gps rastreo flota vehiculos camiones motos repartidores ubicacion rutas tracking',
   I03: 'placas matriculas lpr anpr estacionamiento parking porton pluma camara',
   I04: 'control de acceso tarjeta qr puerta empleados visitas asistencia biometrico reloj marcador ponchar ponche marcacion gimnasio gym membresias socios',
-  I05: 'casco chaleco epp seguridad industrial camaras ia accidentes',
+  I05: 'casco chaleco epp seguridad industrial camaras ia accidentes obreros trabajadores personal',
   I06: 'contador produccion linea banda sacos cajas piezas conteo turno',
   I07: 'vibracion motores bombas compresores mantenimiento predictivo falla temperatura',
   I08: 'bascula balanza peso pesaje camiones medidor conectado',
