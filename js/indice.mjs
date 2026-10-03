@@ -1,6 +1,9 @@
 // Arma las entradas del buscador a partir de los datos del sitio. Lo usan el generador (assets/indice.json) y las pruebas.
 
-export function construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES = [], DEMOS = [] }) {
+export function construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES = [], DEMOS = [], PALABRAS_NEGOCIO = {} }) {
+  // Cada servicio hereda los problemas (dichos como los dice el cliente) de las páginas de negocio que lo enlazan.
+  const problemasDe = {};
+  for (const so of SOLUCIONES) for (const p of so.problemas) for (const id of p.servicios) (problemasDe[id] ||= []).push(p.problema);
   const nombreSector = Object.fromEntries(SECTORES.map((s) => [s.id, s.nombre]));
   const nombreTipo = Object.fromEntries(TIPOS.map((t) => [t.id, t.nombre]));
   const iconoTipo = Object.fromEntries(TIPOS.map((t) => [t.id, t.icono]));
@@ -22,6 +25,7 @@ export function construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCION
       incluye: [...s.incluye, ...s.equipo].join(' '),
       tipos: s.tipos.map((t) => nombreTipo[t]).join(' '),
       sectores: s.sectores.map((x) => nombreSector[x]).join(' '),
+      problemas: (problemasDe[s.id] || []).join(' '),
     },
   }));
   const soluciones = SOLUCIONES.map((so) => ({
@@ -35,7 +39,7 @@ export function construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCION
     campos: {
       nombre: so.titulo,
       corto: nombreSector[so.sector],
-      palabras: '',
+      palabras: PALABRAS_NEGOCIO[so.slug] || '',
       para: so.bajada,
       incluye: so.problemas.map((p) => p.problema).join(' '),
     },

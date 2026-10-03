@@ -3,7 +3,7 @@
 // pruebas/buscador.test.mjs. El índice lo genera herramientas/generar.mjs en assets/indice.json.
 
 const VACIAS = new Set(
-  'a al algo algun alguna como con cual cuando de del desde donde el ella en entre es esa ese eso esta este esto hacer hay la las le les lo los mas me mi mis muy necesito ni no nos o otra otro para pero poder por puede pueden que quien quiero se ser si sin sobre su sus tambien te tener tengo tiene tu tus un una uno unos unas y ya yo hola favor ustedes hacen tienen ofrecen servicio servicios negocio negocios empresa mio mia algo cosa cosas manera forma sistema'.split(' '),
+  'a al algo algun alguna como con cual cuando de del desde donde el ella en entre es esa ese eso esta este esto hacer hay la las le les lo los mas me mi mis muy necesito ni no nos o otra otro para pero poder por puede pueden que quien quiero se ser si sin sobre su sus tambien te tener tengo tiene tu tus un una uno unos unas y ya yo hola favor ustedes hacen tienen ofrecen servicio servicios negocio negocios empresa mio mia algo cosa cosas manera forma sistema creo pienso quisiera gustaria busco buscamos necesitamos queremos tenemos ayuda'.split(' '),
 );
 
 export function normalizar(texto) {
@@ -21,18 +21,21 @@ export function fichas(texto) {
     .filter((t) => t && !VACIAS.has(t) && (t.length > 1 || /\d/.test(t)));
 }
 
-// Dos palabras «coinciden» si son iguales o comparten un prefijo largo (pedir/pedidos, camara/camaras,
-// contar/contador). Devuelve 1 si son iguales, 0,8 si coinciden por prefijo, 0 si no.
+// Dos palabras «coinciden» si son iguales o si, después de la raíz común, lo que sobra en cada una es una terminación
+// de la misma familia (pedir/pedidos, camara/camaras, contar/contador). «contabilidad» y «contar» comparten «conta»
+// pero «bilidad» no es una terminación: no coinciden. Devuelve 1 si son iguales, 0,8 si son de la misma familia, 0 si no.
+const TERMINACIONES = new Set(['', 's', 'es', 'a', 'o', 'as', 'os', 'r', 'ar', 'er', 'ir', 'ndo', 'ando', 'iendo', 'do', 'da', 'dos', 'das', 'ado', 'ada', 'ados', 'adas', 'ido', 'ida', 'idos', 'idas', 'or', 'ores', 'dor', 'dora', 'dores', 'doras', 'cion', 'ciones', 'mos', 'n', 'an', 'en', 'e', 'en', 'ra', 'ras', 'ria', 'rias', 'nte', 'ntes', 'miento', 'mientos']);
 export function parecido(a, b) {
   if (a === b) return 1;
   const corta = Math.min(a.length, b.length);
   if (corta < 4) return 0;
   let i = 0;
   while (i < corta && a[i] === b[i]) i++;
-  return i >= 4 && i >= Math.ceil(corta * 0.7) ? 0.8 : 0;
+  if (i < 4) return 0;
+  return TERMINACIONES.has(a.slice(i)) && TERMINACIONES.has(b.slice(i)) ? 0.8 : 0;
 }
 
-const PESOS = { nombre: 6, corto: 6, palabras: 4, tipos: 2.5, sectores: 2.5, para: 2, incluye: 1.2 };
+const PESOS = { nombre: 6, corto: 6, palabras: 4, problemas: 3, tipos: 2.5, sectores: 2.5, para: 2, incluye: 1.2 };
 
 // entrada: { id, tipo:'servicio'|'solucion'|'demo', titulo, url, campos:{ nombre, corto, palabras, para, incluye, tipos, sectores } }
 export function prepararIndice(entradas) {
@@ -62,13 +65,15 @@ function puntuar(entrada, consulta) {
     if (mejor > 0) {
       encontradas++;
       total += mejor;
-      if (['nombre', 'corto', 'palabras'].includes(campoMejor)) fuertes++;
+      if (['nombre', 'corto', 'palabras', 'problemas'].includes(campoMejor)) fuertes++;
     }
   }
   if (!encontradas) return 0;
   const cobertura = encontradas / consulta.length;
   // con varias palabras, premia que estén todas; una sola coincidencia débil en el texto largo no basta
   if (consulta.length > 1 && cobertura < 0.5 && fuertes === 0) return 0;
+  // con tres palabras o más, si la mitad no aparece en ningún lado, el resultado es casualidad
+  if (consulta.length >= 3 && cobertura < 0.5) return 0;
   return total * (0.5 + cobertura) + (cobertura === 1 ? 2 : 0);
 }
 

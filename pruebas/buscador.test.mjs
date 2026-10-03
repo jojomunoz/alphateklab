@@ -1,13 +1,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { SECTORES, TIPOS, SERVICIOS } from '../datos/catalogo.mjs';
-import { PALABRAS } from '../datos/busqueda.mjs';
+import { PALABRAS, PALABRAS_NEGOCIO } from '../datos/busqueda.mjs';
 import { SOLUCIONES } from '../datos/soluciones.mjs';
 import { DEMOS } from '../datos/demos.mjs';
 import { construirIndice } from '../js/indice.mjs';
 import { prepararIndice, buscar, normalizar, fichas, parecido, mensajePregunta } from '../js/buscador.mjs';
 
-const indice = prepararIndice(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS }));
+const indice = prepararIndice(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO }));
 const primeros = (q, n = 3) => buscar(indice, q).slice(0, n).map((r) => r.id);
 
 test('normaliza tildes, mayúsculas y signos', () => {
@@ -20,6 +20,8 @@ test('parecido acepta plurales y familias de palabras, no coincidencias cortas',
   assert.equal(parecido('contar', 'contador'), 0.8);
   assert.equal(parecido('pedir', 'pedidos'), 0.8);
   assert.equal(parecido('mesa', 'mesero'), 0);
+  assert.equal(parecido('contabilidad', 'contar'), 0);
+  assert.equal(parecido('planilla', 'plano'), 0);
   assert.equal(parecido('web', 'web'), 1);
 });
 
@@ -64,6 +66,15 @@ for (const [consulta, esperado] of CASOS) {
   });
 }
 
+// Falsos parecidos que encontró la auditoría del 3-oct: ninguno puede volver a salir.
+for (const [q, prohibido] of [['contabilidad', 'C01'], ['planilla', 'B03'], ['impresora 3d de chocolate', 'C10'], ['reparar celulares', 'R12'], ['diseño de logo', null]]) {
+  test(`«${q}» no trae ${prohibido ?? 'ningún servicio'}`, () => {
+    const ids = buscar(indice, q).filter((r) => r.tipo === 'servicio').map((r) => r.id);
+    if (prohibido) assert.ok(!ids.includes(prohibido), ids.join(', '));
+    else assert.deepEqual(ids, []);
+  });
+}
+
 test('lo que no ofrecemos no devuelve nada y se puede preguntar', () => {
   assert.deepEqual(buscar(indice, 'construir un cohete a la luna'), []);
   assert.deepEqual(buscar(indice, 'zapatos de cuero'), []);
@@ -79,3 +90,18 @@ test('buscar un tipo de negocio sugiere su página de soluciones', () => {
   assert.ok(buscar(indice, 'restaurante').some((r) => r.id === 'sol-restaurantes'));
   assert.ok(buscar(indice, 'clínica').some((r) => r.id === 'sol-clinicas'));
 });
+
+// Las cuatro personas de la auditoría del 3-oct: el problema dicho con sus palabras, no el nombre del producto.
+for (const [q, esperado] of [
+  ['creo que mis empleados me roban', 'C05'],
+  ['pacientes que no llegan', 'S01'],
+  ['los pacientes faltan a la cita', 'S01'],
+  ['se me pierde mercancia', 'C05'],
+  ['minisuper', 'sol-tiendas'],
+  ['tengo una fonda', 'R01'],
+  ['reloj marcador para empleados', 'I04'],
+]) {
+  test(`con sus palabras: «${q}» trae ${esperado} primero`, () => {
+    assert.equal(primeros(q, 1)[0], esperado, `salió ${primeros(q, 3).join(', ')}`);
+  });
+}

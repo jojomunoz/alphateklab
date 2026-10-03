@@ -42,7 +42,7 @@ export const FICHAS = {
       },
       {
         "p": "¿Puedo ver uno antes de contratar?",
-        "r": "Sí. En el laboratorio del sitio hay un recorrido 360 y uno 3D de un apartamento de ejemplo."
+        "r": "Sí. En las demos del sitio hay recorridos de ejemplo que puedes mover con el dedo o el mouse."
       }
     ],
     "ejemplo": "Ejemplo: un agente alquila un apartamento de dos recámaras en El Cangrejo y le escriben muchos interesados desde el extranjero. Les manda el enlace del recorrido 3D y cada uno mide la recámara principal desde su teléfono antes de agendar la visita."
@@ -156,7 +156,7 @@ export const FICHAS = {
       "Un calendario donde agendar las visitas"
     ],
     "no_incluye": [
-      "Lo que Meta cobra por los mensajes de WhatsApp: según su tarifa de octubre de 2026, los primeros 1.000 mensajes de servicio al mes por número no se cobran y después son unos US$0,011 cada uno",
+      "Lo que Meta cobra por los mensajes de WhatsApp: según su tarifa de octubre de 2026, los primeros 1.000 mensajes de servicio al mes por número no se cobran y después son unos US$0.011 cada uno",
       "Los anuncios pagados para atraer interesados",
       "La visita: la sigues haciendo tú o tu agente"
     ],
@@ -376,7 +376,7 @@ export const FICHAS = {
       "Alguien que reciba el aviso y pueda abrir otra caja"
     ],
     "no_incluye": [
-      "El costo de los avisos por WhatsApp: Meta lo cobra por mensaje, unos US$0,011 cada uno en Panamá según su tarifa de octubre de 2026; el aviso en pantalla no tiene ese costo",
+      "El costo de los avisos por WhatsApp: Meta lo cobra por mensaje, unos US$0.011 cada uno en Panamá según su tarifa de octubre de 2026; el aviso en pantalla no tiene ese costo",
       "Personal para abrir la otra caja: el aviso solo dice cuándo hace falta",
       "La pantalla del local, si eliges ese aviso y no tienes una"
     ],
@@ -603,7 +603,7 @@ export const FICHAS = {
       "Que en la caja haya un teléfono o tableta para leer el QR del cliente"
     ],
     "no_incluye": [
-      "El costo de los mensajes por WhatsApp a clientes que no vuelven: Meta cobra por cada mensaje de promoción, unos US$0,074 en Panamá según su tarifa de octubre de 2026",
+      "El costo de los mensajes por WhatsApp a clientes que no vuelven: Meta cobra por cada mensaje de promoción, unos US$0.074 en Panamá según su tarifa de octubre de 2026",
       "Lo que regalas: el premio lo pone tu negocio",
       "Tarjetas plásticas o de cartón impresas"
     ],
@@ -1162,7 +1162,7 @@ export const FICHAS = {
       "Los números de WhatsApp de quienes reciben los avisos"
     ],
     "no_incluye": [
-      "Lo que Meta cobra por cada aviso por WhatsApp: unos US$0,011 por mensaje en Panamá, según su tarifa de octubre de 2026",
+      "Lo que Meta cobra por cada aviso por WhatsApp: unos US$0.011 por mensaje en Panamá, según su tarifa de octubre de 2026",
       "La conexión a internet del local",
       "Reparar lo que el sensor detecte, como la nevera que falla o la fuga"
     ],
@@ -1430,7 +1430,7 @@ export const FICHAS = {
     "no_incluye": [
       "La reparación o el mantenimiento del equipo",
       "La causa exacta de la falla: el aviso dice que algo cambió y tu técnico revisa qué es",
-      "Lo que Meta cobra por cada aviso por WhatsApp: unos US$0,011 por mensaje en Panamá, según su tarifa de octubre de 2026"
+      "Lo que Meta cobra por cada aviso por WhatsApp: unos US$0.011 por mensaje en Panamá, según su tarifa de octubre de 2026"
     ],
     "preguntas": [
       {
@@ -2178,7 +2178,7 @@ export const FICHAS = {
       "Los horarios de cada profesional y la duración de cada tipo de cita"
     ],
     "no_incluye": [
-      "Los mensajes de WhatsApp: Meta los cobra aparte, unos US$0,011 cada uno en Panamá según su tarifa de octubre de 2026",
+      "Los mensajes de WhatsApp: Meta los cobra aparte, unos US$0.011 cada uno en Panamá según su tarifa de octubre de 2026",
       "La llamada a quien no contesta: el sistema avisa y la llamada la hace recepción",
       "El expediente clínico del paciente, que es otro servicio"
     ],
@@ -3471,7 +3471,7 @@ export const FICHAS = {
       },
       {
         "p": "¿Puedo verlo antes de escribirles?",
-        "r": "Sí. En esta página hay una demostración de la agenda con datos de ejemplo."
+        "r": "Sí. Arriba, en «Probar la demo», está la agenda de citas con datos de ejemplo."
       }
     ],
     "ejemplo": "Ejemplo: en una barbería de Vía España con tres barberos, un cliente reserva para el viernes a las 6:00 con su barbero de siempre y deja la seña con Yappy. El jueves le llega el recordatorio; si cancela, el hueco queda libre para otro."

@@ -89,7 +89,7 @@ function mostrarResultado({ guardar = true } = {}) {
       </div>
       <div class="diag-resultado__botones">
         <a class="boton boton--senal" href="${wa}" target="_blank" rel="noopener">${ico('whatsapp-logo')}Mandar por WhatsApp</a>
-        ${servicios.length ? `<button class="boton boton--linea" type="button" data-agregar-todo>Agregar todo a la cotización</button>` : ''}
+        ${servicios.length ? `<button class="boton boton--linea" type="button" data-agregar-todo>Agregar todo a mi lista</button>` : ''}
         <button class="boton boton--linea" type="button" data-reiniciar>Empezar de nuevo</button>
       </div>
       <p class="diag__aviso" data-aviso-final role="status"></p>
@@ -98,7 +98,7 @@ function mostrarResultado({ guardar = true } = {}) {
   resultado.querySelector('[data-agregar-todo]')?.addEventListener('click', (ev) => {
     const n = agregarVarios(servicios.map((s) => s.id));
     window.dispatchEvent(new StorageEvent('storage'));
-    ev.currentTarget.textContent = n ? `Agregados (${n}). Ver la cotización` : 'Ya estaban. Ver la cotización';
+    ev.currentTarget.textContent = n ? `Agregados (${n}). Ver mi lista` : 'Ya estaban. Ver mi lista';
     ev.currentTarget.onclick = () => (location.href = `${RAIZ}cotizar/`);
   });
   resultado.querySelector('[data-reiniciar]').addEventListener('click', () => {

@@ -51,6 +51,7 @@ async function aplicar({ url = true } = {}) {
   }
   // con búsqueda, los grupos se aplanan para mostrar primero lo más parecido
   document.getElementById('catalogo').classList.toggle('catalogo--buscando', Boolean(f.q));
+  form.classList.toggle('filtros--buscando', Boolean(f.q));
   for (const g of grupos) g.hidden = !g.querySelector('.tarjeta-servicio:not([hidden])');
   cuenta.textContent = f.q ? `${visibles} ${visibles === 1 ? 'resultado' : 'resultados'} para «${f.q}»` : `Mostrando ${visibles} de ${total}`;
   vacio.hidden = visibles > 0;
@@ -71,6 +72,12 @@ form.addEventListener('input', (e) => {
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   aplicar();
+});
+const mas = form.querySelector('[data-filtros-mas]');
+mas.addEventListener('click', () => {
+  const abrir = !form.classList.contains('filtros--abiertos');
+  form.classList.toggle('filtros--abiertos', abrir);
+  mas.setAttribute('aria-expanded', String(abrir));
 });
 document.getElementById('limpiar-filtros').addEventListener('click', () => {
   ponerEnForm({});

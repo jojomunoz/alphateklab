@@ -27,15 +27,15 @@ export const SOLUCIONES = [
     singular: 'tienda',
     icono: 'storefront',
     foto: 'sector-comercio',
-    titulo: 'Tecnología para tiendas y comercios',
+    titulo: 'Tecnología para tiendas, minisúper y comercios',
     bajada: 'Vender también por internet, saber cuánta gente entra y cuánta compra, y contar la mercancía sin pasar la noche anotando.',
     demo: 'camara',
     problemas: [
+      { problema: 'Hay pérdidas y no sabes dónde: mercancía que falta o la caja que no cuadra.', respuesta: 'Cámaras que marcan los momentos que vale la pena revisar, sin ver horas de video.', servicios: ['C05', 'T11'] },
       { problema: 'No sabes cuántas personas entran ni cuántas terminan comprando.', respuesta: 'Un contador en la puerta que, junto con tus ventas, te da la tasa de conversión por hora y por día.', servicios: ['C01', 'C02'] },
       { problema: 'Se forman filas en caja y la gente se va.', respuesta: 'La cámara avisa al encargado cuando la fila pasa de cierto número.', servicios: ['C03'] },
       { problema: 'Contar el inventario toma días y nunca cuadra.', respuesta: 'Inventario por escaneo con RFID o con la cámara del teléfono, comparado contra tu sistema.', servicios: ['C04', 'T14'] },
       { problema: 'Vendes por WhatsApp a mano, uno por uno.', respuesta: 'Catálogo y pedidos por WhatsApp, o tu propia tienda en línea con Yappy y tarjeta.', servicios: ['C11', 'C06', 'T09'] },
-      { problema: 'Hay pérdidas y no sabes dónde.', respuesta: 'Cámaras que marcan los momentos que vale la pena revisar, sin ver horas de video.', servicios: ['C05', 'T11'] },
     ],
   },
   {

@@ -53,9 +53,17 @@ try {
     assert.ok(r.slice(0, 3).some((t) => /pagar desde la mesa/.test(t)), r.join(' | '));
   });
 
-  await paso('Enter abre el primer resultado', async () => {
+  await paso('siempre queda la salida para preguntar, aunque haya resultados', async () => {
+    await p.fill('#buscador-campo', 'app para mi gimnasio');
+    await p.waitForSelector('#buscador-resultados .resultado--preguntar');
+    const ultimo = await p.$eval('#buscador-resultados [role=option]:last-child', (li) => li.dataset.url);
+    assert.match(decodeURIComponent(ultimo), /cotizar\/\?q=app para mi gimnasio/);
+  });
+
+  await paso('flecha abajo y Enter abre el primer resultado', async () => {
     await p.fill('#buscador-campo', 'recordar citas a pacientes');
     await p.waitForSelector('#buscador-resultados [role=option]');
+    await p.keyboard.press('ArrowDown');
     await Promise.all([p.waitForNavigation(), p.keyboard.press('Enter')]);
     assert.match(p.url(), /servicios\/agente-de-citas\//);
     await p.goto(BASE, { waitUntil: 'networkidle' });
@@ -67,7 +75,9 @@ try {
     await p.waitForSelector('[data-buscador-vacio] .sin-resultados');
     const href = await p.getAttribute('[data-buscador-vacio] a.boton--senal', 'href');
     assert.match(decodeURIComponent(href), /¿Pueden hacer esto\?\n\nimprimir camisetas/);
-    await p.keyboard.press('Escape');
+    await Promise.all([p.waitForNavigation(), p.keyboard.press('Enter')]);
+    assert.match(decodeURIComponent(p.url()), /cotizar\/\?q=imprimir camisetas/);
+    await p.goto(BASE, { waitUntil: 'networkidle' });
   });
 
   await paso('la búsqueda de la portada muestra resultados debajo del campo', async () => {
@@ -89,6 +99,23 @@ try {
     await p.waitForSelector('#catalogo-vacio:not([hidden])');
   });
 
+  await paso('lo que el filtro oculta no se ve: tarjetas visibles = la cuenta', async () => {
+    for (const q of ['tipo=vision', 'sector=salud', 'q=camaras']) {
+      await p.goto(`${BASE}servicios/?${q}`, { waitUntil: 'networkidle' });
+      const dice = Number((await p.textContent('#filtros-cuenta')).match(/(\d+)/)[1]);
+      const visibles = await p.$$eval('.tarjeta-servicio', (xs) => xs.filter((x) => x.getBoundingClientRect().height > 0).length);
+      assert.equal(visibles, dice, q);
+      const ocultosVisibles = await p.$$eval('[hidden]', (xs) => xs.filter((x) => getComputedStyle(x).display !== 'none').length);
+      assert.equal(ocultosVisibles, 0, `${q}: hay elementos [hidden] en pantalla`);
+    }
+  });
+
+  await paso('el diagnóstico muestra un paso a la vez', async () => {
+    await p.goto(`${BASE}diagnostico/`, { waitUntil: 'networkidle' });
+    const pasos = await p.$$eval('.diag__paso', (xs) => xs.filter((x) => x.getBoundingClientRect().height > 0).length);
+    assert.equal(pasos, 1);
+  });
+
   await paso('agregar en un negocio aparece en la cabecera y en «Pregúntanos»', async () => {
     await p.goto(`${BASE}soluciones/restaurantes/`, { waitUntil: 'networkidle' });
     await p.click('.tarjeta-servicio [data-cotizar="R02"]');
@@ -97,7 +124,7 @@ try {
     await p.fill('#cot-notas', 'algo para la cocina');
     const m = await p.textContent('#cot-mensaje');
     assert.match(m, /Lo que necesito: algo para la cocina/);
-    assert.match(m, /R02 Pedir, llamar al mesero y pagar desde la mesa/);
+    assert.match(m, /Pedir, llamar al mesero y pagar desde la mesa/);
     await p.click('#cot-vaciar');
   });
 
@@ -112,6 +139,19 @@ try {
     await q.click('#menu-movil [data-abrir-buscador]');
     assert.equal(await q.isVisible('[data-buscador]'), true);
     await m.close();
+  });
+
+  await paso('nada se sale por la derecha a 320, 360 y 375 px', async () => {
+    for (const ancho of [320, 360, 375]) {
+      const m = await b.newContext({ viewport: { width: ancho, height: 800 } });
+      const q = await m.newPage();
+      for (const ruta of ['', 'servicios/', 'soluciones/restaurantes/', 'servicios/menu-qr/', 'cotizar/', 'diagnostico/']) {
+        await q.goto(BASE + ruta, { waitUntil: 'networkidle' });
+        const sw = await q.evaluate(() => document.documentElement.scrollWidth);
+        assert.ok(sw <= ancho, `${ancho}px /${ruta}: scrollWidth ${sw}`);
+      }
+      await m.close();
+    }
   });
 
   await paso('sin errores en consola ni recursos rotos', async () => {
