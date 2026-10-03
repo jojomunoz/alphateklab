@@ -226,6 +226,18 @@ try {
     await c3.close();
   });
 
+  await paso('en el teléfono el video de la portada avanza (no lo devuelve a 0 el salón oculto)', async () => {
+    const c4 = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
+    const t = await c4.newPage();
+    await t.goto(BASE, { waitUntil: 'load' });
+    await t.waitForTimeout(3500);
+    const tel = await t.$eval('.dispositivo--telefono [data-video-producto]', (v) => ({ t: v.currentTime, pausado: v.paused, visible: v.offsetParent !== null }));
+    await c4.close();
+    assert.equal(tel.visible, true, 'el video del teléfono no se ve');
+    assert.equal(tel.pausado, false, 'el video del teléfono está pausado');
+    assert.ok(tel.t > 1.5, `el video del teléfono va en ${tel.t.toFixed(2)} s tras 3,5 s`);
+  });
+
   await paso('Pregúntanos no muestra códigos internos en la lista', async () => {
     await p.goto(`${BASE}cotizar/?servicio=R02`, { waitUntil: 'networkidle' });
     const texto = await p.$eval('#cot-elegidos', (r) => r.innerText);

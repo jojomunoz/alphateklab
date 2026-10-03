@@ -446,17 +446,31 @@ if (figuraVideo) {
   const boton = figuraVideo.querySelector('[data-pausa-video]');
   let pausadoPorPersona = reducir;
   const visibles = () => videos.filter((v) => v.offsetParent !== null);
+  const pausar = () => videos.forEach((v) => v.pause());
+  // Si el teléfono no deja arrancar solo (iPhone con ahorro de batería: NotAllowedError), el botón queda en
+  // «reproducir» y un toque lo arranca. Una interrupción por pausa (AbortError, al bajar rápido) no cuenta.
+  const arrancar = (vs) =>
+    vs.forEach((v) =>
+      v.play().catch((e) => {
+        if (e?.name !== 'NotAllowedError') return;
+        pausadoPorPersona = true;
+        pausar();
+        pintarBoton();
+      }),
+    );
   const reproducir = () => {
     if (pausadoPorPersona) return;
     const vs = visibles();
     vs.forEach((v) => { v.currentTime = 0; });
-    vs.forEach((v) => v.play().catch(() => {}));
+    arrancar(vs);
   };
-  const pausar = () => videos.forEach((v) => v.pause());
-  // que el salón no se desfase del teléfono
-  videos[1]?.addEventListener('timeupdate', () => {
-    const [a, b] = videos;
-    if (b && b.offsetParent && Math.abs(a.currentTime - b.currentTime) > 0.25) b.currentTime = a.currentTime;
+  // El teléfono marca el tiempo (se ve siempre) y el salón lo sigue solo si también se ve. Antes era al revés, y en el
+  // celular, donde el salón está oculto y quieto en 0, cada timeupdate devolvía el video del teléfono al segundo 0:
+  // la portada se veía fija.
+  const telefono = videos.find((v) => v.closest('.dispositivo--telefono'));
+  const salon = videos.find((v) => v !== telefono);
+  telefono?.addEventListener('timeupdate', () => {
+    if (salon?.offsetParent && telefono.offsetParent && Math.abs(salon.currentTime - telefono.currentTime) > 0.25) salon.currentTime = telefono.currentTime;
   });
   // nombre fijo («Pausar la demo») y el estado en aria-pressed: cambiar el texto y además marcar «presionado» hacía
   // que un lector de pantalla dijera «Reproducir, presionado»
@@ -464,7 +478,7 @@ if (figuraVideo) {
   boton.addEventListener('click', () => {
     pausadoPorPersona = !pausadoPorPersona;
     if (pausadoPorPersona) pausar();
-    else visibles().forEach((v) => v.play().catch(() => {}));
+    else arrancar(visibles());
     pintarBoton();
   });
   pintarBoton();
