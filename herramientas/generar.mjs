@@ -139,6 +139,7 @@ function fichaServicio(s) {
       <div><h4>Incluye</h4><ul>${s.incluye.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>
       ${equipo}
     </div>
+    ${s.aparte ? `<p class="ficha__aparte"><strong>Aparte:</strong> ${esc(s.aparte)}</p>` : ''}
   </details>
   <div class="ficha__acciones">
     <button class="boton boton--linea" type="button" data-cotizar="${s.id}" aria-pressed="false">Agregar a la cotización</button>
@@ -409,6 +410,7 @@ function paginaServicio(s) {
       <h2>Precio</h2>
       <p class="num servicio__cifra">${esc(precioTexto(s))}</p>
       ${s.precio?.nota ? `<p>${esc(s.precio.nota)}</p>` : '<p>Depende del local y del alcance: lo cerramos en la propuesta, después de la visita.</p>'}
+      ${s.aparte ? `<p class="servicio__aparte"><strong>Aparte:</strong> ${esc(s.aparte)}</p>` : ''}
     </div>
   </div>
   <div class="servicio__acciones">
