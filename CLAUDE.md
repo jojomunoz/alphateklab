@@ -7,17 +7,20 @@ y las de cada demo en `laboratorio/<demo>/pruebas/`.
 
 Reglas del proyecto: `~/alphateklab/BRIEF.md`. Guía de diseño: `~/Documents/NovahWEB/conocimiento/GUIA-DISENO-SIN-SLOP.md`.
 
-## Dirección visual (decidida el 3-oct-2026)
+## Dirección visual (marca entregada por Jonathan el 3-oct-2026; manda sobre cualquier versión anterior)
 
-- **El mundo:** la instalación. Hoja de especificaciones, etiqueta de cable, orden de trabajo. alphateklab hace software
-  y además va al local a instalar; la estética viene de lo segundo.
-- **Paleta** (tokens en `assets/atk.css`, con modo oscuro): papel frío `#f4f5f2`, grafito `#15171b`, grises de la misma
-  familia, y una sola **señal amarilla** `#ffc72c` que se usa como RELLENO (etiquetas, botón principal, selección),
-  nunca como texto sobre claro. Enlaces `#1d46c4`. Foco `#1f4fd8`.
-- **Tipografía:** Archivo variable autoalojada (`assets/fuentes/`, latin + latin-ext). Títulos en ancho 125 y peso
-  ~820; texto en ancho 100; etiquetas en ancho 85. Sin monoespaciada para cifras: `tabular-nums`.
-- **La apuesta:** el índice completo del catálogo en la portada, como un tablero de etiquetas filtrable. Lo demás en
-  calma: radios de 2-3 px, filetes en vez de cajas, sin sombras salvo lo que flota.
+- **Marca:** logo «a» con módulo ámbar (`assets/marca/logo-claro.svg` en fondo claro, `logo-oscuro.svg` en oscuro, con
+  `<picture>` y `prefers-color-scheme`).
+- **Paleta** (tokens en `assets/atk.css`, con modo oscuro): ámbar `#F2B544` (`--senal`: botones y señales; encima va
+  texto grafito, NUNCA blanco ni crema), verde petróleo `#176B64` (`--acento`/`--enlace`/`--foco`), grafito `#202729`,
+  claro `#F7F5EF`, apoyo `#DCE9E5`. Bordes de controles con `--borde-control` (≥ 3:1).
+- **Tipografía:** Manrope (títulos, 800) e Inter (texto), autoalojadas en `assets/fuentes/` (latin + latin-ext). Cifras con
+  `tabular-nums`, sin monoespaciada.
+- **Radios:** solo tres, con rol: `--r-control` 8 px (botones, campos, íconos), `--r-tarjeta` 12 px (tarjetas y paneles),
+  `--r-chico` 6 px (insignias, casillas). Nada de 999 px salvo la cuenta redonda de la cabecera.
+- **Composición:** filetes en vez de cajas donde se pueda (cómo trabajamos, ficha, etapas); una sola apuesta por pantalla.
+- **Lo que ve el visitante no lleva códigos internos** (R01, C05…): siguen en `data-id` y en el mensaje de WhatsApp.
+- **Verbos:** «Preguntar» (manda un mensaje) y «Agregar a mi lista» (arma la cotización). No inventar otros.
 - **Movimiento:** solo responder y estado. Hover solo con puntero fino. Nada en `opacity:0` esperando al JS.
 - **Contenido:** precios solo los decididos por los socios (menú QR $10/mes; fotos del recorrido 3D +$300); el resto
   «A cotizar». Nada de testimonios, logos de clientes ni cifras sin fuente. Las demos usan negocios ficticios rotulados.
