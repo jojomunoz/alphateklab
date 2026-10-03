@@ -59,7 +59,7 @@ for (const [id, f] of Object.entries(FICHAS)) {
   if (!idsServicios.has(id)) errores.push(`ficha ${id}: el servicio no existe`);
   const texto = [...f.como.flatMap((c) => [c.titulo, c.texto]), ...f.necesitas, ...f.no_incluye, ...f.preguntas.flatMap((q) => [q.p, q.r]), f.ejemplo].join('\n');
   for (const re of PALABRAS_PROHIBIDAS) if (re.test(texto)) errores.push(`ficha ${id}: texto con «${texto.match(re)[0]}»`);
-  if (/\$\s?\d/.test(texto.replace(/\$10 al mes|\+?\$300/g, ''))) errores.push(`ficha ${id}: menciona un precio no decidido`);
+  if (/\$\s?\d/.test(texto.replace(/\$10 al mes|\+?\$300|US\$0,\d+/g, ''))) errores.push(`ficha ${id}: menciona un precio no decidido`);
   if (!/^Ejemplo:/.test(f.ejemplo)) errores.push(`ficha ${id}: el ejemplo debe empezar con «Ejemplo:»`);
 }
 if (process.env.PERMITIR_PENDIENTES === '1') {
