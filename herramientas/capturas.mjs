@@ -30,6 +30,8 @@ const PREPARAR = {
   'recorrido-360': async (p) => {
     await p.click('#entrar');
     await p.waitForFunction(() => /Estás en/.test(document.getElementById('estado')?.textContent || ''), null, { timeout: 30000 });
+    // póster limpio: sin los controles del visor ni el recuadro de información (la demo los tiene; la foto no los necesita)
+    await p.addStyleTag({ content: '.pnlm-controls-container, .pnlm-panorama-info, .pnlm-load-box, .pnlm-hotspot-base.pnlm-info { display: none !important; }' });
     await p.waitForTimeout(800);
   },
 };
