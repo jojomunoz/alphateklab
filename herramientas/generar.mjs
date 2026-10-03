@@ -111,7 +111,7 @@ function cabecera(prefijo) {
         <li class="menu__grupo">
           <button class="menu__boton" type="button" aria-expanded="false" aria-controls="mega-soluciones">Soluciones ${icono('caret-down', 'ico ico--caret')}</button>
           <div class="mega" id="mega-soluciones" hidden>
-            <div class="mega__cabeza"><p>Lo que hacemos según tu tipo de negocio</p><a href="${prefijo}soluciones/">Ver todos los negocios</a></div>
+            <div class="mega__cabeza"><p>Lo que hacemos según tu tipo de negocio</p><a href="${prefijo}diagnostico/">¿No sabes qué pedir? Responde 3 preguntas</a></div>
             <ul class="mega__lista">${soluciones}</ul>
           </div>
         </li>
@@ -137,7 +137,7 @@ function cabecera(prefijo) {
       <button class="buscar-campo-falso" type="button" data-abrir-buscador>${icono('magnifying-glass')} ¿Qué necesitas?</button>
       <details class="menu-movil__grupo" open><summary>Soluciones por negocio</summary><ul>${SOLUCIONES.map((so) => `<li><a href="${prefijo}soluciones/${so.slug}/">${icono(so.icono)}${esc(sectorPorId.get(so.sector).nombre)}</a></li>`).join('')}</ul></details>
       <details class="menu-movil__grupo"><summary>Servicios por tipo</summary><ul>${TIPOS.map((t) => `<li><a href="${prefijo}servicios/?tipo=${t.id}">${icono(t.icono)}${esc(t.nombre)}</a></li>`).join('')}<li><a href="${prefijo}servicios/">${icono('list')}Todos los servicios</a></li></ul></details>
-      <ul class="menu-movil__enlaces"><li><a href="${prefijo}laboratorio/">Demos</a></li><li><a href="${prefijo}#como-trabajamos">Cómo trabajamos</a></li><li><a href="${prefijo}cotizar/">Pregúntanos o cotiza</a></li></ul>
+      <ul class="menu-movil__enlaces"><li><a href="${prefijo}diagnostico/">¿Qué necesita mi negocio?</a></li><li><a href="${prefijo}laboratorio/">Demos</a></li><li><a href="${prefijo}#como-trabajamos">Cómo trabajamos</a></li><li><a href="${prefijo}cotizar/">Pregúntanos o cotiza</a></li></ul>
     </div>
   </div>
 </header>`;
@@ -171,7 +171,7 @@ function pie(prefijo) {
       <div><h2>Soluciones</h2><ul>${SOLUCIONES.map((so) => `<li><a href="${prefijo}soluciones/${so.slug}/">${esc(sectorPorId.get(so.sector).nombre)}</a></li>`).join('')}</ul></div>
       <div><h2>Servicios</h2><ul>${TIPOS.map((t) => `<li><a href="${prefijo}servicios/?tipo=${t.id}">${esc(t.nombre)}</a></li>`).join('')}<li><a href="${prefijo}servicios/">Todos los servicios</a></li></ul></div>
       <div><h2>Demos</h2><ul>${DEMOS.map((d) => `<li><a href="${enlace(d.url, prefijo)}">${esc(d.nombre)}</a></li>`).join('')}<li><a href="${prefijo}laboratorio/">Todas las demos</a></li></ul></div>
-      <div><h2>alphateklab</h2><ul><li><a href="${prefijo}#como-trabajamos">Cómo trabajamos</a></li><li><a href="${prefijo}#preguntas">Preguntas frecuentes</a></li><li><a href="${prefijo}cotizar/">Pregúntanos o cotiza</a></li><li><a href="${prefijo}privacidad/">Privacidad</a></li><li><a href="${prefijo}creditos/">Créditos de fotos e íconos</a></li></ul></div>
+      <div><h2>alphateklab</h2><ul><li><a href="${prefijo}diagnostico/">¿Qué necesita mi negocio?</a></li><li><a href="${prefijo}#como-trabajamos">Cómo trabajamos</a></li><li><a href="${prefijo}#preguntas">Preguntas frecuentes</a></li><li><a href="${prefijo}cotizar/">Pregúntanos o cotiza</a></li><li><a href="${prefijo}privacidad/">Privacidad</a></li><li><a href="${prefijo}creditos/">Créditos de fotos e íconos</a></li></ul></div>
     </div>
     <p class="pie__nota">Las demos usan negocios de ejemplo: sus nombres, platos, pacientes y reservas son ficticios. Actualizado el ${esc(ACTUALIZADO.texto)}.</p>
   </div>
@@ -319,7 +319,7 @@ function paginaInicio() {
   const heroe = `<section class="heroe" aria-labelledby="heroe-titulo">
   <div class="envoltura heroe__fila">
     <div class="heroe__texto">
-      <h1 id="heroe-titulo" class="display heroe__titulo">Tecnología para tu negocio. La hacemos y la instalamos.</h1>
+      <h1 id="heroe-titulo" class="display heroe__titulo">Hacemos la tecnología de tu negocio y la instalamos en tu local.</h1>
       <p class="heroe__bajada">Software a medida, páginas y apps, inteligencia artificial, cámaras, sensores, pantallas y recorridos 3D para negocios en Panamá.</p>
       <form class="heroe__buscar" role="search" data-buscar-en-linea action="${prefijo}servicios/">
         ${icono('magnifying-glass')}
@@ -328,7 +328,8 @@ function paginaInicio() {
         <button class="boton boton--senal" type="submit">Buscar</button>
         <div class="heroe__resultados" id="heroe-resultados" hidden></div>
       </form>
-      <ul class="heroe__chips" aria-label="Búsquedas frecuentes">${chips.map(([t, q]) => `<li><button type="button" class="chip" data-buscar="${esc(q)}">${esc(t)}</button></li>`).join('')}</ul>
+      <p class="heroe__prueba">Prueba con: ${chips.map(([t, q]) => `<button type="button" class="chip-texto" data-buscar="${esc(q)}">${esc(t)}</button>`).join(', ')}.</p>
+      <p class="heroe__diagnostico"><a href="${prefijo}diagnostico/">${icono('question')}<span><strong>¿No sabes qué pedir?</strong> Responde 3 preguntas sobre tu negocio y te decimos qué te sirve.</span></a></p>
     </div>
     <div class="heroe__visual" aria-hidden="true">
       ${
@@ -336,10 +337,6 @@ function paginaInicio() {
           ? `<div class="heroe__imagen">${foto('marca-heroe', prefijo, { sizes: '(min-width: 1040px) 48vw, 100vw', alt: '', carga: 'eager', prioridad: true })}</div>`
           : `<div class="mosaico">${fotosHeroe.map((s, i) => `<div class="mosaico__foto mosaico__foto--${i + 1}">${foto(s, prefijo, { sizes: '(min-width: 1000px) 25vw, 50vw', alt: '', carga: 'eager', prioridad: i === 0 })}</div>`).join('')}</div>`
       }
-      <div class="aviso-ui aviso-ui--1">${icono('qr-code')}<span><strong>Mesa 7</strong> pidió la cuenta</span></div>
-      <div class="aviso-ui aviso-ui--2">${icono('thermometer-simple')}<span><strong>Nevera 2</strong> 4,1 °C, normal</span></div>
-      <div class="aviso-ui aviso-ui--3">${icono('calendar-check')}<span><strong>Cita confirmada</strong> mañana 9:30</span></div>
-      <div class="aviso-ui aviso-ui--4">${icono('security-camera')}<span><strong>Entrada</strong> 128 personas hoy</span></div>
     </div>
   </div>
 </section>`;
@@ -397,13 +394,12 @@ function paginaInicio() {
     <h2 id="cap-titulo" class="display seccion__titulo">Lo que hacemos</h2>
     <p class="seccion__bajada">${SERVICIOS.length} servicios en ${TIPOS.length} tipos de solución, del software que vive en la nube al sensor que va dentro de la nevera.</p>
   </div>
-  <ul class="capacidades" role="list">
+  <ul class="indice" role="list">
     ${TIPOS.map(
-      (t) => `<li><a class="capacidad" href="${prefijo}servicios/?tipo=${t.id}">
-      <span class="capacidad__icono">${icono(t.icono)}</span>
-      <h3 class="capacidad__nombre">${esc(t.nombre)}</h3>
-      <p>${esc(t.desc)}</p>
-      <span class="capacidad__cuenta">${contar(serviciosDeTipo(t.id).length, 'servicio', 'servicios')}</span>
+      (t) => `<li><a class="indice__fila" href="${prefijo}servicios/?tipo=${t.id}">
+      <span class="indice__icono">${icono(t.icono)}</span>
+      <span class="indice__texto"><span class="indice__nombre">${esc(t.nombre)}</span><span class="indice__desc">${esc(t.desc)}</span></span>
+      <span class="indice__cuenta num">${serviciosDeTipo(t.id).length}</span>
     </a></li>`,
     ).join('\n    ')}
   </ul>
@@ -490,7 +486,7 @@ function paginaSolucion(so) {
     ${migas(prefijo, [['Soluciones', `${prefijo}soluciones/`], [sector.nombre, null]])}
     <h1 class="display heroe-sector__titulo">${esc(so.titulo)}</h1>
     <p class="heroe-sector__bajada">${esc(so.bajada)}</p>
-    <p class="heroe-sector__acciones">${d ? `<a class="boton boton--senal" href="${enlace(d.url, prefijo)}">${icono('play-circle')}Probar la demo</a>` : ''}<a class="boton ${d ? 'boton--claro' : 'boton--senal'}" href="${prefijo}cotizar/?negocio=${encodeURIComponent(sector.nombre)}">Pregúntanos</a></p>
+    <p class="heroe-sector__acciones">${d ? `<a class="boton boton--senal" href="${enlace(d.url, prefijo)}">${icono('play-circle')}Probar la demo</a>` : ''}<a class="boton ${d ? 'boton--claro' : 'boton--senal'}" href="${prefijo}diagnostico/?n=${so.slug}">Ver qué necesita mi ${esc(nombreCorto)}</a></p>
   </div>
 </section>
 <section class="seccion envoltura" aria-labelledby="resolvemos-titulo">
@@ -804,12 +800,70 @@ function pagina404() {
 }
 
 function sitemap() {
-  const urls = ['', 'soluciones/', 'servicios/', 'laboratorio/', 'cotizar/', 'privacidad/', 'creditos/', ...SOLUCIONES.map((so) => `soluciones/${so.slug}/`), ...SERVICIOS.map((s) => `servicios/${s.slug}/`), ...DEMOS.filter((d) => !esExterna(d.url)).map((d) => d.url.replace(/\/?$/, '/'))];
+  const urls = ['', 'diagnostico/', 'soluciones/', 'servicios/', 'laboratorio/', 'cotizar/', 'privacidad/', 'creditos/', ...SOLUCIONES.map((so) => `soluciones/${so.slug}/`), ...SERVICIOS.map((s) => `servicios/${s.slug}/`), ...DEMOS.filter((d) => !esExterna(d.url)).map((d) => d.url.replace(/\/?$/, '/'))];
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map((u) => `  <url><loc>${URL_BASE}${u}</loc><lastmod>${ACTUALIZADO.iso}</lastmod></url>`).join('\n')}
 </urlset>
 `;
+}
+
+// ── «¿Qué necesita mi negocio?» ──
+function paginaDiagnostico() {
+  const prefijo = '../';
+  const datos = {
+    soluciones: SOLUCIONES.map((so) => ({
+      slug: so.slug,
+      nombre: sectorPorId.get(so.sector).nombre,
+      icono: so.icono,
+      foto: existe(`assets/fotos/${so.foto}-800.webp`) ? `${prefijo}assets/fotos/${so.foto}-800.webp` : null,
+      problemas: so.problemas.map((p) => ({ problema: p.problema, respuesta: p.respuesta, servicios: p.servicios })),
+    })),
+    servicios: Object.fromEntries(SERVICIOS.map((s) => [s.id, { nombre: s.nombre, corto: s.corto, para: s.para, url: `${prefijo}servicios/${s.slug}/`, precio: precioTexto(s), demo: s.demo ? enlace(s.demo, prefijo) : null, icono: tipoPorId.get(s.tipos[0]).icono, instala: s.instala }])),
+  };
+  return documento({
+    titulo: '¿Qué necesita tu negocio? · alphateklab',
+    descripcion: 'Tres preguntas sobre tu negocio y te decimos qué servicios te sirven, por qué y por dónde empezar.',
+    prefijo,
+    canonica: `${URL_BASE}diagnostico/`,
+    clase: 'pagina-diagnostico',
+    cuerpo: `<main id="contenido" class="envoltura diagnostico">
+  ${migas(prefijo, [['¿Qué necesita tu negocio?', null]])}
+  <div class="diagnostico__cabeza">
+    <h1 class="display pagina-simple__titulo">¿Qué necesita tu negocio?</h1>
+    <p class="seccion__bajada">Tres preguntas. Al final te decimos qué te sirve, por qué, y te queda el mensaje listo para mandarnos.</p>
+  </div>
+  <ol class="pasos-diag" aria-label="Avance">
+    <li data-paso-ind="1" aria-current="step"><span>1</span>Tu negocio</li>
+    <li data-paso-ind="2"><span>2</span>Qué quieres resolver</li>
+    <li data-paso-ind="3"><span>3</span>Qué ya tienes</li>
+  </ol>
+  <form id="diagnostico" class="diag" novalidate>
+    <fieldset class="diag__paso" data-paso="1">
+      <legend class="diag__pregunta">¿Qué tipo de negocio tienes?</legend>
+      <div class="diag__negocios">
+        ${datos.soluciones.map((so) => `<label class="diag-negocio"><input type="radio" name="negocio" value="${so.slug}" />${so.foto ? `<img src="${so.foto}" alt="" width="800" height="500" loading="lazy" decoding="async" />` : ''}<span class="diag-negocio__nombre">${icono(so.icono)}${esc(so.nombre)}</span></label>`).join('')}
+      </div>
+    </fieldset>
+    <fieldset class="diag__paso" data-paso="2" hidden>
+      <legend class="diag__pregunta">¿Qué te gustaría resolver? <small>Marca todo lo que aplique.</small></legend>
+      <div class="diag__problemas" data-problemas></div>
+      <label class="campo diag__otro"><span>¿Algo más que no esté en la lista?</span><textarea id="diag-otro" rows="2" maxlength="600" placeholder="Escríbelo con tus palabras"></textarea></label>
+      <p class="diag__acciones"><button class="boton boton--linea" type="button" data-atras>Atrás</button><button class="boton boton--senal" type="button" data-siguiente>Siguiente</button></p>
+      <p class="diag__aviso" data-aviso-2 role="alert" hidden>Marca al menos una cosa, o escribe lo que necesitas en «¿Algo más?».</p>
+    </fieldset>
+    <fieldset class="diag__paso" data-paso="3" hidden>
+      <legend class="diag__pregunta">¿Qué ya tienes en tu negocio? <small>Para no recomendarte lo que ya funciona.</small></legend>
+      <div class="diag__tengo" data-tengo></div>
+      <p class="diag__acciones"><button class="boton boton--linea" type="button" data-atras>Atrás</button><button class="boton boton--senal" type="button" data-ver>Ver mi recomendación</button></p>
+    </fieldset>
+  </form>
+  <section class="diag-resultado" data-resultado hidden aria-live="polite" tabindex="-1"></section>
+  <noscript><p class="aviso-demo">El diagnóstico necesita JavaScript. Puedes ver <a href="${prefijo}soluciones/">las soluciones por tipo de negocio</a>.</p></noscript>
+</main>`,
+    scripts: `<script id="datos-diagnostico" type="application/json">${jsonEnScript(datos)}</script>
+<script type="module" src="${prefijo}js/diagnostico.js"></script>`,
+  });
 }
 
 // ── escribir ──
@@ -832,6 +886,7 @@ escribir('servicios/index.html', paginaServicios());
 for (const s of SERVICIOS) escribir(`servicios/${s.slug}/index.html`, paginaServicio(s));
 escribir('laboratorio/index.html', paginaLaboratorio());
 escribir('cotizar/index.html', paginaCotizar());
+escribir('diagnostico/index.html', paginaDiagnostico());
 escribir('privacidad/index.html', paginaPrivacidad());
 escribir('creditos/index.html', paginaCreditos());
 escribir('404.html', pagina404());
