@@ -957,22 +957,25 @@ function paginaCotizar() {
   const datosCliente = { servicios: SERVICIOS.map((s) => ({ id: s.id, nombre: s.nombre, precio: precioTexto(s) })), contacto: CONTACTO };
   return documento({
     titulo: 'Pregúntanos o cotiza · alphateklab',
+    clase: 'pagina-cotizar',
     descripcion: 'Cuéntanos qué necesita tu negocio o arma una cotización con los servicios que te interesan. Te queda un mensaje listo para WhatsApp.',
     prefijo,
     canonica: `${URL_BASE}cotizar/`,
     cuerpo: `<main id="contenido" class="envoltura pagina-simple">
   ${migas(prefijo, [['Pregúntanos o cotiza', null]])}
   <h1 class="display pagina-simple__titulo">Pregúntanos lo que necesites</h1>
-  <p class="seccion__bajada">Escríbelo con tus palabras y, si quieres, suma servicios de la lista. Te queda un mensaje listo para mandar por WhatsApp. Nada sale de tu teléfono o tu computadora hasta que lo mandas; lo que escribes se guarda solo en este navegador, hasta que pulses «Vaciar».</p>
+  <p class="seccion__bajada">Escríbelo con tus palabras y, si quieres, suma servicios de la lista. Te queda un mensaje listo para mandar por WhatsApp.</p>
   <p class="cotizador__por" id="cot-pregunta-por" hidden>Vas a preguntar por: <strong></strong>. Ya está en tu lista; agrega lo que quieras contarnos.</p>
   <form class="cotizador" id="cotizador" novalidate>
     <div class="cotizador__col">
       <label class="campo"><span>¿Qué necesitas?</span><textarea id="cot-notas" rows="5" maxlength="800" placeholder="Ej.: tengo un restaurante de 15 mesas y quiero que pidan desde la mesa y que la cocina lo vea en una pantalla"></textarea></label>
+      <details class="cotizador__detalles" id="cot-detalles"><summary>Agregar los datos de tu negocio <span>(opcional)</span></summary>
       <div class="cotizador__datos">
         <label class="campo"><span>Nombre del negocio</span><input id="cot-negocio" autocomplete="organization" maxlength="80" /></label>
         <label class="campo"><span>Tipo de negocio</span><select id="cot-tipo"><option value="">Elige uno…</option>${SECTORES.filter((s) => s.id !== 'todos').map((s) => `<option>${esc(s.nombre)}</option>`).join('')}<option>Otro</option></select></label>
         <label class="campo"><span>Provincia o ciudad</span><input id="cot-lugar" autocomplete="address-level1" maxlength="60" placeholder="Panamá, Chiriquí, Veraguas…" /></label>
       </div>
+      </details>
       <h2 class="cotizador__subtitulo">Servicios que te interesan <span class="num" id="cot-cuenta">(0)</span></h2>
       <ul id="cot-elegidos" class="cotizador__elegidos"></ul>
       <p class="cotizador__vacio" id="cot-vacio">Ninguno todavía. Puedes agregarlos desde cualquier servicio con «Agregar», o elegirlos aquí:</p>
@@ -984,9 +987,9 @@ function paginaCotizar() {
       <div class="cotizador__acciones">
         <a class="boton boton--senal" id="cot-whatsapp" href="#" target="_blank" rel="noopener">${icono('whatsapp-logo')}Mandar por WhatsApp</a>
         <button class="boton boton--linea" type="button" id="cot-copiar">${icono('copy')}Copiar</button>
-        <button class="boton boton--linea" type="button" id="cot-vaciar">Vaciar</button>
       </div>
       <p class="cotizador__aviso" id="cot-aviso" role="status"></p>
+      <p class="cotizador__pie">Nada sale de tu equipo hasta que lo mandas; lo que escribes se guarda solo en este navegador. <button class="enlace-boton" type="button" id="cot-vaciar">Vaciar</button></p>
     </div>
   </form>
   <noscript><p class="aviso-demo">Esta página necesita JavaScript para armar el mensaje.</p></noscript>

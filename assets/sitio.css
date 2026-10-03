@@ -4464,3 +4464,52 @@ html.sin-desplazar {
   font-size: var(--t-s);
   color: var(--tinta-3);
 }
+
+/* «Pregúntanos»: datos del negocio plegados, «Vaciar» y la nota debajo; en el teléfono, «Mandar» y «Copiar» en una barra
+   fija abajo (antes quedaban a dos pantallas y media bajo cuatro campos opcionales) */
+.cotizador__detalles summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.cotizador__detalles summary span {
+  margin-left: 6px;
+  font-weight: 400;
+  color: var(--tinta-3);
+}
+.cotizador__detalles[open] summary {
+  margin-bottom: var(--e-3);
+}
+.cotizador__pie {
+  margin-top: var(--e-3);
+  font-size: var(--t-s);
+  color: var(--tinta-3);
+}
+@media (max-width: 639px) {
+  .pagina-cotizar main {
+    padding-bottom: 104px;
+  }
+  .pagina-cotizar .cotizador__acciones {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    display: flex;
+    gap: var(--e-2);
+    margin: 0;
+    padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    background: var(--papel);
+    border-top: 1px solid var(--linea);
+    box-shadow: 0 -10px 24px -20px rgb(0 0 0 / 0.45);
+  }
+  .pagina-cotizar .cotizador__acciones #cot-whatsapp {
+    flex: 1;
+    justify-content: center;
+  }
+  .pagina-cotizar.escribiendo .cotizador__acciones {
+    display: none;
+  }
+}

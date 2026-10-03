@@ -37,6 +37,13 @@ for (const [k, el] of Object.entries(campos)) if (typeof estado[k] === 'string')
 if (params.get('q') && !campos.notas.value.includes(params.get('q'))) campos.notas.value = [campos.notas.value, params.get('q')].filter(Boolean).join('\n');
 const negocioUrl = params.get('negocio');
 if (negocioUrl && [...campos.tipo.options].some((o) => o.text === negocioUrl)) campos.tipo.value = negocioUrl;
+// los datos del negocio van plegados; si ya había algo escrito, se ven
+const detalles = document.getElementById('cot-detalles');
+if (detalles && [campos.negocio, campos.tipo, campos.lugar].some((el) => el.value)) detalles.open = true;
+// en el teléfono, la barra fija de «Mandar» se esconde mientras se escribe (el teclado la montaba sobre el campo)
+const form = document.getElementById('cotizador');
+form.addEventListener('focusin', (e) => { if (e.target.matches('input, textarea, select')) document.body.classList.add('escribiendo'); });
+form.addEventListener('focusout', (e) => { if (!e.relatedTarget?.matches?.('input, textarea, select')) document.body.classList.remove('escribiendo'); });
 
 function guardar() {
   guardarCotizacion({ elegidos, ...Object.fromEntries(Object.entries(campos).map(([k, el]) => [k, el.value])) });

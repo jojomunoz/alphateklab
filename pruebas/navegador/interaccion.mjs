@@ -332,6 +332,18 @@ try {
     assert.equal(cerca.length, 0, `ofreció: ${cerca.join(' | ')}`);
   });
 
+  await paso('«Pregúntanos» en el teléfono: «Mandar por WhatsApp» a la vista sin bajar, y se aparta al escribir', async () => {
+    const c11 = await b.newContext({ viewport: { width: 390, height: 664 }, isMobile: true, hasTouch: true });
+    const t = await c11.newPage();
+    await t.goto(`${BASE}cotizar/?q=camaras`, { waitUntil: 'load' });
+    const caja = await t.$eval('#cot-whatsapp', (e) => e.getBoundingClientRect().toJSON());
+    assert.ok(caja.top >= 0 && caja.bottom <= 664, `el botón está en y=${Math.round(caja.top)}`);
+    await t.focus('#cot-notas');
+    await t.waitForTimeout(100);
+    assert.equal(await t.isVisible('#cot-whatsapp'), false, 'la barra tapa el campo mientras se escribe');
+    await c11.close();
+  });
+
   await paso('Pregúntanos no muestra códigos internos en la lista', async () => {
     await p.goto(`${BASE}cotizar/?servicio=R02`, { waitUntil: 'networkidle' });
     const texto = await p.$eval('#cot-elegidos', (r) => r.innerText);
