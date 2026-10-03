@@ -182,7 +182,7 @@ function dialogoBuscador() {
     <input id="buscador-campo" type="search" enterkeyhint="search" placeholder="¿Qué necesitas? Escríbelo con tus palabras" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="buscador-resultados" aria-autocomplete="list" />
     <button class="buscador__cerrar" type="button" data-cerrar-buscador aria-label="Cerrar el buscador"><span class="solo-teclado">Esc</span><span class="solo-tactil">Cerrar</span></button>
   </form>
-  <div class="buscador__cuerpo">
+  <div class="buscador__cuerpo" tabindex="-1">
     <ul class="buscador__resultados" id="buscador-resultados" role="listbox" aria-label="Resultados"></ul>
     <div class="buscador__vacio" data-buscador-vacio hidden></div>
     <div class="buscador__sugerencias" data-buscador-sugerencias></div>
@@ -402,7 +402,7 @@ function paginaInicio() {
         <label class="sr" for="heroe-campo">¿Qué necesitas?</label>
         <input id="heroe-campo" name="q" type="search" enterkeyhint="search" placeholder="¿Qué necesitas? Ej.: un menú QR" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="heroe-resultados" aria-autocomplete="list" />
         <button class="boton boton--senal" type="submit">Buscar</button>
-        <div class="heroe__resultados" id="heroe-resultados" hidden></div>
+        <div class="heroe__resultados" id="heroe-resultados" tabindex="-1" hidden></div>
       </form>
       <p class="heroe__prueba">Prueba con: ${chips.map(([t, q], i) => `<span class="sin-corte"><button type="button" class="chip-texto" data-buscar="${esc(q)}">${esc(t)}</button>${i < chips.length - 1 ? ',' : '.'}</span>`).join(' ')}</p>
       <p class="heroe__diagnostico"><a class="boton boton--linea" href="${prefijo}diagnostico/">${icono('question')}¿No sabes qué pedir? Responde 3 preguntas</a></p>

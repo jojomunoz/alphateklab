@@ -199,7 +199,7 @@
     <input id="buscador-campo" type="search" enterkeyhint="search" placeholder="¿Qué necesitas? Escríbelo con tus palabras" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="buscador-resultados" aria-autocomplete="list" />
     <button class="buscador__cerrar" type="button" data-cerrar-buscador aria-label="Cerrar el buscador"><span class="solo-teclado">Esc</span><span class="solo-tactil">Cerrar</span></button>
   </form>
-  <div class="buscador__cuerpo">
+  <div class="buscador__cuerpo" tabindex="-1">
     <ul class="buscador__resultados" id="buscador-resultados" role="listbox" aria-label="Resultados"></ul>
     <div class="buscador__vacio" data-buscador-vacio hidden></div>
     <div class="buscador__sugerencias" data-buscador-sugerencias></div>

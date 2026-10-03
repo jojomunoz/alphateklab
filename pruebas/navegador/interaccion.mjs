@@ -70,6 +70,27 @@ try {
     await p.keyboard.press('Escape');
   });
 
+  await paso('el desplegable de la portada no queda recortado: la fila «Pregúntanos» se ve a 1440×900 y a 1280×720', async () => {
+    for (const [w, h] of [[1440, 900], [1280, 720]]) {
+      const c2 = await b.newContext({ viewport: { width: w, height: h } });
+      const q = await c2.newPage();
+      await q.goto(BASE, { waitUntil: 'networkidle' });
+      await q.click('#heroe-campo');
+      await q.keyboard.type('camaras');
+      await q.waitForSelector('#heroe-resultados .resultado--preguntar');
+      await q.waitForTimeout(200);
+      const visible = await q.evaluate(() => {
+        const fila = document.querySelector('#heroe-resultados .resultado--preguntar');
+        const r = fila.getBoundingClientRect();
+        const x = r.left + r.width / 2, y = r.top + r.height / 2;
+        if (y < 0 || y > innerHeight) return `fuera de pantalla (y=${Math.round(y)})`;
+        return fila.contains(document.elementFromPoint(x, y)) ? 'ok' : `tapada por ${document.elementFromPoint(x, y)?.className}`;
+      });
+      assert.equal(visible, 'ok', `${w}×${h}: ${visible}`);
+      await c2.close();
+    }
+  });
+
   await paso('el desplegable de la portada se cierra al salir con Tab', async () => {
     await p.click('#heroe-campo');
     await p.keyboard.type('menu qr');

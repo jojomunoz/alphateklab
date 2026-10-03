@@ -374,7 +374,11 @@ if (formHeroe) {
   formHeroe.append(estadoHeroe);
   const b = conectarBusqueda({ campo, lista, vacio, estado: estadoHeroe });
   campo.setAttribute('aria-controls', 'heroe-lista');
-  const mostrar = () => { caja.hidden = !campo.value.trim(); };
+  // el desplegable cabe en lo que queda de pantalla bajo el campo: así la fila «Pregúntanos» (fija abajo) se ve siempre
+  const mostrar = () => {
+    caja.hidden = !campo.value.trim();
+    if (!caja.hidden) caja.style.maxHeight = `${Math.max(180, Math.min(416, innerHeight - formHeroe.getBoundingClientRect().bottom - 24))}px`;
+  };
   campo.addEventListener('input', mostrar);
   // En el teléfono, el desplegable bajo el campo quedaba debajo del teclado: se abre el diálogo de la lupa, que pone
   // el campo arriba y los resultados entre el campo y el teclado (revisión del 3-oct).

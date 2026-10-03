@@ -121,7 +121,7 @@
         <label class="sr" for="heroe-campo">¿Qué necesitas?</label>
         <input id="heroe-campo" name="q" type="search" enterkeyhint="search" placeholder="¿Qué necesitas? Ej.: un menú QR" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="heroe-resultados" aria-autocomplete="list" />
         <button class="boton boton--senal" type="submit">Buscar</button>
-        <div class="heroe__resultados" id="heroe-resultados" hidden></div>
+        <div class="heroe__resultados" id="heroe-resultados" tabindex="-1" hidden></div>
       </form>
       <p class="heroe__prueba">Prueba con: <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="pedir desde la mesa con qr">Pedidos con QR</button>,</span> <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="contar personas que entran">Contar clientes</button>,</span> <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="recordar citas a pacientes">Recordar citas</button>,</span> <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="página web">Página web</button>,</span> <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="inventario">Inventario</button>,</span> <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="recorrido 3d de una propiedad">Recorrido 3D</button>,</span> <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="cámaras de seguridad">Cámaras</button>,</span> <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="chatbot de whatsapp">Chatbot</button>.</span></p>
       <p class="heroe__diagnostico"><a class="boton boton--linea" href="diagnostico/"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-question"></use></svg>¿No sabes qué pedir? Responde 3 preguntas</a></p>
@@ -326,7 +326,7 @@
     <input id="buscador-campo" type="search" enterkeyhint="search" placeholder="¿Qué necesitas? Escríbelo con tus palabras" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="buscador-resultados" aria-autocomplete="list" />
     <button class="buscador__cerrar" type="button" data-cerrar-buscador aria-label="Cerrar el buscador"><span class="solo-teclado">Esc</span><span class="solo-tactil">Cerrar</span></button>
   </form>
-  <div class="buscador__cuerpo">
+  <div class="buscador__cuerpo" tabindex="-1">
     <ul class="buscador__resultados" id="buscador-resultados" role="listbox" aria-label="Resultados"></ul>
     <div class="buscador__vacio" data-buscador-vacio hidden></div>
     <div class="buscador__sugerencias" data-buscador-sugerencias></div>

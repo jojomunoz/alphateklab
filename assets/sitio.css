@@ -3107,7 +3107,7 @@ html.sin-desplazar {
   color: var(--h-texto);
   border-bottom: 0;
   padding-block: var(--e-8) var(--e-9);
-  overflow: clip;
+  /* sin overflow: clip: recortaba el desplegable del buscador (3 de 9 resultados, sin la fila «Pregúntanos») */
 }
 .heroe--producto .heroe__titulo {
   color: var(--h-texto);
@@ -3630,4 +3630,15 @@ html.sin-desplazar {
 }
 .problema__servicios {
   display: block;
+}
+
+/* el desplegable de la portada cabe en la pantalla y la salida para preguntar queda siempre a la vista, abajo */
+.heroe__resultados {
+  max-height: min(26rem, 60vh);
+}
+.resultado--preguntar {
+  position: sticky;
+  bottom: 0;
+  background: var(--tarjeta);
+  box-shadow: 0 -1px 0 var(--linea);
 }
