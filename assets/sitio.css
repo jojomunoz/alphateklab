@@ -4216,3 +4216,17 @@ html.sin-desplazar {
     margin-top: 0;
   }
 }
+
+/* En el teléfono: titular, bajada, buscador y debajo los avisos. En un iPhone real Safari deja ver ~664 px de alto, no
+   844: con los avisos antes, el buscador quedaba fuera de la primera pantalla. Los ejemplos «Prueba con» sobran ahí:
+   al tocar el campo se abre el diálogo con sus propias sugerencias. */
+@media (max-width: 1039px) {
+  .heroe--portada.heroe--avisos .heroe__fila {
+    grid-template-areas: 'titulo' 'bajada' 'buscar' 'producto' 'prueba' 'diag';
+  }
+}
+@media (max-width: 639px) {
+  .heroe--portada.heroe--avisos .heroe__prueba {
+    display: none;
+  }
+}

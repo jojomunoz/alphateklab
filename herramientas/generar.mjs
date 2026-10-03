@@ -575,8 +575,8 @@ function paginaInicio() {
     datos: ld(ORGANIZACION, { '@type': 'WebSite', url: URL_BASE, name: 'alphateklab', inLanguage: 'es-PA' }),
     cuerpo: `<main id="contenido">
 ${heroe}
-${entradas}
 ${negocios}
+${entradas}
 ${demos}
 ${capacidades}
 ${instalacion}
