@@ -1,0 +1,12 @@
+{
+  "que_es": "Cruces de la línea de ejemplo (vertical en x = 0.5, entrada = de izquierda a derecha) del video media/muestra-zona-peatonal.mp4, contados a mano el 3-oct-2026 mirando hojas de cuadros a 5 por segundo del centro del video y cortes de tiempo (slit-scan) en x = 420, 480 y 540.",
+  "precision": "Los tiempos son aproximados (±0.3 s). Se contaron las personas visibles; puede faltar alguien muy al fondo.",
+  "salidas": [0.7, 2.0, 2.2, 2.4, 2.4, 2.6, 2.8, 9.0, 9.3, 9.8, 11.4, 12.0, 13.3, 13.3],
+  "entradas": [0.5, 3.5, 4.7, 5.1, 6.0, 6.8, 7.4, 14.1, 14.4],
+  "notas": {
+    "0.5 entrada": "ciclista tapado por la mujer de la mochila mientras cruza",
+    "2.0-2.8 salidas": "grupo de 6 personas caminando juntas hacia la izquierda",
+    "11.4 salida": "hombre del overol rojo, pegado a la cámara (los pies quedan fuera de cuadro)",
+    "13.3 salidas": "pareja que camina junta"
+  }
+}

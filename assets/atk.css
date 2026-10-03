@@ -410,6 +410,10 @@ kbd {
   text-decoration: none;
   padding: var(--e-2) 0;
   border-bottom: 2px solid transparent;
+  /* objetivo táctil de 44 px en las cabeceras de las demos */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 @media (max-width: 600px) {
   .nav {
@@ -490,4 +494,17 @@ kbd {
 ::selection {
   background: var(--senal);
   color: var(--sobre-senal);
+}
+
+/* migas y enlaces chicos de las demos: 44 px de toque en pantallas táctiles */
+@media (pointer: coarse) {
+  .migas a {
+    display: inline-block;
+    padding-block: 12px;
+  }
+  .pie a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
 }
