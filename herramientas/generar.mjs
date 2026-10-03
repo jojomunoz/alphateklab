@@ -6,6 +6,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SECTORES, TIPOS, SERVICIOS } from '../datos/catalogo.mjs';
 import { DEMOS } from '../datos/demos.mjs';
+import { PAQUETES, ESCALONES } from '../datos/paquetes.mjs';
 import { ACTUALIZADO, CONTACTO, URL_BASE } from '../datos/sitio.mjs';
 import { validarCatalogo } from '../js/catalogo-reglas.mjs';
 
@@ -13,6 +14,15 @@ const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 const existe = (ruta) => existsSync(join(RAIZ, ruta));
 let errores = validarCatalogo({ SECTORES, TIPOS, SERVICIOS, DEMOS }, existe);
+const idsServicios = new Set(SERVICIOS.map((s) => s.id));
+for (const pq of PAQUETES) {
+  const vistos = new Set();
+  for (const id of pq.niveles.flat()) {
+    if (!idsServicios.has(id)) errores.push(`paquete ${pq.nombre}: el servicio ${id} no existe`);
+    if (vistos.has(id)) errores.push(`paquete ${pq.nombre}: ${id} aparece dos veces`);
+    vistos.add(id);
+  }
+}
 // Mientras se construyen las demos: PERMITIR_PENDIENTES=1 deja pasar demos y capturas que todavía no existen.
 if (process.env.PERMITIR_PENDIENTES === '1') {
   const pendientes = errores.filter((e) => /no existe en el repo|falta la captura/.test(e));
@@ -178,6 +188,35 @@ ${porSector
 </section>`;
 }
 
+function seccionEmpezar() {
+  const porId = new Map(SERVICIOS.map((s) => [s.id, s]));
+  return `<section class="empezar envoltura" id="por-donde-empezar" aria-labelledby="empezar-titulo">
+  <div class="seccion__cabeza">
+    <h2 id="empezar-titulo" class="display seccion__titulo">Por dónde empezar</h2>
+    <p class="seccion__bajada">No hace falta todo de una vez. Empieza por lo que te resuelve el problema de hoy y suma lo demás cuando lo necesites; cada escalón incluye el anterior.</p>
+  </div>
+  <div class="escalones">
+    ${PAQUETES.map(
+      (pq) => `<section class="escalera" aria-labelledby="esc-${pq.sector}">
+      <h3 class="escalera__nombre" id="esc-${pq.sector}">${esc(pq.nombre)}</h3>
+      <ol class="escalera__niveles">
+        ${pq.niveles
+          .map((ids, i) => {
+            const acumulado = pq.niveles.slice(0, i + 1).flat();
+            return `<li class="nivel">
+          <p class="nivel__nombre">${ESCALONES[i]}</p>
+          <ul class="nivel__servicios">${ids.map((id) => `<li><a href="#${porId.get(id).slug}"><span class="nivel__codigo">${id}</span> ${esc(porId.get(id).corto)}</a></li>`).join('')}</ul>
+          <button class="enlace-boton nivel__cotizar" type="button" data-cotizar-varios="${acumulado.join(' ')}">Cotizar este escalón (${acumulado.length})</button>
+        </li>`;
+          })
+          .join('\n        ')}
+      </ol>
+    </section>`,
+    ).join('\n    ')}
+  </div>
+</section>`;
+}
+
 function seccionLaboratorio() {
   return `<section class="laboratorio envoltura" id="laboratorio" aria-labelledby="lab-titulo">
   <div class="seccion__cabeza">
@@ -321,6 +360,7 @@ function paginaInicio() {
     cuerpo: `${cabecera('', 'inicio')}
 <main id="contenido">
 ${portada()}
+${seccionEmpezar()}
 ${seccionServicios()}
 ${seccionLaboratorio()}
 ${seccionComoTrabajamos()}

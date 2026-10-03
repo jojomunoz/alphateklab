@@ -149,6 +149,17 @@ function actualizar() {
 }
 
 document.addEventListener('click', (e) => {
+  const varios = e.target.closest('[data-cotizar-varios]');
+  if (varios) {
+    const ids = varios.dataset.cotizarVarios.split(' ').filter((id) => porId.has(id));
+    const nuevos = ids.filter((id) => !elegidos.includes(id));
+    elegidos = [...elegidos, ...nuevos];
+    actualizar();
+    aviso.textContent = nuevos.length ? `Se agregaron ${nuevos.length} servicios a la cotización.` : 'Esos servicios ya estaban en la cotización.';
+    document.getElementById('cotizar').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    document.getElementById('cot-negocio').focus({ preventScroll: true });
+    return;
+  }
   const b = e.target.closest('[data-cotizar]');
   if (!b) return;
   const id = b.dataset.cotizar;

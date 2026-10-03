@@ -74,7 +74,16 @@ try {
     await p.goto(URL_BASE + 'servicios/recorrido-3d/', { waitUntil: 'networkidle' });
     await p.click('text=Cotizar este servicio');
     await p.waitForLoadState('networkidle');
-    assert.match(await p.textContent('#cot-mensaje'), /B01 Recorrido 3D/);
+    assert.match(await p.textContent('#cot-mensaje'), /B01 Recorrido 360 y 3D de la propiedad/);
+  });
+
+  await paso('«Cotizar este escalón» suma el escalón y los anteriores sin repetir', async () => {
+    await p.click('text=Vaciar la lista');
+    await p.click('#esc-restaurantes ~ ol .nivel:nth-child(2) [data-cotizar-varios]');
+    const m = await p.textContent('#cot-mensaje');
+    for (const id of ['R01', 'R02', 'R03', 'R05']) assert.match(m, new RegExp(`- ${id} `));
+    await p.click('#esc-restaurantes ~ ol .nivel:nth-child(1) [data-cotizar-varios]');
+    assert.match(await p.textContent('#cot-cuenta'), /\(4\)/);
   });
 
   await paso('vaciar la lista la deja en cero', async () => {
