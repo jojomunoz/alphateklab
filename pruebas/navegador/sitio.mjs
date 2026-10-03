@@ -1,0 +1,124 @@
+// Recorrido del sitio en un navegador real: menú, buscador (diálogo y portada), «no lo tenemos, pregúntanos»,
+// catálogo con búsqueda y filtros, página de un negocio, cotización compartida entre páginas y teléfono.
+// Uso: servir ~/alphateklab/repos y: node pruebas/navegador/sitio.mjs http://localhost:4900/alphateklab/
+import { chromium } from '/home/jonathan/alphatend-do/sitio/node_modules/playwright/index.mjs';
+import assert from 'node:assert/strict';
+
+const BASE = process.argv[2] || 'http://localhost:4900/alphateklab/';
+const b = await chromium.launch();
+let fallos = 0;
+const paso = async (nombre, fn) => {
+  try {
+    await fn();
+    console.log('ok   ', nombre);
+  } catch (e) {
+    fallos++;
+    console.log('FALLA', nombre, '\n      ', e.message.split('\n')[0]);
+  }
+};
+const errores = [];
+const vigilar = (p) => {
+  p.on('pageerror', (e) => errores.push(String(e)));
+  p.on('console', (m) => m.type() === 'error' && errores.push(m.text()));
+  p.on('response', (r) => r.status() >= 400 && errores.push(`${r.status()} ${r.url()}`));
+};
+
+try {
+  const c = await b.newContext({ viewport: { width: 1280, height: 800 } });
+  const p = await c.newPage();
+  vigilar(p);
+  await p.goto(BASE, { waitUntil: 'networkidle' });
+
+  await paso('el contenido está en el HTML aunque no haya JavaScript', async () => {
+    const html = await (await fetch(BASE)).text();
+    assert.match(html, /¿Qué tipo de negocio tienes\?/);
+    assert.match(html, /Lo que hacemos/);
+    assert.ok((html.match(/class="negocio"/g) || []).length >= 9);
+  });
+
+  await paso('el menú «Soluciones» abre con clic y lleva a cada negocio', async () => {
+    await p.click('button[aria-controls="mega-soluciones"]');
+    assert.equal(await p.isVisible('#mega-soluciones'), true);
+    assert.ok((await p.$$('#mega-soluciones .mega__item')).length >= 9);
+    await p.keyboard.press('Escape');
+    assert.equal(await p.isVisible('#mega-soluciones'), false);
+  });
+
+  await paso('«/» abre el buscador y entiende una frase con palabras propias', async () => {
+    await p.mouse.click(5, 500);
+    await p.keyboard.press('/');
+    await p.keyboard.type('que los clientes pidan desde la mesa');
+    await p.waitForSelector('#buscador-resultados [role=option]');
+    const r = await p.$$eval('#buscador-resultados [role=option] strong', (xs) => xs.map((x) => x.textContent));
+    assert.ok(r.slice(0, 3).some((t) => /pagar desde la mesa/.test(t)), r.join(' | '));
+  });
+
+  await paso('Enter abre el primer resultado', async () => {
+    await p.fill('#buscador-campo', 'recordar citas a pacientes');
+    await p.waitForSelector('#buscador-resultados [role=option]');
+    await Promise.all([p.waitForNavigation(), p.keyboard.press('Enter')]);
+    assert.match(p.url(), /servicios\/agente-de-citas\//);
+    await p.goto(BASE, { waitUntil: 'networkidle' });
+  });
+
+  await paso('lo que no ofrecemos lleva a preguntar por WhatsApp con la frase escrita', async () => {
+    await p.keyboard.press('/');
+    await p.keyboard.type('imprimir camisetas');
+    await p.waitForSelector('[data-buscador-vacio] .sin-resultados');
+    const href = await p.getAttribute('[data-buscador-vacio] a.boton--senal', 'href');
+    assert.match(decodeURIComponent(href), /¿Pueden hacer esto\?\n\nimprimir camisetas/);
+    await p.keyboard.press('Escape');
+  });
+
+  await paso('la búsqueda de la portada muestra resultados debajo del campo', async () => {
+    await p.click('#heroe-campo');
+    await p.keyboard.type('contar clientes');
+    await p.waitForSelector('#heroe-resultados [role=option]');
+    assert.match(await p.textContent('#heroe-resultados [role=option] strong'), /Contador de personas/);
+  });
+
+  await paso('el catálogo filtra por búsqueda y por negocio, y lo guarda en la URL', async () => {
+    await p.goto(`${BASE}servicios/?q=inventario`, { waitUntil: 'networkidle' });
+    assert.match(await p.textContent('#filtros-cuenta'), /resultados? para «inventario»/);
+    await p.fill('#filtro-q', '');
+    await p.click('label.opcion:has-text("Clínicas y consultorios")');
+    await p.waitForFunction(() => /sector=salud/.test(location.search));
+    const n = Number((await p.textContent('#filtros-cuenta')).match(/Mostrando (\d+)/)[1]);
+    assert.ok(n > 0 && n < 20, String(n));
+    await p.fill('#filtro-q', 'dron');
+    await p.waitForSelector('#catalogo-vacio:not([hidden])');
+  });
+
+  await paso('agregar en un negocio aparece en la cabecera y en «Pregúntanos»', async () => {
+    await p.goto(`${BASE}soluciones/restaurantes/`, { waitUntil: 'networkidle' });
+    await p.click('.tarjeta-servicio [data-cotizar="R02"]');
+    assert.equal(await p.textContent('[data-cuenta-cotizacion]'), '1');
+    await p.goto(`${BASE}cotizar/`, { waitUntil: 'networkidle' });
+    await p.fill('#cot-notas', 'algo para la cocina');
+    const m = await p.textContent('#cot-mensaje');
+    assert.match(m, /Lo que necesito: algo para la cocina/);
+    assert.match(m, /R02 Pedir, llamar al mesero y pagar desde la mesa/);
+    await p.click('#cot-vaciar');
+  });
+
+  await paso('el teléfono: menú, sin scroll horizontal', async () => {
+    const m = await b.newContext({ viewport: { width: 390, height: 844 } });
+    const q = await m.newPage();
+    vigilar(q);
+    await q.goto(BASE, { waitUntil: 'networkidle' });
+    assert.equal(await q.evaluate(() => document.documentElement.scrollWidth), 390);
+    await q.click('[data-hamburguesa]');
+    assert.equal(await q.isVisible('#menu-movil'), true);
+    await q.click('#menu-movil [data-abrir-buscador]');
+    assert.equal(await q.isVisible('[data-buscador]'), true);
+    await m.close();
+  });
+
+  await paso('sin errores en consola ni recursos rotos', async () => {
+    assert.deepEqual(errores, []);
+  });
+} finally {
+  await b.close();
+}
+console.log(fallos ? `${fallos} pasos fallaron` : 'todo bien');
+process.exit(fallos ? 1 : 0);

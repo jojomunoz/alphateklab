@@ -36,16 +36,16 @@ export function armarMensaje({ elegidos, servicios, negocio, tipo, lugar, notas 
   const l = limpiar(lugar, 60);
   const notasLimpias = String(notas ?? '').trim().slice(0, 600);
 
-  const lineas = ['Hola, alphateklab. Quiero una cotización.'];
+  const lineas = ['Hola, alphateklab.'];
   const quien = [n, t && `(${t})`].filter(Boolean).join(' ');
   if (quien || l) lineas.push(`Negocio: ${[quien, l].filter(Boolean).join(', ')}`);
+  if (notasLimpias) lineas.push('', `Lo que necesito: ${notasLimpias}`);
   if (lista.length) {
-    lineas.push('', 'Servicios:');
+    lineas.push('', notasLimpias ? 'Servicios que me interesan:' : 'Quiero una cotización de:');
     for (const s of lista) lineas.push(`- ${s.id} ${s.nombre}${s.precio && s.precio !== 'A cotizar' ? ` (${s.precio})` : ''}`);
-  } else {
+  } else if (!notasLimpias) {
     lineas.push('', 'Todavía no elegí servicios: quiero que me orienten.');
   }
-  if (notasLimpias) lineas.push('', `Lo que necesito resolver: ${notasLimpias}`);
   return lineas.join('\n');
 }
 

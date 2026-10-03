@@ -54,7 +54,7 @@ export function validarCatalogo({ SECTORES, TIPOS, SERVICIOS, DEMOS = [] }, exis
     if (s.instala && s.visita) errores.push(`${q}: o se instala o es solo visita, no las dos`);
     if (!s.sectores?.length || s.sectores.some((x) => !sectores.has(x))) errores.push(`${q}: sector desconocido`);
     if (!s.tipos?.length || s.tipos.some((x) => !tipos.has(x))) errores.push(`${q}: tipo desconocido`);
-    const letra = { restaurantes: 'R', comercio: 'C', salud: 'S', hospedaje: 'H', inmuebles: 'B', operacion: 'I', todos: 'T' }[s.sectores?.[0]];
+    const letra = { restaurantes: 'R', comercio: 'C', salud: 'S', hospedaje: 'H', inmuebles: 'B', operacion: 'I', educacion: 'E', servicios: 'V', todos: 'T' }[s.sectores?.[0]];
     if (letra && s.id?.[0] !== letra) errores.push(`${q}: el código debe empezar con ${letra} por su sector principal`);
     if (typeof s.instala !== 'boolean') errores.push(`${q}: «instala» debe ser true o false`);
 

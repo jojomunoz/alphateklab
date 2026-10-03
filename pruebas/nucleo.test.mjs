@@ -26,7 +26,10 @@ test('el filtro va y vuelve por la URL', () => {
 
 test('el mensaje lista los servicios en el orden elegido, con precio solo si lo hay', () => {
   const m = armarMensaje({ elegidos: ['C01', 'R01'], servicios: S, negocio: 'Fonda X', tipo: 'Restaurantes y cafés', lugar: 'David', notas: '' });
-  assert.equal(m, 'Hola, alphateklab. Quiero una cotización.\nNegocio: Fonda X (Restaurantes y cafés), David\n\nServicios:\n- C01 Contador de personas en la entrada\n- R01 Menú QR a la medida ($10 al mes)');
+  assert.equal(m, 'Hola, alphateklab.\nNegocio: Fonda X (Restaurantes y cafés), David\n\nQuiero una cotización de:\n- C01 Contador de personas en la entrada\n- R01 Menú QR a la medida ($10 al mes)');
+  const conNotas = armarMensaje({ elegidos: ['R01'], servicios: S, notas: 'algo para la cocina' });
+  assert.equal(conNotas, 'Hola, alphateklab.\n\nLo que necesito: algo para la cocina\n\nServicios que me interesan:\n- R01 Menú QR a la medida ($10 al mes)');
+  assert.equal(armarMensaje({ elegidos: [], servicios: S, notas: 'imprimir camisetas' }), 'Hola, alphateklab.\n\nLo que necesito: imprimir camisetas');
 });
 
 test('sin servicios pide orientación y descarta ids desconocidos', () => {
