@@ -2941,3 +2941,27 @@ input[type='search']::-webkit-search-cancel-button {
 .sin-corte {
   white-space: nowrap;
 }
+
+/* coincidencias resaltadas en los resultados del buscador */
+.resultado mark {
+  background: none;
+  color: inherit;
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-color: var(--senal);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+.resultado small mark {
+  font-weight: 700;
+  color: var(--tinta-2);
+}
+
+.heroe__imagen img {
+  object-position: 62% 50%;
+}
+@media (min-width: 1040px) {
+  .heroe__imagen img {
+    aspect-ratio: 1 / 1;
+  }
+}

@@ -1028,6 +1028,6 @@ export const SERVICIOS = [
       'Paso a una persona cuando el cliente lo pide o algo no cuadra',
     ],
     equipo: ['Impresora de comandas o pantalla de cocina'], precio: null, demo: null,
-    aparte: 'Los mensajes de WhatsApp Business los cobra Meta por conversación según su tarifa vigente.',
+    aparte: 'Los mensajes de WhatsApp Business los cobra Meta por mensaje, según su tarifa vigente.',
   },
 ];

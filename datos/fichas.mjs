@@ -38,7 +38,7 @@ export const FICHAS = {
       },
       {
         "p": "¿Con esto vendo más rápido o más caro?",
-        "r": "No te lo prometemos. El estudio independiente más grande que encontramos (Harvard e Ivey, 2023, 75.178 ventas en Los Ángeles) no halló efecto en el precio al tomar en cuenta la calidad de las fotos, y vio que el recorrido puede alargar el tiempo de venta. Lo que sí logras es que el interesado conozca el espacio antes de ir."
+        "r": "No te lo prometemos. El estudio independiente más grande que encontramos (Harvard e Ivey, 2023, 75,178 ventas en Los Ángeles) no halló efecto en el precio al tomar en cuenta la calidad de las fotos, y vio que el recorrido puede alargar el tiempo de venta. Lo que sí logras es que el interesado conozca el espacio antes de ir."
       },
       {
         "p": "¿Puedo ver uno antes de contratar?",
@@ -156,7 +156,7 @@ export const FICHAS = {
       "Un calendario donde agendar las visitas"
     ],
     "no_incluye": [
-      "Lo que Meta cobra por los mensajes de WhatsApp: según su tarifa de octubre de 2026, los primeros 1.000 mensajes de servicio al mes por número no se cobran y después son unos US$0.011 cada uno",
+      "Lo que Meta cobra por los mensajes de WhatsApp: según su tarifa de octubre de 2026, los primeros 1,000 mensajes de servicio al mes por número no se cobran y después son unos US$0.011 cada uno",
       "Los anuncios pagados para atraer interesados",
       "La visita: la sigues haciendo tú o tu agente"
     ],
@@ -2133,7 +2133,7 @@ export const FICHAS = {
       "Tu carta con precios"
     ],
     "no_incluye": [
-      "El costo de las conversaciones de WhatsApp Business, que cobra Meta",
+      "El costo de los mensajes de WhatsApp Business, que cobra Meta por mensaje",
       "Las comisiones de cada pago en línea",
       "Los motorizados"
     ],
@@ -2674,7 +2674,7 @@ export const FICHAS = {
       },
       {
         "p": "¿Me sirve el facturador gratuito de la DGI?",
-        "r": "Es para negocios con ingresos de hasta B/.36.000 al año y no más de 100 documentos al mes. Si cumples las dos condiciones, puede que te alcance y no necesites este servicio; te lo decimos en la conversación."
+        "r": "Es para negocios con ingresos de hasta B/.36,000 al año y no más de 100 documentos al mes. Si cumples las dos condiciones, puede que te alcance y no necesites este servicio; te lo decimos en la conversación."
       },
       {
         "p": "Ya tengo un PAC. ¿Hay que cambiarlo?",

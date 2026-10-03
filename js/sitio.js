@@ -1,5 +1,5 @@
 // Comportamiento común a todas las páginas: menú, buscador, «Pregúntanos» y la lista de la cotización.
-import { prepararIndice, buscar, mensajePregunta } from './buscador.mjs';
+import { prepararIndice, buscar, mensajePregunta, resaltar } from './buscador.mjs';
 import { enlaceWhatsApp } from './nucleo.mjs';
 import { leerCotizacion, guardarCotizacion, alternarEnCotizacion, agregarVarios } from './cotizacion.mjs';
 
@@ -96,7 +96,12 @@ const SUGERENCIAS = ['pedir desde la mesa', 'contar clientes', 'recordar citas',
 const url = (u) => (/^https?:/.test(u) ? u : RAIZ + u);
 const contacto = () => document.documentElement.dataset.whatsapp || null;
 
-function itemResultado(r, i) {
+// Pinta un texto con lo que coincide con la búsqueda dentro de <mark>, sin pasar por innerHTML.
+function pintarResaltado(el, texto, consulta) {
+  el.replaceChildren(...resaltar(texto, consulta).map(({ t, m }) => (m ? Object.assign(document.createElement('mark'), { textContent: t }) : document.createTextNode(t))));
+}
+
+function itemResultado(r, i, consulta = '') {
   const li = document.createElement('li');
   li.setAttribute('role', 'option');
   li.setAttribute('aria-selected', 'false');
@@ -104,8 +109,8 @@ function itemResultado(r, i) {
   li.className = 'resultado';
   li.dataset.url = url(r.url);
   li.innerHTML = `<div class="resultado__fila"><svg class="ico" aria-hidden="true"><use href="#i-${r.icono}"></use></svg><span class="resultado__texto"><strong></strong><small></small></span><span class="resultado__tipo"></span></div>`;
-  li.querySelector('strong').textContent = r.titulo;
-  li.querySelector('small').textContent = r.resumen;
+  pintarResaltado(li.querySelector('strong'), r.titulo, consulta);
+  pintarResaltado(li.querySelector('small'), r.resumen, consulta);
   li.querySelector('.resultado__tipo').textContent = r.tipo === 'servicio' ? (r.precio ? r.precio : r.etiqueta) : ETIQUETA[r.tipo];
   return li;
 }
@@ -185,7 +190,7 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
     if (q !== ultimo) return;
     const res = buscar(idx, q, { limite: 8 });
     hubo = res.length;
-    lista.replaceChildren(...res.map(itemResultado), ...(res.length ? [itemPreguntar(q, res.length)] : []));
+    lista.replaceChildren(...res.map((r, i) => itemResultado(r, i, q)), ...(res.length ? [itemPreguntar(q, res.length)] : []));
     if (sugerencias) sugerencias.hidden = true;
     if (vacio) {
       vacio.hidden = res.length > 0;

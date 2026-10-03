@@ -88,6 +88,23 @@ export function buscar(indice, texto, { limite = 8 } = {}) {
     .map((x) => ({ ...x.e, _fichas: undefined, puntos: Math.round(x.puntos * 10) / 10 }));
 }
 
+// Parte un texto en trozos y marca los que coinciden con lo que se buscó (misma palabra o misma familia), para
+// resaltarlos en los resultados. Devuelve [{ t: 'texto', m: true|false }] y nunca HTML: quien pinta usa textContent.
+export function resaltar(texto, consulta) {
+  const qs = [...new Set(fichas(consulta))];
+  const trozos = String(texto ?? '').split(/([\p{L}\p{N}]+)/u).filter((t) => t !== '');
+  if (!qs.length) return [{ t: String(texto ?? ''), m: false }];
+  const salida = [];
+  for (const t of trozos) {
+    const n = normalizar(t);
+    const m = /[\p{L}\p{N}]/u.test(t) && !VACIAS.has(n) && qs.some((q) => parecido(q, n) > 0);
+    const ultimo = salida[salida.length - 1];
+    if (ultimo && ultimo.m === m) ultimo.t += t;
+    else salida.push({ t, m });
+  }
+  return salida;
+}
+
 // Mensaje para preguntar por algo que no está en la lista.
 export function mensajePregunta(consulta, { negocio = '', lugar = '' } = {}) {
   const lineas = ['Hola, alphateklab. ¿Pueden hacer esto?', '', String(consulta).trim().slice(0, 600)];

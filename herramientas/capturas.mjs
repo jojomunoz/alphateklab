@@ -15,6 +15,18 @@ const solo = process.argv[3];
 
 // Qué hacer en cada demo antes de la foto, para que se vea trabajando y no vacía.
 const PREPARAR = {
+  sensores: async (p) => {
+    await p.waitForSelector('[data-falla="puerta"]:not([disabled])', { timeout: 30000 });
+    await p.click('[data-falla="puerta"]');
+    await p.waitForTimeout(2500);
+    await p.evaluate(() => document.getElementById('notificacion-cerrar')?.click());
+    // a la vista: el estado con el aviso, las lecturas con la curva en rojo y el botón de la falla
+    await p.evaluate(() => {
+      const y = document.getElementById('registro-titulo').getBoundingClientRect().top + scrollY;
+      window.scrollTo(0, Math.max(0, y - 330));
+    });
+    await p.waitForTimeout(400);
+  },
   'recorrido-360': async (p) => {
     await p.click('#entrar');
     await p.waitForFunction(() => /Estás en/.test(document.getElementById('estado')?.textContent || ''), null, { timeout: 30000 });

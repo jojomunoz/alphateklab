@@ -330,6 +330,8 @@ const PREGUNTAS = [
 ];
 
 // ── portada ──
+// Una sola escena (el tríptico tenía costuras): dos técnicos instalando una pantalla en un local, que es el titular.
+const FOTO_HEROE = existe('assets/fotos/equipo-instalando.webp') ? 'equipo-instalando' : 'marca-heroe';
 function paginaInicio() {
   const prefijo = '';
   const chips = [
@@ -360,8 +362,8 @@ function paginaInicio() {
     </div>
     <div class="heroe__visual" aria-hidden="true">
       ${
-        existe('assets/fotos/marca-heroe.webp')
-          ? `<div class="heroe__imagen">${foto('marca-heroe', prefijo, { sizes: '(min-width: 1040px) 48vw, 100vw', alt: '', carga: 'eager', prioridad: true })}</div>`
+        existe(`assets/fotos/${FOTO_HEROE}.webp`)
+          ? `<div class="heroe__imagen">${foto(FOTO_HEROE, prefijo, { sizes: '(min-width: 1040px) 44vw, 100vw', alt: '', carga: 'eager', prioridad: true })}</div>`
           : `<div class="mosaico">${fotosHeroe.map((s, i) => `<div class="mosaico__foto mosaico__foto--${i + 1}">${foto(s, prefijo, { sizes: '(min-width: 1000px) 25vw, 50vw', alt: '', carga: 'eager', prioridad: i === 0 })}</div>`).join('')}</div>`
       }
     </div>
@@ -445,7 +447,8 @@ function paginaInicio() {
   <p class="seccion__pie"><a class="boton boton--linea" href="${prefijo}servicios/">${icono('list')}Ver los ${SERVICIOS.length} servicios</a></p>
 </section>`;
 
-  const fotoInst = foto('instalacion', prefijo, {});
+  // El héroe ya muestra a los técnicos instalando; aquí va el resultado: la pantalla de comandas trabajando en la cocina.
+  const fotoInst = foto(existe('assets/fotos/cocina.webp') ? 'cocina' : 'instalacion', prefijo, {});
   const instalacion = `<section class="seccion envoltura dividida${fotoInst ? '' : ' dividida--sinfoto'}" aria-labelledby="inst-titulo">
   ${fotoInst ? `<div class="dividida__foto">${fotoInst}</div>` : ''}
   <div class="dividida__texto">
@@ -650,7 +653,7 @@ ${bandaPreguntanos(prefijo)}`,
 
 // Fuentes de las cifras que citan las fichas: si el texto las menciona, la ficha las enlaza (comprobadas el 3-oct-2026).
 const FUENTES_CITADAS = [
-  [/Harvard e Ivey/, 'Harvard Business School e Ivey: recorridos virtuales y 75.000 ventas de casas', 'https://www.library.hbs.edu/working-knowledge/are-virtual-tours-still-worth-it-in-real-estate-evidence-from-75000-home-sales'],
+  [/Harvard e Ivey/, 'Harvard Business School e Ivey: recorridos virtuales y 75,000 ventas de casas', 'https://www.library.hbs.edu/working-knowledge/are-virtual-tours-still-worth-it-in-real-estate-evidence-from-75000-home-sales'],
   [/ACEEE/, 'ACEEE (2010): medición avanzada y programas de información al hogar', 'https://www.aceee.org/research-report/e105'],
   [/US\$0\.\d+|tarifa de octubre de 2026|cobra Meta|Meta cobra|Meta los cobra|Meta lo cobra/, 'Meta: precios de la plataforma de WhatsApp Business', 'https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing'],
   [/1 % más ITBMS/, 'Yappy Comercial: comisión por cobro', 'https://www.yappy.com.pa/comercial/'],

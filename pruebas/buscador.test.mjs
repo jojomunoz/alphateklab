@@ -5,7 +5,7 @@ import { PALABRAS, PALABRAS_NEGOCIO } from '../datos/busqueda.mjs';
 import { SOLUCIONES } from '../datos/soluciones.mjs';
 import { DEMOS } from '../datos/demos.mjs';
 import { construirIndice } from '../js/indice.mjs';
-import { prepararIndice, buscar, normalizar, fichas, parecido, mensajePregunta } from '../js/buscador.mjs';
+import { prepararIndice, buscar, normalizar, fichas, parecido, mensajePregunta, resaltar } from '../js/buscador.mjs';
 
 const indice = prepararIndice(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO }));
 const primeros = (q, n = 3) => buscar(indice, q).slice(0, n).map((r) => r.id);
@@ -105,3 +105,19 @@ for (const [q, esperado] of [
     assert.equal(primeros(q, 1)[0], esperado, `salió ${primeros(q, 3).join(', ')}`);
   });
 }
+
+test('resaltar marca la palabra buscada y su familia, con tildes y mayúsculas, sin tocar lo demás', () => {
+  const r = resaltar('Cámaras con IA para pedidos', 'camara pedir');
+  assert.deepEqual(r.filter((x) => x.m).map((x) => x.t), ['Cámaras', 'pedidos']);
+  assert.equal(r.map((x) => x.t).join(''), 'Cámaras con IA para pedidos');
+});
+
+test('resaltar no marca palabras vacías ni prefijos falsos', () => {
+  const r = resaltar('Contador de personas en la entrada', 'contabilidad de la empresa');
+  assert.equal(r.filter((x) => x.m).length, 0);
+  assert.equal(r.map((x) => x.t).join(''), 'Contador de personas en la entrada');
+});
+
+test('resaltar sin consulta devuelve el texto entero sin marcar', () => {
+  assert.deepEqual(resaltar('Menú QR', ''), [{ t: 'Menú QR', m: false }]);
+});

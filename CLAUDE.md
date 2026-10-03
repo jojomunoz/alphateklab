@@ -24,3 +24,10 @@ Reglas del proyecto: `~/alphateklab/BRIEF.md`. Guía de diseño: `~/Documents/No
 - **Movimiento:** solo responder y estado. Hover solo con puntero fino. Nada en `opacity:0` esperando al JS.
 - **Contenido:** precios solo los decididos por los socios (menú QR $10/mes; fotos del recorrido 3D +$300); el resto
   «A cotizar». Nada de testimonios, logos de clientes ni cifras sin fuente. Las demos usan negocios ficticios rotulados.
+
+## Probado y descartado
+
+- **View Transitions entre documentos (`@view-transition { navigation: auto }`), 3-oct-2026:** en Chromium 149 sin
+  interfaz, una navegación por script con transición seguida de otra navegación dejó la página nueva sin pintar
+  (`requestAnimationFrame` no corre, las capturas no salen, los clics esperan para siempre). No se pudo descartar que le
+  pase a una persona con el botón atrás, así que no se usa. La prueba de navegador lo detecta (4 pasos fallan).

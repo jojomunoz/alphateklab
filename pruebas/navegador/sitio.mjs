@@ -87,6 +87,11 @@ try {
     assert.match(await p.textContent('#heroe-resultados [role=option] strong'), /Contador de personas/);
   });
 
+  await paso('los resultados resaltan lo que coincide con la búsqueda', async () => {
+    const marcas = await p.$$eval('#heroe-resultados [role=option] mark', (xs) => xs.map((x) => x.textContent.toLowerCase()));
+    assert.ok(marcas.some((t) => /client|cont/.test(t)), marcas.join(' | '));
+  });
+
   await paso('el catálogo filtra por búsqueda y por negocio, y lo guarda en la URL', async () => {
     await p.goto(`${BASE}servicios/?q=inventario`, { waitUntil: 'networkidle' });
     assert.match(await p.textContent('#filtros-cuenta'), /resultados? para «inventario»/);
