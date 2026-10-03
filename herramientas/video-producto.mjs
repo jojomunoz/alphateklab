@@ -95,6 +95,15 @@ try {
   await tel.setViewportSize({ width: 390, height: 844 });
   await tel.goto(urlMesa, { waitUntil: 'load' });
   await tel.addStyleTag({ content: OCULTAR });
+  // Las fotos de la carta cargan «lazy» y la del plato tocado solo al abrir su hoja: se piden antes de grabar, para
+  // que ningún cuadro salga con el recuadro gris de una foto que todavía viene en camino.
+  await tel.evaluate(async (n) => {
+    const fotos = [...document.querySelectorAll('img.plato__foto')];
+    for (const f of fotos) f.loading = 'eager';
+    const id = document.querySelectorAll('button.plato')[n]?.dataset.plato;
+    const grande = id ? fetch(`img/platos/${id}-960.webp`).then((r) => r.blob()) : null;
+    await Promise.all([...fotos.map((f) => (f.complete ? null : new Promise((listo) => { f.onload = f.onerror = listo; }))), grande]);
+  }, 1);
   await tel.clock.runFor(2500);
   for (const p of [tel, salon]) {
     await p.evaluate(() => document.fonts.ready);
@@ -108,7 +117,7 @@ try {
   const clic = (p, sel, n = 0) => p.evaluate(([s, i]) => document.querySelectorAll(s)[i].click(), [sel, n]);
 
   // Guion del teléfono, en segundos del video: el anillo aparece 0,35 s antes de cada toque.
-  const PLATO = ['button.plato', 2]; // el tercer plato de la carta
+  const PLATO = ['button.plato', 1]; // patacones con ceviche: el segundo plato de la carta y la foto con más color
   const AGREGAR = ['#dlg-plato button[type="submit"]', 0];
   const PEDIDO = ['#boton-carrito', 0];
   const ENVIAR = ['#dlg-carrito .boton--primario.boton--grande', 0];
