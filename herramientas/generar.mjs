@@ -436,7 +436,7 @@ function paginaInicio() {
   <div class="envoltura heroe__fila">
     <div class="heroe__texto">
       <h1 id="heroe-titulo" class="display heroe__titulo">Hacemos la tecnología de tu negocio y la instalamos en tu local.</h1>
-      <p class="heroe__bajada">Software, apps e inteligencia artificial a la medida de tu negocio, y equipos como cámaras, sensores, pantallas y QR. Todo conectado con Yappy, la factura electrónica y WhatsApp.</p>
+      <p class="heroe__bajada">Software, apps e inteligencia artificial a la medida de tu negocio, y equipos como cámaras, sensores, pantallas y QR.</p>
       <form class="heroe__buscar" role="search" data-buscar-en-linea action="${prefijo}servicios/">
         ${icono('magnifying-glass')}
         <label class="sr" for="heroe-campo">¿Qué necesitas?</label>
