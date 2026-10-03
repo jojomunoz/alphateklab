@@ -13,6 +13,24 @@ import { validarCatalogo } from '../js/catalogo-reglas.mjs';
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 const existe = (ruta) => existsSync(join(RAIZ, ruta));
+
+// Publicación por partes: PUBLICAR_PARCIAL=1 quita de lo generado las demos que todavía no están (las del laboratorio
+// que no tienen index.html y las de otros repos que no figuran en EXTERNAS_LISTAS=mesa,reservas). Así lo que se
+// publica no tiene enlaces rotos mientras se terminan las demás.
+const PARCIAL = process.env.PUBLICAR_PARCIAL === '1';
+const EXTERNAS_LISTAS = new Set((process.env.EXTERNAS_LISTAS || '').split(',').filter(Boolean));
+const demoLista = (u) => {
+  if (!u) return false;
+  const m = u.match(/^https:\/\/jojomunoz\.github\.io\/alphateklab-(mesa|reservas)\//);
+  if (m) return EXTERNAS_LISTAS.has(m[1]);
+  return existe(u.replace(/#.*$/, '').replace(/\/?$/, '/') + 'index.html');
+};
+if (PARCIAL) {
+  const quitadas = [];
+  for (const s of SERVICIOS) if (s.demo && !demoLista(s.demo)) { quitadas.push(s.id); s.demo = null; }
+  for (let i = DEMOS.length - 1; i >= 0; i--) if (!demoLista(DEMOS[i].url)) { quitadas.push(`demo ${DEMOS[i].clave}`); DEMOS.splice(i, 1); }
+  if (quitadas.length) console.warn(`Publicación parcial: sin demo todavía en ${quitadas.join(', ')}`);
+}
 let errores = validarCatalogo({ SECTORES, TIPOS, SERVICIOS, DEMOS }, existe);
 const idsServicios = new Set(SERVICIOS.map((s) => s.id));
 for (const pq of PAQUETES) {

@@ -5,6 +5,7 @@
 // - precio: solo los que decidieron los socios. Todo lo demás va como null y se muestra «A cotizar».
 // - demo: ruta relativa a una demo que existe en este repo o URL de otro repo de alphateklab.
 // - instala: true si el servicio incluye ir al local a instalar algo físico.
+// - aparte: costo que cobra un tercero y no alphateklab (p. ej. mensajes de WhatsApp), con su fuente en el informe.
 // - visita: true si hay que ir a la propiedad (fotos, escaneo) aunque no se instale nada.
 
 export const SECTORES = [
@@ -338,6 +339,7 @@ export const SERVICIOS = [
     ],
     equipo: [],
     precio: null,
+    aparte: 'Los recordatorios por WhatsApp los cobra Meta por mensaje: unos US$0,011 cada uno en Panamá, según su tarifa de octubre de 2026. El correo sale casi gratis.',
     demo: RESERVAS,
   },
   {
@@ -455,7 +457,7 @@ export const SERVICIOS = [
     incluye: ['Fotos 360 de cada ambiente con cámara 360, o escaneo 3D con LiDAR', 'Recorrido para tu página o tu anuncio, en tu dominio', 'Medidas de cada ambiente en la versión 3D'],
     equipo: ['Cámara 360 o teléfono con LiDAR (lo llevamos nosotros)'],
     precio: null,
-    demo: 'laboratorio/recorrido-3d/',
+    demo: 'laboratorio/recorrido-360/',
   },
   {
     id: 'B02',
