@@ -1,5 +1,5 @@
 // Página de todos los servicios: búsqueda con tus palabras + filtros por negocio y tipo, todo en la URL.
-import { prepararIndice, buscar, mensajePregunta } from './buscador.mjs';
+import { buscar, mensajePregunta, cargarIndice as descargarIndice } from './buscador.mjs';
 import { coincide, filtroDesdeParams, paramsDesdeFiltro, enlaceWhatsApp } from './nucleo.mjs';
 
 const RAIZ = document.documentElement.dataset.raiz || './';
@@ -27,7 +27,7 @@ function titulo(f, visibles) {
 }
 
 async function cargarIndice() {
-  if (!indice) indice = prepararIndice(await (await fetch(`${RAIZ}assets/indice.json`)).json());
+  indice ??= await descargarIndice(`${RAIZ}assets/indice.json?v=${document.documentElement.dataset.indice || ''}`);
   return indice;
 }
 

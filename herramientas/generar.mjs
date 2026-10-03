@@ -3,6 +3,7 @@
 //   PUBLICAR_PARCIAL=1 DEMOS_LISTAS=recorrido-360,mesa  → publica solo las demos ya verificadas.
 
 import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync, existsSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { SECTORES, TIPOS, SERVICIOS } from '../datos/catalogo.mjs';
@@ -220,10 +221,28 @@ function conModulo(html) {
     .replace(/(<h2 [^>]*class="(?![^"]*--chico)[^"]*seccion__titulo[^"]*"[^>]*>)([^<]*[^?<\s])(<\/h2>)/g, (_, a, t, c) => `${a}${t.replace(/\.$/, '')}${MODULO}${c}`);
 }
 
+// Versión por contenido de CSS, JS y del índice del buscador: GitHub Pages deja guardar 10 minutos (max-age=600) y,
+// sin versión en la dirección, un cambio publicado podía tardar eso en verse. El mapa de importación versiona también
+// los módulos que se importan entre sí (sitio.js → buscador.mjs…).
+const INDICE_JSON = JSON.stringify(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO, GUIAS, FICHAS, SITUACIONES, EQUIVALENCIAS, VACIAS }));
+const huella = (contenido) => createHash('sha1').update(contenido).digest('hex').slice(0, 10);
+const HUELLAS = Object.fromEntries(
+  [...readdirSync(join(RAIZ, 'js')).filter((f) => /\.m?js$/.test(f)).map((f) => `js/${f}`), 'assets/atk.css', 'assets/sitio.css'].map((r) => [r, huella(readFileSync(join(RAIZ, r)))]),
+);
+const HUELLA_INDICE = huella(INDICE_JSON);
+const conVersion = (prefijo, ruta) => `${prefijo}${ruta}?v=${HUELLAS[ruta]}`;
+const mapaImportacion = (prefijo) => {
+  const base = prefijo || './';
+  const imports = Object.fromEntries(Object.keys(HUELLAS).filter((r) => r.startsWith('js/')).map((r) => [`${base}${r}`, `${base}${r}?v=${HUELLAS[r]}`]));
+  return `<script type="importmap">${JSON.stringify({ imports })}</script>`;
+};
+// los <script src="…js/x.js"> que traen las páginas, con su versión
+const scriptsConVersion = (prefijo, html) => html.replace(/src="([^"]*?)(js\/[\w.-]+\.m?js)"/g, (m, pre, ruta) => (HUELLAS[ruta] ? `src="${pre}${ruta}?v=${HUELLAS[ruta]}"` : m));
+
 function documento({ titulo, descripcion, prefijo, cuerpo, scripts = '', canonica, robots = '', clase = '', datos = null, imagen = 'assets/og.jpg' }) {
   cuerpo = conModulo(cuerpo);
   return `<!doctype html>
-<html lang="es-PA" data-raiz="${prefijo || './'}" data-whatsapp="${esc(CONTACTO.whatsapp || '')}">
+<html lang="es-PA" data-raiz="${prefijo || './'}" data-indice="${HUELLA_INDICE}" data-whatsapp="${esc(CONTACTO.whatsapp || '')}">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -245,16 +264,17 @@ function documento({ titulo, descripcion, prefijo, cuerpo, scripts = '', canonic
 <link rel="apple-touch-icon" href="${prefijo}assets/marca/favicon-180.png" />
 <link rel="preload" href="${prefijo}assets/fuentes/manrope-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="${prefijo}assets/fuentes/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="${prefijo}assets/atk.css" />
-<link rel="stylesheet" href="${prefijo}assets/sitio.css" />${datos ? `\n<script type="application/ld+json">${jsonEnScript(datos)}</script>` : ''}
+<link rel="stylesheet" href="${conVersion(prefijo, 'assets/atk.css')}" />
+<link rel="stylesheet" href="${conVersion(prefijo, 'assets/sitio.css')}" />${datos ? `\n<script type="application/ld+json">${jsonEnScript(datos)}</script>` : ''}
+${mapaImportacion(prefijo)}
 </head>
 <body class="${clase}">
 ${cabecera(prefijo)}
 ${cuerpo}
 ${pie(prefijo)}
 ${dialogoBuscador()}
-<script type="module" src="${prefijo}js/sitio.js"></script>
-${scripts}
+<script type="module" src="${conVersion(prefijo, 'js/sitio.js')}"></script>
+${scriptsConVersion(prefijo, scripts)}
 </body>
 </html>
 `;
@@ -1123,6 +1143,6 @@ escribir('privacidad/index.html', paginaPrivacidad());
 escribir('creditos/index.html', paginaCreditos());
 escribir('404.html', pagina404());
 escribir('sitemap.xml', sitemap());
-escribir('assets/indice.json', JSON.stringify(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO, GUIAS, FICHAS, SITUACIONES, EQUIVALENCIAS, VACIAS })));
+escribir('assets/indice.json', INDICE_JSON);
 escribir('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${URL_BASE}sitemap.xml\n`);
 console.log(`Generado: portada, ${SOLUCIONES.length} soluciones, ${SERVICIOS.length} servicios, catálogo, demos, cotizar, privacidad, créditos, 404, sitemap e índice de búsqueda.`);

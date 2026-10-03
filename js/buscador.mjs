@@ -203,6 +203,27 @@ export function buscar(indice, texto, { limite = 8, prefijo = false, minimo } = 
     .map((x) => ({ ...x.e, _fichas: undefined, puntos: Math.round(x.puntos * 10) / 10 }));
 }
 
+// Una sola descarga del índice por página aunque lo pidan a la vez el buscador, el catálogo y el diagnóstico (el
+// catálogo lo bajaba 8 veces: cada llamada que llegaba antes de terminar la primera abría otra descarga). Si falla,
+// se puede volver a intentar.
+const descargas = new Map();
+export function cargarIndice(url) {
+  if (!descargas.has(url)) {
+    const d = fetch(url)
+      .then((r) => {
+        if (!r.ok) throw new Error(`índice ${r.status}`);
+        return r.json();
+      })
+      .then(prepararIndice)
+      .catch((e) => {
+        descargas.delete(url);
+        throw e;
+      });
+    descargas.set(url, d);
+  }
+  return descargas.get(url);
+}
+
 // Parte un texto en trozos y marca los que coinciden con lo que se buscó (misma palabra o misma familia), para
 // resaltarlos en los resultados. Devuelve [{ t: 'texto', m: true|false }] y nunca HTML: quien pinta usa textContent.
 export function resaltar(texto, consulta) {

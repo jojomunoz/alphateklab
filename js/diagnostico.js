@@ -1,6 +1,6 @@
 // «¿Qué necesita tu negocio?»: tres pasos y una recomendación. La lógica vive en diagnostico-nucleo.mjs.
 import { recomendar, mensajeDiagnostico, estadoDesdeParams, paramsDesdeEstado, yaTengoDe } from './diagnostico-nucleo.mjs';
-import { prepararIndice, buscar } from './buscador.mjs';
+import { buscar, cargarIndice as descargarIndice } from './buscador.mjs';
 import { enlaceWhatsApp } from './nucleo.mjs';
 import { agregarVarios } from './cotizacion.mjs';
 
@@ -20,11 +20,7 @@ const reducir = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const avance = document.querySelector('.pasos-diag');
 let indice = null;
 async function cargarIndice() {
-  if (!indice) {
-    const r = await fetch(`${RAIZ}assets/indice.json`);
-    if (!r.ok) throw new Error(`índice ${r.status}`);
-    indice = prepararIndice(await r.json());
-  }
+  indice ??= await descargarIndice(`${RAIZ}assets/indice.json?v=${document.documentElement.dataset.indice || ''}`);
   return indice;
 }
 

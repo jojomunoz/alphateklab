@@ -1,5 +1,5 @@
 // Comportamiento común a todas las páginas: menú, buscador, «Pregúntanos» y la lista de la cotización.
-import { prepararIndice, buscar, mensajePregunta, resaltar } from './buscador.mjs';
+import { buscar, mensajePregunta, resaltar, cargarIndice as descargarIndice } from './buscador.mjs';
 import { enlaceWhatsApp } from './nucleo.mjs';
 import { leerCotizacion, guardarCotizacion, alternarEnCotizacion, agregarVarios } from './cotizacion.mjs';
 
@@ -116,10 +116,7 @@ menuMovil?.addEventListener('click', (e) => {
 // ── buscador ──
 let indice = null;
 async function cargarIndice() {
-  if (indice) return indice;
-  const r = await fetch(`${RAIZ}assets/indice.json`);
-  if (!r.ok) throw new Error(`índice ${r.status}`);
-  indice = prepararIndice(await r.json());
+  indice ??= await descargarIndice(`${RAIZ}assets/indice.json?v=${document.documentElement.dataset.indice || ''}`);
   return indice;
 }
 
