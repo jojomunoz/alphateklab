@@ -67,8 +67,14 @@ async function aplicar({ url = true } = {}) {
     t.style.order = orden && ok ? String(orden.get(t.dataset.id)) : '';
     if (ok) visibles++;
   }
-  // con búsqueda, los grupos se aplanan para mostrar primero lo más parecido
-  document.getElementById('catalogo').classList.toggle('catalogo--buscando', Boolean(f.q));
+  // con búsqueda o con un tipo elegido, los grupos se aplanan: con ?tipo=pagos los encabezados de otros tipos
+  // («Software a medida», «Web y apps») quedaban antes que «Cobros y facturación» y la cifra no cuadraba con la portada
+  const plano = Boolean(f.q || f.tipo);
+  if (f.tipo && !f.q) {
+    // primero los que son de ese tipo por su tipo principal, después los que también lo son
+    for (const t of tarjetas) if (!t.hidden) t.style.order = datos.get(t.dataset.id)?.tipos?.[0] === f.tipo ? '0' : '1';
+  }
+  document.getElementById('catalogo').classList.toggle('catalogo--buscando', plano);
   form.classList.toggle('filtros--buscando', Boolean(f.q));
   for (const g of grupos) g.hidden = !g.querySelector('.tarjeta-servicio:not([hidden])');
   if (h1) h1.textContent = titulo(f, visibles);

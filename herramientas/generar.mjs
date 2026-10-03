@@ -787,7 +787,10 @@ ${bandaPreguntanos(prefijo)}`,
 // ── catálogo completo ──
 function paginaServicios() {
   const prefijo = '../';
-  const grupos = TIPOS.map((t) => ({ t, lista: SERVICIOS.filter((s) => s.tipos[0] === t.id) })).filter((g) => g.lista.length);
+  // cada grupo de lo general a lo específico: primero lo que sirve a cualquier negocio (con «Software a medida» a la
+  // cabeza del suyo), después lo de un negocio en particular, en el orden del catálogo
+  const general = (s) => (s.id === 'T02' ? 0 : s.sectores.includes('todos') ? 1 : 2);
+  const grupos = TIPOS.map((t) => ({ t, lista: SERVICIOS.filter((s) => s.tipos[0] === t.id).map((s, i) => [s, i]).sort((a, b) => general(a[0]) - general(b[0]) || a[1] - b[1]).map(([s]) => s) })).filter((g) => g.lista.length);
   return documento({
     titulo: `Los ${SERVICIOS.length} servicios · alphateklab`,
     descripcion: 'Todos los servicios de alphateklab: software a medida, web y apps, IA, cámaras, sensores, pantallas, 3D y cobros. Busca con tus palabras o filtra por tu negocio.',

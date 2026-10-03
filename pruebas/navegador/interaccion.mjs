@@ -140,6 +140,27 @@ try {
     assert.ok(filas.length <= 5, `${filas.length} filas: en el teléfono van 4 resultados como mucho`);
   });
 
+  await paso('al filtrar por tipo, el catálogo empieza por ese tipo, sin encabezados de otros, y la cifra es la de la portada', async () => {
+    await p.goto(BASE, { waitUntil: 'load' });
+    // las cifras de la portada: el número al final de cada enlace del índice de «79 servicios»
+    const cifras = await p.$$eval('a[href*="servicios/?tipo="]', (as) => Object.fromEntries(as.map((a) => [new URL(a.href).searchParams.get('tipo'), (a.textContent.match(/(\d+)\s*$/) || [])[1]]).filter(([, n]) => n)));
+    assert.ok(Object.keys(cifras).length >= 6, `cifras de la portada: ${JSON.stringify(cifras)}`);
+    for (const [tipo, n] of Object.entries(cifras)) {
+      await p.goto(`${BASE}servicios/?tipo=${tipo}`, { waitUntil: 'load' });
+      await p.waitForTimeout(300);
+      const r = await p.evaluate(() => {
+        const vis = [...document.querySelectorAll('.tarjeta-servicio')].filter((t) => !t.hidden && t.offsetParent).sort((a, b) => (+a.style.order || 0) - (+b.style.order || 0));
+        const titulos = [...document.querySelectorAll('.grupo__titulo')].filter((h) => h.offsetParent).length;
+        return { h1: document.querySelector('h1').textContent, primero: vis[0]?.dataset.tipos.split(' ')[0], visibles: vis.length, titulos };
+      });
+      assert.equal(r.primero, tipo, `?tipo=${tipo}: el primer servicio es de tipo ${r.primero}`);
+      assert.equal(r.titulos, 0, `?tipo=${tipo}: se ven ${r.titulos} encabezados de grupo`);
+      assert.equal(String(r.visibles), n, `?tipo=${tipo}: la portada dice ${n} y se ven ${r.visibles}`);
+      assert.match(r.h1, new RegExp(`\\(${n}\\)`), `?tipo=${tipo}: el título dice «${r.h1}»`);
+    }
+    await p.goto(BASE, { waitUntil: 'load' });
+  });
+
   await paso('el desplegable de la portada no queda recortado: la fila «Pregúntanos» se ve a 1440×900 y a 1280×720', async () => {
     for (const [w, h] of [[1440, 900], [1280, 720]]) {
       const c2 = await b.newContext({ viewport: { width: w, height: h } });
