@@ -143,7 +143,21 @@
     
   </div>
 </section>
-
+<section class="seccion envoltura ficha-detalle" aria-labelledby="como-titulo">
+  <div class="ficha-detalle__como">
+    <h2 id="como-titulo" class="display seccion__titulo seccion__titulo--chico">Cómo funciona</h2>
+    <ol class="linea-tiempo"><li><h3>Tus canales y unidades</h3><p>Vemos en qué canales vendes cada unidad y sacamos de cada panel el enlace de su calendario (iCal).</p></li><li><h3>Conectar los calendarios</h3><p>Cada unidad recibe las fechas ocupadas de Booking, Airbnb y Expedia y les manda las suyas, así lo vendido en uno se cierra en los demás.</p></li><li><h3>El vigilante</h3><p>Si un canal lleva horas sin actualizar, te avisa y cierra la venta en tu página hasta que vuelva a sincronizar.</p></li><li><h3>Choques de fechas</h3><p>Si aun así entran dos reservas para la misma noche, aparecen en la lista de choques con una propuesta de a qué unidad reubicar.</p></li></ol>
+  </div>
+  <div class="ficha-detalle__lado">
+    <div class="ficha-detalle__bloque"><h2>Qué necesitas tener</h2><ul class="lista-check"><li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg>Acceso a tus paneles de Booking, Airbnb y Expedia, o los enlaces de calendario de cada unidad</li><li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg>La lista de unidades y en qué canal está cada una</li></ul></div>
+    <div class="ficha-detalle__bloque ficha-detalle__bloque--no"><h2>Qué no incluye</h2><ul class="lista-no"><li>Una conexión directa por API con los canales (channel manager); si tu volumen la pide, va en la propuesta</li><li>Las comisiones que cobra cada canal por sus reservas</li><li>La llamada al huésped para reubicarlo: el sistema propone la unidad y la llamada la haces tú</li></ul></div>
+    <p class="ficha-detalle__ejemplo">Ejemplo: un hostal en Bocas del Toro vende sus seis habitaciones en Booking, en Airbnb y en su propia página. Un domingo el calendario de Airbnb deja de actualizarse; al dueño le llega el aviso y su página deja de vender esas fechas mientras lo arregla.</p>
+  </div>
+</section>
+<section class="seccion seccion--junta envoltura" aria-labelledby="pf-titulo">
+  <h2 id="pf-titulo" class="display seccion__titulo seccion__titulo--chico">Preguntas sobre este servicio</h2>
+  <div class="preguntas"><details class="pregunta"><summary>¿Esto acaba con la doble reserva?</summary><p>La reduce, pero no del todo. Los canales releen los calendarios cada pocas horas (Airbnb cada unas 3 y Booking cada unas 2, según lo que revisamos), y en ese rato se puede vender la misma noche dos veces. El vigilante te avisa del choque para resolverlo antes de que llegue el huésped.</p></details><details class="pregunta"><summary>¿Funciona con cualquier cuenta de Booking o Expedia?</summary><p>No siempre. Booking solo permite calendarios iCal con 20 tipos de habitación o menos, una unidad por tipo y sin un channel manager conectado, y Expedia trabaja sobre todo con channel managers. Lo revisamos con tu cuenta antes de empezar.</p></details></div>
+</section>
 <section class="seccion envoltura" aria-labelledby="rel-titulo">
   <div class="seccion__cabeza"><h2 id="rel-titulo" class="display seccion__titulo seccion__titulo--chico">Va bien con</h2></div>
   <div class="rejilla-servicios"><article class="tarjeta-servicio" id="encuesta-despues-de-la-cita" data-id="S03" data-sectores="salud restaurantes hospedaje" data-tipos="software" data-demo="0" data-instala="0">

@@ -498,6 +498,385 @@ export const FICHAS = {
     ],
     "ejemplo": "Ejemplo: una tienda de repuestos de moto en Colón que vende sobre todo por WhatsApp comparte el enlace del catálogo en su estado. El pedido le llega con la pieza, la cantidad y el total, y el cliente paga con el enlace antes de que salga el mensajero."
   },
+  E01: {
+    "como": [
+      {
+        "titulo": "Tus cobros y tu formulario",
+        "texto": "Nos pasas tus tarifas de matrícula y mensualidad, las fechas de pago y los documentos que pides al matricular."
+      },
+      {
+        "titulo": "Carga de estudiantes",
+        "texto": "Cargamos a los estudiantes actuales con su grado y sus acudientes, para que cada uno arranque con su estado de cuenta."
+      },
+      {
+        "titulo": "Matrícula y pago en línea",
+        "texto": "Los padres llenan la matrícula, suben los documentos y pagan con Yappy o tarjeta desde el celular. Antes de cada vencimiento les llega el recordatorio."
+      },
+      {
+        "titulo": "Quién está al día",
+        "texto": "Ves el estado de cuenta de cada estudiante y el reporte de morosidad sin revisar comprobantes uno por uno."
+      }
+    ],
+    "necesitas": [
+      "Tus tarifas, fechas de pago y descuentos, si los das",
+      "La lista de estudiantes con su grado y el contacto de sus acudientes",
+      "Una cuenta para cobrar: Yappy Comercial o una pasarela de tarjetas"
+    ],
+    "no_incluye": [
+      "La comisión de Yappy o de la pasarela de tarjetas por cada pago",
+      "La factura electrónica de cada pago; conectarla es otro servicio",
+      "Llamar o cobrar a los morosos por ti"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Puedo seguir recibiendo efectivo o transferencia?",
+        "r": "Sí. Lo anotas a mano y el estado de cuenta se actualiza igual."
+      },
+      {
+        "p": "¿Los padres tienen que bajar una app?",
+        "r": "No. Entran desde un enlace en el navegador del celular."
+      }
+    ],
+    "ejemplo": "Ejemplo: en un colegio pequeño de Chitré, de prekínder a sexto grado, los acudientes reciben el recordatorio antes del 5 de cada mes y pagan con Yappy desde el enlace. La secretaria abre el reporte de morosidad y ve quién falta sin cruzar comprobantes con el estado del banco."
+  },
+  E02: {
+    "como": [
+      {
+        "titulo": "Visita a la entrada",
+        "texto": "Vemos por dónde entran los estudiantes o empleados, dónde va el lector y si hay tomacorriente e internet."
+      },
+      {
+        "titulo": "Listas y carnés",
+        "texto": "Cargamos la lista por grupo o por turno, y cada persona queda con su QR o su tarjeta."
+      },
+      {
+        "titulo": "Instalación del lector",
+        "texto": "Ponemos el lector y la tableta o pantalla en la entrada. Cada quien marca al pasar y ve su nombre en la pantalla."
+      },
+      {
+        "titulo": "Aviso de ausencias",
+        "texto": "A la hora que tú defines, el sistema revisa quién no marcó y avisa al acudiente o al supervisor que corresponda."
+      }
+    ],
+    "necesitas": [
+      "La lista de estudiantes o empleados con su grupo y el contacto a quien avisar",
+      "Un tomacorriente e internet en la entrada",
+      "Un lugar fijo en la entrada para el lector y la tableta"
+    ],
+    "no_incluye": [
+      "Los carnés o tarjetas, si no los tienen; se cotizan aparte según cuántos sean",
+      "Los mensajes de WhatsApp de los avisos, que Meta cobra aparte",
+      "Abrir una puerta o un torniquete: aquí solo se marca la asistencia"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Y si alguien olvida el carné?",
+        "r": "La persona en la entrada lo marca a mano en la tableta, y queda anotado que fue a mano."
+      },
+      {
+        "p": "¿Sirve también para empleados?",
+        "r": "Sí. La lista va por turno en vez de por grado, y el aviso le llega al supervisor."
+      }
+    ],
+    "ejemplo": "Ejemplo: en una escuela de Aguadulce, los estudiantes pasan el carné por el lector de la entrada entre las 6:45 y las 7:15. A las 7:30 los acudientes de quienes no marcaron reciben un WhatsApp, y cada maestra ya tiene la lista de su grado."
+  },
+  E03: {
+    "como": [
+      {
+        "titulo": "Listas y preguntas de siempre",
+        "texto": "Nos pasas los grados y las familias con su WhatsApp, y las preguntas que más contesta la secretaría."
+      },
+      {
+        "titulo": "El WhatsApp del colegio",
+        "texto": "Conectamos un número del colegio a la API oficial de WhatsApp. Meta aprueba las plantillas de los avisos antes de usarlas."
+      },
+      {
+        "titulo": "Mandar un aviso",
+        "texto": "Escribes la circular, eliges si va a todo el colegio, a un grado o a un estudiante, y sale al WhatsApp de cada familia."
+      },
+      {
+        "titulo": "Lecturas y respuestas",
+        "texto": "Ves quién lo recibió y quién lo leyó. Las preguntas de siempre, como el horario o la fecha de pago, se contestan solas."
+      }
+    ],
+    "necesitas": [
+      "La lista de familias por grado con su número de WhatsApp",
+      "El permiso de cada familia para recibir avisos por WhatsApp",
+      "Un número de teléfono para el WhatsApp del colegio y una cuenta de Meta Business a su nombre"
+    ],
+    "no_incluye": [
+      "Los mensajes de WhatsApp, que Meta cobra aparte por cada uno",
+      "Redactar las circulares: el texto lo pone el colegio",
+      "Sacar las notas de un sistema académico que ya usas; conectarlo depende de cuál sea y va en la propuesta"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Veo quién leyó el aviso?",
+        "r": "Ves quién lo recibió y quién lo abrió. Si una familia apagó la confirmación de lectura en WhatsApp, solo aparece como recibido."
+      },
+      {
+        "p": "¿Qué pasa si un padre pregunta algo que el sistema no sabe?",
+        "r": "La pregunta le llega a la secretaría para que la conteste una persona."
+      },
+      {
+        "p": "¿Se usa el grupo de WhatsApp que ya tenemos?",
+        "r": "No. Cada familia recibe el aviso en su propio chat, y nadie ve el número de los demás."
+      }
+    ],
+    "ejemplo": "Ejemplo: en un colegio bilingüe de Arraiján se suspende la clase de natación por lluvia a las 6 de la mañana. La secretaria manda el aviso solo a cuarto grado, y a las 7 ve que dos familias no lo han leído y las llama."
+  },
+  H01: {
+    "como": [
+      {
+        "titulo": "Tus unidades y tarifas",
+        "texto": "Nos pasas cada cabaña o habitación con su capacidad, fotos y tarifas por temporada, y tus reglas de depósito y cancelación."
+      },
+      {
+        "titulo": "El calendario en tu página",
+        "texto": "Ponemos el calendario de reservas en tu página web. Si todavía no tienes página, se arma junto y va en la propuesta."
+      },
+      {
+        "titulo": "Reserva con depósito",
+        "texto": "El huésped escoge fechas, ve qué unidades están libres, puede tomar varias a la vez y paga el depósito con tarjeta o Yappy."
+      },
+      {
+        "titulo": "Instrucciones de llegada",
+        "texto": "Con la reserva le llegan solas las instrucciones para llegar, y tú ves todas las reservas en el calendario de cada unidad."
+      }
+    ],
+    "necesitas": [
+      "Fotos de cada unidad y sus tarifas por temporada",
+      "Tus reglas de depósito, cancelación y horarios de entrada y salida",
+      "Una cuenta para cobrar: Yappy Comercial o una pasarela de tarjetas",
+      "Las instrucciones de llegada: ubicación, acceso y a quién llamar"
+    ],
+    "no_incluye": [
+      "La comisión de Yappy o de la pasarela de tarjetas por cada depósito",
+      "Cerrar las fechas en Booking o Airbnb; eso lo hace el calendario sincronizado con vigilante",
+      "La compra del dominio, si todavía no tienes uno",
+      "Fotos profesionales de las unidades"
+    ],
+    "preguntas": [
+      {
+        "p": "¿De verdad no pago comisión?",
+        "r": "Por las reservas que entran por tu página no pagas comisión a ningún portal. Sí pagas la comisión del medio de pago por el depósito."
+      },
+      {
+        "p": "¿Puedo seguir vendiendo en Booking y Airbnb?",
+        "r": "Sí. Para que las fechas no se crucen entre tu página y esos canales está el calendario sincronizado con vigilante."
+      }
+    ],
+    "ejemplo": "Ejemplo: en unas cabañas de Boquete con cuatro unidades, una familia reserva dos cabañas juntas para un fin de semana largo y deja el depósito con Yappy. Al momento le llegan las indicaciones para subir por el camino de tierra y la hora de entrada."
+  },
+  H02: {
+    "como": [
+      {
+        "titulo": "Tus canales y unidades",
+        "texto": "Vemos en qué canales vendes cada unidad y sacamos de cada panel el enlace de su calendario (iCal)."
+      },
+      {
+        "titulo": "Conectar los calendarios",
+        "texto": "Cada unidad recibe las fechas ocupadas de Booking, Airbnb y Expedia y les manda las suyas, así lo vendido en uno se cierra en los demás."
+      },
+      {
+        "titulo": "El vigilante",
+        "texto": "Si un canal lleva horas sin actualizar, te avisa y cierra la venta en tu página hasta que vuelva a sincronizar."
+      },
+      {
+        "titulo": "Choques de fechas",
+        "texto": "Si aun así entran dos reservas para la misma noche, aparecen en la lista de choques con una propuesta de a qué unidad reubicar."
+      }
+    ],
+    "necesitas": [
+      "Acceso a tus paneles de Booking, Airbnb y Expedia, o los enlaces de calendario de cada unidad",
+      "La lista de unidades y en qué canal está cada una"
+    ],
+    "no_incluye": [
+      "Una conexión directa por API con los canales (channel manager); si tu volumen la pide, va en la propuesta",
+      "Las comisiones que cobra cada canal por sus reservas",
+      "La llamada al huésped para reubicarlo: el sistema propone la unidad y la llamada la haces tú"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Esto acaba con la doble reserva?",
+        "r": "La reduce, pero no del todo. Los canales releen los calendarios cada pocas horas (Airbnb cada unas 3 y Booking cada unas 2, según lo que revisamos), y en ese rato se puede vender la misma noche dos veces. El vigilante te avisa del choque para resolverlo antes de que llegue el huésped."
+      },
+      {
+        "p": "¿Funciona con cualquier cuenta de Booking o Expedia?",
+        "r": "No siempre. Booking solo permite calendarios iCal con 20 tipos de habitación o menos, una unidad por tipo y sin un channel manager conectado, y Expedia trabaja sobre todo con channel managers. Lo revisamos con tu cuenta antes de empezar."
+      }
+    ],
+    "ejemplo": "Ejemplo: un hostal en Bocas del Toro vende sus seis habitaciones en Booking, en Airbnb y en su propia página. Un domingo el calendario de Airbnb deja de actualizarse; al dueño le llega el aviso y su página deja de vender esas fechas mientras lo arregla."
+  },
+  H03: {
+    "como": [
+      {
+        "titulo": "Visita a las puertas",
+        "texto": "Vamos al lugar a medir cada puerta, revisar el marco y comprobar que llega la señal de internet."
+      },
+      {
+        "titulo": "Instalación",
+        "texto": "Cambiamos la cerradura de cada unidad por una electrónica con teclado y la conectamos."
+      },
+      {
+        "titulo": "Un código por reserva",
+        "texto": "Con cada reserva se crea un código que abre solo esa puerta, desde la hora de entrada hasta la de salida. Limpieza tiene su propio código."
+      },
+      {
+        "titulo": "El día a día",
+        "texto": "El huésped recibe su código antes de llegar y entra sin esperar a nadie. Tú ves en el registro a qué hora se abrió cada puerta."
+      }
+    ],
+    "necesitas": [
+      "Puertas y marcos en buen estado",
+      "Internet que llegue a cada puerta",
+      "Saber de dónde salen tus reservas: tu página, Booking o Airbnb"
+    ],
+    "no_incluye": [
+      "Arreglos de carpintería en puertas o marcos",
+      "Llevar la red de internet hasta cada cabaña; si hace falta, es el servicio de red e internet del negocio",
+      "Prender luces o aire al llegar el huésped; eso es la domótica para alquileres"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Qué pasa si se va el internet o la luz?",
+        "r": "Depende del modelo de cerradura. En la propuesta te decimos cómo abre la que se escoja sin internet y sin luz, y cuál es la entrada de respaldo."
+      },
+      {
+        "p": "¿Y si el huésped se queda una noche más?",
+        "r": "Cambias la fecha de salida en la reserva y su código sigue abriendo hasta la nueva fecha."
+      }
+    ],
+    "ejemplo": "Ejemplo: en un edificio de cinco apartamentos de alquiler corto en Casco Viejo, el huésped que aterriza en Tocumen a medianoche llega directo al apartamento 3 y entra con su código. A las 11 de la mañana entra la persona de limpieza con el suyo, y el registro muestra las dos entradas."
+  },
+  H04: {
+    "como": [
+      {
+        "titulo": "Tus datos y normas",
+        "texto": "Nos dices qué datos pides hoy a cada huésped y nos pasas tus normas de la casa por escrito."
+      },
+      {
+        "titulo": "El formulario",
+        "texto": "Armamos el formulario con tus campos, la foto del documento, la firma de las normas y la casilla de consentimiento que nombra la Ley 81 de 2019."
+      },
+      {
+        "titulo": "Antes de llegar",
+        "texto": "Con la reserva el huésped recibe el enlace, llena sus datos desde el celular y firma."
+      },
+      {
+        "titulo": "Recepción sin papel",
+        "texto": "Ves quién ya se registró y quién falta, con su documento y su firma. En la llegada solo entregas la llave o el código."
+      }
+    ],
+    "necesitas": [
+      "Tus normas de la casa por escrito",
+      "La lista de datos que pides hoy en recepción",
+      "El correo o WhatsApp por donde le escribes al huésped tras la reserva"
+    ],
+    "no_incluye": [
+      "Verificar la identidad contra registros oficiales: se guarda la foto que manda el huésped",
+      "La revisión legal de tus normas de la casa",
+      "El cobro de la estadía; eso va con el motor de reservas"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Y si el huésped llega sin haberlo llenado?",
+        "r": "Lo llena en recepción desde su celular, escaneando un QR que lleva al mismo formulario."
+      },
+      {
+        "p": "¿Dónde quedan los documentos de los huéspedes?",
+        "r": "Guardados con acceso solo para ti y para quien autorices. Dónde está el servidor va escrito en la propuesta."
+      }
+    ],
+    "ejemplo": "Ejemplo: en un hotel de doce habitaciones en Pedasí, la pareja que llega el viernes completa el registro el miércoles desde el celular, con foto del pasaporte y la firma de las normas. El viernes en recepción todo está listo y solo se les entrega la llave."
+  },
+  H05: {
+    "como": [
+      {
+        "titulo": "Visita al tablero y al tanque",
+        "texto": "Revisamos el tablero eléctrico, qué circuito alimenta cada cabaña, dónde está el tanque de agua y cómo llega la señal hasta ahí."
+      },
+      {
+        "titulo": "Instalación de medidores",
+        "texto": "Ponemos un medidor de energía en los circuitos de cada cabaña y un sensor ultrasónico que mide el nivel del tanque."
+      },
+      {
+        "titulo": "Lo normal de cada unidad",
+        "texto": "Con los primeros datos y tus fechas de ocupación se ve cuánto gasta cada cabaña con huéspedes y sin ellos, y de ahí sale qué cuenta como fuera de lo normal."
+      },
+      {
+        "titulo": "Avisos al celular",
+        "texto": "Si una cabaña vacía gasta como si tuviera el aire prendido, o el tanque baja de noche sin que nadie use agua, te llega un aviso."
+      }
+    ],
+    "necesitas": [
+      "Que cada cabaña tenga su propio circuito en el tablero; si no lo tiene, lo vemos en la visita",
+      "Internet en la propiedad; cómo llegan los datos del tablero y del tanque lo vemos en la visita",
+      "Acceso al tanque de agua para poner el sensor",
+      "Las fechas en que cada cabaña está ocupada, desde tus reservas o anotadas a mano"
+    ],
+    "no_incluye": [
+      "Separar circuitos o cambiar el tablero, que es trabajo de electricista",
+      "Un medidor de agua en cada cabaña: el agua se mide por el nivel del tanque",
+      "Apagar el aire desde el teléfono; eso es la domótica para alquileres"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Cuánto voy a ahorrar?",
+        "r": "No te damos una cifra. Ves en qué cabaña se va la luz y cuándo baja el tanque; el ahorro depende de lo que hagas con esos avisos."
+      },
+      {
+        "p": "¿Hay que tocar el medidor de la compañía eléctrica?",
+        "r": "No. Los medidores van en tu tablero, después del de la compañía, y ese no se toca."
+      }
+    ],
+    "ejemplo": "Ejemplo: en unas cabañas en El Valle de Antón con seis unidades, el medidor muestra que la cabaña 4 pasó la tarde con el aire prendido y sin huéspedes. Otra madrugada el tanque baja sin que nadie use agua, y el aviso lleva a un inodoro que se quedó corriendo."
+  },
+  H06: {
+    "como": [
+      {
+        "titulo": "Visita a cada unidad",
+        "texto": "Vemos qué luces, enchufes y aires hay en cada cabaña, cómo se maneja cada aire y si llega el Wi-Fi."
+      },
+      {
+        "titulo": "Instalación",
+        "texto": "Cambiamos los interruptores por inteligentes, ponemos un control infrarrojo frente a cada aire y una puerta de enlace Wi-Fi que los conecta."
+      },
+      {
+        "titulo": "Escenas por reserva",
+        "texto": "Dejamos armadas las escenas de llegada y salida: antes de que entre el huésped se prenden luces y aire, y cuando sale se apaga todo."
+      },
+      {
+        "titulo": "Desde tu celular",
+        "texto": "Ves cada cabaña en el teléfono y apagas el aire de la que quedó vacía desde donde estés."
+      }
+    ],
+    "necesitas": [
+      "Wi-Fi que llegue a cada unidad",
+      "Aires que se manejen con control remoto infrarrojo",
+      "Cajas de interruptores que admitan el cambio; lo revisamos en la visita"
+    ],
+    "no_incluye": [
+      "La cerradura de la puerta: eso es el servicio de cerraduras con código",
+      "Arreglos eléctricos o de cableado que aparezcan en la visita",
+      "Llevar la red Wi-Fi hasta cada cabaña, si hoy no llega"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Sirve con cualquier aire acondicionado?",
+        "r": "Con los que se manejan con un control remoto infrarrojo. En la visita revisamos los tuyos."
+      },
+      {
+        "p": "¿El huésped puede usar los interruptores como siempre?",
+        "r": "Sí. Los interruptores siguen funcionando con la mano; el teléfono es para ti."
+      },
+      {
+        "p": "¿También abro la puerta desde el teléfono?",
+        "r": "Sí, si además instalas las cerraduras con código, que son otro servicio."
+      }
+    ],
+    "ejemplo": "Ejemplo: en tres cabañas de playa en Las Lajas, el huésped del sábado llega a las 9 de la noche. A las 8:30 la cabaña ya tiene el aire prendido y la luz del portal encendida; el domingo, cuando se va, la escena de salida apaga todo y el dueño lo ve en el celular desde la ciudad."
+  },
   R01: {
     "como": [
       {
@@ -976,5 +1355,346 @@ export const FICHAS = {
       }
     ],
     "ejemplo": "Ejemplo: en una panadería con cafetería en Las Tablas, con dos cajeros al día, cada uno cierra su turno con lo vendido y el efectivo del cajón. Al vender un pan con jamón se descuentan el pan y el jamón del inventario, y la factura sale electrónica."
+  },
+  S01: {
+    "como": [
+      {
+        "titulo": "Conversación con recepción",
+        "texto": "Nos cuentas qué profesionales atienden, en qué consultorios, cuánto dura cada tipo de cita y si el recordatorio sale 2 días o 1 día antes."
+      },
+      {
+        "titulo": "El WhatsApp de la clínica",
+        "texto": "Conectamos un número de la clínica a la API oficial de WhatsApp. Meta aprueba el texto del recordatorio antes del primer envío."
+      },
+      {
+        "titulo": "La agenda en recepción",
+        "texto": "Recepción agenda en la pantalla y el sistema no deja guardar dos citas a la misma hora con el mismo profesional. El paciente también puede pedir cita solo desde la página."
+      },
+      {
+        "titulo": "Recordatorios que insisten",
+        "texto": "Al paciente le llega el WhatsApp con un botón para confirmar o cancelar. Si no contesta, se le vuelve a escribir hasta el número de intentos que fijes, y si sigue sin respuesta, recepción ve la cita marcada para llamar."
+      }
+    ],
+    "necesitas": [
+      "Un número de teléfono para el WhatsApp de la clínica, que queda conectado al sistema",
+      "Una cuenta de Meta Business a nombre de la clínica; si no la tienes, te ayudamos a abrirla",
+      "Los horarios de cada profesional y la duración de cada tipo de cita"
+    ],
+    "no_incluye": [
+      "Los mensajes de WhatsApp: Meta los cobra aparte, unos US$0,011 cada uno en Panamá según su tarifa de octubre de 2026",
+      "La llamada a quien no contesta: el sistema avisa y la llamada la hace recepción",
+      "El expediente clínico del paciente, que es otro servicio"
+    ],
+    "preguntas": [
+      {
+        "p": "¿El paciente tiene que instalar algo?",
+        "r": "No. Recibe un WhatsApp normal y confirma con un botón. Para pedir cita solo, abre una página en el navegador del celular."
+      },
+      {
+        "p": "¿Puedo seguir agendando por teléfono?",
+        "r": "Sí. Recepción anota la cita en la agenda como siempre y el recordatorio sale igual."
+      },
+      {
+        "p": "¿Cuánto bajan las ausencias?",
+        "r": "No te damos una cifra, porque depende de tus pacientes. En la agenda ves quién confirmó, quién canceló y quién no llegó, y lo mides con tus propios números."
+      }
+    ],
+    "ejemplo": "Ejemplo: en un consultorio de dermatología en David con dos doctoras y una sola recepcionista, los pacientes del jueves reciben el WhatsApp el martes. Quien cancela libera el hueco en la agenda, y el miércoles en la mañana la recepcionista solo llama a los que no contestaron."
+  },
+  S02: {
+    "como": [
+      {
+        "titulo": "Visita a la sala",
+        "texto": "Vamos a la clínica a ver la sala de espera, la pared donde mejor se ve la pantalla y cuántos consultorios llaman pacientes."
+      },
+      {
+        "titulo": "Instalación de la pantalla",
+        "texto": "Montamos el televisor en la pared y lo dejamos mostrando los turnos de cada consultorio."
+      },
+      {
+        "titulo": "Turno al llegar",
+        "texto": "Recepción anota la llegada del paciente en la computadora y le dice su número de turno, según el consultorio que le toca."
+      },
+      {
+        "titulo": "Llamar al siguiente",
+        "texto": "El médico o la asistente toca «siguiente» desde la computadora o el celular. La pantalla muestra el número con un sonido y el tiempo estimado de espera."
+      }
+    ],
+    "necesitas": [
+      "Un tomacorriente cerca de donde va el televisor",
+      "Internet o Wi-Fi en la clínica, para que recepción, consultorios y pantalla estén conectados",
+      "Una computadora o un celular en cada consultorio para llamar al siguiente"
+    ],
+    "no_incluye": [
+      "Cableado eléctrico nuevo si no hay tomacorriente en esa pared",
+      "La conexión a internet de la clínica",
+      "El sistema de citas con recordatorios, que es otro servicio"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Puedo usar el televisor que ya tengo?",
+        "r": "Depende del modelo y de sus entradas; lo revisamos en la visita. Si no sirve, el televisor nuevo va en la propuesta."
+      },
+      {
+        "p": "¿Sale el nombre del paciente en la pantalla?",
+        "r": "No. Sale el número de turno y el consultorio, así nadie lee ni oye el nombre de otro paciente."
+      }
+    ],
+    "ejemplo": "Ejemplo: en una clínica privada de La Chorrera con cuatro consultorios, el televisor de la sala muestra «Turno 12, consultorio 3» con un timbre. El pediatra llama al siguiente desde el celular entre paciente y paciente, y la recepcionista ya no se asoma a la sala a gritar nombres."
+  },
+  S03: {
+    "como": [
+      {
+        "titulo": "Elegir las preguntas",
+        "texto": "Decidimos contigo de una a tres preguntas cortas y a qué hora del día siguiente salen."
+      },
+      {
+        "titulo": "Conectar tus atenciones",
+        "texto": "La encuesta sale a quienes atendiste ese día. Se toman de tu agenda o de tu sistema; cómo se conecta depende de cuál uses y va en la propuesta."
+      },
+      {
+        "titulo": "Aviso de las malas",
+        "texto": "Si alguien responde mal, te llega un aviso al momento con su nombre y lo que dijo, para que lo llames ese mismo día."
+      },
+      {
+        "titulo": "Reseña de las buenas",
+        "texto": "A quien responde bien le aparece el enlace para dejar su reseña en Google."
+      }
+    ],
+    "necesitas": [
+      "La agenda, sistema o lista donde llevas a quién atendiste, con el WhatsApp de cada uno",
+      "El permiso de tus clientes para escribirles por WhatsApp",
+      "El enlace de tu negocio en Google Maps"
+    ],
+    "no_incluye": [
+      "Los mensajes de WhatsApp, que Meta cobra aparte por cada uno",
+      "Responder las reseñas de Google por ti",
+      "Crear o arreglar tu ficha en Google Maps, que es otro servicio"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Esto impide que me pongan una reseña mala en Google?",
+        "r": "No. Cualquiera puede reseñarte en Google cuando quiera. Lo que cambia es que te enteras primero y puedes resolver con esa persona."
+      },
+      {
+        "p": "¿Sirve para un restaurante o un hotel?",
+        "r": "Sí, si tienes el WhatsApp de tus clientes. La pregunta se ajusta a lo que vendes."
+      }
+    ],
+    "ejemplo": "Ejemplo: en una clínica dental de Penonomé, cada paciente recibe a las 10 de la mañana siguiente: «¿Cómo te fue ayer? Responde del 1 al 5». Un 2 le llega al dueño al celular con el nombre del paciente y la doctora que lo atendió; un 5 recibe el enlace a Google."
+  },
+  S04: {
+    "como": [
+      {
+        "titulo": "Definir la consulta",
+        "texto": "Nos dices qué consultas das por video, cuánto duran, cuánto cobras y si cobras con Yappy, con tarjeta o con los dos."
+      },
+      {
+        "titulo": "Agenda con pago",
+        "texto": "El paciente escoge el horario y paga en ese momento. La cita queda confirmada cuando entra el pago."
+      },
+      {
+        "titulo": "El enlace a la sala",
+        "texto": "Antes de la cita le llega un recordatorio con el enlace de su sala. Lo abre en el celular o en la computadora, sin instalar nada."
+      },
+      {
+        "titulo": "La consulta",
+        "texto": "Tú entras a la misma sala desde tu computadora, atiendes y sigues con el próximo paciente de la agenda."
+      }
+    ],
+    "necesitas": [
+      "Una computadora o un celular con cámara y micrófono, y buen internet en el consultorio",
+      "Una cuenta para recibir pagos: Yappy Comercial o una pasarela de tarjetas",
+      "Tus horarios y precios de consulta"
+    ],
+    "no_incluye": [
+      "La comisión de Yappy o de la pasarela de tarjetas por cada cobro",
+      "Los mensajes de WhatsApp del recordatorio, que Meta cobra aparte",
+      "La factura electrónica de la consulta; conectarla es otro servicio",
+      "Las recetas o documentos firmados que entregues después de la consulta"
+    ],
+    "preguntas": [
+      {
+        "p": "¿El paciente necesita una app?",
+        "r": "No. Entra desde el enlace, en el navegador del celular o de la computadora."
+      },
+      {
+        "p": "¿Qué pasa si el paciente pagó y no se conecta?",
+        "r": "Lo decides tú: reprogramar, devolver o no devolver. Esa regla la ve el paciente antes de pagar."
+      },
+      {
+        "p": "¿Va en la misma agenda que mis citas presenciales?",
+        "r": "Sí. Las videoconsultas y las citas en el consultorio están en la misma agenda, así no se cruzan."
+      }
+    ],
+    "ejemplo": "Ejemplo: una psicóloga en El Dorado da consultas de seguimiento por video los martes en la tarde. Una paciente que vive en Chiriquí escoge las 4:00, paga con Yappy y a las 3:30 le llega el WhatsApp con el enlace."
+  },
+  S05: {
+    "como": [
+      {
+        "titulo": "Revisar tu ficha actual",
+        "texto": "Vemos cómo llevas hoy la historia del paciente, en papel o en Excel, y qué campos usas, para que la ficha digital se parezca a la tuya."
+      },
+      {
+        "titulo": "Quién ve qué",
+        "texto": "Defines los permisos de cada persona: el médico ve la historia completa y recepción, por ejemplo, solo el contacto y las citas."
+      },
+      {
+        "titulo": "Consentimiento del paciente",
+        "texto": "En su primera visita el paciente marca la casilla de consentimiento que nombra la Ley 81 de 2019, y queda guardada con la fecha."
+      },
+      {
+        "titulo": "En la consulta",
+        "texto": "Abres la ficha, anotas, subes la foto de control del día y la comparas con las anteriores, ordenadas por fecha."
+      }
+    ],
+    "necesitas": [
+      "Tu ficha o formato actual, para copiar sus campos",
+      "La lista de quién trabaja en la clínica y qué debe ver cada uno",
+      "Una computadora o tableta en cada consultorio"
+    ],
+    "no_incluye": [
+      "Pasar a digital el archivo en papel de años anteriores; si lo quieres, va en la propuesta",
+      "La facturación de las consultas",
+      "La revisión de tu texto de consentimiento por un abogado"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Dónde quedan guardados los datos?",
+        "r": "En un servidor contratado para tu clínica. Dónde está y cómo se respalda va escrito en la propuesta, y el aviso que acepta el paciente lo dice."
+      },
+      {
+        "p": "¿Puedo pasar los expedientes que ya tengo en Excel?",
+        "r": "Depende de cómo estén ordenados. Lo revisamos con una muestra y en la propuesta te decimos qué se puede pasar."
+      }
+    ],
+    "ejemplo": "Ejemplo: en una clínica de nutrición en Chitré con dos nutricionistas y una asistente, cada paciente tiene su ficha con peso, medidas y fotos de control por fecha. La asistente ve las citas y el teléfono; la historia la ven solo las nutricionistas."
+  },
+  V01: {
+    "como": [
+      {
+        "titulo": "Cómo atiendes",
+        "texto": "Vemos cuántos carros atiendes a la vez y qué servicios das, para que la fila muestre bien cuántos tiene adelante cada cliente."
+      },
+      {
+        "titulo": "El QR de la entrada",
+        "texto": "Te damos el QR que lleva a tu página de turnos, para ponerlo en la entrada. El cliente saca turno desde el celular, o se lo saca quien lo recibe."
+      },
+      {
+        "titulo": "Fila en vivo",
+        "texto": "El cliente ve cuántos tiene adelante y puede irse a hacer otra cosa mientras espera."
+      },
+      {
+        "titulo": "Aviso de listo",
+        "texto": "Cuando terminan, el encargado toca «listo» en el celular y al cliente le llega un WhatsApp para que venga por su carro."
+      }
+    ],
+    "necesitas": [
+      "Un celular o tableta en el local para manejar la fila",
+      "La lista de servicios que das",
+      "Un número para el WhatsApp del negocio"
+    ],
+    "no_incluye": [
+      "Los mensajes de WhatsApp, que Meta cobra aparte por cada uno",
+      "Una pantalla de turnos en el local: el cliente ve la fila en su celular",
+      "Cobrar en línea, que es otro servicio"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Y el cliente que no quiere usar el celular?",
+        "r": "Quien lo recibe le saca el turno en el local. Para el aviso basta con su número de WhatsApp."
+      },
+      {
+        "p": "¿Sirve para un taller mecánico?",
+        "r": "Sí. En el taller el turno lo saca recepción y el aviso sale cuando el carro está listo para entregar."
+      }
+    ],
+    "ejemplo": "Ejemplo: en un autolavado de Tocumen, un sábado con fila, el cliente escanea el QR, ve que tiene cinco carros adelante y se va a la panadería de al lado. Cuando terminan de secar su carro le llega el WhatsApp y vuelve."
+  },
+  V02: {
+    "como": [
+      {
+        "titulo": "Cómo recibes hoy",
+        "texto": "Revisamos cómo recibes un vehículo, qué anotas y cómo armas el presupuesto."
+      },
+      {
+        "titulo": "Recepción con fotos",
+        "texto": "Al llegar el carro, recepción toma fotos de cada lado con el celular y quedan en la orden junto a la placa."
+      },
+      {
+        "titulo": "Presupuesto por WhatsApp",
+        "texto": "El cliente recibe el presupuesto en su WhatsApp y lo aprueba desde el enlace. La aprobación queda guardada en la orden."
+      },
+      {
+        "titulo": "Estado e historial",
+        "texto": "La orden avanza de estado hasta la entrega y el cliente recibe el aviso. La próxima vez que vuelve, la placa trae todo su historial."
+      }
+    ],
+    "necesitas": [
+      "Un celular o tableta con cámara en recepción",
+      "Tus precios de mano de obra más comunes, si quieres que el presupuesto los traiga",
+      "Un número para el WhatsApp del taller"
+    ],
+    "no_incluye": [
+      "El inventario de repuestos; eso es el sistema de inventario y compras",
+      "La factura electrónica; conectarla es otro servicio",
+      "Los mensajes de WhatsApp, que Meta cobra aparte"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Las fotos me sirven si el cliente reclama un golpe?",
+        "r": "Quedan con fecha y hora, y con ellas le muestras cómo llegó el carro. Lo que valgan en un reclamo formal no depende de nosotros."
+      },
+      {
+        "p": "¿Lo usan también los mecánicos?",
+        "r": "Si quieres, sí: cada mecánico ve sus órdenes en el celular y cambia el estado. También funciona solo con recepción."
+      }
+    ],
+    "ejemplo": "Ejemplo: en un taller mecánico de Santiago, un pick-up llega con un ruido en el tren delantero. Recepción le toma seis fotos, el mecánico arma el presupuesto y el dueño lo aprueba por WhatsApp desde su oficina; cuando vuelve para el próximo servicio, la placa trae la reparación anterior."
+  },
+  V03: {
+    "como": [
+      {
+        "titulo": "Servicios y horarios",
+        "texto": "Nos pasas los servicios con su duración y precio, y el horario de cada barbero o estilista."
+      },
+      {
+        "titulo": "La regla de la seña",
+        "texto": "Decides cuánto se cobra de seña y qué pasa si el cliente no llega. Esa regla se muestra antes de pagar."
+      },
+      {
+        "titulo": "El cliente reserva",
+        "texto": "Desde un enlace, el cliente escoge servicio, profesional y hora libre, y deja la seña con Yappy o tarjeta."
+      },
+      {
+        "titulo": "Recordatorio y día a día",
+        "texto": "Antes de la cita le llega el recordatorio para confirmar, y cada profesional ve su agenda del día en el celular."
+      }
+    ],
+    "necesitas": [
+      "Los servicios con duración y precio",
+      "El horario y los días libres de cada profesional",
+      "Una cuenta para cobrar la seña: Yappy Comercial o una pasarela de tarjetas"
+    ],
+    "no_incluye": [
+      "La comisión de Yappy o de la pasarela de tarjetas por cada seña",
+      "Los mensajes de WhatsApp de los recordatorios, que Meta cobra aparte",
+      "El cobro del resto del servicio en caja"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Qué pasa con la seña si el cliente no llega?",
+        "r": "Lo decides tú: si se pierde, si se abona a otra cita o con cuántas horas de aviso se devuelve. El cliente ve esa regla antes de pagar."
+      },
+      {
+        "p": "¿Y los que llegan sin cita?",
+        "r": "Los anotas en el hueco libre de la agenda, y nadie puede reservar encima."
+      },
+      {
+        "p": "¿Puedo verlo antes de escribirles?",
+        "r": "Sí. En esta página hay una demostración de la agenda con datos de ejemplo."
+      }
+    ],
+    "ejemplo": "Ejemplo: en una barbería de Vía España con tres barberos, un cliente reserva para el viernes a las 6:00 con su barbero de siempre y deja la seña con Yappy. El jueves le llega el recordatorio; si cancela, el hueco queda libre para otro."
   },
 };
