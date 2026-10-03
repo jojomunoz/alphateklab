@@ -8,12 +8,20 @@ const reducir = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ── menú con paneles ──
 const grupos = [...document.querySelectorAll('.menu__grupo')];
+// Espera de abrir o cerrar al pasar el ratón, por grupo. Un clic o Escape la cancelan: si no, un clic seguido de
+// Escape en menos de 120 ms dejaba que la espera volviera a abrir el panel.
+const esperas = new WeakMap();
+const cancelarEspera = (g) => clearTimeout(esperas.get(g));
 function cerrarMenus(excepto) {
   for (const g of grupos) {
     const b = g.querySelector('.menu__boton');
     if (b === excepto) continue;
+    cancelarEspera(g);
+    const panel = g.querySelector('.mega');
+    // si en su lugar se abre otro panel, este se va sin salida para que los dos no se crucen
+    panel.classList.toggle('mega--sin-salida', Boolean(excepto));
     b.setAttribute('aria-expanded', 'false');
-    g.querySelector('.mega').hidden = true;
+    panel.hidden = true;
     g.dataset.abierto = '';
   }
 }
@@ -21,6 +29,7 @@ for (const g of grupos) {
   const b = g.querySelector('.menu__boton');
   const panel = g.querySelector('.mega');
   b.addEventListener('click', () => {
+    cancelarEspera(g);
     const abierto = b.getAttribute('aria-expanded') === 'true';
     // Abierto por pasar el ratón: el clic lo deja fijo (lo que la persona quería era abrirlo), no lo cierra.
     if (abierto && g.dataset.abierto === 'hover') {
@@ -31,31 +40,32 @@ for (const g of grupos) {
     cerrarMenus(b);
     b.setAttribute('aria-expanded', String(!abierto));
     panel.classList.toggle('mega--directo', habiaOtro); // de un panel a otro, sin repetir la entrada
+    panel.classList.remove('mega--sin-salida');
     panel.hidden = abierto;
     g.dataset.abierto = abierto ? '' : 'clic';
   });
   // con mouse, se abre al pasar por encima (con una pequeña espera para no abrirlo al cruzar)
   if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    let t;
     g.addEventListener('mouseenter', () => {
-      clearTimeout(t);
-      t = setTimeout(() => {
+      cancelarEspera(g);
+      esperas.set(g, setTimeout(() => {
         if (b.getAttribute('aria-expanded') === 'true') return;
         panel.classList.toggle('mega--directo', grupos.some((x) => x !== g && x.querySelector('.menu__boton').getAttribute('aria-expanded') === 'true'));
         cerrarMenus(b);
         b.setAttribute('aria-expanded', 'true');
         panel.hidden = false;
         g.dataset.abierto = 'hover';
-      }, 120);
+      }, 120));
     });
     g.addEventListener('mouseleave', () => {
-      clearTimeout(t);
-      t = setTimeout(() => {
+      cancelarEspera(g);
+      esperas.set(g, setTimeout(() => {
         if (g.dataset.abierto === 'clic') return; // fijado con clic: se cierra con Escape, con clic fuera o al salir con Tab
         b.setAttribute('aria-expanded', 'false');
+        panel.classList.remove('mega--sin-salida');
         panel.hidden = true;
         g.dataset.abierto = '';
-      }, 180);
+      }, 180));
     });
   }
 }
@@ -66,12 +76,14 @@ for (const g of grupos) {
   g.addEventListener('focusout', (e) => {
     if (!g.contains(e.relatedTarget)) {
       g.querySelector('.menu__boton').setAttribute('aria-expanded', 'false');
+      g.querySelector('.mega').classList.remove('mega--sin-salida');
       g.querySelector('.mega').hidden = true;
     }
   });
   g.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && g.querySelector('.menu__boton').getAttribute('aria-expanded') === 'true') {
       e.stopPropagation();
+      cancelarEspera(g);
       cerrarMenus();
       g.querySelector('.menu__boton').focus();
     }

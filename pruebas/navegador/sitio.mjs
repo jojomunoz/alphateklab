@@ -44,7 +44,7 @@ try {
     assert.equal(await p.isVisible('#mega-soluciones'), true);
     assert.ok((await p.$$('#mega-soluciones .mega__item')).length >= 9);
     await p.keyboard.press('Escape');
-    assert.equal(await p.isVisible('#mega-soluciones'), false);
+    await p.waitForSelector('#mega-soluciones', { state: 'hidden', timeout: 1000 }); // sale en 120 ms
   });
 
   await paso('«/» abre el buscador y entiende una frase con palabras propias', async () => {

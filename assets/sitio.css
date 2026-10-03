@@ -3981,3 +3981,26 @@ html.sin-desplazar {
     grid-row: 1 / span 2;
   }
 }
+
+/* Salida de los paneles del menú: se desvanecen en 120 ms en vez de desaparecer de golpe. «display» con allow-discrete
+   lo mantiene en pantalla mientras dura (la transición gana a [hidden]{display:none!important}). Si en su lugar se abre
+   otro panel, el viejo se va sin salida (mega--sin-salida) para que no se crucen. */
+.mega {
+  transition:
+    opacity 120ms var(--ease-salida),
+    translate 120ms var(--ease-salida),
+    display 120ms allow-discrete;
+}
+.mega[hidden] {
+  opacity: 0;
+  translate: -50% -4px;
+  pointer-events: none;
+}
+.mega--sin-salida[hidden] {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mega {
+    transition: none;
+  }
+}

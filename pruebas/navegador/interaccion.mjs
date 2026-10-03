@@ -42,6 +42,26 @@ try {
     await p.keyboard.press('Escape');
   });
 
+  await paso('el panel del menú sale en una transición corta; al pasar a otro panel, el anterior se va al instante', async () => {
+    await p.waitForTimeout(300);
+    await p.click('button[aria-controls="mega-soluciones"]');
+    await p.waitForTimeout(250);
+    await p.keyboard.press('Escape');
+    const durante = await p.evaluate(() => getComputedStyle(document.querySelector('#mega-soluciones')).display);
+    assert.notEqual(durante, 'none', 'justo después de cerrar debería seguir en pantalla mientras sale');
+    await p.waitForTimeout(400);
+    assert.equal(await p.isVisible('#mega-soluciones'), false);
+    await p.click('button[aria-controls="mega-soluciones"]');
+    await p.waitForTimeout(250);
+    await p.click('button[aria-controls="mega-servicios"]');
+    const viejo = await p.evaluate(() => getComputedStyle(document.querySelector('#mega-soluciones')).display);
+    assert.equal(viejo, 'none', 'el panel anterior no debe cruzarse con el nuevo');
+    assert.equal(await p.isVisible('#mega-servicios'), true);
+    await p.keyboard.press('Escape');
+    await p.mouse.move(640, 700);
+    await p.waitForTimeout(300);
+  });
+
   await paso('mientras se escribe «cam» no sale «No encontramos»: salen resultados', async () => {
     await p.mouse.click(5, 500);
     await p.keyboard.press('/');
