@@ -436,7 +436,7 @@ function paginaInicio() {
   <div class="envoltura heroe__fila">
     <div class="heroe__texto">
       <h1 id="heroe-titulo" class="display heroe__titulo">Hacemos la tecnología de tu negocio y la instalamos en tu local.</h1>
-      <p class="heroe__bajada">Software, apps e inteligencia artificial para tu negocio. Cobros con Yappy, factura electrónica con PAC y menú QR a $10 al mes.</p>
+      <p class="heroe__bajada">Software, apps e inteligencia artificial a la medida de tu negocio, y equipos como cámaras, sensores, pantallas y QR. Todo conectado con Yappy, la factura electrónica y WhatsApp.</p>
       <form class="heroe__buscar" role="search" data-buscar-en-linea action="${prefijo}servicios/">
         ${icono('magnifying-glass')}
         <label class="sr" for="heroe-campo">¿Qué necesitas?</label>
@@ -495,7 +495,7 @@ function paginaInicio() {
 
   const capacidades = `<section class="seccion envoltura" id="servicios" aria-labelledby="cap-titulo">
   <div class="seccion__cabeza">
-    <h2 id="cap-titulo" class="display seccion__titulo">${SERVICIOS.length} servicios, del menú QR de $10 al mes al software a medida</h2>
+    <h2 id="cap-titulo" class="display seccion__titulo">${SERVICIOS.length} servicios, del menú QR al software a medida</h2>
     <p class="seccion__bajada solo-escritorio">En ${enLetras(TIPOS.length)} tipos de solución; un servicio puede estar en más de uno. Elige un tipo para ver todo lo que incluye.</p>
   </div>
   <ul class="indice" role="list">
