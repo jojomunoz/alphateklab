@@ -648,9 +648,22 @@ ${bandaPreguntanos(prefijo)}`,
   });
 }
 
+// Fuentes de las cifras que citan las fichas: si el texto las menciona, la ficha las enlaza (comprobadas el 3-oct-2026).
+const FUENTES_CITADAS = [
+  [/Harvard e Ivey/, 'Harvard Business School e Ivey: recorridos virtuales y 75.000 ventas de casas', 'https://www.library.hbs.edu/working-knowledge/are-virtual-tours-still-worth-it-in-real-estate-evidence-from-75000-home-sales'],
+  [/ACEEE/, 'ACEEE (2010): medición avanzada y programas de información al hogar', 'https://www.aceee.org/research-report/e105'],
+  [/US\$0\.\d+|tarifa de octubre de 2026|cobra Meta|Meta cobra|Meta los cobra|Meta lo cobra/, 'Meta: precios de la plataforma de WhatsApp Business', 'https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing'],
+  [/1 % más ITBMS/, 'Yappy Comercial: comisión por cobro', 'https://www.yappy.com.pa/comercial/'],
+];
+function fuentesDe(s, f) {
+  const texto = JSON.stringify(f) + ' ' + (s.aparte || '') + ' ' + JSON.stringify(s.precio || '');
+  return FUENTES_CITADAS.filter(([re]) => re.test(texto));
+}
+
 function detalleFicha(s) {
   const f = FICHAS[s.id];
   if (!f) return '';
+  const fuentes = fuentesDe(s, f);
   return `<section class="seccion envoltura ficha-detalle" aria-labelledby="como-titulo">
   <div class="ficha-detalle__como">
     <h2 id="como-titulo" class="display seccion__titulo seccion__titulo--chico">Cómo funciona</h2>
@@ -665,6 +678,7 @@ function detalleFicha(s) {
 <section class="seccion seccion--junta envoltura" aria-labelledby="pf-titulo">
   <h2 id="pf-titulo" class="display seccion__titulo seccion__titulo--chico">Preguntas sobre este servicio</h2>
   <div class="preguntas">${f.preguntas.map((q) => `<details class="pregunta"><summary>${esc(q.p)}</summary><p>${esc(!s.demo && /\bdemo|laboratorio/i.test(q.r) ? 'Todavía no: la demo está en preparación. Mientras tanto te lo mostramos en una visita o por videollamada.' : q.r)}</p></details>`).join('')}</div>
+  ${fuentes.length ? `<div class="fuentes"><h3>Fuentes de las cifras de esta página</h3><ul>${fuentes.map(([, nombre, url]) => `<li><a href="${url}" rel="noopener">${esc(nombre)}</a></li>`).join('')}</ul></div>` : ''}
 </section>`;
 }
 
