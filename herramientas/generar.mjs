@@ -389,6 +389,44 @@ const NUMEROS = ['cero', 'una', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete
 const enLetras = (n) => NUMEROS[n] ?? String(n);
 const mayuscula = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 
+// ── imágenes del equipo (3-oct, generadas con IA para alphateklab; rotuladas «ilustrativa» y en /creditos/) ──
+// Catálogo: cada pieza sola sobre el petróleo de la marca (assets/equipo/<pieza>-{400,800}.webp, 1:1).
+// Escenas: el equipo ya instalado (assets/fotos/<escena>{,-800}.webp), con sus medidas para no saltar al cargar.
+const EQUIPOS = [
+  { pieza: 'equipo-1-placa-mesa', nombre: 'Placa con QR y NFC', donde: 'en cada mesa', servicio: 'R02' },
+  { pieza: 'equipo-2-tableta-cocina', nombre: 'Pantalla de cocina', donde: 'en la pared de la cocina', servicio: 'R05' },
+  { pieza: 'equipo-3-kiosco', nombre: 'Kiosco de autopedido', donde: 'junto al mostrador', servicio: 'R06' },
+  { pieza: 'equipo-4-camara-techo', nombre: 'Cámara que cuenta', donde: 'sobre la puerta', servicio: 'C01' },
+  { pieza: 'equipo-5-sensor-nevera', nombre: 'Sensor de temperatura', donde: 'dentro de la nevera', servicio: 'R10' },
+  { pieza: 'equipo-6-cerradura', nombre: 'Cerradura con código', donde: 'en la puerta de cada cabaña', servicio: 'H03' },
+  { pieza: 'equipo-7-lector-acceso', nombre: 'Lector de acceso', donde: 'en la entrada', servicio: 'I04' },
+  { pieza: 'equipo-8-gps', nombre: 'GPS del vehículo', donde: 'en cada camión o moto', servicio: 'I02' },
+];
+const ESCENAS = {
+  'en-cocina': { ancho: 1600, alto: 1067, texto: 'Pantalla de comandas e impresora instaladas en la cocina de un restaurante' },
+  'en-mesa': { ancho: 1600, alto: 1067, texto: 'Placa con QR sobre la mesa de una fonda' },
+  'en-colegio': { ancho: 1600, alto: 1067, texto: 'Lector de QR y tarjetas en la entrada de un colegio' },
+  'en-tienda': { ancho: 1280, alto: 1600, texto: 'Cámara en el techo, sobre la puerta de un minisúper' },
+  'en-nevera': { ancho: 1600, alto: 1600, texto: 'Sensor de temperatura dentro de una nevera comercial' },
+};
+// qué imagen va en la ficha de cada servicio que se instala
+const IMAGEN_SERVICIO = {
+  R01: { escena: 'en-mesa' }, R02: { escena: 'en-mesa' }, R03: { escena: 'en-mesa' },
+  R05: { escena: 'en-cocina' }, R06: { pieza: 'equipo-3-kiosco' },
+  C01: { escena: 'en-tienda' }, C05: { escena: 'en-tienda' }, T11: { escena: 'en-tienda' },
+  R10: { escena: 'en-nevera' }, I01: { escena: 'en-nevera' },
+  H03: { pieza: 'equipo-6-cerradura' }, I04: { escena: 'en-colegio' }, E02: { escena: 'en-colegio' }, I02: { pieza: 'equipo-8-gps' },
+};
+const hayEscena = (e) => e && ESCENAS[e] && existe(`assets/fotos/${e}.webp`);
+const hayPieza = (p) => p && existe(`assets/equipo/${p}-400.webp`);
+function imgEscena(e, prefijo, { sizes = '(min-width: 1040px) 560px, 100vw', carga = 'lazy' } = {}) {
+  const x = ESCENAS[e];
+  return `<img src="${prefijo}assets/fotos/${e}-800.webp" srcset="${prefijo}assets/fotos/${e}-800.webp 800w, ${prefijo}assets/fotos/${e}.webp 1600w" sizes="${sizes}" alt="${esc(x.texto)}" width="${x.ancho}" height="${x.alto}" loading="${carga}" decoding="async" />`;
+}
+function imgPieza(p, prefijo, { sizes = '(min-width: 1040px) 260px, 45vw', alt = '' } = {}) {
+  return `<img src="${prefijo}assets/equipo/${p}-400.webp" srcset="${prefijo}assets/equipo/${p}-400.webp 400w, ${prefijo}assets/equipo/${p}-800.webp 800w" sizes="${sizes}" alt="${esc(alt)}" width="800" height="800" loading="lazy" decoding="async" />`;
+}
+
 // ── héroe de la portada ──
 // Avisos de ejemplo de los sistemas que hacemos, de distintos negocios; el nuevo entra arriba, así lo que se mueve
 // queda a la vista en el teléfono. Reemplazó (3-oct) al video de la mesa: con él, tres de cuatro dueños de negocio que
@@ -519,35 +557,23 @@ function paginaInicio() {
   <p class="seccion__pie"><a class="boton boton--linea" href="${prefijo}servicios/">${icono('list')}Ver los ${SERVICIOS.length} servicios</a></p>
 </section>`;
 
-  // Lo que se instala, sacado del catálogo (equipo de cada servicio), en vez de una foto generada: hasta que haya fotos
-  // reales de una instalación de los socios, el equipo con su nombre y dónde va dice más que una escena (revisión del 3-oct).
-  const EQUIPO_A_LA_VISTA = [
-    ['R03', 'en cada mesa'],
-    ['R05', 'en la cocina'],
-    ['R06', 'en el mostrador'],
-    ['C01', 'en la entrada'],
-    ['R10', 'en la nevera y el cuarto frío'],
-    ['H03', 'en la puerta de cada cabaña'],
-    ['I04', 'en el acceso del personal'],
-    ['T10', 'en todo el local'],
-  ].filter(([id]) => porId.has(id));
-  const listaEquipo = `<ul class="equipo-lista" role="list">${EQUIPO_A_LA_VISTA.map(([id, donde]) => {
-    const sv = porId.get(id);
-    const partes = sv.equipo.map((x, i) => (i ? x.charAt(0).toLowerCase() + x.slice(1) : x));
-    const eq = partes.length > 1 ? `${partes.slice(0, -1).join(', ')} y ${partes.at(-1)}` : partes[0];
-    return `<li><strong>${esc(eq)}</strong><span>${esc(donde)}</span><a href="${prefijo}servicios/${sv.slug}/">${esc(sv.corto)}</a></li>`;
-  }).join('')}</ul>`;
-  const instalacion = `<section class="seccion envoltura dividida dividida--equipo" aria-labelledby="inst-titulo">
-  <div class="dividida__texto">
-    <h2 id="inst-titulo" class="display seccion__titulo">Lo instalamos en tu local</h2>
-    <p class="seccion__bajada">Además de programar, vamos al local: ponemos las placas QR en las mesas, la pantalla en la cocina, la cámara sobre la puerta y el sensor en la nevera, y le enseñamos a tu equipo a usarlo.</p>
-    <ul class="lista-check">
-      <li>${icono('check')}Compramos el equipo después de que apruebas la propuesta, no antes.</li>
-      <li>${icono('check')}Si ya tienes equipo que sirve (cámaras, una tableta, un televisor), lo usamos.</li>
-      <li>${icono('check')}El dominio y los QR quedan a nombre de tu negocio.</li>
-    </ul>
+  // «Lo instalamos en tu local»: la cocina ya instalada y la vitrina del equipo, cada pieza con dónde va y su servicio
+  // (la revisión del 3-oct: vendemos algo físico y no se veía un solo objeto).
+  const equipos = EQUIPOS.filter((x) => hayPieza(x.pieza) && porId.has(x.servicio));
+  const instalacion = `<section class="seccion envoltura instala" aria-labelledby="inst-titulo">
+  <div class="instala__fila">
+    <div class="instala__texto">
+      <h2 id="inst-titulo" class="display seccion__titulo">Lo instalamos en tu local</h2>
+      <p class="seccion__bajada">Además de programar, vamos al local: ponemos las placas QR en las mesas, la pantalla en la cocina, la cámara sobre la puerta y el sensor en la nevera, y le enseñamos a tu equipo a usarlo.</p>
+      <ul class="lista-check">
+        <li>${icono('check')}Compramos el equipo después de que apruebas la propuesta, no antes.</li>
+        <li>${icono('check')}Si ya tienes equipo que sirve (cámaras, una tableta, un televisor), lo usamos.</li>
+        <li>${icono('check')}El dominio y los QR quedan a nombre de tu negocio.</li>
+      </ul>
+    </div>
+    ${hayEscena('en-cocina') ? `<figure class="instala__foto">${imgEscena('en-cocina', prefijo)}<figcaption>Pantalla de comandas e impresora en la cocina de un restaurante. Imagen ilustrativa.</figcaption></figure>` : ''}
   </div>
-  <div class="dividida__foto">${listaEquipo}</div>
+  ${equipos.length ? `<ul class="equipos" role="list" aria-label="Equipo que instalamos">${equipos.map((x) => `<li><a class="equipo" href="${prefijo}servicios/${porId.get(x.servicio).slug}/">${imgPieza(x.pieza, prefijo)}<span class="equipo__nombre">${esc(x.nombre)}</span><span class="equipo__donde">${esc(x.donde)}</span></a></li>`).join('')}</ul>` : ''}
 </section>`;
 
   const pasos = [
@@ -601,6 +627,11 @@ const PRODUCTO_POR_NEGOCIO = {
 };
 function productoDeNegocio(so, prefijo) {
   const pr = PRODUCTO_POR_NEGOCIO[so.slug];
+  // sin demo pero con el equipo ya instalado en foto (escuelas: el lector de la entrada), esa foto
+  const escena = { escuelas: 'en-colegio' }[so.slug];
+  if ((!pr || !demoPorClave.has(pr.demo)) && hayEscena(escena)) {
+    return `<figure class="heroe__producto heroe__escena">${imgEscena(escena, prefijo, { sizes: '(min-width: 1040px) 560px, 100vw', carga: 'eager' })}<figcaption>${esc(ESCENAS[escena].texto)}. Imagen ilustrativa.</figcaption></figure>`;
+  }
   // sin demo, la otra mitad del héroe dice los problemas que se resuelven, con las palabras del cliente
   if (!pr || !demoPorClave.has(pr.demo) || !existe(`assets/producto/${pr.portatil}.webp`)) {
     return `<ul class="heroe__problemas" role="list" aria-label="Lo que te resolvemos">${so.problemas.slice(0, 3).map((p) => `<li>«${esc(p.problema.replace(/\.$/, ''))}»</li>`).join('')}</ul>`;
@@ -843,6 +874,7 @@ function paginaServicio(s) {
   <div class="ficha-cuerpo__col">
     <h2>${s.equipo.length && s.instala ? 'Equipo que se instala' : 'Equipo'}</h2>
     ${s.equipo.length ? `<ul class="lista-check">${s.equipo.map((x) => `<li>${icono(s.instala ? 'wrench' : 'check')}${esc(x)}</li>`).join('')}</ul>` : '<p>No necesita equipo en el local.</p>'}
+    ${hayEscena(IMAGEN_SERVICIO[s.id]?.escena) ? `<figure class="ficha-equipo">${imgEscena(IMAGEN_SERVICIO[s.id].escena, prefijo, { sizes: '(min-width: 1040px) 360px, 100vw' })}<figcaption>Imagen ilustrativa.</figcaption></figure>` : hayPieza(IMAGEN_SERVICIO[s.id]?.pieza) ? `<figure class="ficha-equipo ficha-equipo--pieza">${imgPieza(IMAGEN_SERVICIO[s.id].pieza, prefijo, { sizes: '240px', alt: s.equipo[0] || '' })}<figcaption>Imagen ilustrativa.</figcaption></figure>` : ''}
   </div>
   <div class="ficha-cuerpo__col ficha-cuerpo__precio">
     <h2>Precio</h2>
@@ -1034,6 +1066,8 @@ function paginaCreditos() {
   <h1 class="display">Créditos</h1>
   <h2>Fotos</h2>
   ${filas.length ? `<ul class="creditos">${filas.map(([slot, c]) => `<li><strong>${esc(c.titulo || slot)}</strong>, de ${esc(c.autor || 'autor sin nombre')}${c.fuente ? ` (<a href="${esc(c.fuente)}">fuente</a>)` : ''}. ${c.urlLicencia ? `<a href="${esc(c.urlLicencia)}">${esc(c.licencia)}</a>` : esc(c.licencia || '')}.</li>`).join('')}</ul>` : '<p>Este sitio todavía no usa fotos de terceros.</p>'}
+  <h2>Equipo</h2>
+  <p>Las ocho imágenes del equipo de la portada (placa con QR, pantalla de cocina, kiosco, cámara, sensor de temperatura, cerradura, lector de acceso y GPS) son imágenes de catálogo generadas con IA para alphateklab, el 3 de octubre de 2026: productos genéricos y sin marca, que ilustran lo que se instala.</p>
   <h2>Íconos</h2>
   <p><a href="https://phosphoricons.com">Phosphor Icons</a> 2.1.1, licencia MIT.</p>
   <h2>Tipografía</h2>

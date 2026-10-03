@@ -227,3 +227,13 @@ Object.assign(CREDITOS_FOTOS, {
   'cocina': MARCA('Cocina con pantalla de comandas', 'Cocinero preparando platos frente a una pantalla con las comandas del día.'),
   'equipo-instalando': MARCA('Instalación de una tableta en una recepción', 'Dos técnicos instalan una tableta en la pared de una recepción.'),
 });
+
+// Equipo ya instalado (3-oct-2026): generadas con IA (ChatGPT) para alphateklab a partir de los prompts de
+// ~/Desktop/alphateklab-imagenes-para-gpt-v2.md; productos genéricos, sin marcas. En el sitio dicen «Imagen ilustrativa».
+Object.assign(CREDITOS_FOTOS, {
+  'en-cocina': MARCA('Pantalla de comandas instalada en una cocina', 'Pantalla de comandas e impresora instaladas en la cocina de un restaurante'),
+  'en-mesa': MARCA('Placa con QR en la mesa de una fonda', 'Placa con QR sobre la mesa de una fonda'),
+  'en-colegio': MARCA('Lector de acceso en la entrada de un colegio', 'Lector de QR y tarjetas en la entrada de un colegio'),
+  'en-tienda': MARCA('Cámara sobre la puerta de un minisúper', 'Cámara en el techo, sobre la puerta de un minisúper'),
+  'en-nevera': MARCA('Sensor dentro de una nevera comercial', 'Sensor de temperatura dentro de una nevera comercial'),
+});

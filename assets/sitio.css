@@ -4320,9 +4320,18 @@ html.sin-desplazar {
     background-color var(--dur-estado) var(--ease-salida),
     border-color var(--dur-estado) var(--ease-salida);
 }
-/* .marca img (atk.css) pone display: block; hace falta la misma especificidad o más para ocultarlo */
+/* Los dos logos en la misma celda y con fundido al ritmo del fondo de la cabecera: con el cambio instantáneo, durante
+   los 220 ms del fondo el logo de texto oscuro quedaba sobre petróleo y desaparecía. */
+.cabecera .marca {
+  display: inline-grid;
+}
+.cabecera .marca > picture,
+.cabecera .marca > .marca__sobre-oscuro {
+  grid-area: 1 / 1;
+  transition: opacity var(--dur-estado) var(--ease-salida);
+}
 .marca .marca__sobre-oscuro {
-  display: none;
+  opacity: 0;
 }
 .cabecera--sobre-heroe {
   --foco: var(--senal);
@@ -4330,10 +4339,16 @@ html.sin-desplazar {
   border-bottom-color: transparent;
 }
 .cabecera--sobre-heroe .marca picture {
-  display: none;
+  opacity: 0;
 }
 .cabecera--sobre-heroe .marca .marca__sobre-oscuro {
-  display: block;
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cabecera,
+  .cabecera .marca > * {
+    transition: none;
+  }
 }
 .cabecera--sobre-heroe .menu__boton,
 .cabecera--sobre-heroe .menu__enlace {
@@ -4535,4 +4550,131 @@ html.sin-desplazar {
   .menu-movil:not([hidden]) {
     animation: none;
   }
+}
+/* ── «Lo instalamos en tu local»: la cocina ya instalada y la vitrina del equipo ── */
+.instala__fila {
+  display: grid;
+  gap: var(--e-6);
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .instala__fila {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: var(--e-8);
+  }
+}
+.instala__foto,
+.ficha-equipo,
+.heroe__escena {
+  margin: 0;
+  display: grid;
+  gap: var(--e-2);
+}
+.instala__foto img,
+.ficha-equipo img,
+.heroe__escena img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-tarjeta);
+  background: var(--apoyo);
+}
+.instala__foto figcaption,
+.ficha-equipo figcaption,
+.heroe__escena figcaption {
+  font-size: var(--t-xs);
+  color: var(--tinta-3);
+}
+.heroe__escena figcaption {
+  color: var(--h-texto-2, var(--tinta-3));
+}
+.equipos {
+  list-style: none;
+  margin: var(--e-7) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--e-5) var(--e-4);
+}
+.equipo {
+  display: grid;
+  gap: 6px;
+  color: inherit;
+  text-decoration: none;
+}
+.equipo img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: var(--r-tarjeta);
+  background: #176b64;
+  transition: transform var(--dur-estado) var(--ease-salida);
+}
+.equipo__nombre {
+  margin-top: 4px;
+  font-family: var(--f-titulo);
+  font-weight: 750;
+  font-size: var(--t-m);
+  line-height: 1.25;
+}
+.equipo__donde {
+  font-size: var(--t-s);
+  color: var(--tinta-3);
+}
+.equipo:focus-visible {
+  outline: 2px solid var(--foco);
+  outline-offset: 4px;
+  border-radius: var(--r-tarjeta);
+}
+@media (hover: hover) and (pointer: fine) {
+  .equipo:hover img {
+    transform: scale(1.02);
+  }
+  .equipo:hover .equipo__nombre {
+    text-decoration: underline;
+    text-decoration-color: var(--senal);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .equipo img {
+    transition: none;
+  }
+}
+/* en el teléfono, la vitrina se desliza de lado (no alarga la página): se ve una pieza y media */
+@media (max-width: 899px) {
+  .equipos {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 44%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    margin-inline: calc(-1 * max(16px, 4vw));
+    padding-inline: max(16px, 4vw);
+    scroll-padding-inline: max(16px, 4vw);
+    margin-top: var(--e-6);
+  }
+  .equipos::-webkit-scrollbar {
+    display: none;
+  }
+  .equipos > li {
+    scroll-snap-align: start;
+  }
+}
+/* fichas: el equipo junto a «Equipo que se instala» */
+.ficha-equipo {
+  margin-top: var(--e-4);
+  max-width: 420px;
+}
+.ficha-equipo--pieza {
+  max-width: 240px;
+}
+.instala__texto {
+  display: grid;
+  gap: var(--e-3);
+  align-content: center;
+}
+.instala__texto .lista-check {
+  margin-top: var(--e-2);
 }

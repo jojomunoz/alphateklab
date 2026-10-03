@@ -294,7 +294,8 @@ try {
     const c8 = await b.newContext({ viewport: { width: 1440, height: 900 } });
     const t = await c8.newPage();
     await t.goto(BASE, { waitUntil: 'load' });
-    const logos = () => t.$$eval('.cabecera .marca img', (is) => is.filter((i) => i.offsetParent !== null).length);
+    // a la vista = opacidad casi plena (los dos logos están en la misma celda y se funden)
+    const logos = () => t.$$eval('.cabecera .marca img', (is) => is.filter((i) => Number(getComputedStyle(i.closest('picture') || i).opacity) > 0.9).length);
     assert.match(await t.$eval('[data-cabecera]', (e) => e.className), /cabecera--sobre-heroe/);
     assert.equal(await logos(), 1, 'sobre el héroe se ven dos logos');
     await t.evaluate(() => scrollTo(0, 1400));
