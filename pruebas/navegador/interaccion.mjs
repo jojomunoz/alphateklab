@@ -142,6 +142,17 @@ try {
     assert.equal(await p.isVisible('#catalogo-vacio'), false);
   });
 
+  await paso('en el teléfono, tocar el buscador de la portada abre el diálogo (los resultados no quedan bajo el teclado)', async () => {
+    const m = await b.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+    const q = await m.newPage();
+    await q.goto(BASE, { waitUntil: 'networkidle' });
+    await q.tap('#heroe-campo');
+    await q.waitForTimeout(300);
+    assert.equal(await q.evaluate(() => document.querySelector('[data-buscador]').open), true);
+    assert.equal(await q.evaluate(() => document.activeElement.id), 'buscador-campo');
+    await m.close();
+  });
+
   await paso('Pregúntanos no muestra códigos internos en la lista', async () => {
     await p.goto(`${BASE}cotizar/?servicio=R02`, { waitUntil: 'networkidle' });
     const texto = await p.$eval('#cot-elegidos', (r) => r.innerText);

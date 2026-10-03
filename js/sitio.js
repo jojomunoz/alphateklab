@@ -292,6 +292,7 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
   return { actualizar, enviar };
 }
 
+let abrirBuscador = null; // la usa el buscador de la portada en el teléfono
 const dialogo = document.querySelector('[data-buscador]');
 const campoDialogo = document.getElementById('buscador-campo');
 const sugerenciasDialogo = dialogo?.querySelector('[data-buscador-sugerencias]');
@@ -329,6 +330,7 @@ if (dialogo) {
     campoDialogo.focus();
     cargarIndice().catch(() => {});
   };
+  abrirBuscador = abrir;
   document.addEventListener('click', (e) => {
     if (e.target.closest('[data-abrir-buscador]')) {
       e.preventDefault();
@@ -374,7 +376,18 @@ if (formHeroe) {
   campo.setAttribute('aria-controls', 'heroe-lista');
   const mostrar = () => { caja.hidden = !campo.value.trim(); };
   campo.addEventListener('input', mostrar);
-  campo.addEventListener('focus', () => { cargarIndice().catch(() => {}); mostrar(); });
+  // En el teléfono, el desplegable bajo el campo quedaba debajo del teclado: se abre el diálogo de la lupa, que pone
+  // el campo arriba y los resultados entre el campo y el teclado (revisión del 3-oct).
+  const enTelefono = matchMedia('(max-width: 640px) and (pointer: coarse)');
+  campo.addEventListener('focus', () => {
+    if (enTelefono.matches && abrirBuscador) {
+      campo.blur();
+      abrirBuscador(campo.value);
+      return;
+    }
+    cargarIndice().catch(() => {});
+    mostrar();
+  });
   document.addEventListener('click', (e) => { if (!formHeroe.contains(e.target)) caja.hidden = true; });
   formHeroe.addEventListener('focusout', (e) => { if (!formHeroe.contains(e.relatedTarget)) caja.hidden = true; });
   formHeroe.addEventListener('submit', (e) => {
