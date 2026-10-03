@@ -1,5 +1,5 @@
 // Página de todos los servicios: búsqueda con tus palabras + filtros por negocio y tipo, todo en la URL.
-import { buscar, mensajePregunta, cargarIndice as descargarIndice } from './buscador.mjs';
+import { buscar, esDudosa, mensajePregunta, cargarIndice as descargarIndice } from './buscador.mjs';
 import { coincide, filtroDesdeParams, paramsDesdeFiltro, enlaceWhatsApp } from './nucleo.mjs';
 
 const RAIZ = document.documentElement.dataset.raiz || './';
@@ -48,10 +48,14 @@ async function aplicar({ url = true } = {}) {
   const f = leerForm();
   if (f.q.replace(/\s/g, '').length < 3) f.q = ''; // con 1 o 2 letras todavía no se filtra
   let orden = null;
+  let dudosa = false;
   if (f.q) {
     try {
-      const res = buscar(await cargarIndice(), f.q, { limite: 200, prefijo: true, minimo: 3 }).filter((r) => r.tipo === 'servicio');
-      orden = new Map(res.map((r, i) => [r.id, i]));
+      const idx = await cargarIndice();
+      const res = buscar(idx, f.q, { limite: 200, prefijo: true, minimo: 3 }).filter((r) => r.tipo === 'servicio');
+      // la misma regla que el buscador del sitio: muchos resultados flojos = no está descrito así; solo 3 parecidos
+      dudosa = esDudosa(idx, f.q);
+      orden = new Map((dudosa ? res.slice(0, 3) : res).map((r, i) => [r.id, i]));
     } catch {
       orden = new Map(); // sin índice no se puede buscar: se dice abajo
     }
@@ -68,7 +72,12 @@ async function aplicar({ url = true } = {}) {
   form.classList.toggle('filtros--buscando', Boolean(f.q));
   for (const g of grupos) g.hidden = !g.querySelector('.tarjeta-servicio:not([hidden])');
   if (h1) h1.textContent = titulo(f, visibles);
-  cuenta.textContent = f.q ? `${visibles} ${visibles === 1 ? 'resultado' : 'resultados'} para «${f.q}»` : `Mostrando ${visibles} de ${total}`;
+  if (dudosa && visibles) {
+    const a = Object.assign(document.createElement('a'), { href: `${RAIZ}cotizar/?q=${encodeURIComponent(f.q)}`, textContent: `pregúntanos por «${f.q}»` });
+    cuenta.replaceChildren('No lo tenemos descrito así: ', a, `. Lo hacemos a la medida. Abajo, lo más parecido que ya tenemos (${visibles}).`);
+  } else {
+    cuenta.textContent = f.q ? `${visibles} ${visibles === 1 ? 'resultado' : 'resultados'} para «${f.q}»` : `Mostrando ${visibles} de ${total}`;
+  }
   vacio.hidden = visibles > 0;
   if (!visibles) preguntar.href = enlaceWhatsApp(mensajePregunta(f.q || 'Busco un servicio que no encontré en la lista'), document.documentElement.dataset.whatsapp || null);
   if (url) {

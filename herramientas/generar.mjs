@@ -901,7 +901,7 @@ function paginaServicio(s) {
       <p class="ficha-heroe__para">${esc(s.para)}</p>
       <div class="tarjeta-servicio__insignias">${insignias(s)}</div>
       <p class="ficha-heroe__acciones">
-        <a class="boton boton--senal" href="${prefijo}cotizar/?servicio=${s.id}">${icono('chat-circle-dots')}Preguntar por este servicio</a>
+        <a class="boton boton--senal" href="${prefijo}cotizar/?servicio=${s.id}" data-lleva-q>${icono('chat-circle-dots')}Preguntar por este servicio</a>
         ${s.demo ? `<a class="boton boton--linea" href="${enlace(s.demo, prefijo)}">${icono('play-circle')}Probar la demo</a>` : ''}
         <button class="enlace-boton ficha-heroe__agregar" type="button" data-cotizar="${s.id}" data-fijo aria-pressed="false" aria-label="Agregar a mi lista"><span class="agregar__no">Agregar a mi lista</span><span class="agregar__si" aria-hidden="true">${icono('check')}En tu lista</span></button>
       </p>
@@ -1046,6 +1046,7 @@ function paginaCotizar() {
   <form class="cotizador" id="cotizador" novalidate>
     <div class="cotizador__col">
       <label class="campo"><span>¿Qué necesitas?</span><textarea id="cot-notas" rows="5" maxlength="800" placeholder="Ej.: tengo un restaurante de 15 mesas y quiero que pidan desde la mesa y que la cocina lo vea en una pantalla"></textarea></label>
+      <p class="cotizador__antes" id="cot-antes" hidden>Lo que escribiste antes: «<span></span>» · <button type="button" class="enlace-boton" data-antes="usar">Usarlo</button> · <button type="button" class="enlace-boton" data-antes="quitar">Quitarlo</button></p>
       <details class="cotizador__detalles" id="cot-detalles"><summary>Agregar los datos de tu negocio <span>(opcional)</span></summary>
       <div class="cotizador__datos">
         <label class="campo"><span>Nombre del negocio</span><input id="cot-negocio" autocomplete="organization" maxlength="80" /></label>

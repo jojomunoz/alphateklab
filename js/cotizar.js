@@ -33,8 +33,26 @@ if (pedido && porId.has(pedido)) {
     cab.querySelector('strong').textContent = porId.get(pedido).nombre;
   }
 }
-for (const [k, el] of Object.entries(campos)) if (typeof estado[k] === 'string') el.value = estado[k];
-if (params.get('q') && !campos.notas.value.includes(params.get('q'))) campos.notas.value = [campos.notas.value, params.get('q')].filter(Boolean).join('\n');
+// Los datos del negocio se recuerdan; lo que la persona necesita, no: «¿Qué necesitas?» se llena solo con la frase que
+// trae esta visita (?q=). Antes se reponía lo guardado y se le pegaba la frase nueva, y el mensaje podía pedir un sistema
+// de gimnasio junto a un servicio de restaurante (revisión del 3-oct). Lo de otra visita se ofrece aparte.
+for (const [k, el] of Object.entries(campos)) if (k !== 'notas' && typeof estado[k] === 'string') el.value = estado[k];
+const q = (params.get('q') || '').trim();
+campos.notas.value = q;
+const anterior = typeof estado.notas === 'string' ? estado.notas.trim() : '';
+const antes = document.getElementById('cot-antes');
+if (antes && anterior && anterior !== q) {
+  antes.hidden = false;
+  antes.querySelector('span').textContent = anterior.length > 120 ? `${anterior.slice(0, 117)}…` : anterior;
+  antes.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-antes]');
+    if (!b) return;
+    if (b.dataset.antes === 'usar') campos.notas.value = [campos.notas.value, anterior].filter(Boolean).join('\n');
+    antes.hidden = true;
+    actualizar();
+    campos.notas.focus();
+  });
+}
 const negocioUrl = params.get('negocio');
 if (negocioUrl && [...campos.tipo.options].some((o) => o.text === negocioUrl)) campos.tipo.value = negocioUrl;
 // los datos del negocio van plegados; si ya había algo escrito, se ven

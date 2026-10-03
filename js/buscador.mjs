@@ -210,6 +210,39 @@ export function buscar(indice, texto, { limite = 8, prefijo = false, minimo } = 
     .map((x) => ({ ...x.e, _fichas: undefined, puntos: Math.round(x.puntos * 10) / 10 }));
 }
 
+// Muchos resultados flojos a la vez (6 o más y el mejor con menos de 8 puntos): la frase toca muchas cosas de pasada
+// y ninguna de lleno («sistema para mi gimnasio» daba 7 resultados encabezados por barberías). Entonces no se contesta
+// con una lista que parece respuesta: se dice que no está descrito así y se ofrece preguntar. Calibrado con la mitad
+// de desarrollo de pruebas/control/bateria.json: salta en 2 frases, las dos con el primer resultado equivocado, sin
+// falsas alarmas; en la mitad de control no salta en ninguna (3-oct-2026).
+// Se juzga con las palabras completas: «cam» a medio escribir también trae muchos resultados flojos por prefijo. Y una
+// sola palabra que nombra algo que hacemos («cámara», «sensor», «kiosco») no es dudosa sino amplia: su lista sirve.
+export function esDudosa(indice, texto) {
+  const res = buscar(indice, texto, { limite: 8 });
+  if (res.length < 6 || res[0].puntos >= 8) return false;
+  const palabras = [...new Set(fichas(aplicarEquivalencias(texto, indice.equivalencias), indice.vacias))];
+  if (palabras.length === 1) {
+    const [q] = palabras;
+    const fq = fonetica(q);
+    // en el nombre de algún servicio: «gimnasio» está en las palabras de búsqueda del control de acceso, pero no hay
+    // un sistema para gimnasios descrito, y eso es lo que hay que decir
+    const nombraServicio = indice.some((e) => e.tipo === 'servicio' && ['nombre', 'corto'].some((c) => fichas(e.campos?.[c] || '').some((w) => parecido(q, w, fq, fonetica(w)) > 0)));
+    if (nombraServicio) return false;
+  }
+  return true;
+}
+
+// Las palabras de la frase que no aparecen en ninguna entrada, ni por familia ni por cómo suenan («gimnasio»,
+// «farmacia», «camisetas»): de lo que no tenemos descrito. Sirve para decir «no lo tenemos descrito» en vez de
+// contestar con una lista que parece respuesta (revisión del 3-oct: «sistema para mi gimnasio» daba barberías).
+export function faltantes(indice, texto) {
+  const palabras = [...new Set(fichas(aplicarEquivalencias(texto, indice.equivalencias), indice.vacias))].filter((q) => q.length >= 4);
+  return palabras.filter((q) => {
+    const c = [[q, fonetica(q)]];
+    return !indice.some((e) => coincidencias(e, c, '')[0][0] > 0);
+  });
+}
+
 // Una sola descarga del índice por página aunque lo pidan a la vez el buscador, el catálogo y el diagnóstico (el
 // catálogo lo bajaba 8 veces: cada llamada que llegaba antes de terminar la primera abría otra descarga). Si falla,
 // se puede volver a intentar.

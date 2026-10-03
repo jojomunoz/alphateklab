@@ -127,7 +127,7 @@ export const SERVICIOS = [
     id: 'R06',
     slug: 'pantalla-tactil-de-pedidos',
     nombre: 'Pantalla táctil de autopedido',
-    corto: 'Pantalla táctil de pedidos',
+    corto: 'Kiosco de autopedido',
     sectores: ['restaurantes', 'comercio'],
     tipos: ['pantallas'],
     instala: true,

@@ -93,6 +93,53 @@ try {
     await p.keyboard.press('Escape');
   });
 
+  await paso('a lo que no tenemos descrito («sistema para mi gimnasio») el buscador lo dice primero y ofrece preguntar', async () => {
+    await p.mouse.click(5, 500);
+    await p.keyboard.press('/');
+    await p.keyboard.type('sistema para mi gimnasio');
+    await p.waitForSelector('#buscador-resultados [role=option]');
+    await p.waitForTimeout(300);
+    const filas = await p.$$eval('#buscador-resultados [role=option]', (xs) => xs.map((x) => ({ clase: x.className, texto: x.textContent.trim() })));
+    assert.match(filas[0].clase, /resultado--dudosa/, `la primera fila es «${filas[0].texto.slice(0, 60)}»`);
+    assert.match(filas[0].texto, /No lo tenemos descrito así/);
+    assert.ok(filas.length <= 4, `${filas.length} filas: con una frase dudosa van 3 parecidos como mucho`);
+    await p.keyboard.press('Enter'); // sin elegir nada, Enter lleva a preguntar y no a la lista
+    await p.waitForURL(/cotizar\/\?q=/);
+    assert.equal(await p.inputValue('#cot-notas'), 'sistema para mi gimnasio');
+    await p.goto(BASE, { waitUntil: 'load' });
+  });
+
+  await paso('«Pregúntanos» lleva solo la frase de esta visita; la de antes se ofrece aparte', async () => {
+    // de la búsqueda anterior quedó guardado «sistema para mi gimnasio»; ahora otra frase, una ficha y su botón
+    await p.mouse.click(5, 500);
+    await p.keyboard.press('/');
+    await p.keyboard.type('pedir y pagar desde la mesa');
+    await p.waitForSelector('#buscador-resultados .resultado:not(.resultado--preguntar)');
+    await p.click('#buscador-resultados .resultado:not(.resultado--preguntar)');
+    await p.waitForURL(/servicios\/.+\?q=/);
+    await p.click('a[data-lleva-q]');
+    await p.waitForURL(/cotizar\/\?servicio=.+&q=/);
+    assert.equal(await p.inputValue('#cot-notas'), 'pedir y pagar desde la mesa');
+    assert.ok(await p.isVisible('#cot-antes'), 'no ofrece lo que se escribió antes');
+    assert.match(await p.textContent('#cot-antes'), /gimnasio/);
+    assert.doesNotMatch(await p.inputValue('#cot-notas'), /gimnasio/, 'mezcló la frase de antes');
+    await p.goto(BASE, { waitUntil: 'load' });
+  });
+
+  await paso('en un teléfono, «Pregúntanos» va arriba en el buscador, a la vista sobre el teclado', async () => {
+    const c8 = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const t = await c8.newPage();
+    await t.goto(BASE, { waitUntil: 'load' });
+    await t.tap('.buscar-boton');
+    await t.fill('#buscador-campo', 'menu qr');
+    await t.waitForSelector('#buscador-resultados [role=option]');
+    await t.waitForTimeout(250);
+    const filas = await t.$$eval('#buscador-resultados [role=option]', (xs) => xs.map((x) => x.className));
+    await c8.close();
+    assert.match(filas[0], /resultado--preguntar/, 'la primera fila no es la de preguntar');
+    assert.ok(filas.length <= 5, `${filas.length} filas: en el teléfono van 4 resultados como mucho`);
+  });
+
   await paso('el desplegable de la portada no queda recortado: la fila «Pregúntanos» se ve a 1440×900 y a 1280×720', async () => {
     for (const [w, h] of [[1440, 900], [1280, 720]]) {
       const c2 = await b.newContext({ viewport: { width: w, height: h } });

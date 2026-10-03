@@ -3499,6 +3499,14 @@ html.sin-desplazar {
   margin-top: var(--e-4);
 }
 
+.cotizador__antes {
+  font-size: var(--t-s);
+  color: var(--tinta-2);
+  overflow-wrap: anywhere;
+}
+.cotizador__antes .enlace-boton {
+  min-height: 44px;
+}
 .cotizador__por {
   margin-top: var(--e-4);
   padding: var(--e-3) var(--e-4);
@@ -3650,6 +3658,23 @@ html.sin-desplazar {
   bottom: 0;
   background: var(--tarjeta);
   box-shadow: 0 -1px 0 var(--linea);
+}
+/* primero (pantalla táctil o frase dudosa): pegada arriba, que es lo que el teclado deja ver */
+.resultado--preguntar:first-child {
+  top: 0;
+  bottom: auto;
+  z-index: 1;
+  box-shadow: 0 1px 0 var(--linea);
+}
+.resultado--dudosa {
+  background: color-mix(in srgb, var(--apoyo) 55%, var(--tarjeta));
+}
+/* en un teléfono, el diálogo arriba y no más alto que lo que deja el teclado */
+@media (pointer: coarse) {
+  .buscador {
+    margin-top: 8px;
+    max-height: calc(var(--vv-alto, 100dvh) - 16px);
+  }
 }
 
 /* ── portada: el titular a todo el ancho; abajo, la búsqueda y el producto (más grande) ── */

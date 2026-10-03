@@ -1,5 +1,5 @@
 // Comportamiento común a todas las páginas: menú, buscador, «Pregúntanos» y la lista de la cotización.
-import { buscar, mensajePregunta, resaltar, normalizar, fichas, cargarIndice as descargarIndice } from './buscador.mjs';
+import { buscar, esDudosa, mensajePregunta, resaltar, normalizar, fichas, cargarIndice as descargarIndice } from './buscador.mjs';
 import { enlaceWhatsApp } from './nucleo.mjs';
 import { leerCotizacion, guardarCotizacion, alternarEnCotizacion, agregarVarios } from './cotizacion.mjs';
 
@@ -136,7 +136,9 @@ function itemResultado(r, i, consulta = '') {
   li.setAttribute('aria-selected', 'false');
   li.id = `res-${r.id}-${i}`;
   li.className = 'resultado';
-  li.dataset.url = url(r.url);
+  // a la ficha de un servicio va la frase buscada, para que «Preguntar por este servicio» la lleve a «Pregúntanos»
+  const u = url(r.url);
+  li.dataset.url = r.tipo === 'servicio' && consulta ? `${u}${u.includes('?') ? '&' : '?'}q=${encodeURIComponent(consulta)}` : u;
   li.innerHTML = `<div class="resultado__fila"><svg class="ico" aria-hidden="true"><use href="#i-${r.icono}"></use></svg><span class="resultado__texto"><strong></strong><small></small></span><span class="resultado__tipo"></span></div>`;
   pintarResaltado(li.querySelector('strong'), r.titulo, consulta);
   pintarResaltado(li.querySelector('small'), r.resumen, consulta);
@@ -144,17 +146,30 @@ function itemResultado(r, i, consulta = '') {
   return li;
 }
 
-// Al final de toda lista, la salida para preguntar: lo que hay puede no ser lo que se busca.
-function itemPreguntar(consulta, i) {
+// En toda lista va la salida para preguntar: lo que hay puede no ser lo que se busca. Con una frase dudosa (ver
+// esDudosa) va primero y dice que eso no está descrito así.
+function itemPreguntar(consulta, i, { dudosa = false, arriba = false } = {}) {
   const li = document.createElement('li');
   li.setAttribute('role', 'option');
   li.setAttribute('aria-selected', 'false');
   li.id = `res-preguntar-${i}`;
-  li.className = 'resultado resultado--preguntar';
+  li.className = `resultado resultado--preguntar${dudosa ? ' resultado--dudosa' : ''}`;
   li.dataset.url = `${RAIZ}cotizar/?q=${encodeURIComponent(consulta)}`;
-  li.innerHTML = `<div class="resultado__fila"><svg class="ico" aria-hidden="true"><use href="#i-chat-circle-dots"></use></svg><span class="resultado__texto"><strong></strong><small>Te respondemos si lo podemos hacer.</small></span></div>`;
-  li.querySelector('strong').textContent = `¿No es esto? Pregúntanos por «${consulta}»`;
+  li.innerHTML = `<div class="resultado__fila"><svg class="ico" aria-hidden="true"><use href="#i-chat-circle-dots"></use></svg><span class="resultado__texto"><strong></strong><small></small></span></div>`;
+  // arriba de los resultados («¿No es esto?» antes de verlos no se entiende) o al final de la lista
+  li.querySelector('strong').textContent = dudosa ? `No lo tenemos descrito así: pregúntanos por «${consulta}»` : arriba ? `Pregúntanos por «${consulta}»` : `¿No es esto? Pregúntanos por «${consulta}»`;
+  li.querySelector('small').textContent = dudosa ? 'Lo hacemos a la medida. Debajo, lo más parecido que ya tenemos.' : arriba ? 'Si no está abajo, te decimos si lo podemos hacer.' : 'Te respondemos si lo podemos hacer.';
   return li;
+}
+
+// En una pantalla táctil, con el teclado abierto, solo se ve la parte de arriba del diálogo: ahí va la salida para
+// preguntar, con 4 resultados como mucho (la revisión del 3-oct la vio debajo del teclado, en y=624 a 717).
+const tactil = () => matchMedia('(pointer: coarse)').matches;
+function filasResultados(res, q) {
+  if (!res.length) return [];
+  if (esDudosa(indice, q)) return [itemPreguntar(q, 0, { dudosa: true }), ...res.slice(0, 3).map((r, i) => itemResultado(r, i + 1, q))];
+  if (tactil()) return [itemPreguntar(q, 0, { arriba: true }), ...res.slice(0, 4).map((r, i) => itemResultado(r, i + 1, q))];
+  return [...res.map((r, i) => itemResultado(r, i, q)), itemPreguntar(q, res.length)];
 }
 
 // Sin resultados con la frase entera: lo más parecido por cada palabra suelta, para que la persona vea qué hay cerca.
@@ -200,6 +215,27 @@ function bloqueVacio(consulta) {
     div.append(p);
   }
   return div;
+}
+
+// Se llegó a la ficha desde el buscador (?q=): «Preguntar por este servicio» lleva esa frase a «Pregúntanos».
+{
+  const q = new URLSearchParams(location.search).get('q');
+  if (q) {
+    for (const a of document.querySelectorAll('a[data-lleva-q]')) {
+      const destino = new URL(a.href, location.href);
+      destino.searchParams.set('q', q);
+      a.href = destino.href;
+    }
+  }
+}
+
+// El alto que deja el teclado del teléfono (visualViewport): el diálogo del buscador no pasa de ahí (--vv-alto en CSS).
+if (window.visualViewport) {
+  const vv = window.visualViewport;
+  const ponerAlto = () => document.documentElement.style.setProperty('--vv-alto', `${Math.round(vv.height)}px`);
+  vv.addEventListener('resize', ponerAlto);
+  vv.addEventListener('scroll', ponerAlto);
+  ponerAlto();
 }
 
 // Conecta un campo de búsqueda con su lista de resultados (sirve para el diálogo y para el de la portada).
@@ -283,7 +319,7 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
     if (q !== ultimo) return;
     // Mientras se escribe, la última palabra cuenta como comienzo de palabra («cam» encuentra cámaras).
     const res = buscar(idx, q, { limite: 8, prefijo: true });
-    hubo = res.length;
+    hubo = esDudosa(idx, q) ? 0 : res.length; // con una frase dudosa, Enter lleva a preguntar y no a la lista
     clearTimeout(esperaVacio);
     // Mientras se escribe una frase, una tecla que deja cero resultados no vacía la lista: los de antes quedan atenuados
     // hasta que lleguen otros o pasen 300 ms sin teclear. Antes la lista se encogía y crecía con cada tecla (la revisión
@@ -303,13 +339,13 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
       return;
     }
     lista.classList.remove('buscador__resultados--viejos');
-    lista.replaceChildren(...res.map((r, i) => itemResultado(r, i, q)), ...(res.length ? [itemPreguntar(q, res.length)] : []));
+    lista.replaceChildren(...filasResultados(res, q));
     campo.setAttribute('aria-expanded', String(res.length > 0));
     marcar(-1);
     if (res.length) {
       if (sugerencias) sugerencias.hidden = true;
       if (vacio) { vacio.hidden = true; vacio.replaceChildren(); }
-      if (estado) estado.textContent = `${res.length} ${res.length === 1 ? 'resultado' : 'resultados'}. Usa las flechas para elegir.`;
+      if (estado) estado.textContent = esDudosa(idx, q) ? 'No lo tenemos descrito así. Primero, la opción de preguntarnos; después, lo más parecido. Usa las flechas para elegir.' : `${res.length} ${res.length === 1 ? 'resultado' : 'resultados'}. Usa las flechas para elegir.`;
       return;
     }
     // Sin resultados: no se dice «No encontramos» a media palabra. Con menos de 3 letras siguen las sugerencias;
