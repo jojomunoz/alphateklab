@@ -487,7 +487,7 @@ function paginaInicio() {
     ['Lo usas', 'Le enseñamos a tu equipo y quedamos de soporte según lo acordado en la propuesta.'],
   ];
   const como = `<section class="seccion envoltura" id="como-trabajamos" aria-labelledby="como-titulo">
-  <div class="seccion__cabeza"><h2 id="como-titulo" class="display seccion__titulo">Primero, la propuesta por escrito</h2><p class="seccion__bajada">El equipo se compra cuando la apruebas. Así trabajamos:</p></div>
+  <div class="seccion__cabeza"><h2 id="como-titulo" class="display seccion__titulo">Cómo trabajamos: primero, la propuesta por escrito</h2><p class="seccion__bajada">El equipo se compra cuando la apruebas.</p></div>
   <ol class="pasos">${pasos.map(([t, p]) => `<li class="paso"><h3 class="paso__titulo">${t}</h3><p>${p}</p></li>`).join('')}</ol>
 </section>`;
 
@@ -552,7 +552,7 @@ function paginaSolucion(so) {
   const producto = productoDeNegocio(so, prefijo);
   const nombreCorto = so.singular;
   return documento({
-    titulo: `${so.titulo} · alphateklab`,
+    titulo: `${sector.nombre}: ${so.h1 ? so.h1.charAt(0).toLowerCase() + so.h1.slice(1) : so.titulo} · alphateklab`,
     descripcion: so.bajada,
     prefijo,
     canonica: `${URL_BASE}soluciones/${so.slug}/`,
@@ -647,7 +647,7 @@ function paginaServicios() {
   ${migas(prefijo, [['Servicios', null]])}
   <div class="catalogo__cabeza">
     <h1 class="display pagina-simple__titulo">Todos los servicios</h1>
-    <p class="seccion__bajada">Busca con tus palabras o filtra; si no está, pregúntanos. Se cotizan según tu negocio, salvo los que muestran precio.</p>
+    <p class="seccion__bajada">Busca con tus palabras o filtra; si no está, pregúntanos.<span class="solo-escritorio"> Se cotizan según tu negocio, salvo los que muestran precio.</span></p>
   </div>
   <form class="filtros" id="filtros" role="search" aria-label="Buscar y filtrar servicios">
     <div class="filtros__buscar">${icono('magnifying-glass')}<label class="sr" for="filtro-q">Buscar</label><input id="filtro-q" name="q" type="search" enterkeyhint="search" placeholder="Busca con tus palabras: inventario, cámara, pedir desde la mesa…" autocomplete="off" /></div>

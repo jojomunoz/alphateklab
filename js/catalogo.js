@@ -46,10 +46,11 @@ function ponerEnForm(f) {
 
 async function aplicar({ url = true } = {}) {
   const f = leerForm();
+  if (f.q.replace(/\s/g, '').length < 3) f.q = ''; // con 1 o 2 letras todavía no se filtra
   let orden = null;
   if (f.q) {
     try {
-      const res = buscar(await cargarIndice(), f.q, { limite: 200, prefijo: escribiendo }).filter((r) => r.tipo === 'servicio');
+      const res = buscar(await cargarIndice(), f.q, { limite: 200, prefijo: true }).filter((r) => r.tipo === 'servicio');
       orden = new Map(res.map((r, i) => [r.id, i]));
     } catch {
       orden = new Map(); // sin índice no se puede buscar: se dice abajo

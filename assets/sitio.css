@@ -3746,3 +3746,13 @@ html.sin-desplazar {
     font-size: clamp(2.75rem, 3.9vw, 3.5rem);
   }
 }
+
+@media (max-width: 639px) {
+  .solo-escritorio {
+    display: none;
+  }
+  /* la pregunta de cada paso del diagnóstico no pesa más que el titular de la página */
+  .diag__pregunta {
+    font-size: 1.5rem;
+  }
+}

@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Contador de personas · alphateklab</title>
-<meta name="description" content="Demo de un contador de personas con cámara e IA: cuenta entradas y salidas en una línea, lleva el aforo, avisa cuando se forma fila y arma un mapa de calor. Corre en tu navegador y el video no sale de tu equipo." />
+<meta name="description" content="Demo de un contador de personas con cámara e IA: cuenta entradas y salidas en una línea, lleva el aforo, avisa cuando se forma fila y arma un mapa de calor. Corre en tu navegador y el video no sale de tu teléfono o computadora." />
 <link rel="canonical" href="https://jojomunoz.github.io/alphateklab/laboratorio/camara/" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Contador de personas con cámara · alphateklab" />
-<meta property="og:description" content="Cuenta entradas y salidas, lleva el aforo, avisa de filas y arma un mapa de calor. Pruébalo con tu cámara o con un video de muestra; el video no sale de tu equipo." />
+<meta property="og:description" content="Cuenta entradas y salidas, lleva el aforo, avisa de filas y arma un mapa de calor. Pruébalo con tu cámara o con un video de muestra; el video no sale de tu teléfono o computadora." />
 <meta property="og:url" content="https://jojomunoz.github.io/alphateklab/laboratorio/camara/" />
 <meta property="og:locale" content="es_PA" />
 <meta property="og:image" content="https://jojomunoz.github.io/alphateklab/laboratorio/camara/media/vista-previa-og.jpg" />
@@ -44,7 +44,7 @@
   <nav class="migas" aria-label="Ruta"><a href="../../">Inicio</a> <span aria-hidden="true">/</span> <a href="../">Demos</a> <span aria-hidden="true">/</span> <span aria-current="page">Cámara que cuenta</span></nav>
   <div class="lab__cabeza">
     <h1 class="display lab__titulo">Contador de personas con cámara</h1>
-    <p class="lab__bajada">Cuenta a quien entra y a quien sale por una puerta, lleva el aforo, avisa cuando se forma fila en caja y marca por dónde camina la gente. Esta demo lo hace en tu navegador: el video no sale de tu equipo.</p>
+    <p class="lab__bajada">Cuenta a quien entra y a quien sale por una puerta, lleva el aforo, avisa cuando se forma fila en caja y marca por dónde camina la gente. Esta demo lo hace en tu navegador: el video no sale de tu teléfono o computadora.</p>
   </div>
 
   <div class="lab__cuerpo">
@@ -114,7 +114,7 @@
               <li data-paso="modelo"><span class="carga__nombre">Modelo de detección (EfficientDet-Lite0)</span> <span class="carga__dato num" id="carga-modelo">7.3 MB</span>
                 <progress id="progreso-modelo" max="100" value="0" aria-label="Descarga del modelo"></progress></li>
               <li data-paso="preparar"><span class="carga__nombre">Biblioteca MediaPipe</span> <span class="carga__dato" id="carga-preparar">en espera</span></li>
-              <li data-paso="calibrar"><span class="carga__nombre">Elegir con qué analiza tu equipo: tarjeta gráfica o procesador</span> <span class="carga__dato" id="carga-calibrar">en espera</span></li>
+              <li data-paso="calibrar"><span class="carga__nombre">Elegir con qué analiza tu teléfono o computadora: tarjeta gráfica o procesador</span> <span class="carga__dato" id="carga-calibrar">en espera</span></li>
             </ol>
             <p><button class="boton boton--linea" type="button" id="cancelar">Cancelar</button></p>
           </div>
@@ -236,7 +236,7 @@
     <aside class="lab__lateral">
       <section>
         <h2>Qué estás viendo</h2>
-        <p>Un modelo de detección de objetos (EfficientDet-Lite0, de Google) busca personas en cada cuadro, tantas veces por segundo como alcance tu equipo; la cifra sale debajo del video. A cada persona le pone un número y la sigue mientras esté a la vista.</p>
+        <p>Un modelo de detección de objetos (EfficientDet-Lite0, de Google) busca personas en cada cuadro, tantas veces por segundo como alcance tu teléfono o computadora; la cifra sale debajo del video. A cada persona le pone un número y la sigue mientras esté a la vista.</p>
         <p>Cuando el punto ámbar de sus pies cruza la línea, suma una entrada o una salida según la flecha. El recuadro de la zona de fila cuenta a quien espera ahí, y el mapa de calor suma cuánto tiempo pasó la gente en cada parte del piso.</p>
       </section>
       <section>
@@ -255,7 +255,7 @@
         <h2>Qué es simulado y qué no</h2>
         <ul class="lab__lista">
           <li>La detección y el conteo son reales: corre el modelo sobre el video que elijas, en tu navegador.</li>
-          <li>Ningún cuadro sale de tu equipo. La página baja la biblioteca y el modelo y no sube nada; puedes comprobarlo en la pestaña Red de las herramientas de desarrollo.</li>
+          <li>Ningún cuadro sale de tu teléfono o computadora. La página baja la biblioteca y el modelo y no sube nada; puedes comprobarlo en la pestaña Red de las herramientas de desarrollo.</li>
           <li>En un local, el análisis corre todo el día en un equipo dedicado; aquí corre mientras la página esté abierta, y el conteo se guarda solo en este navegador hasta que cambie el día.</li>
           <li>El seguimiento es sencillo: si alguien sale de cuadro y vuelve, es otra persona, y dos que pasan pegadas pueden contar como una.</li>
           <li>Los avisos salen en esta pantalla. En el servicio llegan por WhatsApp o a una pantalla del local.</li>
@@ -275,7 +275,7 @@
     </aside>
   </div>
 
-  <p class="aviso-demo"><span><strong>Demo.</strong> Corre en tu navegador con un video de muestra, tu cámara o un video tuyo. El modelo y la biblioteca se descargan de storage.googleapis.com y cdn.jsdelivr.net; el video y las cifras no salen de tu equipo. La configuración y el conteo del día se guardan en este navegador.</span></p>
+  <p class="aviso-demo"><span><strong>Demo.</strong> Corre en tu navegador con un video de muestra, tu cámara o un video tuyo. El modelo y la biblioteca se descargan de storage.googleapis.com y cdn.jsdelivr.net; el video y las cifras no salen de tu teléfono o computadora. La configuración y el conteo del día se guardan en este navegador.</span></p>
 
   <section class="creditos" id="creditos" aria-labelledby="creditos-titulo">
     <h2 id="creditos-titulo">Créditos</h2>

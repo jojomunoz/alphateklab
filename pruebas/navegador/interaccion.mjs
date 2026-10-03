@@ -174,6 +174,16 @@ try {
     await m.close();
   });
 
+  await paso('servicios/?q=cam desde la dirección trae las cámaras; con 2 letras no se dice «No encontramos»', async () => {
+    await p.goto(`${BASE}servicios/?q=cam`, { waitUntil: 'networkidle' });
+    await p.waitForTimeout(300);
+    const n = await p.$$eval('.tarjeta-servicio', (xs) => xs.filter((x) => x.getBoundingClientRect().height > 0).length);
+    assert.ok(n >= 8, `solo ${n}`);
+    await p.goto(`${BASE}servicios/?q=ca`, { waitUntil: 'networkidle' });
+    await p.waitForTimeout(300);
+    assert.equal(await p.isVisible('#catalogo-vacio'), false);
+  });
+
   await paso('Pregúntanos no muestra códigos internos en la lista', async () => {
     await p.goto(`${BASE}cotizar/?servicio=R02`, { waitUntil: 'networkidle' });
     const texto = await p.$eval('#cot-elegidos', (r) => r.innerText);

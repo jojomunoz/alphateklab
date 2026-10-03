@@ -248,7 +248,7 @@ async function encender() {
   if (fase === 'cargando') return;
   const f = fuente;
   if (f === 'archivo' && !archivoElegido) {
-    errorArchivo('Primero elige un video de tu equipo.');
+    errorArchivo('Primero elige un video de tu teléfono o computadora.');
     $('archivo').focus();
     return;
   }
@@ -782,8 +782,8 @@ function pintarRendimiento() {
     const porSegundoDeVideo = fps / video.playbackRate;
     texto +=
       porSegundoDeVideo >= ANALISIS_POR_SEGUNDO_DE_VIDEO
-        ? `. El video va a ${numero(video.playbackRate, 2)}× para darle tiempo a tu equipo`
-        : `. El video va a ${numero(video.playbackRate, 2)}×, lo más lento; aun así tu equipo puede perder a quien pase rápido`;
+        ? `. El video va a ${numero(video.playbackRate, 2)}× para darle tiempo a tu teléfono o computadora`
+        : `. El video va a ${numero(video.playbackRate, 2)}×, lo más lento; aun así tu teléfono o computadora puede perder a quien pase rápido`;
   }
   if (pausado) texto = 'En pausa';
   $('rendimiento').textContent = texto;
