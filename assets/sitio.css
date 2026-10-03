@@ -4513,3 +4513,26 @@ html.sin-desplazar {
     display: none;
   }
 }
+/* El ámbar queda para la acción principal y el módulo del logo (revisión de dirección de arte: hacía siete oficios).
+   Los números de etapas y pasos y la insignia «Demo» pasan al petróleo de la marca. */
+.paso__titulo::before,
+.etapa__num,
+.insignia--demo {
+  background: var(--apoyo);
+  color: var(--acento);
+}
+/* los enlaces «Con:» de los problemas, con 44 px de toque en el teléfono (medían de 19 a 32) */
+@media (pointer: coarse) {
+  .problema__servicios a {
+    padding-block: 11px;
+  }
+}
+/* el menú del teléfono entra en 200 ms (bajaba de golpe) */
+.menu-movil:not([hidden]) {
+  animation: aparecer-contenido 200ms var(--ease-salida);
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-movil:not([hidden]) {
+    animation: none;
+  }
+}

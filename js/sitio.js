@@ -551,8 +551,11 @@ function pintarCotizacion() {
   }
   const cuenta = document.querySelector('[data-cuenta-cotizacion]');
   if (cuenta) {
+    const antes = cuenta.textContent;
     cuenta.hidden = elegidos.length === 0;
     cuenta.textContent = elegidos.length;
+    // el contador da un saltito cuando cambia: confirma que se agregó sin tener que buscarlo
+    if (antes && antes !== String(elegidos.length) && elegidos.length && !reducir) cuenta.animate([{ transform: 'scale(.55)' }, { transform: 'scale(1)' }], { duration: 240, easing: 'cubic-bezier(.16,1,.3,1)' });
     cuenta.setAttribute('aria-label', `${elegidos.length} ${elegidos.length === 1 ? 'servicio' : 'servicios'} en tu lista`);
   }
 }
