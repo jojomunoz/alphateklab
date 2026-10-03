@@ -6,6 +6,7 @@ export const SOLUCIONES = [
   {
     sector: 'restaurantes',
     slug: 'restaurantes',
+    singular: 'restaurante',
     icono: 'fork-knife',
     foto: 'sector-restaurantes',
     titulo: 'Tecnología para restaurantes y cafés',
@@ -22,6 +23,7 @@ export const SOLUCIONES = [
   {
     sector: 'comercio',
     slug: 'tiendas',
+    singular: 'tienda',
     icono: 'storefront',
     foto: 'sector-comercio',
     titulo: 'Tecnología para tiendas y comercios',
@@ -38,6 +40,7 @@ export const SOLUCIONES = [
   {
     sector: 'salud',
     slug: 'clinicas',
+    singular: 'clínica',
     icono: 'stethoscope',
     foto: 'sector-salud',
     titulo: 'Tecnología para clínicas y consultorios',
@@ -54,6 +57,7 @@ export const SOLUCIONES = [
   {
     sector: 'hospedaje',
     slug: 'hospedaje',
+    singular: 'alojamiento',
     icono: 'bed',
     foto: 'sector-hospedaje',
     titulo: 'Tecnología para cabañas, hostales y hoteles pequeños',
@@ -69,6 +73,7 @@ export const SOLUCIONES = [
   {
     sector: 'inmuebles',
     slug: 'bienes-raices',
+    singular: 'inmobiliaria',
     icono: 'buildings',
     foto: 'sector-inmuebles',
     titulo: 'Tecnología para agentes de bienes raíces',
@@ -84,6 +89,7 @@ export const SOLUCIONES = [
   {
     sector: 'operacion',
     slug: 'industria-y-oficinas',
+    singular: 'empresa',
     icono: 'factory',
     foto: 'sector-operacion',
     titulo: 'Tecnología para bodegas, plantas y oficinas',
@@ -100,6 +106,7 @@ export const SOLUCIONES = [
   {
     sector: 'educacion',
     slug: 'escuelas',
+    singular: 'escuela',
     icono: 'graduation-cap',
     foto: 'sector-educacion',
     titulo: 'Tecnología para escuelas y academias',
@@ -114,6 +121,7 @@ export const SOLUCIONES = [
   {
     sector: 'servicios',
     slug: 'talleres-y-salones',
+    singular: 'taller o salón',
     icono: 'car',
     foto: 'sector-servicios',
     titulo: 'Tecnología para talleres, autolavados y salones',
@@ -128,6 +136,7 @@ export const SOLUCIONES = [
   {
     sector: 'todos',
     slug: 'cualquier-negocio',
+    singular: 'negocio',
     icono: 'briefcase',
     foto: 'sector-todos',
     titulo: 'Software y automatización para cualquier negocio',

@@ -481,7 +481,7 @@ function paginaSolucion(so) {
   const pq = PAQUETES.find((p) => p.sector === so.sector);
   const lista = serviciosDeSector(so.sector);
   const fotoHeroe = foto(so.foto, prefijo, { clase: 'heroe-sector__foto', sizes: '100vw', carga: 'eager', prioridad: true, alt: '' });
-  const nombreCorto = so.sector === 'todos' ? 'negocio' : sector.nombre.toLowerCase().split(/,| y /)[0];
+  const nombreCorto = so.singular;
   return documento({
     titulo: `${so.titulo} · alphateklab`,
     descripcion: so.bajada,
