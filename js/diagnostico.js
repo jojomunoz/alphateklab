@@ -1,5 +1,5 @@
 // «¿Qué necesita tu negocio?»: tres pasos y una recomendación. La lógica vive en diagnostico-nucleo.mjs.
-import { recomendar, mensajeDiagnostico, estadoDesdeParams, paramsDesdeEstado, YA_TENGO } from './diagnostico-nucleo.mjs';
+import { recomendar, mensajeDiagnostico, estadoDesdeParams, paramsDesdeEstado, yaTengoDe } from './diagnostico-nucleo.mjs';
 import { prepararIndice, buscar } from './buscador.mjs';
 import { enlaceWhatsApp } from './nucleo.mjs';
 import { agregarVarios } from './cotizacion.mjs';
@@ -31,7 +31,12 @@ async function cargarIndice() {
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const ico = (n) => `<svg class="ico" aria-hidden="true"><use href="#i-${n}"></use></svg>`;
 
-cajaTengo.innerHTML = YA_TENGO.map((y) => `<label class="diag-chip"><input type="checkbox" name="tengo" value="${y.id}" /><span>${esc(y.texto)}</span></label>`).join('');
+// las opciones de «¿Qué ya tienes?» dependen del negocio; se conservan las que ya estaban marcadas
+function pintarTengo(slug, marcados = []) {
+  const antes = new Set([...marcados, ...[...cajaTengo.querySelectorAll('input:checked')].map((x) => x.value)]);
+  cajaTengo.innerHTML = yaTengoDe(slug).map((y) => `<label class="diag-chip"><input type="checkbox" name="tengo" value="${y.id}"${antes.has(y.id) ? ' checked' : ''} /><span>${esc(y.texto)}</span></label>`).join('');
+}
+pintarTengo('');
 
 // Cada paso es una entrada del historial: el botón Atrás del navegador vuelve al paso anterior, no fuera del asistente.
 function irA(n, { enfocar = true, historia = true } = {}) {
@@ -56,6 +61,7 @@ function irA(n, { enfocar = true, historia = true } = {}) {
 
 function pintarProblemas(slug, marcados = []) {
   const so = SOL.get(slug);
+  pintarTengo(slug);
   cajaProblemas.innerHTML = so.problemas
     .map(
       (p, i) => `<label class="diag-problema"><input type="checkbox" name="problema" value="${i}"${marcados.includes(i) ? ' checked' : ''} /><span class="diag-problema__caja"><span class="diag-problema__que">${esc(p.problema)}</span><span class="diag-problema__como">${esc(p.respuesta)}</span></span></label>`,
@@ -223,6 +229,7 @@ history.replaceState(inicial.problemas.length ? { resultado: true } : { paso: SO
 if (SOL.has(inicial.negocio)) {
   form.querySelector(`input[name="negocio"][value="${inicial.negocio}"]`).checked = true;
   pintarProblemas(inicial.negocio, inicial.problemas);
+  pintarTengo(inicial.negocio, inicial.tengo);
   for (const t of inicial.tengo) {
     const c = form.querySelector(`input[name="tengo"][value="${CSS.escape(t)}"]`);
     if (c) c.checked = true;

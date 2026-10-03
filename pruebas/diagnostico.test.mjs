@@ -51,3 +51,9 @@ test('el estado va y vuelve por la URL', () => {
   assert.deepEqual(estadoDesdeParams(paramsDesdeEstado(e)), e);
   assert.deepEqual(estadoDesdeParams(new URLSearchParams('p=a,1')), { negocio: '', problemas: [1], tengo: [] });
 });
+
+test('lo que ya tiene cada negocio quita su servicio: un restaurante con pantalla de cocina no recibe R05', () => {
+  const r = recomendar(restaurante, [1], ['pantalla-cocina']);
+  assert.ok(!r.some((x) => x.id === 'R05'));
+  assert.ok(recomendar(restaurante, [1]).some((x) => x.id === 'R05'));
+});

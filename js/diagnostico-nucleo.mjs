@@ -10,10 +10,38 @@ export const YA_TENGO = [
   { id: 'google', texto: 'Perfil en Google Maps', quita: ['T13'] },
 ];
 
-// solucion: { sector, problemas: [{ problema, servicios: [ids] }] }; elegidos: índices de problemas; tengo: ids de YA_TENGO
+// Lo que ya tiene cada tipo de negocio, además de lo común: así el paso 3 no es igual para una clínica y un restaurante.
+export const YA_TENGO_POR_NEGOCIO = {
+  restaurantes: [
+    { id: 'carta-qr', texto: 'Carta digital o menú QR', quita: ['R01'] },
+    { id: 'pantalla-cocina', texto: 'Pantalla de comandas en la cocina', quita: ['R05'] },
+  ],
+  tiendas: [
+    { id: 'tienda-en-linea', texto: 'Tienda en línea', quita: ['C06'] },
+    { id: 'inventario', texto: 'Sistema de inventario', quita: ['T14'] },
+  ],
+  clinicas: [
+    { id: 'agenda-recordatorios', texto: 'Agenda que manda recordatorios', quita: ['S01'] },
+    { id: 'expediente', texto: 'Expediente electrónico', quita: ['S05'] },
+  ],
+  hospedaje: [
+    { id: 'reservas-directas', texto: 'Reservas directas en tu página', quita: ['H01'] },
+    { id: 'calendarios', texto: 'Calendarios de Booking y Airbnb sincronizados', quita: ['H02'] },
+  ],
+  'bienes-raices': [{ id: 'sitio-propiedades', texto: 'Sitio con tus propiedades', quita: ['B05'] }],
+  'industria-y-oficinas': [
+    { id: 'gps', texto: 'GPS en los vehículos', quita: ['I02'] },
+    { id: 'acceso', texto: 'Control de acceso', quita: ['I04'] },
+  ],
+  escuelas: [{ id: 'cobro-mensualidades', texto: 'Cobro de mensualidades en línea', quita: ['E01'] }],
+  'talleres-y-salones': [{ id: 'agenda-en-linea', texto: 'Agenda en línea', quita: ['V03'] }],
+};
+export const yaTengoDe = (slug) => [...YA_TENGO, ...(YA_TENGO_POR_NEGOCIO[slug] || [])];
+
+// solucion: { slug, sector, problemas: [{ problema, servicios: [ids] }] }; elegidos: índices de problemas; tengo: ids de yaTengoDe(slug)
 export function recomendar(solucion, elegidos, tengo = []) {
   if (!solucion) return [];
-  const quitar = new Set(YA_TENGO.filter((y) => tengo.includes(y.id)).flatMap((y) => y.quita));
+  const quitar = new Set(yaTengoDe(solucion.slug).filter((y) => tengo.includes(y.id)).flatMap((y) => y.quita));
   const indices = [...new Set(elegidos)].filter((i) => Number.isInteger(i) && i >= 0 && i < solucion.problemas.length).sort((a, b) => a - b);
   const porId = new Map();
   for (const i of indices) {
