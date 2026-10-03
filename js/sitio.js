@@ -422,6 +422,42 @@ if (heroePortada && cabeceraEl && 'IntersectionObserver' in window) {
   new IntersectionObserver(([e]) => cabeceraEl.classList.toggle('cabecera--sobre-heroe', e.isIntersecting), { rootMargin: '-80px 0px 0px 0px' }).observe(heroePortada);
 }
 
+// ── el producto en movimiento (portada): los dos videos van juntos, se pausan con un botón y fuera de la vista,
+// y con «reducir movimiento» no arrancan (queda la imagen fija) ──
+const figuraVideo = document.querySelector('[data-producto-video]');
+if (figuraVideo) {
+  const videos = [...figuraVideo.querySelectorAll('[data-video-producto]')];
+  const boton = figuraVideo.querySelector('[data-pausa-video]');
+  let pausadoPorPersona = reducir;
+  const visibles = () => videos.filter((v) => v.offsetParent !== null);
+  const reproducir = () => {
+    if (pausadoPorPersona) return;
+    const vs = visibles();
+    vs.forEach((v) => { v.currentTime = 0; });
+    vs.forEach((v) => v.play().catch(() => {}));
+  };
+  const pausar = () => videos.forEach((v) => v.pause());
+  // que el salón no se desfase del teléfono
+  videos[1]?.addEventListener('timeupdate', () => {
+    const [a, b] = videos;
+    if (b && b.offsetParent && Math.abs(a.currentTime - b.currentTime) > 0.25) b.currentTime = a.currentTime;
+  });
+  const pintarBoton = () => {
+    boton.textContent = pausadoPorPersona ? 'Reproducir' : 'Pausar';
+    boton.setAttribute('aria-pressed', String(pausadoPorPersona));
+  };
+  boton.addEventListener('click', () => {
+    pausadoPorPersona = !pausadoPorPersona;
+    if (pausadoPorPersona) pausar();
+    else visibles().forEach((v) => v.play().catch(() => {}));
+    pintarBoton();
+  });
+  pintarBoton();
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => (e.isIntersecting ? reproducir() : pausar()), { threshold: 0.25 }).observe(figuraVideo);
+  } else reproducir();
+}
+
 // ── «Pregúntanos» rápido (banda al final de las páginas) ──
 for (const form of document.querySelectorAll('[data-pregunta-rapida]')) {
   form.addEventListener('submit', (e) => {

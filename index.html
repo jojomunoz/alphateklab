@@ -126,12 +126,12 @@
       <p class="heroe__prueba">Prueba con: <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="pedir desde la mesa con qr">Pedidos con QR</button>,</span> <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="contar personas que entran">Contar clientes</button>,</span> <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="recordar citas a pacientes">Recordar citas</button>,</span> <span class="sin-corte"><button type="button" class="chip-texto" data-buscar="página web">Página web</button>.</span></p>
       <p class="heroe__diagnostico"><a class="boton boton--linea" href="diagnostico/"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-question"></use></svg>¿No sabes qué pedir? Responde 3 preguntas</a></p>
     </div>
-    <figure class="heroe__producto">
+    <figure class="heroe__producto" data-producto-video>
         <div class="heroe__dispositivos">
-          <div class="dispositivo dispositivo--portatil"><div class="dispositivo__pantalla"><img src="assets/producto/sensores-tablero.webp" alt="Tablero de sensores de un restaurante de ejemplo: la nevera de la cocina sale de rango y aparecen dos avisos activos." width="1600" height="1000" fetchpriority="high" decoding="async" /></div></div>
-          <div class="dispositivo dispositivo--telefono"><div class="dispositivo__pantalla"><img src="assets/producto/mesa-carta.webp" alt="La carta QR de la mesa 7 de un restaurante de ejemplo: carimañolas a B/. 4.50, patacones con ceviche de corvina a B/. 8.50, con los botones para llamar al mesero y pedir la cuenta." width="780" height="1688" decoding="async" /></div></div>
+          <div class="dispositivo dispositivo--portatil"><div class="dispositivo__pantalla"><video data-video-producto muted loop playsinline preload="metadata" poster="assets/producto/mesa-salon.webp" width="1280" height="800" aria-label="El salón de un restaurante de ejemplo en la computadora de la caja: entra el pedido de la mesa 7."><source src="assets/producto/mesa-pedido-salon.webm" type="video/webm" /><source src="assets/producto/mesa-pedido-salon.mp4" type="video/mp4" /></video></div></div>
+          <div class="dispositivo dispositivo--telefono"><div class="dispositivo__pantalla"><video data-video-producto muted loop playsinline preload="metadata" poster="assets/producto/mesa-carta.webp" width="540" height="1168" aria-label="La carta QR de la mesa 7 en el teléfono: se elige un plato, se agrega al pedido y se envía."><source src="assets/producto/mesa-pedido-telefono.webm" type="video/webm" /><source src="assets/producto/mesa-pedido-telefono.mp4" type="video/mp4" /></video></div></div>
         </div>
-        <figcaption>Dos de nuestras demos, con restaurantes de ejemplo: <a href="https://jojomunoz.github.io/alphateklab-mesa/">la carta QR de la mesa</a> y <a href="laboratorio/sensores/">el tablero de sensores de la cocina</a>.</figcaption>
+        <figcaption><button type="button" class="enlace-boton heroe__pausa" data-pausa-video aria-pressed="false">Pausar</button> Demo con un restaurante de ejemplo: se pide desde la mesa 7 y el salón lo ve al instante. <a href="https://jojomunoz.github.io/alphateklab-mesa/">Pruébala</a></figcaption>
       </figure>
   </div>
 </section>

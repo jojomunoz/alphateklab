@@ -184,6 +184,25 @@ try {
     assert.equal(await p.isVisible('#catalogo-vacio'), false);
   });
 
+  await paso('el producto en movimiento: arrancan los dos videos, se pausan con el botón y no arrancan con «reducir movimiento»', async () => {
+    const c2 = await b.newContext({ viewport: { width: 1280, height: 800 } });
+    const q = await c2.newPage();
+    await q.goto(BASE, { waitUntil: 'networkidle' });
+    await q.waitForTimeout(1800);
+    const andando = await q.$$eval('[data-video-producto]', (vs) => vs.map((v) => !v.paused && v.currentTime > 0.3));
+    assert.deepEqual(andando, [true, true], 'no corren los dos');
+    await q.click('[data-pausa-video]');
+    assert.equal(await q.$$eval('[data-video-producto]', (vs) => vs.every((v) => v.paused)), true);
+    assert.equal(await q.getAttribute('[data-pausa-video]', 'aria-pressed'), 'true');
+    await c2.close();
+    const c3 = await b.newContext({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
+    const r = await c3.newPage();
+    await r.goto(BASE, { waitUntil: 'networkidle' });
+    await r.waitForTimeout(1200);
+    assert.equal(await r.$$eval('[data-video-producto]', (vs) => vs.every((v) => v.paused)), true, 'con reducir movimiento corren');
+    await c3.close();
+  });
+
   await paso('Pregúntanos no muestra códigos internos en la lista', async () => {
     await p.goto(`${BASE}cotizar/?servicio=R02`, { waitUntil: 'networkidle' });
     const texto = await p.$eval('#cot-elegidos', (r) => r.innerText);

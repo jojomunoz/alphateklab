@@ -3834,3 +3834,17 @@ html.sin-desplazar {
   align-self: center;
   font-weight: 600;
 }
+
+/* videos del producto: llenan la pantalla del dispositivo como las imágenes */
+.dispositivo__pantalla video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+.heroe__pausa {
+  color: var(--h-texto, inherit);
+  font-weight: 700;
+  margin-right: 4px;
+}
