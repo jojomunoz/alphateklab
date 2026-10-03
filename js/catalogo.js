@@ -50,7 +50,7 @@ async function aplicar({ url = true } = {}) {
   let orden = null;
   if (f.q) {
     try {
-      const res = buscar(await cargarIndice(), f.q, { limite: 200, prefijo: true }).filter((r) => r.tipo === 'servicio');
+      const res = buscar(await cargarIndice(), f.q, { limite: 200, prefijo: true, minimo: 3 }).filter((r) => r.tipo === 'servicio');
       orden = new Map(res.map((r, i) => [r.id, i]));
     } catch {
       orden = new Map(); // sin índice no se puede buscar: se dice abajo

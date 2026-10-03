@@ -105,7 +105,14 @@ export function prepararIndice(datos) {
     ...e,
     _fichas: Object.fromEntries(Object.entries(e.campos).map(([campo, texto]) => [campo, [...new Set(fichas(texto))].map((t) => [t, fonetica(t)])])),
   }));
-  lista.equivalencias = prepararEquivalencias(equivalencias);
+  // una equivalencia de una sola palabra no se aplica si el índice ya usa esa palabra: el catálogo dice «router» y
+  // «stock», y cambiarlas por «enrutador» o «existencias» haría perder la coincidencia exacta
+  const vocabulario = new Set(lista.flatMap((e) => Object.values(e._fichas).flatMap((l) => l.map(([t]) => t))));
+  // y solo se aplica si pone al menos una palabra que el índice conoce: cambiar «mall» por «centro comercial» cuando
+  // ninguna de las dos está en el índice deja dos palabras desconocidas donde había una, y la frase se vacía
+  const util = ([dice, significa]) =>
+    (normalizar(dice).includes(' ') || !vocabulario.has(normalizar(dice))) && fichas(significa).some((t) => vocabulario.has(t));
+  lista.equivalencias = prepararEquivalencias(equivalencias.filter(util));
   lista.vacias = new Set(vacias.map(normalizar));
   return lista;
 }
@@ -137,7 +144,12 @@ function coincidencias(entrada, consulta, prefijo = '') {
 // hacemos («chocolate» en «impresora 3d de chocolate»). Con 0 se respondía de más; con 1 se callaba de más (medido con
 // la mitad de desarrollo de pruebas/control/bateria.json, 3-oct-2026).
 const PESO_DESCONOCIDA = 0.5;
-function puntuar(m, conocidas) {
+// lo que vale una palabra que aparece en todas las entradas, frente a 1 de una que aparece en una sola
+const PESO_COMUN = 0.5;
+// rareza[i]: cuánto distingue la palabra i, de 0 (aparece en todas las entradas) a 1 (en una sola). Una palabra
+// común («equipo», «clientes») pesa menos que una que solo dice una cosa («imprimir», «yappy»): sin esto, «imprimir
+// camisetas para mi equipo» salía como firma electrónica porque sus frases dicen «imprimir» y «equipo».
+function puntuar(m, conocidas, rareza) {
   let total = 0;
   let encontradas = 0;
   let fuertes = 0;
@@ -145,7 +157,7 @@ function puntuar(m, conocidas) {
   m.forEach(([mejor, campo], i) => {
     if (!mejor || !conocidas[i]) return;
     encontradas++;
-    total += mejor;
+    total += mejor * (PESO_COMUN + (1 - PESO_COMUN) * rareza[i]);
     if (FUERTES.includes(campo)) fuertes++;
   });
   if (!encontradas) return 0;
@@ -161,18 +173,31 @@ function puntuar(m, conocidas) {
   return total * (0.5 + cobertura) + (cobertura === 1 ? 2 : 0);
 }
 
+// Puntos mínimos para mostrar un resultado: 3 con una palabra y 1,5 más por cada palabra, hasta 6 desde tres. Con 3
+// fijo, casi cualquier frase larga sobre algo que no hacemos («planta eléctrica pa cuando se va la luz») encontraba
+// algo parecido; con 7 fijo se caían frases cortas buenas («citas perdidas»). Elegido con la mitad de desarrollo de
+// pruebas/control/bateria.json y las pruebas del buscador (3-oct-2026). Lo que queda entre 3 y el mínimo se pide con
+// { minimo: 3 } y se muestra como «lo más parecido que hacemos».
+const MINIMO_FRASE = 6;
+const MINIMO_PALABRA = 3;
+const PASO_PALABRA = 1.5;
+
 // prefijo: true mientras la persona escribe; la última palabra (de 3 letras o más) vale también como comienzo de palabra.
-export function buscar(indice, texto, { limite = 8, prefijo = false } = {}) {
+export function buscar(indice, texto, { limite = 8, prefijo = false, minimo } = {}) {
   const palabras = [...new Set(fichas(aplicarEquivalencias(texto, indice.equivalencias), indice.vacias))];
   if (!palabras.length) return [];
   const consulta = palabras.map((q) => [q, fonetica(q)]);
   const ultima = palabras[palabras.length - 1];
   const pre = prefijo && /[a-zñ]$/.test(normalizar(texto)) && ultima.length >= 3 ? ultima : '';
+  minimo ??= Math.min(MINIMO_FRASE, MINIMO_PALABRA + PASO_PALABRA * (palabras.length - 1));
   const filas = indice.map((e) => ({ e, m: coincidencias(e, consulta, pre) }));
-  const conocidas = consulta.map((_, i) => filas.some((f) => f.m[i][0] > 0));
+  const N = filas.length;
+  const df = consulta.map((_, i) => filas.filter((f) => f.m[i][0] > 0).length);
+  const conocidas = df.map((d) => d > 0);
+  const rareza = df.map((d) => (d ? Math.log(N / d) / Math.log(N) : 0));
   return filas
-    .map(({ e, m }) => ({ e, puntos: puntuar(m, conocidas) * (e.tipo === 'servicio' ? 1 : 0.9) }))
-    .filter((x) => x.puntos >= 3)
+    .map(({ e, m }) => ({ e, puntos: puntuar(m, conocidas, rareza) * (e.tipo === 'servicio' ? 1 : 0.9) }))
+    .filter((x) => x.puntos >= minimo)
     .sort((a, b) => b.puntos - a.puntos || a.e.titulo.localeCompare(b.e.titulo))
     .slice(0, limite)
     .map((x) => ({ ...x.e, _fichas: undefined, puntos: Math.round(x.puntos * 10) / 10 }));

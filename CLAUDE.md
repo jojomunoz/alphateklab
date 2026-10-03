@@ -39,13 +39,23 @@ Reglas del proyecto: `~/alphateklab/BRIEF.md`. Guía de diseño: `~/Documents/No
   ~15 cuadros por segundo y sin doble densidad; el webm VP9 de antes salía en 4:4:4 (Profile 1), que muchos
   decodificadores de teléfono no aceptan.
 - Cerrojos, contra local y contra el sitio en vivo después de cada push:
-  `PERMITIR_PENDIENTES=1 node --test pruebas/*.test.mjs`, `node pruebas/navegador/sitio.mjs <url>` y
+  `PERMITIR_PENDIENTES=1 node --test pruebas/*.test.mjs pruebas/control/*.test.mjs`, `node pruebas/navegador/sitio.mjs <url>` y
   `node pruebas/navegador/interaccion.mjs <url>` (cada falla que encontró la revisión de clase mundial es un paso).
 - Las dos de navegador también con el motor de Safari (iPhone). En esta Fedora el WebKit de Playwright pide ICU 74 y
   libjpeg8, que el sistema no trae; hay un lanzador que los pone, y el Playwright de la versión que coincide:
   `MOTOR=webkit WEBKIT_EXE=/home/jonathan/Documents/NovahWEB/proyectos/guia-anfibios/qa-2026-09-30/a11y/webkit-libs/run-webkit.sh PW=/home/jonathan/Documents/NovahWEB/proyectos/guia-anfibios-panama/node_modules/playwright-core/index.mjs node pruebas/navegador/sitio.mjs <url>`.
-- El buscador se mide con `pruebas/buscador-personas.test.mjs` (40 frases de personas; umbral 95 % al primer intento).
-  Esas frases ya se usaron para afinarlo: para medir de verdad hace falta otra batería que nadie toque.
+- El buscador se mide de verdad con `node pruebas/control/medir.mjs`: 87 frases que escribieron agentes en el papel de
+  dueños de negocios sin ver cómo está afinado (70 con respuesta, 17 de cosas que no hacemos), partidas en dos mitades.
+  La de «desarrollo» se puede mirar (`--fallas`); la de «control» solo da cifras: no se leen sus fallas una por una ni se
+  agregan sus palabras a `datos/`. Los arreglos son reglas generales del motor o datos escritos sin ver la batería.
+  Al 3-oct-2026, en control: primero correcto 18/33 (era 11), a la vista 26/33, «no lo tenemos» 6/7.
+  `pruebas/control/control.test.mjs` es el piso (sube, no baja); corre con `node --test pruebas/*.test.mjs pruebas/control/*.test.mjs`.
+  `pruebas/buscador-personas.test.mjs` (40 frases de la revisión, 95 %) queda como cerrojo, pero ya se afinó con ellas.
+- Datos del buscador: `datos/busqueda.mjs` (palabras por servicio y por negocio, equivalencias de Panamá y del chat,
+  relleno) y `datos/situaciones.mjs` (~1.400 frases de situación por servicio, escritas y verificadas por agentes sin ver
+  la batería). El motor (`js/buscador.mjs`): palabras vacías del español, faltas comunes por sonido, rareza de cada palabra
+  (IDF), cobertura sobre las palabras que el índice conoce, y un mínimo que crece con el largo de la frase; lo que queda
+  debajo se muestra como «lo más parecido que hacemos».
 
 ## Probado y descartado
 

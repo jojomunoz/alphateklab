@@ -3,7 +3,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { SECTORES, TIPOS, SERVICIOS } from '../datos/catalogo.mjs';
-import { PALABRAS, PALABRAS_NEGOCIO } from '../datos/busqueda.mjs';
+import { PALABRAS, PALABRAS_NEGOCIO, EQUIVALENCIAS, VACIAS } from '../datos/busqueda.mjs';
+import { SITUACIONES } from '../datos/situaciones.mjs';
 import { SOLUCIONES } from '../datos/soluciones.mjs';
 import { DEMOS } from '../datos/demos.mjs';
 import { GUIAS } from '../datos/guias.mjs';
@@ -11,7 +12,7 @@ import { FICHAS } from '../datos/fichas.mjs';
 import { construirIndice } from '../js/indice.mjs';
 import { prepararIndice, buscar } from '../js/buscador.mjs';
 
-const indice = prepararIndice(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO, GUIAS, FICHAS }));
+const indice = prepararIndice(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO, GUIAS, FICHAS, SITUACIONES, EQUIVALENCIAS, VACIAS }));
 
 export const PERSONAS = {
   'fonda: Yappy en la mesa': { ok1: ['R02'], ok3: ['R02', 'R03', 'sol-restaurantes'], qs: ['yappy en la mesa', 'cobrar con yappy en la mesa', 'que me paguen con yappy en la mesa', 'pagar desde la mesa', 'que el cliente pague en la mesa con yappy', 'pago con qr en la mesa', 'cobrar en las mesas', 'que los clientes paguen sin esperar la cuenta'] },

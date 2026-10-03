@@ -161,8 +161,12 @@ function itemPreguntar(consulta, i) {
 }
 
 // Sin resultados con la frase entera: lo más parecido por cada palabra suelta, para que la persona vea qué hay cerca.
+// Lo más parecido que hacemos cuando no hay resultados fuertes: primero lo que la frase entera alcanza con el mínimo
+// bajo (entre 3 y el mínimo de frase), y si no hay nada, palabra por palabra.
 function parecidos(consulta) {
   if (!indice) return [];
+  const debiles = buscar(indice, consulta, { limite: 3, minimo: 3 }).filter((r) => r.tipo === 'servicio');
+  if (debiles.length) return debiles;
   const vistos = new Set();
   const salida = [];
   for (const palabra of consulta.split(/\s+/).filter((x) => x.length > 3)) {
