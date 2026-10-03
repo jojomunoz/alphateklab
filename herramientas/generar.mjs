@@ -200,10 +200,10 @@ function pie(prefijo) {
       <a class="boton boton--senal" href="${prefijo}cotizar/">Pregúntanos lo que necesites</a>
     </div>
     <div class="pie__columnas">
-      <div><h2>Soluciones</h2><ul>${SOLUCIONES.map((so) => `<li><a href="${prefijo}soluciones/${so.slug}/">${esc(sectorPorId.get(so.sector).nombre)}</a></li>`).join('')}</ul></div>
-      <div><h2>Servicios</h2><ul>${TIPOS.map((t) => `<li><a href="${prefijo}servicios/?tipo=${t.id}">${esc(t.nombre)}</a></li>`).join('')}<li><a href="${prefijo}servicios/">Todos los servicios</a></li></ul></div>
-      <div><h2>Demos</h2><ul>${DEMOS.map((d) => `<li><a href="${enlace(d.url, prefijo)}">${esc(d.nombre)}</a></li>`).join('')}<li><a href="${prefijo}laboratorio/">Todas las demos</a></li></ul></div>
-      <div><h2>alphateklab</h2><ul><li><a href="${prefijo}diagnostico/">¿Qué necesita tu negocio?</a></li><li><a href="${prefijo}#como-trabajamos">Cómo trabajamos</a></li><li><a href="${prefijo}#preguntas">Preguntas frecuentes</a></li><li><a href="${prefijo}guias/">Guías</a></li><li><a href="${prefijo}cotizar/">Pregúntanos</a></li><li><a href="${prefijo}privacidad/">Privacidad</a></li><li><a href="${prefijo}creditos/">Créditos de fotos e íconos</a></li></ul></div>
+      <div><h2>Soluciones</h2><ul>${SOLUCIONES.map((so) => `<li><a href="${prefijo}soluciones/${so.slug}/">${esc(sectorPorId.get(so.sector).corto || sectorPorId.get(so.sector).nombre)}</a></li>`).join('')}</ul></div>
+      <div><h2>Servicios</h2><ul>${TIPOS.map((t) => `<li><a href="${prefijo}servicios/?tipo=${t.id}">${esc(t.corto || t.nombre)}</a></li>`).join('')}<li><a href="${prefijo}servicios/">Todos los servicios</a></li></ul></div>
+      <div><h2>Demos</h2><ul>${DEMOS.map((d) => `<li><a href="${enlace(d.url, prefijo)}">${esc(d.corto || d.nombre)}</a></li>`).join('')}<li><a href="${prefijo}laboratorio/">Todas las demos</a></li></ul></div>
+      <div><h2>alphateklab</h2><ul><li><a href="${prefijo}diagnostico/">¿Qué necesita tu negocio?</a></li><li><a href="${prefijo}#como-trabajamos">Cómo trabajamos</a></li><li><a href="${prefijo}#preguntas">Preguntas frecuentes</a></li><li><a href="${prefijo}guias/">Guías</a></li><li><a href="${prefijo}cotizar/">Pregúntanos</a></li><li><a href="${prefijo}privacidad/">Privacidad</a></li><li><a href="${prefijo}creditos/">Créditos</a></li></ul></div>
     </div>
     <p class="pie__nota">Las demos usan negocios de ejemplo: sus nombres, platos, pacientes y reservas son ficticios. Actualizado el ${esc(ACTUALIZADO.texto)}.</p>
   </div>
@@ -650,7 +650,7 @@ ${
 }
 <section class="seccion envoltura" aria-labelledby="todos-titulo">
   <div class="seccion__cabeza"><h2 id="todos-titulo" class="display seccion__titulo">Todos los servicios para tu ${esc(nombreCorto)}</h2><p class="seccion__bajada">${contar(lista.length, 'servicio', 'servicios')}. Se cotizan según tu negocio, salvo los que muestran precio. Agrega los que te interesen y pídenos la cotización de una vez.</p></div>
-  <div class="rejilla-servicios">${lista.map((s) => tarjetaServicio(s, prefijo)).join('\n')}</div>
+  <div class="rejilla-servicios rejilla-servicios--indice">${lista.map((s) => tarjetaServicio(s, prefijo)).join('\n')}</div>
 </section>
 ${bandaPreguntanos(prefijo, { titulo: `¿Tu ${nombreCorto} necesita otra cosa?` })}
 </main>`,
