@@ -455,7 +455,7 @@ export const SERVICIOS = [
     tipos: ['tresd', 'web'],
     instala: false,
     visita: true,
-    para: 'El comprador recorre la propiedad desde su teléfono: con una foto 360 de cada ambiente, o en 3D, caminando por las habitaciones como en un videojuego y con las medidas reales.',
+    para: 'El comprador recorre la propiedad desde su teléfono: con una foto 360 de cada ambiente, o en 3D, caminando de un cuarto a otro y con las medidas reales.',
     incluye: ['Fotos 360 de cada ambiente con cámara 360, o escaneo 3D con LiDAR', 'Recorrido para tu página o tu anuncio, en tu dominio', 'Medidas de cada ambiente en la versión 3D'],
     equipo: ['Cámara 360 o teléfono con LiDAR (lo llevamos nosotros)'],
     precio: null,
@@ -898,7 +898,7 @@ export const SERVICIOS = [
     equipo: [], precio: null, demo: null,
   },
   {
-    id: 'H06', slug: 'domotica-para-alquileres', nombre: 'Luces, aire y cerraduras desde el teléfono', corto: 'Domótica para alquileres',
+    id: 'H06', slug: 'domotica-para-alquileres', nombre: 'Luces, aire y cerraduras desde el teléfono', corto: 'Luces, aire y cerraduras',
     sectores: ['hospedaje'], tipos: ['iot'], instala: true,
     para: 'Apagas el aire de la cabaña que quedó vacía, prendes las luces antes de que llegue el huésped y abres la puerta desde donde estés.',
     incluye: ['Interruptores y enchufes inteligentes', 'Control del aire acondicionado', 'Escenas por reserva (llegada, salida)'],
@@ -982,7 +982,7 @@ export const SERVICIOS = [
     equipo: ['Lo que haga falta reparar o reemplazar'], precio: null, demo: null,
   },
   {
-    id: 'T20', slug: 'conexion-entre-sistemas', nombre: 'Conexión entre sistemas', corto: 'Integraciones (APIs)',
+    id: 'T20', slug: 'conexion-entre-sistemas', nombre: 'Conexión entre sistemas', corto: 'Conexión entre sistemas',
     sectores: ['todos'], tipos: ['software'], instala: false,
     para: 'Que tu tienda, tu sistema de ventas, tu contabilidad, Yappy o el banco se pasen los datos solos.',
     incluye: ['Conexión por API entre tus sistemas', 'Sincronización programada', 'Aviso cuando algo no cuadra'],

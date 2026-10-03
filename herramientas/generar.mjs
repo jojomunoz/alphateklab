@@ -129,7 +129,7 @@ function destacados(so, n = 2) {
 }
 function cabecera(prefijo, { sobreHeroe = false } = {}) {
   const soluciones = SOLUCIONES.map(
-    (so) => `<li><a class="mega__item" href="${prefijo}soluciones/${so.slug}/">${icono(so.icono, 'ico ico--mega')}<span><strong>${esc(sectorPorId.get(so.sector).nombre)}</strong><small>${esc(destacados(so).join(', '))} y más</small></span></a></li>`,
+    (so) => `<li><a class="mega__item" href="${prefijo}soluciones/${so.slug}/">${icono(so.icono, 'ico ico--mega')}<span><strong>${esc(sectorPorId.get(so.sector).nombre)}</strong><small>${esc(destacados(so).join(', '))}</small></span></a></li>`,
   ).join('');
   const tipos = TIPOS.map(
     (t) => `<li><a class="mega__item" href="${prefijo}servicios/?tipo=${t.id}">${icono(t.icono, 'ico ico--mega')}<span><strong>${esc(t.nombre)}</strong><small>${esc(t.desc)}</small></span></a></li>`,
@@ -181,7 +181,7 @@ function dialogoBuscador() {
   <form class="buscador__barra" role="search" data-buscador-form>
     ${icono('magnifying-glass')}
     <label class="sr" for="buscador-campo">¿Qué necesitas?</label>
-    <input id="buscador-campo" type="search" enterkeyhint="search" placeholder="¿Qué necesitas? Escríbelo con tus palabras" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="buscador-resultados" aria-autocomplete="list" />
+    <input id="buscador-campo" type="search" enterkeyhint="search" placeholder="Escribe lo que necesitas" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="buscador-resultados" aria-autocomplete="list" />
     <button class="buscador__cerrar" type="button" data-cerrar-buscador aria-label="Cerrar el buscador"><span class="solo-teclado">Esc</span><span class="solo-tactil">Cerrar</span></button>
   </form>
   <div class="buscador__cuerpo" tabindex="-1">
@@ -198,7 +198,7 @@ function pie(prefijo) {
   <div class="envoltura">
     <div class="pie__cabeza">
       <a class="marca marca--pie" href="${prefijo}"><img src="${prefijo}assets/marca/logo-oscuro.svg" alt="alphateklab" width="178" height="40" /></a>
-      <p>Soluciones tecnológicas para negocios en Panamá. Software, webs, apps e inteligencia artificial, y la instalación de pantallas, cámaras, sensores y QR en tu local.</p>
+      <p>Programamos el sistema de tu negocio en Panamá y vamos a tu local a instalar lo que haga falta: la pantalla, la cámara, el sensor o las placas con QR.</p>
       <a class="boton boton--senal" href="${prefijo}cotizar/">Pregúntanos lo que necesites</a>
     </div>
     <div class="pie__columnas">
@@ -305,7 +305,20 @@ function tarjetaServicio(s, prefijo) {
 </article>`;
 }
 
-function bandaPreguntanos(prefijo, { titulo = '¿No encontraste lo que buscas?', texto = 'La lista es lo que ya tenemos descrito, no todo lo que podemos hacer. Cuéntanos qué necesitas y te decimos si lo podemos hacer.' } = {}) {
+// el ejemplo de la banda «¿Tu negocio necesita otra cosa?», con un caso de ese negocio (antes era el mismo de los
+// vendedores y el inventario en todas las páginas)
+const EJEMPLO_PREGUNTA = {
+  restaurantes: 'quiero que la cocina me avise cuando se acaba un plato',
+  tiendas: 'quiero saber cuánta gente entra y cuántos compran',
+  clinicas: 'quiero que los pacientes confirmen la cita sin tener que llamarlos',
+  hospedaje: 'quiero que Booking y mi página no vendan la misma noche',
+  'bienes-raices': 'quiero mostrarle el apartamento a un cliente que está fuera del país',
+  'industria-y-oficinas': 'quiero saber si se fue la luz en la bodega de noche',
+  'talleres-y-salones': 'quiero avisarle al cliente cuando su carro está listo',
+  escuelas: 'quiero saber qué familias no han pagado la mensualidad',
+};
+
+function bandaPreguntanos(prefijo, { titulo = '¿No encontraste lo que buscas?', texto = 'La lista es lo que ya tenemos descrito, no todo lo que podemos hacer. Cuéntanos qué necesitas y te decimos si lo podemos hacer.', ejemplo = 'quiero que mis vendedores vean el inventario desde el teléfono' } = {}) {
   return `<section class="banda-pregunta" aria-labelledby="banda-titulo">
   <div class="envoltura banda-pregunta__fila">
     <div class="banda-pregunta__texto">
@@ -314,7 +327,7 @@ function bandaPreguntanos(prefijo, { titulo = '¿No encontraste lo que buscas?',
     </div>
     <form class="banda-pregunta__form" data-pregunta-rapida>
       <label class="sr" for="pregunta-rapida">Qué necesitas</label>
-      <textarea id="pregunta-rapida" rows="3" maxlength="600" placeholder="Ej.: quiero que mis vendedores vean el inventario desde el teléfono" required></textarea>
+      <textarea id="pregunta-rapida" rows="3" maxlength="600" placeholder="Ej.: ${esc(ejemplo)}" required></textarea>
       <button class="boton boton--senal" type="submit">${icono('whatsapp-logo')}Preguntar por WhatsApp</button>
     </form>
   </div>
@@ -364,7 +377,7 @@ function escalera(pq, prefijo) {
 
 const PREGUNTAS = [
   ['¿Hacen solo software o también instalan equipos?', 'Las dos cosas. Hacemos páginas web, apps, sistemas a medida, automatizaciones e inteligencia artificial, y además vamos a tu local a instalar lo físico: placas QR y NFC, pantallas, cámaras, sensores, cerraduras y redes.'],
-  ['¿Y si lo que necesito no está en la lista?', 'Pregúntanos. La lista es lo que ya tenemos descrito, no todo lo que podemos hacer. Escríbelo con tus palabras en el buscador o en «Pregúntanos» y te decimos si lo podemos hacer.'],
+  ['¿Y si lo que necesito no está en la lista?', 'Pregúntanos. Escríbelo con tus palabras en el buscador o en «Pregúntanos» y te decimos si lo podemos hacer, aunque no esté en la lista.'],
   ['¿Tengo que comprar equipo?', 'Solo si el servicio lo necesita. En la propuesta te detallamos qué equipo y cuánto cuesta, y lo compramos después de que la apruebas. Si ya tienes algo que sirve (cámaras, una tableta, un televisor), lo usamos.'],
   ['¿De quién son el dominio, la página y los QR?', 'Tuyos. El dominio se registra a nombre de tu negocio y los QR impresos apuntan a una dirección de ese dominio, así que siguen funcionando aunque un día cambies de proveedor.'],
   ['¿Cuánto cuesta?', 'Depende del servicio y de tu negocio; la cifra va cerrada en la propuesta. Lo que ya tiene precio lo ves en cada servicio, como el menú QR a $10 al mes.'],
@@ -650,7 +663,7 @@ const PRODUCTO_POR_NEGOCIO = {
   tiendas: { demo: 'camara', portatil: 'camara', texto: 'la cámara que cuenta quién entra y sale y avisa cuando se forma fila' },
   clinicas: { demo: 'reservas', portatil: 'reservas-agenda', texto: 'la agenda de un consultorio de ejemplo, con quién confirmó y a quién hay que llamar' },
   hospedaje: { demo: 'reservas', portatil: 'reservas-alojamiento', texto: 'el calendario de cabañas de ejemplo, con Booking, Airbnb y la venta directa' },
-  'bienes-raices': { demo: 'recorrido-3d', portatil: 'recorrido-3d', texto: 'un apartamento de ejemplo que se recorre como un videojuego' },
+  'bienes-raices': { demo: 'recorrido-3d', portatil: 'recorrido-3d', texto: 'un apartamento de ejemplo que se recorre de un cuarto a otro, con las medidas reales' },
   'industria-y-oficinas': { demo: 'sensores', portatil: 'sensores-tablero', telefono: 'sensores-aviso', texto: 'el tablero de sensores y el aviso que llega al WhatsApp' },
   'talleres-y-salones': { demo: 'reservas', portatil: 'reservas-barberia', texto: 'la agenda de una barbería de ejemplo, por barbero' },
 };
@@ -749,7 +762,7 @@ ${
   <div class="seccion__cabeza"><h2 id="todos-titulo" class="display seccion__titulo">Todos los servicios para tu ${esc(nombreCorto)}</h2><p class="seccion__bajada">${contar(lista.length, 'servicio', 'servicios')}. Se cotizan según tu negocio, salvo los que muestran precio. Agrega los que te interesen y pídenos la cotización de una vez.</p></div>
   <div class="rejilla-servicios rejilla-servicios--indice">${lista.map((s) => tarjetaServicio(s, prefijo)).join('\n')}</div>
 </section>
-${bandaPreguntanos(prefijo, { titulo: `¿Tu ${nombreCorto} necesita otra cosa?` })}
+${bandaPreguntanos(prefijo, { titulo: `¿Tu ${nombreCorto} necesita otra cosa?`, ejemplo: EJEMPLO_PREGUNTA[so.slug] })}
 </main>`,
   });
 }

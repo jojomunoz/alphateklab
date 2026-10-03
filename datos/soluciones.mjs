@@ -86,7 +86,7 @@ export const SOLUCIONES = [
     bajada: 'Recorridos 360 y 3D con medidas, fotos profesionales y un agente de WhatsApp que contesta a las 11 de la noche.',
     demo: 'recorrido-360',
     problemas: [
-      { problema: 'Las fotos no transmiten cómo es el espacio.', respuesta: 'Recorrido 360 de cada ambiente, o en 3D caminando como en un videojuego, para enlazar desde tu anuncio.', servicios: ['B01', 'B02'] },
+      { problema: 'Las fotos no transmiten cómo es el espacio.', respuesta: 'Recorrido 360 de cada ambiente, o en 3D caminando de un cuarto a otro, con las medidas reales, para enlazar desde tu anuncio.', servicios: ['B01', 'B02'] },
       { problema: 'Visitas con gente que no iba en serio.', respuesta: 'Un agente de WhatsApp que contesta, pregunta presupuesto y fecha, y agenda solo a los interesados.', servicios: ['B04'] },
       { problema: 'Tus propiedades dependen de portales de terceros.', respuesta: 'Tu propio sitio de propiedades, con fichas, planos y recorridos.', servicios: ['B05', 'B03'] },
       { problema: 'Terrenos y proyectos difíciles de mostrar.', respuesta: 'Tomas aéreas con dron y mapa del terreno.', servicios: ['B06'] },
