@@ -434,6 +434,17 @@ document.addEventListener('click', (e) => {
   if (!b) return;
   alternarEnCotizacion(b.dataset.cotizar);
   pintarCotizacion();
+  // junto al botón grande de la ficha, una línea que dice dónde quedó y cuántos van
+  if (!b.classList.contains('boton-chico')) {
+    const { elegidos } = leerCotizacion();
+    let nota = b.parentElement.querySelector('.nota-lista');
+    if (!nota) {
+      nota = Object.assign(document.createElement('span'), { className: 'nota-lista' });
+      nota.setAttribute('role', 'status');
+      b.after(nota);
+    }
+    nota.replaceChildren(elegidos.includes(b.dataset.cotizar) ? `En tu lista (${elegidos.length}) · ` : 'Quitado de tu lista · ', Object.assign(document.createElement('a'), { href: `${RAIZ}cotizar/`, textContent: 'Ver lista' }));
+  }
 });
 window.addEventListener('storage', pintarCotizacion);
 pintarCotizacion();

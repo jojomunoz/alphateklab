@@ -3495,3 +3495,27 @@ html.sin-desplazar {
 .diag__acciones--paso1 {
   margin-top: var(--e-4);
 }
+
+.cotizador__por {
+  margin-top: var(--e-4);
+  padding: var(--e-3) var(--e-4);
+  background: var(--apoyo);
+  border-radius: var(--r-control);
+  max-width: 60rem;
+}
+.nota-lista {
+  align-self: center;
+  font-size: var(--t-s);
+  color: var(--tinta-2);
+}
+.insignia--demo {
+  background: var(--senal);
+  color: var(--sobre-senal);
+}
+
+.diag-resultado__marcaste {
+  margin-top: var(--e-2);
+  color: var(--tinta-2);
+  font-size: var(--t-s);
+  max-width: 70ch;
+}

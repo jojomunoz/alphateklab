@@ -114,6 +114,7 @@ async function mostrarResultado({ guardar = true } = {}) {
   resultado.innerHTML = `
     <div class="diag-resultado__cabeza">
       <p class="diag-resultado__negocio">${ico(so.icono)}${esc(so.nombre)}</p>
+      <p class="diag-resultado__marcaste">${e.problemas.length ? `Marcaste: ${e.problemas.map((i) => `«${esc(so.problemas[i].problema.replace(/\.$/, ''))}»`).join(', ')}.` : 'No marcaste problemas de la lista.'} <button class="enlace-boton" type="button" data-cambiar>Cambiar</button></p>
       <h2 class="display diag-resultado__titulo">${servicios.length ? `Esto es lo que te recomendamos (${servicios.length})` : 'Cuéntanos más y te orientamos'}</h2>
       <p class="seccion__bajada">${
         servicios.length
@@ -146,6 +147,7 @@ async function mostrarResultado({ guardar = true } = {}) {
     ev.currentTarget.textContent = n ? `Agregados (${n}). Ver mi lista` : 'Ya estaban. Ver mi lista';
     ev.currentTarget.onclick = () => (location.href = `${RAIZ}cotizar/`);
   });
+  resultado.querySelector('[data-cambiar]').addEventListener('click', () => irA(2));
   resultado.querySelector('[data-reiniciar]').addEventListener('click', () => {
     form.reset();
     irA(1);

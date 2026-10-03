@@ -26,6 +26,13 @@ let estado = leerCotizacion();
 let elegidos = elegidosValidos(estado.elegidos, SERVICIOS);
 const pedido = params.get('servicio');
 if (pedido && porId.has(pedido) && !elegidos.includes(pedido)) elegidos.push(pedido);
+if (pedido && porId.has(pedido)) {
+  const cab = document.getElementById('cot-pregunta-por');
+  if (cab) {
+    cab.hidden = false;
+    cab.querySelector('strong').textContent = porId.get(pedido).nombre;
+  }
+}
 for (const [k, el] of Object.entries(campos)) if (typeof estado[k] === 'string') el.value = estado[k];
 if (params.get('q') && !campos.notas.value.includes(params.get('q'))) campos.notas.value = [campos.notas.value, params.get('q')].filter(Boolean).join('\n');
 const negocioUrl = params.get('negocio');
@@ -84,10 +91,14 @@ selAgregar.addEventListener('change', () => {
 });
 for (const el of Object.values(campos)) el.addEventListener('input', actualizar);
 
-document.getElementById('cot-copiar').addEventListener('click', async () => {
+const btnCopiar = document.getElementById('cot-copiar');
+const textoCopiar = btnCopiar.innerHTML;
+btnCopiar.addEventListener('click', async () => {
   try {
     await navigator.clipboard.writeText(mensaje.textContent);
     aviso.textContent = 'Mensaje copiado. Pégalo en WhatsApp o en un correo.';
+    btnCopiar.innerHTML = '<svg class="ico" aria-hidden="true"><use href="#i-check"></use></svg>Copiado';
+    setTimeout(() => (btnCopiar.innerHTML = textoCopiar), 1500);
   } catch {
     const r = document.createRange();
     r.selectNodeContents(mensaje);
@@ -96,11 +107,23 @@ document.getElementById('cot-copiar').addEventListener('click', async () => {
     aviso.textContent = 'No se pudo copiar solo: el mensaje quedó seleccionado, cópialo con Ctrl+C o manteniéndolo presionado.';
   }
 });
+let deshacer = null;
 document.getElementById('cot-vaciar').addEventListener('click', () => {
+  const antes = { elegidos: [...elegidos], campos: Object.fromEntries(Object.entries(campos).map(([k, el]) => [k, el.value])) };
   elegidos = [];
   for (const el of Object.values(campos)) el.value = '';
   actualizar();
-  aviso.textContent = 'Todo vaciado.';
+  aviso.replaceChildren('Se vació la lista. ');
+  const b = Object.assign(document.createElement('button'), { type: 'button', className: 'enlace-boton', textContent: 'Deshacer' });
+  b.addEventListener('click', () => {
+    elegidos = antes.elegidos;
+    for (const [k, v] of Object.entries(antes.campos)) campos[k].value = v;
+    actualizar();
+    aviso.textContent = 'Lista recuperada.';
+  });
+  aviso.append(b);
+  clearTimeout(deshacer);
+  deshacer = setTimeout(() => { if (aviso.contains(b)) aviso.textContent = ''; }, 8000);
 });
 window.addEventListener('storage', () => {
   estado = leerCotizacion();

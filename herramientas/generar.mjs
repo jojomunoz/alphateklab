@@ -260,9 +260,9 @@ function migas(prefijo, partes) {
 
 function insignias(s) {
   const b = [];
-  if (s.demo) b.push(`<span class="insignia insignia--demo">${icono('play-circle')}Demo</span>`);
-  if (s.instala) b.push(`<span class="insignia">${icono('wrench')}Se instala</span>`);
-  if (s.visita) b.push(`<span class="insignia">${icono('map-pin')}Vamos a tu propiedad</span>`);
+  if (s.demo) b.push(`<span class="insignia insignia--demo">Demo</span>`);
+  if (s.instala) b.push(`<span class="insignia">Se instala</span>`);
+  if (s.visita) b.push(`<span class="insignia">Vamos a tu propiedad</span>`);
   return b.join('');
 }
 
@@ -866,6 +866,7 @@ function paginaCotizar() {
   ${migas(prefijo, [['Pregúntanos o cotiza', null]])}
   <h1 class="display pagina-simple__titulo">Pregúntanos lo que necesites</h1>
   <p class="seccion__bajada">Escríbelo con tus palabras y, si quieres, suma servicios de la lista. Te queda un mensaje listo para mandar por WhatsApp. Nada sale de tu teléfono o tu computadora hasta que lo mandas; lo que escribes se guarda solo en este navegador, hasta que pulses «Vaciar».</p>
+  <p class="cotizador__por" id="cot-pregunta-por" hidden>Vas a preguntar por: <strong></strong>. Ya está en tu lista; agrega lo que quieras contarnos.</p>
   <form class="cotizador" id="cotizador" novalidate>
     <div class="cotizador__col">
       <label class="campo"><span>¿Qué necesitas?</span><textarea id="cot-notas" rows="5" maxlength="800" placeholder="Ej.: tengo un restaurante de 15 mesas y quiero que pidan desde la mesa y que la cocina lo vea en una pantalla"></textarea></label>
