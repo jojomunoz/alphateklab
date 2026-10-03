@@ -5,7 +5,7 @@ import { PALABRAS, PALABRAS_NEGOCIO } from '../datos/busqueda.mjs';
 import { SOLUCIONES } from '../datos/soluciones.mjs';
 import { DEMOS } from '../datos/demos.mjs';
 import { construirIndice } from '../js/indice.mjs';
-import { prepararIndice, buscar, normalizar, fichas, parecido, mensajePregunta, resaltar } from '../js/buscador.mjs';
+import { prepararIndice, buscar, normalizar, fichas, parecido, fonetica, mensajePregunta, resaltar } from '../js/buscador.mjs';
 
 const indice = prepararIndice(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO }));
 const primeros = (q, n = 3) => buscar(indice, q).slice(0, n).map((r) => r.id);
@@ -132,4 +132,25 @@ test('mientras se escribe, la última palabra vale como comienzo: «cam», «cot
 
 test('el comienzo de palabra no cambia lo que ya acertaba con palabras completas', () => {
   for (const [q, esperado] of CASOS) assert.equal(buscar(indice, q, { prefijo: true })[0]?.id, buscar(indice, q)[0]?.id, q);
+});
+
+test('las faltas comunes al escribir no impiden encontrar: s/z/c, b/v, h muda, ll/y, g/j, ñ sin teclado', () => {
+  assert.equal(fonetica('cotizaciones'), fonetica('cotisasiones'));
+  assert.equal(fonetica('bascula'), fonetica('vascula'));
+  assert.equal(fonetica('horario'), fonetica('orario'));
+  assert.equal(fonetica('gerente'), fonetica('jerente'));
+  assert.equal(fonetica('senal'), fonetica('señal'));
+  assert.notEqual(fonetica('casa'), fonetica('cosa'), 'las vocales no se juntan');
+  assert.ok(parecido('cotisaciones', 'cotizaciones') > 0);
+  assert.equal(buscar(indice, 'cotisaciones con mi inventario')[0]?.id, 'T06');
+  assert.equal(buscar(indice, 'vascula para pesar camiones')[0]?.id, 'I08');
+});
+
+test('las palabras de relleno de una frase larga no la anulan', () => {
+  // «cada rato», «todo el día», «estoy»: antes contaban como palabras sin coincidencia y la frase no traía nada
+  assert.ok(buscar(indice, 'estoy todo el dia cada rato cuadrando la caja registradora').length > 0);
+  // las abreviaturas de chat valen lo mismo que la palabra entera
+  const ids = (q) => buscar(indice, q).map((r) => r.id).join(',');
+  assert.equal(ids('q me cobren con yappy pa la tienda'), ids('que me cobren con yappy para la tienda'));
+  assert.ok(ids('que me cobren con yappy para la tienda').length > 0);
 });

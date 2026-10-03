@@ -2,8 +2,26 @@
 // palabras («que los clientes pidan desde la mesa», «contar gente», «app»). Sin dependencias; lo prueban
 // pruebas/buscador.test.mjs. El índice lo genera herramientas/generar.mjs en assets/indice.json.
 
+// Palabras que no sirven para buscar: la lista común del español (artículos, pronombres, preposiciones y las formas
+// de estar, haber, ser y tener), lo que se dice al pedir algo («quisiera», «me gustaría») y el relleno de las frases
+// largas («cada rato», «todo el día»). Sin tildes, porque se comparan después de normalizar.
 const VACIAS = new Set(
-  'a al algo algun alguna como con cual cuando de del desde donde el ella en entre es esa ese eso esta este esto hacer hay la las le les lo los mas me mi mis muy necesito ni no nos o otra otro para pero poder por puede pueden que quien quiero se ser si sin sobre su sus tambien te tener tengo tiene tu tus un una uno unos unas y ya yo hola favor ustedes hacen tienen ofrecen servicio servicios negocio negocios empresa mio mia algo cosa cosas manera forma sistema creo pienso quisiera gustaria busco buscamos necesitamos queremos tenemos ayuda'.split(' '),
+  [
+    'a al algo algun alguna como con cual cuando de del desde donde el ella en entre es esa ese eso esta este esto hacer hay la las le les lo los mas me mi mis muy necesito ni no nos o otra otro para pero poder por puede pueden que quien quiero se ser si sin sobre su sus tambien te tener tengo tiene tu tus un una uno unos unas y ya yo hola favor ustedes hacen tienen ofrecen servicio servicios negocio negocios empresa mio mia algo cosa cosas manera forma sistema creo pienso quisiera gustaria busco buscamos necesitamos queremos tenemos ayuda',
+    // lista común del español
+    'porque hasta durante todos todo toda todas contra otros otras ante ellos ellas esto mi antes algunos algunas unos tanto esos esas estos estas mucho muchos mucha muchas quienes nada poco pocos poca pocas cual cuales nosotros nosotras ti tuyo tuya tuyos tuyas suyo suya suyos suyas nuestro nuestra nuestros nuestras vuestro vuestra',
+    'estar estoy estas estamos estan este esten estaba estaban estuve estuvo estado estaria',
+    'haber he has ha hemos han haya hayan habia habian hubo habra habria',
+    'soy eres somos son sea sean era eran fui fue fueron sera seria sido siendo',
+    'tienes tenemos tenga tengan tenia tenian tuve tuvo tendre tendria tenido teniendo',
+    // al pedir o preguntar
+    'hago hacemos hacer haga hagan hice hizo puedo podemos podria podrian podrias pueda deberia saber sabe se pa pal q k ke x xq pq porq porfa porfavor gracias buenas buenos buen dia tardes noches saludos',
+    'cuanto cuanta cuantos cuantas cuesta cuestan sale salen vale valen dar da doy dan dicen dice decir va van voy vamos ir',
+    // relleno de frases largas
+    'cada vez veces rato siempre nunca nadie alguien aqui alla ahi asi bien mal ahora todavia aun luego solo sola mismo misma tan demasiado bastante super full ningun ninguna ninguno',
+  ]
+    .join(' ')
+    .split(' '),
 );
 
 export function normalizar(texto) {
@@ -25,8 +43,7 @@ export function fichas(texto) {
 // de la misma familia (pedir/pedidos, camara/camaras, contar/contador). «contabilidad» y «contar» comparten «conta»
 // pero «bilidad» no es una terminación: no coinciden. Devuelve 1 si son iguales, 0,8 si son de la misma familia, 0 si no.
 const TERMINACIONES = new Set(['', 's', 'es', 'a', 'o', 'as', 'os', 'r', 'ar', 'er', 'ir', 'ndo', 'ando', 'iendo', 'do', 'da', 'dos', 'das', 'ado', 'ada', 'ados', 'adas', 'ido', 'ida', 'idos', 'idas', 'or', 'ores', 'dor', 'dora', 'dores', 'doras', 'cion', 'ciones', 'mos', 'n', 'an', 'en', 'e', 'en', 'ra', 'ras', 'ria', 'rias', 'nte', 'ntes', 'miento', 'mientos']);
-export function parecido(a, b) {
-  if (a === b) return 1;
+function familia(a, b) {
   const corta = Math.min(a.length, b.length);
   if (corta < 4) return 0;
   let i = 0;
@@ -35,27 +52,53 @@ export function parecido(a, b) {
   return TERMINACIONES.has(a.slice(i)) && TERMINACIONES.has(b.slice(i)) ? 0.8 : 0;
 }
 
+// Cómo suena: junta las faltas más comunes al escribir en español (s/z/c, b/v, y/ll, h muda, g/j, qu/c/k, ñ sin
+// teclado y letras dobles), para que «cotisaciones» encuentre «cotizaciones» y «vascula» encuentre «báscula».
+export function fonetica(t) {
+  return t
+    .replace(/(?<!c)h/g, '')
+    .replace(/qu/g, 'k')
+    .replace(/c(?=[aou])/g, 'k')
+    .replace(/c(?=[ei])/g, 's')
+    .replace(/z/g, 's')
+    .replace(/g(?=[ei])/g, 'j')
+    .replace(/v/g, 'b')
+    .replace(/ll/g, 'y')
+    .replace(/ñ/g, 'n')
+    .replace(/(.)\1+/g, '$1');
+}
+
+// fa y fb son fonetica(a) y fonetica(b), ya calculadas cuando se compara contra todo el índice.
+export function parecido(a, b, fa, fb) {
+  if (a === b) return 1;
+  const f = familia(a, b);
+  if (f) return f;
+  if (a.length < 4 || b.length < 4) return 0;
+  fa ??= fonetica(a);
+  fb ??= fonetica(b);
+  if (fa === fb) return 0.9;
+  return familia(fa, fb) * 0.9;
+}
+
 const PESOS = { nombre: 6, corto: 6, palabras: 4, problemas: 3, tipos: 2.5, sectores: 2.5, para: 2, incluye: 1.2, ficha: 0.8 };
 
 // entrada: { id, tipo:'servicio'|'solucion'|'demo', titulo, url, campos:{ nombre, corto, palabras, para, incluye, tipos, sectores } }
 export function prepararIndice(entradas) {
   return entradas.map((e) => ({
     ...e,
-    _fichas: Object.fromEntries(Object.entries(e.campos).map(([campo, texto]) => [campo, [...new Set(fichas(texto))]])),
+    _fichas: Object.fromEntries(Object.entries(e.campos).map(([campo, texto]) => [campo, [...new Set(fichas(texto))].map((t) => [t, fonetica(t)])])),
   }));
 }
 
-function puntuar(entrada, consulta, prefijo = '') {
-  let total = 0;
-  let encontradas = 0;
-  let fuertes = 0;
-  for (const q of consulta) {
+// Para cada palabra de la consulta, la mejor coincidencia dentro de una entrada: [puntos, campo].
+function coincidencias(entrada, consulta, prefijo = '') {
+  return consulta.map(([q, fq]) => {
     let mejor = 0;
     let campoMejor = '';
     for (const [campo, lista] of Object.entries(entrada._fichas)) {
       const peso = PESOS[campo] ?? 1;
-      for (const t of lista) {
-        let p = parecido(q, t) * peso;
+      for (const [t, ft] of lista) {
+        let p = parecido(q, t, fq, ft) * peso;
         // la palabra que se está escribiendo cuenta como comienzo de otra («cam» → cámaras), con menos peso
         if (!p && q === prefijo && t.length > q.length && t.startsWith(q)) p = 0.7 * peso;
         if (p > mejor) {
@@ -64,29 +107,51 @@ function puntuar(entrada, consulta, prefijo = '') {
         }
       }
     }
-    if (mejor > 0) {
-      encontradas++;
-      total += mejor;
-      if (['nombre', 'corto', 'palabras', 'problemas'].includes(campoMejor)) fuertes++;
-    }
-  }
+    return [mejor, campoMejor];
+  });
+}
+
+// conocidas[i]: si la palabra i aparece en alguna entrada del índice. La cobertura se cuenta solo sobre esas: una
+// palabra que no está en ningún lado («salonera», un nombre propio) no ayuda a elegir y tampoco debe anular la frase.
+// Una palabra que no está en ningún lado cuenta la mitad: a veces es relleno («salonera») y a veces es justo lo que no
+// hacemos («chocolate» en «impresora 3d de chocolate»). Con 0 se respondía de más; con 1 se callaba de más (medido con
+// la mitad de desarrollo de pruebas/control/bateria.json, 3-oct-2026).
+const PESO_DESCONOCIDA = 0.5;
+function puntuar(m, conocidas) {
+  let total = 0;
+  let encontradas = 0;
+  let fuertes = 0;
+  const n = conocidas.reduce((a, c) => a + (c ? 1 : PESO_DESCONOCIDA), 0);
+  m.forEach(([mejor, campo], i) => {
+    if (!mejor || !conocidas[i]) return;
+    encontradas++;
+    total += mejor;
+    if (['nombre', 'corto', 'palabras', 'problemas'].includes(campo)) fuertes++;
+  });
   if (!encontradas) return 0;
-  const cobertura = encontradas / consulta.length;
+  // si parte de la frase no se reconoce, solo se responde cuando lo que sí coincide es central en la entrada (nombre,
+  // palabras de búsqueda o problemas), no una mención de pasada en la descripción: «imprimir camisetas» no es soporte
+  // técnico aunque su ficha diga «la impresora no imprime»
+  if (fuertes === 0 && conocidas.some((c) => !c)) return 0;
+  const cobertura = encontradas / n;
   // con varias palabras, premia que estén todas; una sola coincidencia débil en el texto largo no basta
-  if (consulta.length > 1 && cobertura < 0.5 && fuertes === 0) return 0;
-  // con tres palabras o más, si la mitad no aparece en ningún lado, el resultado es casualidad
-  if (consulta.length >= 3 && cobertura < 0.5) return 0;
+  if (n > 1 && cobertura < 0.5 && fuertes === 0) return 0;
+  // con tres palabras o más, si no aparece la mitad, el resultado es casualidad
+  if (conocidas.length >= 3 && cobertura < 0.5) return 0;
   return total * (0.5 + cobertura) + (cobertura === 1 ? 2 : 0);
 }
 
 // prefijo: true mientras la persona escribe; la última palabra (de 3 letras o más) vale también como comienzo de palabra.
 export function buscar(indice, texto, { limite = 8, prefijo = false } = {}) {
-  const consulta = [...new Set(fichas(texto))];
-  if (!consulta.length) return [];
-  const ultima = consulta[consulta.length - 1];
+  const palabras = [...new Set(fichas(texto))];
+  if (!palabras.length) return [];
+  const consulta = palabras.map((q) => [q, fonetica(q)]);
+  const ultima = palabras[palabras.length - 1];
   const pre = prefijo && /[a-zñ]$/.test(normalizar(texto)) && ultima.length >= 3 ? ultima : '';
-  return indice
-    .map((e) => ({ e, puntos: puntuar(e, consulta, pre) * (e.tipo === 'servicio' ? 1 : 0.9) }))
+  const filas = indice.map((e) => ({ e, m: coincidencias(e, consulta, pre) }));
+  const conocidas = consulta.map((_, i) => filas.some((f) => f.m[i][0] > 0));
+  return filas
+    .map(({ e, m }) => ({ e, puntos: puntuar(m, conocidas) * (e.tipo === 'servicio' ? 1 : 0.9) }))
     .filter((x) => x.puntos >= 3)
     .sort((a, b) => b.puntos - a.puntos || a.e.titulo.localeCompare(b.e.titulo))
     .slice(0, limite)

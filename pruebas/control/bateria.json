@@ -1,0 +1,910 @@
+{
+ "fecha": "2026-10-03",
+ "como_se_hizo": "Cinco agentes hicieron de dueños de negocios de Panamá (dos negocios cada uno) y escribieron 20 frases cada uno sin leer datos/busqueda.mjs, js/buscador.mjs, pruebas/ ni assets/indice.json; un verificador fijó la respuesta aceptable contra datos/catalogo.mjs y descartó 13 repetidas o que nombraban el servicio.",
+ "regla": "La mitad «control» no se usa para afinar: no se leen sus fallas una por una ni se agregan sus palabras a datos/busqueda.mjs. La mitad «desarrollo» sí se puede mirar, pero los arreglos tienen que ser generales (reglas del motor o sinónimos de uso común), nunca la frase.",
+ "resumen_del_verificador": "Quedan 87 de las 100 frases: 70 con respuesta y 17 «ninguno».\n\nDescarté 13:\n- 12 repetidas entre personas. Cinco eran de la farmacia, que copiaba plantillas de las otras, y dos de las repetidas además nombraban el servicio.\n- 1 que nombra el servicio tal cual («cobrar las mensualidades x yappy»).\nNinguna era imposible de interpretar.\n\nCorregí 10 de las 87 contra catalogo.mjs:\n- En 8 añadí un aceptable: R07 en dos frases de la fonda, H06 en la llegada sin nadie en recepción, B05 en ver el apartamento sin viajar, B04 en los interesados que se pierden, C04 en el sistema para la bodega, T11 en los lavadores y T02 en las medicinas que se vencen.\n- En «firmar consentimientos en tablet» quité S05: su «Consentimiento» es el de la Ley 81 y no recoge firmas.\n- En «clases de spinning» cambié V03, cuya ficha es de barberías, por T02.\nLas otras 77 quedan como venían.\n\nNegocios cubiertos (frases que quedan): fonda (9), ferretería (10), clínica dental (9), hostal (9), corredor de bienes raíces (9), bodega de distribución (10), colegio (7), taller y autolavado (9), farmacia (5) y gimnasio (10).\n\nPedidos con respuesta: WhatsApp saturado, pagos con Yappy, comandas, neveras, carta del día, clientes frecuentes, delivery, Google Maps y reseñas, cotizaciones, robo en caja y bodega, GPS de vehículos, inventario y reposición, portal de clientes, factura electrónica, Wi-Fi e internet de respaldo, citas que se pierden, expediente, firma a distancia, reservas por canal y directas, llegada sin recepción, luz y agua, fotos, 3D, dron y planos, seguimiento de prospectos, sitio propio, asistencia y acceso, lectura de facturas, motores, avisos a padres, morosidad, turnos y órdenes de taller, aforo y estacionamiento.\n\nLos 17 «ninguno» son:\n- Trámites: permiso de salud, aviso de operación, hipoteca.\n- Oficios que la agencia no hace: reparar aires, herramientas o una caminadora; contador; avalúo; transporte en lancha; planta eléctrica; curso de montacargas.\n- Compra o alquiler de cosas: andamios, escáner automotriz, jabón y cera, medicinas.\n\nHay dos pares con la misma palabra y distinta respuesta: «se fue la luz» (R10) frente a «planta electrica pa cuando se va la luz» (ninguno), y «jugar vivo» en caja (C05) frente a los choferes (I02).\n\nLo que la batería NO mide: 24 de los 79 servicios no son respuesta aceptable de ninguna frase (R02, R03, R04, R06, R08, R09, C02, C03, C07, C09, C10, S02, S04, I05, I06, I08, I10, T03, T08, T12, T18, T19, T22, V03). Varios aparecen solo como trampa.\n\nNo abrí el buscador, su índice ni sus pruebas, y no edité nada.\n\nAparte: en catalogo.mjs:823, el «incluye» de T10 dice «Revisión del local y de el depósitol». Es una errata y no la toqué.",
+ "descartadas": [
+  "«quien me arregla el aire acondicionado de la fonda» (fonda): repetida. Es el mismo pedido, con la misma trampa (H05/H06), que «mantenimiento de aires acondicionados». Quedan esa y la del colegio, que añade «técnico» y «salones».",
+  "«con lo de la dgi tengo q botar la impresora fiscal» (clínica dental): repetida con «me toca dejar la impresora fiscal y no sé qué hacer» (farmacia). Queda la de la farmacia porque no dice «DGI» y obliga a entender «impresora fiscal».",
+  "«que el wifi agarre en todos los cuartos» (hostal): repetida con «el wifi no agarra en los salones de arriba». Es la misma frase con la misma respuesta (T10). Queda la del colegio por la trampa de «salones».",
+  "«cuanto cobran x fotos del apto q se vean pro» (corredor): repetida con «cuanto cuestan unas fotos buenas del hostal». Además nombra el servicio: «fotos… pro» es «Fotos profesionales» (B02).",
+  "«cobrar las mensualidades x yappy» (colegio): nombra el servicio tal cual. «Cobro de mensualidades» es el nombre de E01 y «Cobros… Yappy» el de T09, así que acierta cualquier buscador que compare nombres.",
+  "«cuanto cuesta salir en google cuando buscan colegios en penonome» (colegio): repetida. Es la plantilla de la clínica («…cuando buscan dentista en bellavista») con la misma respuesta (T13, T01).",
+  "«necesito contador para la declaracion de renta del colegio» (colegio): repetida con «nesesito un contador pa los impuestos del gym», con la misma trampa (C01, I06). Queda la del gimnasio, que además trae una falta de ortografía.",
+  "«cuanto me sale la factura eletronica que pide la dgi» (taller): repetida con «cuanto cuesta lo de la factura de la dgi pa una ferreteria». Además nombra el servicio: «Factura electrónica» es el nombre corto de T07.",
+  "«se fue la luz y se me calentaron las insulinas» (farmacia): repetida con «se fue la luz de noche y se me daño el pollo», con la misma plantilla y la misma respuesta (R10, I01). Queda la de la fonda porque no trae ninguna palabra de temperatura.",
+  "«me escriben al wsp todo el dia preguntando si hay tal pastilla» (farmacia): repetida con «me escriben todo el dia preguntando a como esta el bloque», con la misma plantilla y la misma respuesta (T05, C11).",
+  "«siento q me juegan vivo con la plata de la caja» (farmacia): repetida con «creo que un empleado me está jugando vivo con la caja». Es el mismo pedido con la misma respuesta (C05, R11, T11).",
+  "«como saco el aviso de operacion de la farmacia» (farmacia): repetida con la del hostal; solo cambia el negocio.",
+  "«como salgo en google cuando buscan farmacia cerca?» (farmacia): repetida con la de la clínica. Además «cuando buscan… cerca» copia la descripción de T13."
+ ],
+ "frases": [
+  {
+   "frase": "a mediodia el whatsapp explota y se me enredan las ordenes",
+   "persona": "dueña de una fonda en David, Chiriquí",
+   "aceptables": [
+    "R13",
+    "C11",
+    "T05",
+    "R07"
+   ],
+   "ninguno": false,
+   "nota": "R13 toma el pedido de WhatsApp con la carta y manda la comanda a la cocina, C11 hace que el pedido llegue armado y T05 toma pedidos. Añadido R07: su página de pedidos saca las órdenes del chat y avisa al WhatsApp del local. R05 sola no sirve porque no recibe lo que entra por WhatsApp.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "me mandan captura del yapi y no se si pagaron de verdad",
+   "persona": "dueña de una fonda en David, Chiriquí",
+   "aceptables": [
+    "T09",
+    "T20"
+   ],
+   "ninguno": false,
+   "nota": "«Yapi» es Yappy. T09 cambia la captura por un enlace de pago con confirmación automática. T20 conecta Yappy con el sistema y avisa si algo no cuadra. C11 y R13 también cobran, pero no contestan a «¿pagó de verdad?».",
+   "mitad": "control"
+  },
+  {
+   "frase": "la cocinera no le entiende la letra a la salonera",
+   "persona": "dueña de una fonda en David, Chiriquí",
+   "aceptables": [
+    "R05",
+    "R11"
+   ],
+   "ninguno": false,
+   "nota": "En la cocina no entienden la orden escrita a mano. R05 la pone en una pantalla y R11 es la caja donde la salonera la marca. Trampas: «salonera» (R04 y R08 hablan del salón y V03 de salones) y R13, que dice «sin que nadie la copie a mano» pero solo vale para pedidos de WhatsApp. R02 no se acepta porque pasa el pedido al cliente.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "se fue la luz de noche y se me daño el pollo",
+   "persona": "dueña de una fonda en David, Chiriquí",
+   "aceptables": [
+    "R10",
+    "I01"
+   ],
+   "ninguno": false,
+   "nota": "El congelador se calentó y nadie se enteró. R10 avisa al WhatsApp cuando pasa del límite e I01 da el mismo aviso en un tablero. La planta eléctrica no la ofrece ningún servicio (su contraparte, «planta electrica pa cuando se va la luz», es ninguno). Trampa: «luz» en H05, H06 y B02. Me quedo con esta y no con la de las insulinas porque esta no trae ninguna palabra de temperatura.",
+   "mitad": "control"
+  },
+  {
+   "frase": "que la gente vea el almuerzo de hoy en su celular",
+   "persona": "dueña de una fonda en David, Chiriquí",
+   "aceptables": [
+    "R01",
+    "C11",
+    "R07"
+   ],
+   "ninguno": false,
+   "nota": "R01 es la carta en el teléfono del cliente y ella la cambia a diario. C11 la pone en un enlace. Añadido R07: su página de pedidos también muestra la carta en el celular. Trampa fuerte: R09 dice «plato del día» y «celular», pero sus pantallas están dentro del local.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "quiero regalar el decimo almuerzo a los q vienen diario",
+   "persona": "dueña de una fonda en David, Chiriquí",
+   "aceptables": [
+    "C08"
+   ],
+   "ninguno": false,
+   "nota": "Premio por número de visitas: C08. Trampa: «almuerzo» solo aparece en R09, en los cambios de pantalla por horario.",
+   "mitad": "control"
+  },
+  {
+   "frase": "¿cuánto sale un delivery propio sin pagarle buco a las apps?",
+   "persona": "dueña de una fonda en David, Chiriquí",
+   "aceptables": [
+    "R07",
+    "R12"
+   ],
+   "ninguno": false,
+   "nota": "«Buco» es mucho. A una fonda le alcanza R07, una página de pedidos sin comisión. R12 es la app propia con motorizados. Ojo: «delivery propio… apps» casi repite el nombre de R12, así que para R12 la frase mide poco. Sirve para ver que «apps» no lleve a T03 y que preguntar el precio no desvíe a los dos servicios que tienen precio publicado (R01 y B02).",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "como hago pa salir en el mapa cuando buscan donde almorzar",
+   "persona": "dueña de una fonda en David, Chiriquí",
+   "aceptables": [
+    "T13"
+   ],
+   "ninguno": false,
+   "nota": "«Salir en el mapa» es tener el perfil de Google Maps: T13. Trampas: los otros cinco servicios que dicen «mapa» (C02, R04, I02, B06 e I10). T01 no se acepta: aparecer en Google no es aparecer en el mapa.",
+   "mitad": "control"
+  },
+  {
+   "frase": "cómo saco el permiso de salud pa vender comida",
+   "persona": "dueña de una fonda en David, Chiriquí",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "Es un trámite de gobierno y ningún servicio hace trámites. Trampa: «salud» es el sector de las clínicas (S01 a S05).",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "me tardo horas haciendo cotisaciones pa los contratistas",
+   "persona": "administrador de una ferretería en La Chorrera",
+   "aceptables": [
+    "T06",
+    "T04"
+   ],
+   "ninguno": false,
+   "nota": "«Cotisaciones» con s mide si el buscador aguanta la falta. T06 arma cotizaciones con precios y existencias y las manda en PDF. T04 automatiza las cotizaciones que hoy se copian a mano. Trampa: T22 trae la palabra «cotizar».",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "creo que un empleado me está jugando vivo con la caja",
+   "persona": "administrador de una ferretería en La Chorrera",
+   "aceptables": [
+    "C05",
+    "R11",
+    "T11"
+   ],
+   "ninguno": false,
+   "nota": "«Jugar vivo» es hacer trampa. C05 marca el cajón abierto sin venta, R11 cuadra la caja por cajero y por turno y T11 graba la caja. Trampas: C03 («Aviso de filas en caja») e I04 («empleados»). Me quedo con esta y no con la casi igual de la farmacia.",
+   "mitad": "control"
+  },
+  {
+   "frase": "el chofer se pierde horas cuando lleva material a la obra",
+   "persona": "administrador de una ferretería en La Chorrera",
+   "aceptables": [
+    "I02"
+   ],
+   "ninguno": false,
+   "nota": "Saber dónde estuvo el camión y cuánto tiempo estuvo detenido: I02. Trampa: «obra» solo aparece en I10, el dron para obras.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "me escriben todo el dia preguntando a como esta el bloque",
+   "persona": "administrador de una ferretería en La Chorrera",
+   "aceptables": [
+    "T05",
+    "C11"
+   ],
+   "ninguno": false,
+   "nota": "«A cómo está» es preguntar el precio, y la frase no dice WhatsApp. T05 contesta precios y disponibilidad. C11 da un enlace con precios y existencias. C06 también muestra precios, pero una tienda en línea es más de lo que pide. Me quedo con esta y no con la de la farmacia («si hay tal pastilla»), que repetía la plantilla.",
+   "mitad": "control"
+  },
+  {
+   "frase": "quiero saber cuando pedir mas cemento antes de q se acabe",
+   "persona": "administrador de una ferretería en La Chorrera",
+   "aceptables": [
+    "T14",
+    "R11"
+   ],
+   "ninguno": false,
+   "nota": "T14 tiene mínimos y aviso de reposición. R11 descuenta el inventario con cada venta. Aquí «pedir» no es un pedido de restaurante: R07, R13 y C11 son trampas.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "quiero que los maestros de obra vean su estado de cuenta",
+   "persona": "administrador de una ferretería en La Chorrera",
+   "aceptables": [
+    "T16"
+   ],
+   "ninguno": false,
+   "nota": "El cliente a crédito ve sus facturas y su saldo en el portal: T16. Trampas: E01 (colegios) trae «estado de cuenta» palabra por palabra, e I10 trae «obra».",
+   "mitad": "control"
+  },
+  {
+   "frase": "cuanto cuesta lo de la factura de la dgi pa una ferreteria",
+   "persona": "administrador de una ferretería en La Chorrera",
+   "aceptables": [
+    "T07",
+    "R11"
+   ],
+   "ninguno": false,
+   "nota": "«Lo de la factura de la DGI» es la factura electrónica. T07 la conecta con el PAC y R11 ya la trae. Trampas: T21 («Lectura de facturas») y T16 («facturas»). Ninguno de los dos aceptables tiene precio publicado.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "si se va el internet, ¿se puede seguir facturando?",
+   "persona": "administrador de una ferretería en La Chorrera",
+   "aceptables": [
+    "T10"
+   ],
+   "ninguno": false,
+   "nota": "Internet de respaldo para la caja: T10. Trampas: «facturando» lleva a T07 y R11, T03 dice que funciona «sin señal» y el respaldo de T18 es de datos, no de internet.",
+   "mitad": "control"
+  },
+  {
+   "frase": "donde alquilan andamios en la chorrera",
+   "persona": "administrador de una ferretería en La Chorrera",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "Es alquiler de equipo de construcción. Trampa: I10 solo nombra los andamios para decir que con el dron no hacen falta.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "arreglan taladros y pulidoras?",
+   "persona": "administrador de una ferretería en La Chorrera",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "Es reparación de herramientas eléctricas. Trampa: T19 (soporte de computadoras e impresoras) y su «lo que haga falta reparar o reemplazar».",
+   "mitad": "control"
+  },
+  {
+   "frase": "pacientes q no llegan a la cita y ni avisan",
+   "persona": "administradora de clínica dental en Bella Vista",
+   "aceptables": [
+    "S01"
+   ],
+   "ninguno": false,
+   "nota": "S01 manda el recordatorio por WhatsApp y vuelve a escribir hasta que el paciente confirme o cancele. Trampas: V03, R08 y S04 también mandan recordatorios, pero son de barberías, de mesas y de videoconsultas.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "la recepcionista no da abasto con tanto whatsap",
+   "persona": "administradora de clínica dental en Bella Vista",
+   "aceptables": [
+    "T05",
+    "S01"
+   ],
+   "ninguno": false,
+   "nota": "«Whatsap» mide si el buscador aguanta la falta. T05 contesta horario y precios y agenda a cualquier hora. S01 le quita las confirmaciones a recepción y deja que el paciente pida cita solo.",
+   "mitad": "control"
+  },
+  {
+   "frase": "un paciente bravo nos puso una estrella en google",
+   "persona": "administradora de clínica dental en Bella Vista",
+   "aceptables": [
+    "T13",
+    "S03"
+   ],
+   "ninguno": false,
+   "nota": "«Bravo» es enojado. T13 sirve para responder la reseña y pedir reseñas a los pacientes contentos. S03 avisa del paciente molesto antes de que escriba en Google.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "tener las historias clinicas y radiografias en la compu",
+   "persona": "administradora de clínica dental en Bella Vista",
+   "aceptables": [
+    "S05"
+   ],
+   "ninguno": false,
+   "nota": "S05 guarda la historia, las fotos de control y los documentos de cada paciente en un solo lugar. «Compu» no pide soporte técnico (T19).",
+   "mitad": "control"
+  },
+  {
+   "frase": "firmar consentimientos en tablet",
+   "persona": "administradora de clínica dental en Bella Vista",
+   "aceptables": [
+    "T17"
+   ],
+   "ninguno": false,
+   "nota": "Corregido: quité S05. T17 permite firmar desde un aparato y deja registro de quién firmó y cuándo. El «Consentimiento según la Ley 81 de 2019» de S05 (como el de C09) es el permiso para usar datos personales, no el consentimiento informado, y S05 no recoge firmas. Es una trampa de palabra, como H04 («Firma de normas de la casa»).",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "se puede cobrar la cuota de los frenillos x yappy",
+   "persona": "administradora de clínica dental en Bella Vista",
+   "aceptables": [
+    "T09"
+   ],
+   "ninguno": false,
+   "nota": "Enlace de pago con Yappy por WhatsApp: T09. Trampas: E01 cobra mensualidades, pero su ficha habla de matrícula y de padres, y S04 solo cobra videoconsultas.",
+   "mitad": "control"
+  },
+  {
+   "frase": "cuanto cuesta salir en google cuando buscan dentista en bellavista",
+   "persona": "administradora de clínica dental en Bella Vista",
+   "aceptables": [
+    "T13",
+    "T01"
+   ],
+   "ninguno": false,
+   "nota": "Aparecer cuando buscan cerca es T13. T01 incluye aparecer en Google con el nombre y la zona. Trampa: «dentista» empuja hacia los servicios de clínicas (S01 a S05). Me quedo con esta y no con las del colegio y la farmacia, que repetían la plantilla.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "quien me puede llevar la contabilidad de la clinica",
+   "persona": "administradora de clínica dental en Bella Vista",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "Busca a alguien que le lleve la contabilidad, y ningún servicio lo hace. Trampa: T20 nombra «tu contabilidad», pero solo conecta sistemas.",
+   "mitad": "control"
+  },
+  {
+   "frase": "mantenimiento de aires acondicionados",
+   "persona": "administradora de clínica dental en Bella Vista",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "Es trabajo de un técnico de refrigeración. Trampas: H05 mide el aire acondicionado y H06 lo prende y lo apaga. Queda junto a la del colegio. La de la fonda («quien me arregla el aire acondicionado») la descarté por repetida.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "se me cruzan las reservas de booking y hostelworld",
+   "persona": "dueño de hostal de 8 habitaciones en Bocas del Toro",
+   "aceptables": [
+    "H02"
+   ],
+   "ninguno": false,
+   "nota": "Reservas que chocan entre canales: H02, con su lista de choques y su vigilante. Hostelworld no está en el catálogo. Trampa: H01 («Motor de reservas»).",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "que la gente reserve directo sin pasar por booking",
+   "persona": "dueño de hostal de 8 habitaciones en Bocas del Toro",
+   "aceptables": [
+    "H01"
+   ],
+   "ninguno": false,
+   "nota": "Reserva directa en su propia página, sin comisión: H01. Trampa: H02 lleva «Booking» en el nombre.",
+   "mitad": "control"
+  },
+  {
+   "frase": "llegan en la ultima lancha y no hay nadie en recepcion",
+   "persona": "dueño de hostal de 8 habitaciones en Bocas del Toro",
+   "aceptables": [
+    "H03",
+    "H04",
+    "H06"
+   ],
+   "ninguno": false,
+   "nota": "El huésped llega cuando no hay nadie en recepción. H03 le manda el código de la puerta y H04 deja el registro hecho antes de que llegue. Añadido H06: abre la puerta y prende las luces a distancia con sus «escenas por reserva». Trampa: S01 y V02 también dicen «recepción».",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "la luz me sale un buco, dejan el aire prendido",
+   "persona": "dueño de hostal de 8 habitaciones en Bocas del Toro",
+   "aceptables": [
+    "H06",
+    "H05"
+   ],
+   "ninguno": false,
+   "nota": "La frase dice la causa. H06 apaga el aire del cuarto vacío y H05 detecta «el aire acondicionado prendido sin nadie». I09 e I01 miden el consumo pero no actúan sobre el aire. Sí valen en «como bajo la cuenta de luz del gym», que no dice la causa.",
+   "mitad": "control"
+  },
+  {
+   "frase": "como saber cuanta agua queda en el tanque sin subir",
+   "persona": "dueño de hostal de 8 habitaciones en Bocas del Toro",
+   "aceptables": [
+    "H05",
+    "I01"
+   ],
+   "ninguno": false,
+   "nota": "Sensor de nivel del tanque: H05, o el tablero de I01. I08 solo conecta un medidor de tanque que ya exista, así que no es la primera respuesta.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "me escriben en ingles de madrugada preguntando si ay cupo",
+   "persona": "dueño de hostal de 8 habitaciones en Bocas del Toro",
+   "aceptables": [
+    "T05",
+    "H01"
+   ],
+   "ninguno": false,
+   "nota": "«Ay» es «hay», y «cupo» es si queda cama libre. T05 contesta a cualquier hora. H01 deja ver las fechas libres y reservar. Trampa: «inglés» solo aparece en R01.",
+   "mitad": "control"
+  },
+  {
+   "frase": "cuanto cuestan unas fotos buenas del hostal",
+   "persona": "dueño de hostal de 8 habitaciones en Bocas del Toro",
+   "aceptables": [
+    "B02",
+    "B01"
+   ],
+   "ninguno": false,
+   "nota": "De los dos, solo B02 tiene precio publicado (+$300), y se vende como extra del recorrido de B01. Por eso B01 también vale. Me quedo con esta y no con la del corredor («fotos… pro»), que además nombraba el servicio.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "como saco el aviso de operacion del hostal",
+   "persona": "dueño de hostal de 8 habitaciones en Bocas del Toro",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "El aviso de operación es el permiso para operar el negocio, y ningún servicio lo tramita. Trampas: «aviso» aparece en 22 de los 79 servicios y «operacion» es el id de un sector.",
+   "mitad": "control"
+  },
+  {
+   "frase": "lancha que me busque a los huespedes en almirante",
+   "persona": "dueño de hostal de 8 habitaciones en Bocas del Toro",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "Pide transporte en lancha. «Huéspedes» empuja hacia hospedaje (H01, H03, H04 y H06), pero ningún servicio transporta gente.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "clientes de afuera quieren ver el apto sin viajar",
+   "persona": "Corredor de bienes raíces que vende apartamentos en Costa del Este",
+   "aceptables": [
+    "B01",
+    "B05"
+   ],
+   "ninguno": false,
+   "nota": "El recorrido 360 o 3D desde el teléfono es B01. Añadido B05: el sitio de propiedades lleva el recorrido 3D en cada ficha. Trampa: C10 (productos en 3D), que también está etiquetado para bienes raíces.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "pierdo el dia contestando curiosos que no compran",
+   "persona": "Corredor de bienes raíces que vende apartamentos en Costa del Este",
+   "aceptables": [
+    "B04",
+    "T05"
+   ],
+   "ninguno": false,
+   "nota": "B04 contesta y filtra al interesado serio antes de agendar la visita. T05 es el asistente general. Trampa: «compran» (T14 y C01).",
+   "mitad": "control"
+  },
+  {
+   "frase": "avaluo de apartamento",
+   "persona": "Corredor de bienes raíces que vende apartamentos en Costa del Este",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "Un avalúo es la tasación del valor de la propiedad, y ningún servicio tasa. Trampas: B03 y B01 dan metros, no precio.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "mi propia pagina con mis apartamentos sin depender de portales",
+   "persona": "Corredor de bienes raíces que vende apartamentos en Costa del Este",
+   "aceptables": [
+    "B05",
+    "T01"
+   ],
+   "ninguno": false,
+   "nota": "B05 es su propio sitio, con fichas y filtros. T01 es la página web general. Trampas: R07 y H01 también dicen «propia página», y «portales» lleva a T16 («Portal para tus clientes»).",
+   "mitad": "control"
+  },
+  {
+   "frase": "video desde el aire de la torre en costa del este",
+   "persona": "Corredor de bienes raíces que vende apartamentos en Costa del Este",
+   "aceptables": [
+    "B06"
+   ],
+   "ninguno": false,
+   "nota": "Video aéreo: B06, aunque la frase no diga «dron». Trampas: «aire» en H05 y H06, e I10, que usa el dron para inspeccionar, no para vender.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "se me pierden los interesados en el chat",
+   "persona": "Corredor de bienes raíces que vende apartamentos en Costa del Este",
+   "aceptables": [
+    "T15",
+    "B04"
+   ],
+   "ninguno": false,
+   "nota": "«Se me pierden» se lee de dos maneras. Si pierde el rastro de cada prospecto, es T15 (seguimiento por etapa). Si se le van porque nadie les contesta, es B04 (contesta, filtra y agenda). Añadido B04.",
+   "mitad": "control"
+  },
+  {
+   "frase": "se puede medir cuantos metros tiene cada recamara",
+   "persona": "Corredor de bienes raíces que vende apartamentos en Costa del Este",
+   "aceptables": [
+    "B03",
+    "B01"
+   ],
+   "ninguno": false,
+   "nota": "B03 da los m² de cada ambiente y la versión 3D de B01 trae las medidas. Trampa: «recámaras» es uno de los filtros de B05.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "quien me tramita la hipoteca de un cliente extranjero",
+   "persona": "Corredor de bienes raíces que vende apartamentos en Costa del Este",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "Es gestión bancaria y ningún servicio la hace.",
+   "mitad": "control"
+  },
+  {
+   "frase": "firmar promesa de compra venta a distancia",
+   "persona": "Corredor de bienes raíces que vende apartamentos en Costa del Este",
+   "aceptables": [
+    "T17"
+   ],
+   "ninguno": false,
+   "nota": "Firma desde el teléfono con registro de quién firmó y cuándo: T17. Trampas: «compra» (T14) y «venta» (R11, T08 y T15).",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "el sistema dice que hay y en bodega no hay",
+   "persona": "Gerente de una bodega de distribución en Juan Díaz",
+   "aceptables": [
+    "C04",
+    "T14"
+   ],
+   "ninguno": false,
+   "nota": "C04 cuenta por escaneo y saca las diferencias contra el sistema. T14 lleva las entradas y salidas al día. Trampa: «bodega» también aparece en C05.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "los choferes juegan vivo y se paran horas en la ruta",
+   "persona": "Gerente de una bodega de distribución en Juan Díaz",
+   "aceptables": [
+    "I02"
+   ],
+   "ninguno": false,
+   "nota": "Cuánto tiempo estuvo detenido cada camión: I02. Es la contraparte de las frases de caja: aquí el mismo «jugar vivo» no pide cámaras (C05, T11). La dejo junto a la del chofer de la ferretería porque la trampa es otra.",
+   "mitad": "control"
+  },
+  {
+   "frase": "cuanto cuesta un sistema para la bodega",
+   "persona": "Gerente de una bodega de distribución en Juan Díaz",
+   "aceptables": [
+    "T14",
+    "T02",
+    "C04"
+   ],
+   "ninguno": false,
+   "nota": "El pedido es vago: vale el inventario y compras por bodega (T14), un sistema a medida (T02) o el inventario por escaneo (C04, añadido). Ninguno tiene precio publicado. Trampa: C05 («caja y bodega»).",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "que los trabajadores marquen entrada con su carnet",
+   "persona": "Gerente de una bodega de distribución en Juan Díaz",
+   "aceptables": [
+    "E02",
+    "I04"
+   ],
+   "ninguno": false,
+   "nota": "El carnet es la tarjeta. Sirve la asistencia de E02 o el control de acceso de I04, que lleva registro de asistencia.",
+   "mitad": "control"
+  },
+  {
+   "frase": "planta electrica pa cuando se va la luz",
+   "persona": "Gerente de una bodega de distribución en Juan Díaz",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "Un generador lo instala un electricista. T10 da respaldo de internet, no de electricidad, e I09 solo mide el consumo.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "me estan robando mercancia y no se quien",
+   "persona": "Gerente de una bodega de distribución en Juan Díaz",
+   "aceptables": [
+    "C05",
+    "T11"
+   ],
+   "ninguno": false,
+   "nota": "C05 marca la mercancía que sale por la puerta de atrás. T11 graba y deja buscar por hora. C04 encuentra los faltantes, pero no dice quién se los llevó.",
+   "mitad": "control"
+  },
+  {
+   "frase": "copiamos las facturas de proveedores una por una en excel",
+   "persona": "Gerente de una bodega de distribución en Juan Díaz",
+   "aceptables": [
+    "T21",
+    "T04"
+   ],
+   "ninguno": false,
+   "nota": "T21 lee las facturas y las pasa a Excel. T04 quita el copiar y pegar. Trampas: T07 (la factura electrónica sirve para emitir) y «proveedores» (T14).",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "quiero wifi en toda la galera pa los escaners",
+   "persona": "Gerente de una bodega de distribución en Juan Díaz",
+   "aceptables": [
+    "T10"
+   ],
+   "ninguno": false,
+   "nota": "Que el Wi-Fi llegue a toda la galera: T10. Trampas: C09 (Wi-Fi que registra clientes) y C04 («escaneo»). En catalogo.mjs:823, el «incluye» de T10 trae una errata: dice «de el depósitol».",
+   "mitad": "control"
+  },
+  {
+   "frase": "curso de montacargas pa los muchachos",
+   "persona": "Gerente de una bodega de distribución en Juan Díaz",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "Es capacitación en equipo pesado. Trampa: T22, que capacita en IA.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "como saber si el compresor va a fallar",
+   "persona": "Gerente de una bodega de distribución en Juan Díaz",
+   "aceptables": [
+    "I07"
+   ],
+   "ninguno": false,
+   "nota": "Sensores de vibración y temperatura: I07. Es fácil, porque «compresor» está en su descripción.",
+   "mitad": "control"
+  },
+  {
+   "frase": "los papas dicen que nunca les llego el comunicado",
+   "persona": "directora de un colegio privado pequeño en Penonomé",
+   "aceptables": [
+    "E03"
+   ],
+   "ninguno": false,
+   "nota": "E03 manda las circulares al WhatsApp de cada familia con confirmación de lectura. Mide vocabulario: «papas» sin tilde (los padres) y «comunicado» en vez de «circular».",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "como se cuales acudientes estan paz y salvo?",
+   "persona": "directora de un colegio privado pequeño en Penonomé",
+   "aceptables": [
+    "E01"
+   ],
+   "ninguno": false,
+   "nota": "El acudiente es el responsable del estudiante, y estar «paz y salvo» es estar al día. E01 da el estado de cuenta y el reporte de morosidad.",
+   "mitad": "control"
+  },
+  {
+   "frase": "los pelaos faltan y las mamas ni se enteran",
+   "persona": "directora de un colegio privado pequeño en Penonomé",
+   "aceptables": [
+    "E02",
+    "E03"
+   ],
+   "ninguno": false,
+   "nota": "«Pelaos» son los niños. E02 registra la entrada y avisa a los padres si alguno no llegó. E03 lleva ese aviso al WhatsApp.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "permisos de gira firmados por el cel sin papel",
+   "persona": "directora de un colegio privado pequeño en Penonomé",
+   "aceptables": [
+    "T17"
+   ],
+   "ninguno": false,
+   "nota": "Formulario firmado desde el teléfono, con registro: T17. Trampas: «permisos» aparece en I04, S05, T02 y C08, y E03 manda el aviso pero no recoge firmas.",
+   "mitad": "control"
+  },
+  {
+   "frase": "el wifi no agarra en los salones de arriba",
+   "persona": "directora de un colegio privado pequeño en Penonomé",
+   "aceptables": [
+    "T10"
+   ],
+   "ninguno": false,
+   "nota": "Que el Wi-Fi llegue a todo el edificio: T10. Trampas: C09 (Wi-Fi para clientes) y «salones» (V03, barberías y salones). Me quedo con esta y no con la del hostal («que el wifi agarre en todos los cuartos»), que repetía la frase.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "que los acudientes vean los boletines en el celular",
+   "persona": "directora de un colegio privado pequeño en Penonomé",
+   "aceptables": [
+    "E03",
+    "T16",
+    "T02"
+   ],
+   "ninguno": false,
+   "nota": "No hay un servicio de notas escolares. E03 manda las «notas» a cada estudiante, T16 es el portal donde cada familia ve sus documentos y con T02 se haría el sistema de notas.",
+   "mitad": "control"
+  },
+  {
+   "frase": "tecnico pa arreglar los aires de los salones",
+   "persona": "directora de un colegio privado pequeño en Penonomé",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "Es reparación de aires acondicionados. Trampas: «técnico» (T19), «aires» (H05, H06) y «salones» (V03).",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "me llaman a cada rato preguntando si ya esta el carro",
+   "persona": "dueño de un taller mecánico y autolavado en Santiago",
+   "aceptables": [
+    "V01",
+    "V02"
+   ],
+   "ninguno": false,
+   "nota": "V01 avisa por WhatsApp cuando el carro está listo. V02 lleva el estado de cada trabajo y avisa de la entrega.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "la gente se va del carwash cuando ve la fila",
+   "persona": "dueño de un taller mecánico y autolavado en Santiago",
+   "aceptables": [
+    "V01"
+   ],
+   "ninguno": false,
+   "nota": "Turno desde el teléfono y fila en vivo: V01. Trampas: C03 («Aviso de filas en caja»), que sirve para abrir otra caja en una tienda, y R06, el kiosco para locales con filas.",
+   "mitad": "control"
+  },
+  {
+   "frase": "los lavadores se juegan vivo y no me cuadra la plata",
+   "persona": "dueño de un taller mecánico y autolavado en Santiago",
+   "aceptables": [
+    "C05",
+    "I03",
+    "R11",
+    "T11"
+   ],
+   "ninguno": false,
+   "nota": "El pedido es abierto y no dice «caja». C05 marca el cajón abierto sin venta, I03 registra cada carro que entra para cuadrar lavadas contra plata, R11 cierra la caja por cajero y T11 graba. T11 lo añadí para que cuadre con la frase de la ferretería.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "clientes reclaman rallones que ya traia el carro",
+   "persona": "dueño de un taller mecánico y autolavado en Santiago",
+   "aceptables": [
+    "V02"
+   ],
+   "ninguno": false,
+   "nota": "«Rallones» son rayones. V02 toma fotos del vehículo cuando lo reciben.",
+   "mitad": "control"
+  },
+  {
+   "frase": "que la decima lavada le salga gratis al cliente",
+   "persona": "dueño de un taller mecánico y autolavado en Santiago",
+   "aceptables": [
+    "C08"
+   ],
+   "ninguno": false,
+   "nota": "Repite la idea de la fonda, pero se queda: C08 está etiquetado para comercio y restaurantes, no para talleres, así que mide si el buscador cruza de sector. Trampa: «gratis» solo aparece en S01.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "se puede ver en el cel donde anda la grua?",
+   "persona": "dueño de un taller mecánico y autolavado en Santiago",
+   "aceptables": [
+    "I02"
+   ],
+   "ninguno": false,
+   "nota": "Rastreador con mapa en vivo: I02, aunque el catálogo hable de camiones y motos y no lo etiquete para talleres.",
+   "mitad": "control"
+  },
+  {
+   "frase": "robot que conteste el whatsapp del taller",
+   "persona": "dueño de un taller mecánico y autolavado en Santiago",
+   "aceptables": [
+    "T05"
+   ],
+   "ninguno": false,
+   "nota": "Asistente de WhatsApp para cualquier negocio: T05. Trampas: B04 (solo bienes raíces), R13 (pedidos de restaurante), V01 y V02 (son del sector pero no contestan preguntas) y T22, cuyo «Taller» es un curso.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "donde compro un escaner pa diagnosticar carros",
+   "persona": "dueño de un taller mecánico y autolavado en Santiago",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "Es venta de herramientas de diagnóstico. Trampa: «escáner» lleva a C04, B01 y B03.",
+   "mitad": "control"
+  },
+  {
+   "frase": "jabon y cera al por mayor pal autolavado",
+   "persona": "dueño de un taller mecánico y autolavado en Santiago",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "Es venta de insumos. T14 gestiona las compras, no vende nada, y «autolavado» empuja hacia V01.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "Se me vencen las medicinas y no me doy cuenta",
+   "persona": "Dueña de una farmacia de barrio en San Miguelito",
+   "aceptables": [
+    "T14",
+    "R11",
+    "T02"
+   ],
+   "ninguno": false,
+   "nota": "El catálogo no nombra los vencimientos. Se llevarían en el inventario con avisos (T14), en el de la caja (R11) o en un sistema a medida (T02, añadido). Trampas: «vencen» en I04 («pases de visita que vencen solos») y «cuenta» en R02, R04 y E01.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "busco proveedor de medicinas mas barato",
+   "persona": "Dueña de una farmacia de barrio en San Miguelito",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "La agencia no vende medicinas. Trampa: «proveedor» aparece en seis servicios (T14, T07, R11, I04, R01 y T17).",
+   "mitad": "control"
+  },
+  {
+   "frase": "hacer delivery de la farmacia y cobrar con yappy",
+   "persona": "Dueña de una farmacia de barrio en San Miguelito",
+   "aceptables": [
+    "C11",
+    "T09",
+    "C06"
+   ],
+   "ninguno": false,
+   "nota": "Vale C11 (pedidos por WhatsApp con enlace de pago), T09 (cobro con Yappy) o C06 (tienda en línea con envíos). Trampa: «delivery» solo aparece en R12, que es de restaurantes, igual que R07.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "quiero dar puntos a mis clientes como las farmacias grandes",
+   "persona": "Dueña de una farmacia de barrio en San Miguelito",
+   "aceptables": [
+    "C08"
+   ],
+   "ninguno": false,
+   "nota": "Puntos para clientes frecuentes: C08. Trampa: «punto» aparece en punto de venta (R11) y en puntos de acceso (T10, C09).",
+   "mitad": "control"
+  },
+  {
+   "frase": "me toca dejar la impresora fiscal y no sé qué hacer",
+   "persona": "Dueña de una farmacia de barrio en San Miguelito",
+   "aceptables": [
+    "T07",
+    "R11"
+   ],
+   "ninguno": false,
+   "nota": "Dejar la impresora fiscal es pasar a la factura electrónica: T07, o una caja que ya la emite (R11). La frase no dice «DGI» ni «factura», y «fiscal» no aparece en el catálogo. Trampas: «impresora» en T19 (soporte técnico) y en R13 (comandas). Me quedo con esta y no con la de la clínica («con lo de la dgi…»), que era más fácil.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "se me cuela buco de gente al gym sin pagar",
+   "persona": "Dueño de un gimnasio en Albrook",
+   "aceptables": [
+    "I04"
+   ],
+   "ninguno": false,
+   "nota": "Que no entre quien no pagó es control de acceso, con permisos que se quitan desde el teléfono: I04. E02 marca la asistencia pero no cierra la puerta, y E01 y T09 cobran pero no impiden la entrada.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "quiero que me paguen el mes por yappy automático",
+   "persona": "Dueño de un gimnasio en Albrook",
+   "aceptables": [
+    "E01",
+    "T09"
+   ],
+   "ninguno": false,
+   "nota": "«El mes» es la mensualidad. E01 cobra mensualidades con recordatorio y reporte de morosos; está escrito para colegios, pero los gimnasios también cobran matrícula y mensualidad. T09 cobra con un enlace de Yappy. Ninguno de los dos dice débito automático.",
+   "mitad": "control"
+  },
+  {
+   "frase": "nesesito un contador pa los impuestos del gym",
+   "persona": "Dueño de un gimnasio en Albrook",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "Busca un contador. Trampas: C01 («Contador de personas»), I06 («Contador de producción») e «impuestos», que acerca a T07 aunque esa palabra no aparece en el catálogo. Me quedo con esta y no con la del colegio, que repetía la plantilla.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "que los socios sepan si el gym esta lleno antes de venir",
+   "persona": "Dueño de un gimnasio en Albrook",
+   "aceptables": [
+    "C01"
+   ],
+   "ninguno": false,
+   "nota": "Aforo en vivo a partir del conteo de entradas y salidas: C01, aunque su sector sea comercio.",
+   "mitad": "control"
+  },
+  {
+   "frase": "reservar cupo pa las clases de spinning",
+   "persona": "Dueño de un gimnasio en Albrook",
+   "aceptables": [
+    "S01",
+    "T02"
+   ],
+   "ninguno": false,
+   "nota": "Corregido: no hay un servicio de clases con cupo. S01 es la agenda para cualquier negocio y con T02 se haría a medida. Quité V03 porque su ficha es de barberías y salones. R08 tiene «capacidad por turno» y «lista de espera», pero su ficha es de mesas: es trampa.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "los entrenadores llegan tarde y no tengo como probarlo",
+   "persona": "Dueño de un gimnasio en Albrook",
+   "aceptables": [
+    "E02",
+    "I04"
+   ],
+   "ninguno": false,
+   "nota": "Marcar la entrada con la hora: E02, o el registro de asistencia de I04. T11 podría mostrarlo en video, pero «probarlo» pide un registro.",
+   "mitad": "control"
+  },
+  {
+   "frase": "la gente del mall se parquea en el estacionamiento del gym",
+   "persona": "Dueño de un gimnasio en Albrook",
+   "aceptables": [
+    "I03"
+   ],
+   "ninguno": false,
+   "nota": "Lectura de placas que abre solo a los autorizados: I03. «Estacionamiento» está en su nombre, pero la frase no dice «placas».",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "quien me arregla una caminadora dañada",
+   "persona": "Dueño de un gimnasio en Albrook",
+   "aceptables": [],
+   "ninguno": true,
+   "nota": "Reparar una caminadora le toca a un técnico de equipos de gimnasio. Trampas: T19 (soporte técnico) e I07 (sensores en motores, que avisan pero no reparan).",
+   "mitad": "control"
+  },
+  {
+   "frase": "como bajo la cuenta de luz del gym",
+   "persona": "Dueño de un gimnasio en Albrook",
+   "aceptables": [
+    "I09",
+    "I01"
+   ],
+   "ninguno": false,
+   "nota": "Medir el consumo por área (I09) o un tablero con el consumo eléctrico y avisos (I01). Trampas: «cuenta» (R02, R04), «luz» (H05, B02) y H06, que apaga el aire pero es para alquileres.",
+   "mitad": "desarrollo"
+  },
+  {
+   "frase": "cuanto cuesta una pagina pal gym?",
+   "persona": "Dueño de un gimnasio en Albrook",
+   "aceptables": [
+    "T01"
+   ],
+   "ninguno": false,
+   "nota": "Pregunta el precio de una página web: T01. «Página» está en su nombre, pero también aparece en otros diez servicios (R07, H01, H02, B05, S01, C09, T09, R08, C10 y B01), así que el buscador tiene que elegir.",
+   "mitad": "control"
+  }
+ ]
+}
