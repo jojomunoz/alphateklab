@@ -25,6 +25,19 @@ Reglas del proyecto: `~/alphateklab/BRIEF.md`. Guía de diseño: `~/Documents/No
 - **Contenido:** precios solo los decididos por los socios (menú QR $10/mes; fotos del recorrido 3D +$300); el resto
   «A cotizar». Nada de testimonios, logos de clientes ni cifras sin fuente. Las demos usan negocios ficticios rotulados.
 
+## Cómo se trabaja (3-oct-2026)
+
+- Generar: `node herramientas/generar.mjs` (las seis demos ya pasaron su verificación; el modo `PUBLICAR_PARCIAL` queda para
+  una demo nueva que todavía no esté lista).
+- Capturas: `node herramientas/capturas.mjs http://localhost:4900 <demo>` (cartel de cada demo) y
+  `node herramientas/producto.mjs http://localhost:4900` (las pantallas reales que van en los héroes de la portada y de
+  las páginas de negocio). Las imágenes del sitio son del producto, no escenas generadas.
+- Cerrojos, contra local y contra el sitio en vivo después de cada push:
+  `PERMITIR_PENDIENTES=1 node --test pruebas/*.test.mjs`, `node pruebas/navegador/sitio.mjs <url>` y
+  `node pruebas/navegador/interaccion.mjs <url>` (cada falla que encontró la revisión de clase mundial es un paso).
+- El buscador se mide con `pruebas/buscador-personas.test.mjs` (40 frases de personas; umbral 95 % al primer intento).
+  Esas frases ya se usaron para afinarlo: para medir de verdad hace falta otra batería que nadie toque.
+
 ## Probado y descartado
 
 - **View Transitions entre documentos (`@view-transition { navigation: auto }`), 3-oct-2026:** en Chromium 149 sin
