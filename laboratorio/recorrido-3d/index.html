@@ -75,7 +75,7 @@
             </picture>
             <div class="visor__entrada" id="entrada">
               <button class="boton boton--senal" type="button" id="entrar">Entrar al recorrido</button>
-              <p class="visor__peso">El visor 3D (three.js, 170 KB comprimidos) se descarga de cdn.jsdelivr.net cuando esta parte de la página aparece en pantalla.</p>
+              <p class="visor__peso">Caminas con las flechas del teclado o con el dedo, como en un videojuego.</p>
             </div>
             <div class="visor__estado" id="estado-visor" hidden>
               <div class="visor__estado-caja" role="status">
@@ -191,8 +191,8 @@
             <div class="editor__acciones">
               <button class="boton boton--senal" type="button" id="ver-3d">Ver en 3D</button>
               <button class="boton boton--linea" type="button" id="deshacer" disabled>Deshacer</button>
-              <button class="boton boton--linea" type="button" id="exportar">Exportar JSON</button>
-              <label class="boton boton--linea" for="importar">Importar JSON</label>
+              <button class="boton boton--linea" type="button" id="exportar">Descargar una copia del plano</button>
+              <label class="boton boton--linea" for="importar">Cargar una copia</label>
               <input class="sr" type="file" id="importar" accept="application/json,.json" />
               <button class="boton boton--linea" type="button" id="restablecer">Restablecer datos de ejemplo</button>
               <button class="boton boton--linea" type="button" id="vaciar">Empezar en blanco</button>
@@ -223,7 +223,7 @@
       <section aria-labelledby="h-simulado">
         <h2 class="info__h2" id="h-simulado">Qué es simulado aquí y qué no</h2>
         <p><span class="info__dato">Simulado:</span> la propiedad, que es ficticia; las paredes lisas, sin muebles, con materiales y luz hechos en código. En un recorrido real ves la propiedad como es, con sus muebles y su luz. Un escaneo real también pesa más (decenas de megabytes, contra menos de medio megabyte de esta página con el 3D incluido) y en un teléfono modesto se mueve con menos soltura.</p>
-        <p><span class="info__dato">Funciona de verdad en esta demo:</span> caminar sin atravesar las paredes, el minimapa, la vista desde arriba, medir, el área de cada ambiente y el editor de planos, que exporta e importa JSON. Tu dibujo queda solo en este navegador. En una propiedad real, el escaneo trae la forma y las medidas; los choques con las paredes, el minimapa y las fichas con los m² de cada ambiente se arman con el plano que sale del escaneo (servicio B03) y se cotizan aparte.</p>
+        <p><span class="info__dato">Funciona de verdad en esta demo:</span> caminar sin atravesar las paredes, el minimapa, la vista desde arriba, medir, el área de cada ambiente y el editor de planos, que descarga y vuelve a cargar una copia del dibujo. Tu dibujo queda solo en este navegador. El visor (three.js, 170 KB comprimidos) se descarga de cdn.jsdelivr.net cuando esa parte de la página aparece en pantalla. En una propiedad real, el escaneo trae la forma y las medidas; los choques con las paredes, el minimapa y las fichas con los m² de cada ambiente se arman con el plano que sale del escaneo (servicio B03) y se cotizan aparte.</p>
       </section>
       <section aria-labelledby="h-servicios">
         <h2 class="info__h2" id="h-servicios">Servicios relacionados</h2>

@@ -83,7 +83,7 @@ export function crearEditor({ anunciar, alVerEn3D, alCambiar }) {
     const ok = almacen.guardar(c);
     nota.textContent = ok
       ? 'Tu dibujo se guarda solo en este navegador; no se envía a ningún lado.'
-      : 'Este navegador no deja guardar datos: tu dibujo se pierde al cerrar la pestaña. Expórtalo en JSON para no perderlo.';
+      : 'Este navegador no deja guardar datos: tu dibujo se pierde al cerrar la pestaña. Descarga una copia para no perderlo.';
     canal?.postMessage({ tipo: 'plano-guardado' });
   }
 
@@ -452,7 +452,7 @@ export function crearEditor({ anunciar, alVerEn3D, alCambiar }) {
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 2000);
-    decir(`Se descargó ${nombre}. Para volver a abrirlo, usa «Importar JSON».`, 'ok');
+    decir(`Se descargó ${nombre}. Para volver a abrirlo, usa «Cargar una copia».`, 'ok');
   });
 
   $('importar').addEventListener('change', async (e) => {
@@ -490,7 +490,7 @@ export function crearEditor({ anunciar, alVerEn3D, alCambiar }) {
   pista.textContent = PISTAS[herramienta]();
   nota.textContent = almacen.disponible()
     ? 'Tu dibujo se guarda solo en este navegador; no se envía a ningún lado.'
-    : 'Este navegador no deja guardar datos: tu dibujo se pierde al cerrar la pestaña. Expórtalo en JSON para no perderlo.';
+    : 'Este navegador no deja guardar datos: tu dibujo se pierde al cerrar la pestaña. Descarga una copia para no perderlo.';
   const t = totales(c);
   if (guardado?.error) {
     const motivo = guardado.error.replace(/^./, (l) => l.toUpperCase()).replace(/([^.])$/, '$1.');

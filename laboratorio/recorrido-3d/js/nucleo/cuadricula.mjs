@@ -399,14 +399,14 @@ export function revisarCuadricula(c) {
 export function importarJSON(texto) {
   let datos;
   try { datos = JSON.parse(texto); }
-  catch { return { error: 'El archivo no es un JSON válido. Exporta el plano desde este editor y vuelve a intentarlo.' }; }
+  catch { return { error: 'Ese archivo no es una copia de un plano: no se pudo leer. Descarga la copia desde este editor y vuelve a intentarlo.' }; }
   if (datos && datos.cuadricula) return revisarCuadricula(datos.cuadricula);
   if (datos?.formato === FORMATO) {
     const { errores } = validarPlano(datos);
     if (errores.length) return { error: errores[0] };
     return cuadriculaDesdePlano(datos);
   }
-  return { error: 'El archivo no es un plano de este editor (falta «formato: atk-plano»).' };
+  return { error: 'Ese archivo no es una copia de un plano de este editor.' };
 }
 
 /** Pasa un plano a la cuadrícula si todos sus ambientes son rectángulos alineados a 0.5 m. */

@@ -263,10 +263,11 @@ export function crearVisor(THREE, opciones) {
     x: cx, z: cy, y: (y0 + y1) / 2, alto: y1 - y0, largo, prof, angulo: Math.atan2(-dir.y, dir.x),
   });
 
-  // Los nombres en el piso se leen desde arriba; caminando quedan tenues para no competir con el piso.
+  // Los nombres en el piso se leen desde arriba. Caminando se esconden: desde los ojos se leían al revés, y el
+  // nombre del ambiente ya va en el rótulo de la pantalla.
   let materialesEtiqueta = [];
   function opacidadEtiquetas(v) {
-    for (const mat of materialesEtiqueta) mat.opacity = v === 'primera' ? 0.38 : 1;
+    for (const mat of materialesEtiqueta) mat.visible = v !== 'primera';
   }
 
   function construir(m) {

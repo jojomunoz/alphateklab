@@ -58,7 +58,8 @@ export async function bloques() {
   const servicios = RELACIONADOS.map((id) => SERVICIOS.find((s) => s.id === id)).filter(Boolean);
   const lista = `<ul class="relacionados">
           ${servicios
-            .map((s) => `<li><span class="etiqueta">${esc(s.id)}</span><a href="${esc(enlaceServicio(s.slug))}">${esc(s.nombre)}</a><span class="relacionados__precio num">${esc(s.precio ? s.precio.texto : 'A cotizar')}${s.precio?.nota ? `, ${esc(s.precio.nota)}` : ''}</span></li>`)
+            // Sin el código interno del servicio (B01) ni «A cotizar»: el precio va solo cuando lo hay.
+            .map((s) => `<li><a href="${esc(enlaceServicio(s.slug))}">${esc(s.nombre)}</a>${s.precio ? `<span class="relacionados__precio num">${esc(s.precio.texto)}${s.precio.nota ? `, ${esc(s.precio.nota)}` : ''}</span>` : ''}</li>`)
             .join('\n          ')}
         </ul>`;
 

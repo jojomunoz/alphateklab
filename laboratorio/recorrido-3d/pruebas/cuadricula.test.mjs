@@ -231,8 +231,8 @@ test('importar un archivo con ids repetidos les da un id nuevo: quitar uno no se
 });
 
 test('importar archivos malos da un error que dice qué hacer', () => {
-  assert.match(importarJSON('{no es json').error, /no es un JSON válido/);
-  assert.match(importarJSON('{"hola":1}').error, /atk-plano/);
+  assert.match(importarJSON('{no es json').error, /no se pudo leer/);
+  assert.match(importarJSON('{"hola":1}').error, /no es una copia de un plano de este editor/);
   assert.match(importarJSON(JSON.stringify({ cuadricula: { version: 7 } })).error, /versión 7/);
   const encimados = { version: 1, ancho: 12, largo: 10, ambientes: [{ nombre: 'A', tipo: 'sala', x: 0, y: 0, ancho: 3, largo: 3 }, { nombre: 'B', tipo: 'sala', x: 1, y: 1, ancho: 3, largo: 3 }], aberturas: [] };
   assert.match(importarJSON(JSON.stringify({ cuadricula: encimados })).error, /Se encima/);

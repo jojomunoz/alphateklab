@@ -435,20 +435,17 @@ kbd {
 .relacionados { list-style: none; margin: 0; padding: 0; }
 .relacionados li {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  column-gap: var(--e-3);
+  grid-template-columns: minmax(0, 1fr);
   row-gap: 2px;
-  align-items: baseline;
   padding-block: var(--e-3);
   border-top: 1px solid var(--linea);
 }
 .relacionados li:last-child { border-bottom: 1px solid var(--linea); }
-.relacionados .etiqueta { grid-row: span 2; align-self: start; margin-top: 2px; }
 .relacionados a { font-weight: 600; color: var(--tinta); text-decoration-color: var(--linea-fuerte); }
 /* Zona táctil de 44 px sin mover el texto: el relleno crece hacia arriba y abajo y el margen negativo lo compensa. */
 .relacionados a, .migas a { display: inline-block; padding-block: 10px; margin-block: -10px; }
 .migas a { padding: 12px 2px; margin: -12px -2px; }
-.relacionados__precio { grid-column: 2; font-size: var(--t-xs); color: var(--tinta-2); }
+.relacionados__precio { font-size: var(--t-xs); color: var(--tinta-2); }
 
 /* ── plano de ejemplo ── */
 .plano-ejemplo__h2 { font-size: var(--t-xl); margin-bottom: var(--e-4); }
