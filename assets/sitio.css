@@ -3519,3 +3519,11 @@ html.sin-desplazar {
   font-size: var(--t-s);
   max-width: 70ch;
 }
+
+.grupo__cabeza--texto {
+  display: block;
+  margin-bottom: var(--e-3);
+}
+.grupo__cabeza--texto .grupo__titulo {
+  font-size: var(--t-sub);
+}

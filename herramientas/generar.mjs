@@ -646,9 +646,8 @@ function paginaServicios() {
     ${grupos
       .map(
         (g) => `<section class="grupo" data-grupo="${g.t.id}" aria-labelledby="grupo-${g.t.id}">
-      <div class="grupo__cabeza">
-        ${foto(g.t.foto, prefijo, { clase: 'grupo__foto', sizes: '(min-width: 900px) 30vw, 100vw', alt: '' })}
-        <div><h2 class="grupo__titulo" id="grupo-${g.t.id}">${icono(g.t.icono)}${esc(g.t.nombre)}</h2><p class="grupo__desc">${esc(g.t.desc)}</p></div>
+      <div class="grupo__cabeza grupo__cabeza--texto">
+        <h2 class="grupo__titulo" id="grupo-${g.t.id}">${esc(g.t.nombre)}</h2><p class="grupo__desc">${esc(g.t.desc)}</p>
       </div>
       <div class="rejilla-servicios">${g.lista.map((s) => tarjetaServicio(s, prefijo)).join('\n')}</div>
     </section>`,
