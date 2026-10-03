@@ -105,7 +105,7 @@ function cabecera(prefijo) {
 <div hidden>${SPRITE}</div>
 <header class="cabecera" data-cabecera>
   <div class="envoltura cabecera__fila">
-    <a class="marca" href="${prefijo}"><img src="${prefijo}assets/marca/logo-claro.svg" alt="alphateklab, inicio" width="142" height="32" /></a>
+    <a class="marca" href="${prefijo}"><picture><source srcset="${prefijo}assets/marca/logo-oscuro.svg" media="(prefers-color-scheme: dark)" /><img src="${prefijo}assets/marca/logo-claro.svg" alt="alphateklab, inicio" width="142" height="32" /></picture></a>
     <nav class="menu" aria-label="Principal" data-menu>
       <ul class="menu__lista">
         <li class="menu__grupo">
@@ -324,7 +324,7 @@ function paginaInicio() {
       <form class="heroe__buscar" role="search" data-buscar-en-linea action="${prefijo}servicios/">
         ${icono('magnifying-glass')}
         <label class="sr" for="heroe-campo">¿Qué necesitas?</label>
-        <input id="heroe-campo" name="q" type="search" placeholder="¿Qué necesitas? Ej.: pedir desde la mesa" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="heroe-resultados" aria-autocomplete="list" />
+        <input id="heroe-campo" name="q" type="search" placeholder="¿Qué necesitas? Ej.: un menú QR" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="heroe-resultados" aria-autocomplete="list" />
         <button class="boton boton--senal" type="submit">Buscar</button>
         <div class="heroe__resultados" id="heroe-resultados" hidden></div>
       </form>
