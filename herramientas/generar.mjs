@@ -408,14 +408,29 @@ const ESCENAS = {
   'en-colegio': { ancho: 1600, alto: 1067, texto: 'Lector de QR y tarjetas en la entrada de un colegio' },
   'en-tienda': { ancho: 1280, alto: 1600, texto: 'Cámara en el techo, sobre la puerta de un minisúper' },
   'en-nevera': { ancho: 1600, alto: 1600, texto: 'Sensor de temperatura dentro de una nevera comercial' },
+  // v6 (3-oct): en las pantallas va compuesta la pantalla real de la demo (herramientas/componer-equipo.py)
+  'en-recepcion': { ancho: 1600, alto: 1067, texto: 'Tableta con la agenda de la demo de citas en el mostrador de un consultorio' },
+  'en-barberia': { ancho: 1600, alto: 1067, texto: 'Pantalla de turnos en la sala de espera de una barbería' },
+  'en-sala-360': { ancho: 1600, alto: 1067, texto: 'Cámara 360 en su trípode, lista para escanear la sala de un apartamento' },
+  // las verticales se recortan en cuadrado en el héroe; «encuadre» dice qué parte queda (la cámara está arriba)
+  'en-minisuper': { ancho: 1280, alto: 1600, texto: 'Cámara en el techo de un minisúper, apuntando a la puerta', encuadre: '50% 12%' },
+  'en-cabana-puerta': { ancho: 1280, alto: 1600, texto: 'Cerradura con código en la puerta de una cabaña', encuadre: '70% 42%' },
 };
 // qué imagen va en la ficha de cada servicio que se instala
 const IMAGEN_SERVICIO = {
   R01: { escena: 'en-mesa' }, R02: { escena: 'en-mesa' }, R03: { escena: 'en-mesa' },
   R05: { escena: 'en-cocina' }, R06: { pieza: 'equipo-3-kiosco' },
-  C01: { escena: 'en-tienda' }, C05: { escena: 'en-tienda' }, T11: { escena: 'en-tienda' },
+  C01: { escena: 'en-tienda' }, C05: { escena: 'en-minisuper' }, T11: { escena: 'en-tienda' },
   R10: { escena: 'en-nevera' }, I01: { escena: 'en-nevera' },
-  H03: { pieza: 'equipo-6-cerradura' }, I04: { escena: 'en-colegio' }, E02: { escena: 'en-colegio' }, I02: { pieza: 'equipo-8-gps' },
+  H03: { escena: 'en-cabana-puerta' }, I04: { escena: 'en-colegio' }, E02: { escena: 'en-colegio' }, I02: { pieza: 'equipo-8-gps' },
+  S01: { escena: 'en-recepcion' }, S02: { escena: 'en-barberia' }, V01: { escena: 'en-barberia' }, V03: { escena: 'en-barberia' },
+  B01: { escena: 'en-sala-360' },
+};
+// la escena que abre cada página de negocio (el equipo instalado en un lugar que el dueño reconoce); restaurantes
+// sigue con el video de la mesa e industria con el tablero de sensores
+const ESCENA_NEGOCIO = {
+  escuelas: 'en-colegio', clinicas: 'en-recepcion', 'talleres-y-salones': 'en-barberia', hospedaje: 'en-cabana-puerta',
+  'bienes-raices': 'en-sala-360', tiendas: 'en-minisuper',
 };
 const hayEscena = (e) => e && ESCENAS[e] && existe(`assets/fotos/${e}.webp`);
 const hayPieza = (p) => p && existe(`assets/equipo/${p}-400.webp`);
@@ -477,6 +492,19 @@ function heroeAvisos(prefijo) {
       </figure>`;
 }
 
+// El héroe con el producto (3-oct, revisión de clase mundial: la caja de avisos se leía como un componente de kit):
+// la foto de una placa, un teléfono y una tableta con las pantallas reales compuestas encima (la agenda de un
+// consultorio, los avisos de varios negocios y una placa cuyo QR abre las demos). Varios negocios a propósito: con
+// la mesa sola, los dueños concluían «hacen menús QR para restaurantes». Se arma con herramientas/pantallas-equipo.mjs
+// y herramientas/componer-equipo.py.
+const hayHeroeVitrina = () => existe('assets/heroe/heroe-portada-640.webp') && existe('assets/heroe/heroe-portada-1200.webp');
+function heroeVitrina(prefijo) {
+  return `<figure class="heroe__producto heroe-vitrina">
+        <img src="${prefijo}assets/heroe/heroe-portada-640.webp" srcset="${prefijo}assets/heroe/heroe-portada-640.webp 640w, ${prefijo}assets/heroe/heroe-portada-1200.webp 1200w" sizes="(min-width: 1040px) 540px, (min-width: 640px) 440px, 100vw" width="1200" height="1200" alt="Una placa con un código QR que abre las demos, un teléfono con avisos de una tienda, la facturación, un colegio y una clínica, y una tableta en la pared con la agenda de un consultorio." fetchpriority="high" decoding="async" />
+        <figcaption>Las pantallas son de nuestras demos y el QR de la placa las abre. Imagen ilustrativa.</figcaption>
+      </figure>`;
+}
+
 // ── portada ──
 function paginaInicio() {
   const prefijo = '';
@@ -486,7 +514,8 @@ function paginaInicio() {
     ['Recordar citas', 'recordar citas a pacientes'],
     ['Página web', 'página web'],
   ];
-  const heroe = `<section class="heroe heroe--producto heroe--portada heroe--avisos" aria-labelledby="heroe-titulo">
+  const vitrina = hayHeroeVitrina();
+  const heroe = `<section class="heroe heroe--producto heroe--portada ${vitrina ? 'heroe--vitrina' : 'heroe--avisos'}" aria-labelledby="heroe-titulo">
   <div class="envoltura heroe__fila">
     <div class="heroe__texto">
       <h1 id="heroe-titulo" class="display heroe__titulo">Hacemos la tecnología de tu negocio y la instalamos en tu local.</h1>
@@ -501,7 +530,7 @@ function paginaInicio() {
       <p class="heroe__prueba">Prueba con: ${chips.map(([t, q], i) => `<span class="sin-corte"><button type="button" class="chip-texto" data-buscar="${esc(q)}">${esc(t)}</button>${i < chips.length - 1 ? ',' : '.'}</span>`).join(' ')}</p>
       <p class="heroe__diagnostico"><a class="boton boton--linea" href="${prefijo}diagnostico/">${icono('question')}¿No sabes qué pedir? Responde 3 preguntas</a></p>
     </div>
-    ${heroeAvisos(prefijo)}
+    ${vitrina ? heroeVitrina(prefijo) : heroeAvisos(prefijo)}
   </div>
 </section>`;
 
@@ -627,10 +656,13 @@ const PRODUCTO_POR_NEGOCIO = {
 };
 function productoDeNegocio(so, prefijo) {
   const pr = PRODUCTO_POR_NEGOCIO[so.slug];
-  // sin demo pero con el equipo ya instalado en foto (escuelas: el lector de la entrada), esa foto
-  const escena = { escuelas: 'en-colegio' }[so.slug];
-  if ((!pr || !demoPorClave.has(pr.demo)) && hayEscena(escena)) {
-    return `<figure class="heroe__producto heroe__escena">${imgEscena(escena, prefijo, { sizes: '(min-width: 1040px) 560px, 100vw', carga: 'eager' })}<figcaption>${esc(ESCENAS[escena].texto)}. Imagen ilustrativa.</figcaption></figure>`;
+  // el equipo instalado en foto, con la pantalla real de la demo compuesta encima: se lee mejor que la captura de
+  // escritorio en un portátil de 448 px (revisión del 3-oct); la demo sigue en «Pruébalo ahora»
+  const escena = ESCENA_NEGOCIO[so.slug];
+  if (hayEscena(escena)) {
+    const x = ESCENAS[escena];
+    const vertical = x.alto > x.ancho;
+    return `<figure class="heroe__producto heroe__escena${vertical ? ' heroe__escena--vertical' : ''}"${vertical && x.encuadre ? ` style="--encuadre: ${x.encuadre}"` : ''}>${imgEscena(escena, prefijo, { sizes: '(min-width: 1040px) 560px, 100vw', carga: 'eager' })}<figcaption>${esc(x.texto)}. Imagen ilustrativa.</figcaption></figure>`;
   }
   // sin demo, la otra mitad del héroe dice los problemas que se resuelven, con las palabras del cliente
   if (!pr || !demoPorClave.has(pr.demo) || !existe(`assets/producto/${pr.portatil}.webp`)) {
@@ -1068,6 +1100,7 @@ function paginaCreditos() {
   ${filas.length ? `<ul class="creditos">${filas.map(([slot, c]) => `<li><strong>${esc(c.titulo || slot)}</strong>, de ${esc(c.autor || 'autor sin nombre')}${c.fuente ? ` (<a href="${esc(c.fuente)}">fuente</a>)` : ''}. ${c.urlLicencia ? `<a href="${esc(c.urlLicencia)}">${esc(c.licencia)}</a>` : esc(c.licencia || '')}.</li>`).join('')}</ul>` : '<p>Este sitio todavía no usa fotos de terceros.</p>'}
   <h2>Equipo</h2>
   <p>Las ocho imágenes del equipo de la portada (placa con QR, pantalla de cocina, kiosco, cámara, sensor de temperatura, cerradura, lector de acceso y GPS) son imágenes de catálogo generadas con IA para alphateklab, el 3 de octubre de 2026: productos genéricos y sin marca, que ilustran lo que se instala.</p>
+  <p>La foto del héroe de la portada y las escenas de las páginas de negocio (la recepción de un consultorio, una barbería, la puerta de una cabaña, una sala con la cámara 360 y un minisúper) también son ilustrativas, generadas con IA el 3 de octubre de 2026. Lo que se ve en sus pantallas y placas no es de la IA: son las pantallas reales de nuestras demos y códigos QR que funcionan, puestos encima con herramientas/componer-equipo.py.</p>
   <h2>Íconos</h2>
   <p><a href="https://phosphoricons.com">Phosphor Icons</a> 2.1.1, licencia MIT.</p>
   <h2>Tipografía</h2>

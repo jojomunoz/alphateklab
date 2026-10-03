@@ -4269,6 +4269,55 @@ html.sin-desplazar {
   }
 }
 
+/* ── héroe con la vitrina del producto (placa, teléfono y tableta con las pantallas de las demos) ── */
+.heroe-vitrina {
+  margin: 0;
+  display: grid;
+  gap: var(--e-2);
+}
+.heroe-vitrina img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.heroe-vitrina figcaption {
+  font-size: var(--t-xs);
+  color: var(--h-texto-2);
+  text-align: center;
+}
+/* en el teléfono: titular, bajada, buscador y debajo la foto (como con los avisos: el buscador entra en los ~664 px
+   que deja ver Safari); en una tableta, sin estirarse */
+@media (max-width: 1039px) {
+  .heroe--portada.heroe--vitrina {
+    padding-top: var(--e-5);
+  }
+  .heroe--portada.heroe--vitrina .heroe__buscar {
+    margin-top: 0;
+  }
+  .heroe--portada.heroe--vitrina .heroe__fila {
+    grid-template-areas: 'titulo' 'bajada' 'buscar' 'producto' 'prueba' 'diag';
+  }
+  .heroe--portada.heroe--vitrina .heroe-vitrina {
+    width: min(100%, 440px);
+    justify-self: center;
+  }
+}
+@media (max-width: 639px) {
+  .heroe--portada.heroe--vitrina .heroe__prueba {
+    display: none;
+  }
+}
+@media (min-width: 1040px) {
+  .heroe--portada.heroe--vitrina .heroe__fila {
+    grid-template-rows: auto auto auto auto 1fr;
+  }
+  .heroe--portada.heroe--vitrina .heroe-vitrina {
+    width: min(100%, 520px);
+    justify-self: end;
+    align-self: start;
+  }
+}
+
 /* buscador: los resultados de la tecla anterior, atenuados mientras se escribe (ver actualizar() en js/sitio.js) */
 .buscador__resultados--viejos {
   opacity: 0.55;
@@ -4596,6 +4645,12 @@ html.sin-desplazar {
 }
 .heroe__escena figcaption {
   color: var(--h-texto-2, var(--tinta-3));
+}
+/* una foto vertical (la puerta de la cabaña, el techo del minisúper) va en cuadrado en el héroe */
+.heroe__escena--vertical img {
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: var(--encuadre, 50% 40%);
 }
 .equipos {
   list-style: none;

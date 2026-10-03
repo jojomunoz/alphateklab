@@ -238,36 +238,23 @@ try {
     assert.ok(tel.t > 1.5, `el video del teléfono va en ${tel.t.toFixed(2)} s tras 3,5 s`);
   });
 
-  await paso('la portada: avisos de distintos negocios; entra uno nuevo arriba, la pausa lo detiene, el buscador no se mueve', async () => {
-    const c5 = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  await paso('la portada: la foto del producto no tapa el titular y en el teléfono el buscador entra antes que ella', async () => {
+    // el héroe con la vitrina (placa, teléfono y tableta con las pantallas de las demos) reemplazó a la caja de avisos
+    const c5 = await b.newContext({ viewport: { width: 390, height: 664 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
     const t = await c5.newPage();
     await t.goto(BASE, { waitUntil: 'load' });
-    const arriba = () => t.$eval('.avisos-heroe__lista > li:not([hidden]) strong', (e) => e.textContent);
-    const visibles = await t.$$eval('.avisos-heroe__lista > li:not([hidden])', (ls) => ls.map((l) => l.querySelector('strong').textContent));
-    assert.equal(visibles.length, 3, `en el teléfono se ven ${visibles.length} avisos`);
-    assert.equal(new Set(visibles).size, 3, 'los avisos visibles son de negocios distintos');
-    assert.notEqual(visibles[0], 'Restaurante', 'la portada no abre con el restaurante');
-    const y0 = await t.$eval('.heroe__buscar', (e) => e.getBoundingClientRect().bottom);
-    assert.ok(y0 <= 844, `el buscador no entra en la primera pantalla (termina en ${Math.round(y0)})`);
-    const primero = await arriba();
-    await t.waitForTimeout(5600);
-    assert.notEqual(await arriba(), primero, 'no entró un aviso nuevo en 5,6 s');
-    assert.equal(Math.round(await t.$eval('.heroe__buscar', (e) => e.getBoundingClientRect().bottom)), Math.round(y0), 'el buscador se movió al entrar un aviso');
-    for (const href of await t.$$eval('.aviso-heroe', (as) => as.map((a) => a.href))) {
-      const r = await t.request.get(href);
-      assert.ok(r.ok(), `aviso con enlace roto: ${href}`);
-    }
-    await t.click('[data-pausa-avisos]');
-    const quieto = await arriba();
-    await t.waitForTimeout(5600);
-    assert.equal(await arriba(), quieto, 'con pausa siguió cambiando');
+    await t.waitForFunction(() => { const i = document.querySelector('.heroe-vitrina img'); return i && i.complete && i.naturalWidth > 0; });
+    const [buscar, foto] = await t.evaluate(() => ['.heroe__buscar', '.heroe-vitrina img'].map((x) => document.querySelector(x).getBoundingClientRect().toJSON()));
+    assert.ok(buscar.bottom <= 664, `el buscador termina en ${Math.round(buscar.bottom)}: fuera de los 664 px que deja ver Safari`);
+    assert.ok(foto.top >= buscar.bottom && foto.top < 664, `la foto debe empezar debajo del buscador y dentro de la primera pantalla (empieza en ${Math.round(foto.top)})`);
     await c5.close();
-    const c6 = await b.newContext({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
+    const c6 = await b.newContext({ viewport: { width: 1440, height: 900 } });
     const r = await c6.newPage();
     await r.goto(BASE, { waitUntil: 'load' });
-    const fijo = await r.$eval('.avisos-heroe__lista > li:not([hidden]) strong', (e) => e.textContent);
-    await r.waitForTimeout(5600);
-    assert.equal(await r.$eval('.avisos-heroe__lista > li:not([hidden]) strong', (e) => e.textContent), fijo, 'con reducir movimiento rota');
+    await r.waitForFunction(() => { const i = document.querySelector('.heroe-vitrina img'); return i && i.complete && i.naturalWidth > 0; });
+    const [titulo, img] = await r.evaluate(() => ['.heroe__titulo', '.heroe-vitrina img'].map((x) => document.querySelector(x).getBoundingClientRect().toJSON()));
+    assert.ok(img.top >= titulo.bottom - 1, `la foto (y=${Math.round(img.top)}) se monta sobre el titular (termina en ${Math.round(titulo.bottom)})`);
+    assert.ok(img.right <= 1440 && img.width >= 400, `la foto mide ${Math.round(img.width)} px y termina en ${Math.round(img.right)}`);
     await c6.close();
   });
 

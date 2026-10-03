@@ -52,7 +52,7 @@ export const SERVICIOS = [
       'QR impreso que apunta a una dirección tuya: no deja de funcionar si un día cambias de proveedor',
       'Pensado para acompañar la carta de papel, no para reemplazarla',
     ],
-    equipo: [],
+    equipo: ['Placas con el QR de cada mesa, que te entregamos impresas'],
     precio: { texto: '$10 al mes', nota: 'precio de la carta sola; pedir y pagar desde la mesa se cotiza aparte' },
     demo: MESA,
   },

@@ -38,6 +38,17 @@ Reglas del proyecto: `~/alphateklab/BRIEF.md`. Guía de diseño: `~/Documents/No
   el póster sacado del primer cuadro. Probado y descartado: la transmisión de pantalla de Chrome (CDP screencast) da
   ~15 cuadros por segundo y sin doble densidad; el webm VP9 de antes salía en 4:4:4 (Profile 1), que muchos
   decodificadores de teléfono no aceptan.
+- Fotos con pantallas reales (3-oct): las fotos de GPT traen las pantallas en gris o apagadas y la placa en blanco;
+  encima van las pantallas de las demos y QR que funcionan. `node herramientas/pantallas-equipo.mjs http://localhost:4900 <tmp>`
+  captura los contenidos y `python3 herramientas/componer-equipo.py ~/alphateklab/originales <tmp> <salida> [nombres]`
+  busca cada pantalla (región de luz pareja o rayos hasta el bisel), la deforma en perspectiva y la mezcla con la luz
+  de la foto (deja `<nombre>-contorno.png` para revisar las esquinas). Los originales viven en `~/alphateklab/originales`
+  (fuera del repo). Después de componer, comprobar que los QR se leen (jsQR sobre la imagen publicada).
+- El héroe de la portada es esa foto compuesta (`assets/heroe/heroe-portada-{640,1200}.webp`) con pantallas de varios
+  negocios a propósito: con solo la mesa, los dueños leían «hacen menús QR para restaurantes». Si faltan los archivos,
+  vuelve la caja de avisos.
+- Después de cada push, mirar que GitHub Pages haya publicado: `gh api repos/jojomunoz/<repo>/pages/builds --jq '.[0]'`
+  (un despliegue de reservas falló una vez por un tiempo de espera de Jekyll; los tres repos llevan `.nojekyll`).
 - Cerrojos, contra local y contra el sitio en vivo después de cada push:
   `PERMITIR_PENDIENTES=1 node --test pruebas/*.test.mjs pruebas/control/*.test.mjs`, `node pruebas/navegador/sitio.mjs <url>` y
   `node pruebas/navegador/interaccion.mjs <url>` (cada falla que encontró la revisión de clase mundial es un paso).

@@ -72,7 +72,8 @@ try {
   await hacer('assets/og.jpg', {
     titulo: 'Hacemos la tecnología de tu negocio y la instalamos en tu local',
     bajada: 'Software, apps, inteligencia artificial y equipos instalados para negocios de Panamá.',
-    lado: htmlAvisos(AVISOS.portada),
+    // la misma foto del héroe de la portada (placa, teléfono y tableta con las pantallas de las demos)
+    lado: `<img class="heroe-foto" src="../assets/heroe/heroe-portada-640.webp" alt="" />`,
   });
   for (const so of SOLUCIONES) {
     const pantalla = PANTALLA[so.slug];
