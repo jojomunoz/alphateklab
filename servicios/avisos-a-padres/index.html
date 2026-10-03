@@ -112,10 +112,9 @@
 </header>
 <main id="contenido">
 <section class="ficha-heroe">
-  <div class="envoltura ficha-heroe__fila">
+  <div class="envoltura ficha-heroe__fila ficha-heroe__fila--sola">
     <div class="ficha-heroe__texto">
       <nav class="migas" aria-label="Ruta"><a href="../../">Inicio</a> <span aria-hidden="true">/</span> <a href="../../servicios/">Servicios</a> <span aria-hidden="true">/</span> <a href="../../servicios/?tipo=software">Software a medida</a> <span aria-hidden="true">/</span> <span aria-current="page">Avisos a padres</span></nav>
-      <p class="ficha-heroe__tipo"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-code"></use></svg>Software a medida</p>
       <h1 class="display ficha-heroe__titulo">Avisos a padres por WhatsApp</h1>
       <p class="ficha-heroe__para">Circulares, notas, recordatorios de pago y avisos de último momento que llegan al WhatsApp de cada familia.</p>
       <div class="tarjeta-servicio__insignias"></div>
@@ -124,9 +123,9 @@
         
         <button class="boton boton--linea" type="button" data-cotizar="E03" aria-pressed="false">Agregar a mi lista</button>
       </p>
-      <p class="ficha-heroe__precio"><span class="num">A cotizar</span></p>
+      
     </div>
-    <div class="ficha-heroe__visual"><img class="ficha-heroe__foto" src="../../assets/fotos/sector-educacion-800.webp" srcset="../../assets/fotos/sector-educacion-264.webp 264w, ../../assets/fotos/sector-educacion-800.webp 800w, ../../assets/fotos/sector-educacion.webp 1600w" sizes="(min-width: 1000px) 40vw, 100vw" alt="" width="1600" height="1000" loading="eager" decoding="async" fetchpriority="high" /></div>
+    
   </div>
 </section>
 <section class="seccion seccion--junta envoltura ficha-cuerpo">
@@ -167,14 +166,12 @@
   <div class="rejilla-servicios"><article class="tarjeta-servicio" id="matricula-y-mensualidades" data-id="E01" data-sectores="educacion" data-tipos="software pagos" data-demo="0" data-instala="0">
   <h3 class="tarjeta-servicio__nombre"><a href="../../servicios/matricula-y-mensualidades/">Matrícula y cobro de mensualidades en línea</a></h3>
   <p class="tarjeta-servicio__para">Los padres matriculan y pagan la mensualidad desde el teléfono con Yappy o tarjeta; tú ves quién está al día sin perseguir a nadie.</p>
-  <div class="tarjeta-servicio__insignias"></div>
-  <div class="tarjeta-servicio__pie"><span class="tarjeta-servicio__precio num"></span><button class="boton-chico" type="button" data-cotizar="E01" aria-pressed="false" aria-label="Agregar Matrícula y cobro de mensualidades en línea a mi lista">Agregar</button></div>
+  <div class="tarjeta-servicio__pie"><span class="tarjeta-servicio__insignias"></span><span class="tarjeta-servicio__precio num"></span><button class="boton-chico" type="button" data-cotizar="E01" aria-pressed="false" aria-label="Agregar Matrícula y cobro de mensualidades en línea a mi lista">Agregar</button></div>
 </article>
 <article class="tarjeta-servicio" id="asistencia-con-qr" data-id="E02" data-sectores="educacion operacion" data-tipos="iot software" data-demo="0" data-instala="1">
   <h3 class="tarjeta-servicio__nombre"><a href="../../servicios/asistencia-con-qr/">Asistencia con QR o tarjeta</a></h3>
   <p class="tarjeta-servicio__para">Estudiantes o empleados marcan la entrada con su QR o tarjeta, y si alguien no llegó, se avisa a quien corresponda.</p>
-  <div class="tarjeta-servicio__insignias"><span class="insignia"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-wrench"></use></svg>Se instala</span></div>
-  <div class="tarjeta-servicio__pie"><span class="tarjeta-servicio__precio num"></span><button class="boton-chico" type="button" data-cotizar="E02" aria-pressed="false" aria-label="Agregar Asistencia con QR o tarjeta a mi lista">Agregar</button></div>
+  <div class="tarjeta-servicio__pie"><span class="tarjeta-servicio__insignias"><span class="insignia"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-wrench"></use></svg>Se instala</span></span><span class="tarjeta-servicio__precio num"></span><button class="boton-chico" type="button" data-cotizar="E02" aria-pressed="false" aria-label="Agregar Asistencia con QR o tarjeta a mi lista">Agregar</button></div>
 </article></div>
   <p class="seccion__pie"><a href="../../soluciones/escuelas/">Todo lo que hacemos para escuelas y academias</a></p>
 </section>
@@ -202,7 +199,7 @@
     <div class="pie__columnas">
       <div><h2>Soluciones</h2><ul><li><a href="../../soluciones/restaurantes/">Restaurantes y cafés</a></li><li><a href="../../soluciones/tiendas/">Tiendas, minisúper y comercio</a></li><li><a href="../../soluciones/clinicas/">Clínicas y consultorios</a></li><li><a href="../../soluciones/hospedaje/">Hospedaje y turismo</a></li><li><a href="../../soluciones/bienes-raices/">Bienes raíces</a></li><li><a href="../../soluciones/industria-y-oficinas/">Bodegas, oficinas e industria</a></li><li><a href="../../soluciones/escuelas/">Escuelas y academias</a></li><li><a href="../../soluciones/talleres-y-salones/">Talleres, autolavados y salones</a></li><li><a href="../../soluciones/cualquier-negocio/">Cualquier negocio</a></li></ul></div>
       <div><h2>Servicios</h2><ul><li><a href="../../servicios/?tipo=software">Software a medida</a></li><li><a href="../../servicios/?tipo=web">Web y apps</a></li><li><a href="../../servicios/?tipo=ia">Inteligencia artificial</a></li><li><a href="../../servicios/?tipo=vision">Cámaras y visión</a></li><li><a href="../../servicios/?tipo=iot">Sensores e IoT</a></li><li><a href="../../servicios/?tipo=pantallas">Pantallas y kioscos</a></li><li><a href="../../servicios/?tipo=tresd">3D y escaneo</a></li><li><a href="../../servicios/?tipo=pagos">Cobros y facturación</a></li><li><a href="../../servicios/">Todos los servicios</a></li></ul></div>
-      <div><h2>Demos</h2><ul><li><a href="../../laboratorio/recorrido-360/">Recorrido 360 con fotos de cámara 360</a></li><li><a href="../../laboratorio/sensores/">Tablero de sensores de un restaurante</a></li><li><a href="../../laboratorio/">Todas las demos</a></li></ul></div>
+      <div><h2>Demos</h2><ul><li><a href="https://jojomunoz.github.io/alphateklab-mesa/">Pedir y pagar desde la mesa</a></li><li><a href="../../laboratorio/recorrido-360/">Recorrido 360 con fotos de cámara 360</a></li><li><a href="../../laboratorio/sensores/">Tablero de sensores de un restaurante</a></li><li><a href="../../laboratorio/">Todas las demos</a></li></ul></div>
       <div><h2>alphateklab</h2><ul><li><a href="../../diagnostico/">¿Qué necesita tu negocio?</a></li><li><a href="../../#como-trabajamos">Cómo trabajamos</a></li><li><a href="../../#preguntas">Preguntas frecuentes</a></li><li><a href="../../guias/">Guías</a></li><li><a href="../../cotizar/">Pregúntanos</a></li><li><a href="../../privacidad/">Privacidad</a></li><li><a href="../../creditos/">Créditos de fotos e íconos</a></li></ul></div>
     </div>
     <p class="pie__nota">Las demos usan negocios de ejemplo: sus nombres, platos, pacientes y reservas son ficticios. Actualizado el 3 de octubre de 2026.</p>

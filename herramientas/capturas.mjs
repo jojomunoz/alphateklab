@@ -40,10 +40,12 @@ const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftsha
 try {
   for (const d of DEMOS) {
     if (solo && d.clave !== solo) continue;
-    const c = await b.newContext({ viewport: { width: 1280, height: 800 }, colorScheme: 'light' });
+    const c = await b.newContext({ viewport: { width: 1280, height: 800 }, colorScheme: 'light', locale: 'es-PA' });
     const p = await c.newPage();
     try {
-      await p.goto(local(d.url), { waitUntil: 'networkidle', timeout: 30000 });
+      // «load» y una pausa: las demos con relevo (ntfy.sh) mantienen una conexión abierta y nunca llegan a «networkidle»
+      await p.goto(local(d.url), { waitUntil: 'load', timeout: 30000 });
+      await p.waitForTimeout(1500);
       if (PREPARAR[d.clave]) await PREPARAR[d.clave](p);
       // la captura enfoca la demo, no la cabecera del sitio
       const zona = await p.$('[data-captura]');

@@ -270,8 +270,7 @@ function tarjetaServicio(s, prefijo) {
   return `<article class="tarjeta-servicio" id="${s.slug}" data-id="${s.id}" data-sectores="${s.sectores.join(' ')}" data-tipos="${s.tipos.join(' ')}" data-demo="${s.demo ? 1 : 0}" data-instala="${s.instala ? 1 : 0}">
   <h3 class="tarjeta-servicio__nombre"><a href="${prefijo}servicios/${s.slug}/">${esc(s.nombre)}</a></h3>
   <p class="tarjeta-servicio__para">${esc(s.para)}</p>
-  <div class="tarjeta-servicio__insignias">${insignias(s)}</div>
-  <div class="tarjeta-servicio__pie"><span class="tarjeta-servicio__precio num">${s.precio ? esc(s.precio.texto) : ''}</span><button class="boton-chico" type="button" data-cotizar="${s.id}" aria-pressed="false" aria-label="Agregar ${esc(s.nombre)} a mi lista">Agregar</button></div>
+  <div class="tarjeta-servicio__pie"><span class="tarjeta-servicio__insignias">${insignias(s)}</span><span class="tarjeta-servicio__precio num">${s.precio ? esc(s.precio.texto) : ''}</span><button class="boton-chico" type="button" data-cotizar="${s.id}" aria-pressed="false" aria-label="Agregar ${esc(s.nombre)} a mi lista">Agregar</button></div>
 </article>`;
 }
 
@@ -376,12 +375,22 @@ function paginaInicio() {
   ];
   const fotosHeroe = ['sector-restaurantes', 'sector-comercio', 'sector-salud', 'sector-hospedaje'].filter((s) => existe(`assets/fotos/${s}.webp`));
   const conProducto = demoPorClave.has('sensores') && existe('assets/producto/sensores-tablero.webp') && existe('assets/producto/sensores-aviso.webp');
+  // En el teléfono, la carta QR de la demo de mesa si está publicada; si no, el aviso de WhatsApp de la de sensores.
+  const conCarta = demoPorClave.has('mesa') && existe('assets/producto/mesa-carta.webp');
   const producto = `<figure class="heroe__producto">
         <div class="heroe__dispositivos">
           <div class="dispositivo dispositivo--portatil"><div class="dispositivo__pantalla"><img src="${prefijo}assets/producto/sensores-tablero.webp" alt="Tablero de sensores de un restaurante de ejemplo: la nevera de la cocina sale de rango y aparecen dos avisos activos." width="1600" height="1000" fetchpriority="high" decoding="async" /></div></div>
-          <div class="dispositivo dispositivo--telefono"><div class="dispositivo__pantalla"><img src="${prefijo}assets/producto/sensores-aviso.webp" alt="El aviso que llega al WhatsApp del encargado: la puerta de la nevera lleva 4 minutos abierta." width="780" height="1440" decoding="async" /></div></div>
+          ${
+            conCarta
+              ? `<div class="dispositivo dispositivo--telefono"><div class="dispositivo__pantalla"><img src="${prefijo}assets/producto/mesa-carta.webp" alt="La carta QR de la mesa 7 de un restaurante de ejemplo: carimañolas a B/. 4.50, patacones con ceviche de corvina a B/. 8.50, con los botones para llamar al mesero y pedir la cuenta." width="780" height="1688" decoding="async" /></div></div>`
+              : `<div class="dispositivo dispositivo--telefono"><div class="dispositivo__pantalla"><img src="${prefijo}assets/producto/sensores-aviso.webp" alt="El aviso que llega al WhatsApp del encargado: la puerta de la nevera lleva 4 minutos abierta." width="780" height="1440" decoding="async" /></div></div>`
+          }
         </div>
-        <figcaption>Una de nuestras demos, con un restaurante de ejemplo: el tablero de sensores y el aviso que llega al WhatsApp. <a href="${prefijo}laboratorio/sensores/">Pruébala</a></figcaption>
+        <figcaption>${
+          conCarta
+            ? `Dos de nuestras demos, con restaurantes de ejemplo: <a href="${enlace(demoPorClave.get('mesa').url, prefijo)}">la carta QR de la mesa</a> y <a href="${prefijo}laboratorio/sensores/">el tablero de sensores de la cocina</a>.`
+            : `Una de nuestras demos, con un restaurante de ejemplo: el tablero de sensores y el aviso que llega al WhatsApp. <a href="${prefijo}laboratorio/sensores/">Pruébala</a>`
+        }</figcaption>
       </figure>`;
   const heroe = `<section class="heroe${conProducto ? ' heroe--producto' : ''}" aria-labelledby="heroe-titulo">
   <div class="envoltura heroe__fila">
@@ -698,8 +707,8 @@ function paginaServicio(s) {
   const so = solucionPorSector.get(s.sectores[0]);
   const relacionados = SERVICIOS.filter((x) => x.id !== s.id && x.sectores.some((y) => s.sectores.includes(y)) && x.tipos.some((y) => s.tipos.includes(y))).slice(0, 3);
   const d = s.demo ? demoPorClave.get(claveDeDemo(s.demo)) : null;
-  const opcionesFoto = { clase: 'ficha-heroe__foto', sizes: '(min-width: 1000px) 40vw, 100vw', alt: '', carga: 'eager', prioridad: true };
-  const visual = d && capturaDemo(d, prefijo) ? marcoDispositivo('portatil', capturaDemo(d, prefijo)) : foto(so?.foto, prefijo, opcionesFoto) || foto(t.foto, prefijo, opcionesFoto);
+  // La pantalla real de la demo cuando la hay; si no, la ficha va solo con texto (sin foto de sector generada).
+  const visual = d && capturaDemo(d, prefijo) ? marcoDispositivo('portatil', capturaDemo(d, prefijo)) : '';
   return documento({
     titulo: `${s.nombre} · alphateklab`,
     descripcion: s.para,
@@ -715,7 +724,6 @@ function paginaServicio(s) {
   <div class="envoltura ficha-heroe__fila${visual ? '' : ' ficha-heroe__fila--sola'}">
     <div class="ficha-heroe__texto">
       ${migas(prefijo, [['Servicios', `${prefijo}servicios/`], [t.nombre, `${prefijo}servicios/?tipo=${t.id}`], [s.corto, null]])}
-      <p class="ficha-heroe__tipo">${icono(t.icono)}${esc(t.nombre)}</p>
       <h1 class="display ficha-heroe__titulo">${esc(s.nombre)}</h1>
       <p class="ficha-heroe__para">${esc(s.para)}</p>
       <div class="tarjeta-servicio__insignias">${insignias(s)}</div>
@@ -724,7 +732,7 @@ function paginaServicio(s) {
         ${s.demo ? `<a class="boton boton--linea" href="${enlace(s.demo, prefijo)}">${icono('play-circle')}Probar la demo</a>` : ''}
         <button class="boton boton--linea" type="button" data-cotizar="${s.id}" aria-pressed="false">Agregar a mi lista</button>
       </p>
-      <p class="ficha-heroe__precio"><span class="num">${esc(precioTexto(s))}</span>${s.precio?.nota ? ` · ${esc(s.precio.nota)}` : ''}</p>
+      ${s.precio ? `<p class="ficha-heroe__precio"><span class="num">${esc(s.precio.texto)}</span>${s.precio.nota ? ` · ${esc(s.precio.nota)}` : ''}</p>` : ''}
     </div>
     ${visual ? `<div class="ficha-heroe__visual">${visual}</div>` : ''}
   </div>

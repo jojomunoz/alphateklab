@@ -54,6 +54,22 @@ try {
   aWebp(join(tmp, 'aviso.png'), 'sensores-aviso', 780);
   console.log('ok sensores-tablero, sensores-aviso');
   await c.close();
+
+  // Mesa: la carta de la mesa 7 en el teléfono del comensal (el enlace con la sala lo da la página de inicio de la demo).
+  const m = await b.newContext({ deviceScaleFactor: 2, locale: 'es-PA' });
+  const ini = await m.newPage();
+  await ini.setViewportSize({ width: 1280, height: 800 });
+  await ini.goto(`${BASE}/alphateklab-mesa/`, { waitUntil: 'load' });
+  await ini.waitForTimeout(2000);
+  const enlaceMesa = await ini.$$eval('a', (as) => as.map((a) => a.href).find((h) => /mesa\.html\?.*sala=/.test(h)));
+  const carta = await m.newPage();
+  await carta.setViewportSize({ width: 390, height: 844 });
+  await carta.goto(enlaceMesa, { waitUntil: 'load' });
+  await carta.waitForTimeout(2500);
+  await carta.screenshot({ path: join(tmp, 'carta.png') });
+  aWebp(join(tmp, 'carta.png'), 'mesa-carta', 780);
+  console.log('ok mesa-carta');
+  await m.close();
 } finally {
   await b.close();
   rmSync(tmp, { recursive: true, force: true });

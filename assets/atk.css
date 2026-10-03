@@ -74,7 +74,7 @@
   --t-2xl: 2rem;
   --t-3xl: clamp(1.875rem, 3.2vw, 2.5rem); /* títulos de sección: 30 → 40 px */
   --t-sub: clamp(1.25rem, 1.8vw, 1.625rem); /* subtítulos y h3 de bloque: 20 → 26 px */
-  --t-4xl: clamp(2.5rem, 4.2vw, 3.4rem); /* titular de portada: 40 → 54 px (los títulos de sección llegan a 40) */
+  --t-4xl: clamp(2.5rem, 4.1vw, 3.3rem); /* titular de portada: 40 → 53 px (los títulos de sección llegan a 40) */
 
   /* espacio base 4 px */
   --e-1: 4px;
