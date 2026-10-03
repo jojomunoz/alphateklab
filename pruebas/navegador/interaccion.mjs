@@ -109,6 +109,17 @@ try {
     assert.equal(await p.isVisible('[data-paso="1"]'), true, 'no volvió al paso 1');
   });
 
+  await paso('en el paso 1 del diagnóstico la flecha solo marca; Enter avanza (WCAG 3.2.2)', async () => {
+    await p.goto(`${BASE}diagnostico/`, { waitUntil: 'networkidle' });
+    await p.focus('input[name="negocio"][value="restaurantes"]');
+    await p.keyboard.press('ArrowDown');
+    await p.waitForTimeout(300);
+    assert.equal(await p.isVisible('[data-paso="1"]'), true, 'la flecha cambió de paso');
+    assert.equal(await p.$eval('input[name="negocio"]:checked', (x) => x.value), 'tiendas');
+    await p.keyboard.press('Enter');
+    await p.waitForSelector('[data-paso="2"]:not([hidden])');
+  });
+
   await paso('el diagnóstico busca lo que la persona escribió y no dice «no está» si existe', async () => {
     await p.goto(`${BASE}diagnostico/?n=cualquier-negocio`, { waitUntil: 'networkidle' });
     await p.fill('#diag-otro', 'cobrar mensualidades y control de acceso de los socios');

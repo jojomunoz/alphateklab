@@ -999,8 +999,10 @@ function paginaDiagnostico() {
     <fieldset class="diag__paso" data-paso="1">
       <legend class="diag__pregunta">¿Qué tipo de negocio tienes?</legend>
       <div class="diag__negocios">
-        ${datos.soluciones.map((so) => `<label class="diag-negocio"><input type="radio" name="negocio" value="${so.slug}" />${so.foto ? `<img src="${so.foto}" alt="" width="800" height="500" loading="lazy" decoding="async" />` : ''}<span class="diag-negocio__nombre">${icono(so.icono)}${esc(so.nombre)}</span></label>`).join('')}
+        ${datos.soluciones.map((so) => `<label class="diag-negocio"><input type="radio" name="negocio" value="${so.slug}" /><span class="diag-negocio__nombre">${esc(so.nombre)}</span><span class="diag-negocio__problema">${esc(so.problemas[0].problema)}</span></label>`).join('')}
       </div>
+      <p class="diag__acciones diag__acciones--paso1"><button class="boton boton--senal" type="button" data-siguiente-1>Siguiente</button></p>
+      <p class="diag__aviso" data-aviso-1 role="alert" hidden>Elige tu tipo de negocio, o «Cualquier negocio» si no está.</p>
     </fieldset>
     <fieldset class="diag__paso" data-paso="2" hidden>
       <legend class="diag__pregunta">¿Qué te gustaría resolver? <small>Puedes marcar varias.</small></legend>
@@ -1051,6 +1053,6 @@ escribir('privacidad/index.html', paginaPrivacidad());
 escribir('creditos/index.html', paginaCreditos());
 escribir('404.html', pagina404());
 escribir('sitemap.xml', sitemap());
-escribir('assets/indice.json', JSON.stringify(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO, GUIAS })));
+escribir('assets/indice.json', JSON.stringify(construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES, DEMOS, PALABRAS_NEGOCIO, GUIAS, FICHAS })));
 escribir('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${URL_BASE}sitemap.xml\n`);
 console.log(`Generado: portada, ${SOLUCIONES.length} soluciones, ${SERVICIOS.length} servicios, catálogo, demos, cotizar, privacidad, créditos, 404, sitemap e índice de búsqueda.`);

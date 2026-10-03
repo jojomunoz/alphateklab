@@ -1,6 +1,6 @@
 // Arma las entradas del buscador a partir de los datos del sitio. Lo usan el generador (assets/indice.json) y las pruebas.
 
-export function construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES = [], DEMOS = [], PALABRAS_NEGOCIO = {}, GUIAS = [] }) {
+export function construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCIONES = [], DEMOS = [], PALABRAS_NEGOCIO = {}, GUIAS = [], FICHAS = {} }) {
   // Cada servicio hereda los problemas (dichos como los dice el cliente) de las páginas de negocio que lo enlazan.
   const problemasDe = {};
   for (const so of SOLUCIONES) for (const p of so.problemas) for (const id of p.servicios) (problemasDe[id] ||= []).push(p.problema);
@@ -26,6 +26,8 @@ export function construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCION
       tipos: s.tipos.map((t) => nombreTipo[t]).join(' '),
       sectores: s.sectores.map((x) => nombreSector[x]).join(' '),
       problemas: (problemasDe[s.id] || []).join(' '),
+      // el texto de la ficha (cómo funciona, el caso y las preguntas), con poco peso: ayuda a encontrar, no decide
+      ficha: FICHAS[s.id] ? [...FICHAS[s.id].como.flatMap((c) => [c.titulo, c.texto]), FICHAS[s.id].ejemplo, ...FICHAS[s.id].preguntas.map((q) => q.p)].join(' ') : '',
     },
   }));
   const soluciones = SOLUCIONES.map((so) => ({

@@ -3442,3 +3442,56 @@ html.sin-desplazar {
     grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
   }
 }
+
+.sin-resultados__cerca {
+  margin-top: var(--e-3);
+  font-size: var(--t-s);
+  color: var(--tinta-2);
+}
+
+/* paso 1 del diagnóstico: filas de texto (sin fotos), con el problema típico de cada negocio */
+.diag__negocios {
+  gap: 0 var(--e-5);
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+}
+.diag-negocio {
+  display: grid;
+  gap: 2px;
+  align-content: start;
+  padding: var(--e-3) var(--e-4) var(--e-3) calc(var(--e-4) + 26px);
+  border: 0;
+  border-top: 1px solid var(--linea);
+  border-radius: 0;
+  background: none;
+  overflow: visible;
+}
+.diag-negocio::before {
+  content: '';
+  position: absolute;
+  left: var(--e-2);
+  top: calc(var(--e-3) + 4px);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--borde-control);
+  background: var(--tarjeta);
+}
+.diag-negocio:has(input:checked)::before {
+  border-color: var(--acento);
+  background: radial-gradient(circle, var(--acento) 0 5px, var(--tarjeta) 6px);
+}
+.diag-negocio:has(input:checked) {
+  box-shadow: none;
+  background: var(--senal-suave);
+}
+.diag-negocio__nombre {
+  padding: 0;
+  font-weight: 700;
+}
+.diag-negocio__problema {
+  font-size: var(--t-s);
+  color: var(--tinta-2);
+}
+.diag__acciones--paso1 {
+  margin-top: var(--e-4);
+}

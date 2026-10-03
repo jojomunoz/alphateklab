@@ -35,7 +35,7 @@ export function parecido(a, b) {
   return TERMINACIONES.has(a.slice(i)) && TERMINACIONES.has(b.slice(i)) ? 0.8 : 0;
 }
 
-const PESOS = { nombre: 6, corto: 6, palabras: 4, problemas: 3, tipos: 2.5, sectores: 2.5, para: 2, incluye: 1.2 };
+const PESOS = { nombre: 6, corto: 6, palabras: 4, problemas: 3, tipos: 2.5, sectores: 2.5, para: 2, incluye: 1.2, ficha: 0.8 };
 
 // entrada: { id, tipo:'servicio'|'solucion'|'demo', titulo, url, campos:{ nombre, corto, palabras, para, incluye, tipos, sectores } }
 export function prepararIndice(entradas) {

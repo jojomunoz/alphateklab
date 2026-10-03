@@ -161,14 +161,40 @@ async function mostrarResultado({ guardar = true } = {}) {
   resultado.scrollIntoView({ behavior: reducir ? 'auto' : 'smooth', block: 'start' });
 }
 
+// Elegir el negocio con el ratón o el dedo avanza solo; con el teclado (flechas) solo marca, y se avanza con Enter o
+// con «Siguiente»: cambiar de pantalla al mover una flecha confunde y falla WCAG 3.2.2 (revisión del 3-oct).
+let ultimoToque = -Infinity;
+form.addEventListener('pointerdown', (ev) => {
+  if (ev.target.closest('.diag-negocio')) ultimoToque = performance.now();
+});
+form.addEventListener('keydown', (ev) => {
+  if (ev.key === 'Enter' && ev.target.name === 'negocio') {
+    ev.preventDefault();
+    if (ev.target.checked || ev.target.value) {
+      ev.target.checked = true;
+      pintarProblemas(ev.target.value);
+      irA(2);
+    }
+  }
+});
 form.addEventListener('change', (ev) => {
   if (ev.target.name === 'negocio') {
     pintarProblemas(ev.target.value);
-    irA(2);
+    form.querySelector('[data-aviso-1]').hidden = true;
+    if (performance.now() - ultimoToque < 1500) irA(2);
   }
   if (ev.target.name === 'problema') form.querySelector('[data-aviso-2]').hidden = true;
 });
 form.addEventListener('click', (ev) => {
+  if (ev.target.closest('[data-siguiente-1]')) {
+    const n = leer().negocio;
+    if (!n) {
+      form.querySelector('[data-aviso-1]').hidden = false;
+      return;
+    }
+    pintarProblemas(n);
+    irA(2);
+  }
   if (ev.target.closest('[data-atras]')) irA(Number(ev.target.closest('[data-paso]').dataset.paso) - 1);
   if (ev.target.closest('[data-siguiente]')) {
     const e = leer();

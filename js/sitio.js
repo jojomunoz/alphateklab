@@ -145,6 +145,21 @@ function itemPreguntar(consulta, i) {
   return li;
 }
 
+// Sin resultados con la frase entera: lo más parecido por cada palabra suelta, para que la persona vea qué hay cerca.
+function parecidos(consulta) {
+  if (!indice) return [];
+  const vistos = new Set();
+  const salida = [];
+  for (const palabra of consulta.split(/\s+/).filter((x) => x.length > 3)) {
+    for (const r of buscar(indice, palabra, { limite: 2 })) {
+      if (r.tipo !== 'servicio' || vistos.has(r.id)) continue;
+      vistos.add(r.id);
+      salida.push(r);
+    }
+  }
+  return salida.slice(0, 3);
+}
+
 function bloqueVacio(consulta) {
   const div = document.createElement('div');
   div.className = 'sin-resultados';
@@ -154,6 +169,17 @@ function bloqueVacio(consulta) {
   const [wa, mas] = div.querySelectorAll('a');
   wa.href = enlaceWa;
   mas.href = `${RAIZ}cotizar/?q=${encodeURIComponent(consulta)}`;
+  const cerca = parecidos(consulta);
+  if (cerca.length) {
+    const p = Object.assign(document.createElement('p'), { className: 'sin-resultados__cerca' });
+    p.append('Lo más parecido que hacemos: ');
+    cerca.forEach((r, i) => {
+      if (i) p.append(', ');
+      p.append(Object.assign(document.createElement('a'), { href: url(r.url), textContent: r.titulo }));
+    });
+    p.append('.');
+    div.append(p);
+  }
   return div;
 }
 
