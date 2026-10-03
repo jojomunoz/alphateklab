@@ -1,6 +1,266 @@
 // Detalle de cada servicio (cómo funciona, qué necesitas, qué no incluye, preguntas, ejemplo).
 // Redactado por agentes con los datos del catálogo y revisado por otro agente; se junta con herramientas/juntar-fichas.mjs.
 export const FICHAS = {
+  B01: {
+    "como": [
+      {
+        "titulo": "Nos cuentas la propiedad",
+        "texto": "Nos dices dónde queda, cuántos ambientes tiene y para qué lo quieres. Con eso te recomendamos el recorrido con fotos 360 o el 3D con medidas."
+      },
+      {
+        "titulo": "Visita con la cámara",
+        "texto": "Vamos a la propiedad con la cámara 360 o el teléfono con LiDAR y tomamos cada ambiente. El equipo lo llevamos nosotros."
+      },
+      {
+        "titulo": "Armamos el recorrido",
+        "texto": "Unimos las tomas en un recorrido que se abre en el navegador del teléfono y lo dejamos en tu dominio."
+      },
+      {
+        "titulo": "Lo mandas al interesado",
+        "texto": "Pegas el enlace en tu anuncio, en tu página o en el WhatsApp de quien pregunta. Recorre la propiedad antes de pedir la visita."
+      }
+    ],
+    "necesitas": [
+      "Alguien que nos abra la propiedad el día de la visita",
+      "La propiedad ordenada y con las luces funcionando: el recorrido muestra lo que hay ese día",
+      "Un dominio o una página donde publicarlo; si no tienes, lo vemos en la propuesta"
+    ],
+    "no_incluye": [
+      "Las fotos profesionales de la propiedad: son un extra de +$300",
+      "Las tomas aéreas con dron, que son otro servicio",
+      "Lo que cobre el portal donde anuncias la propiedad",
+      "Arreglar o decorar la propiedad antes de la visita"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Me conviene el 360 o el 3D?",
+        "r": "El 360 son fotos esféricas de cada ambiente: miras alrededor y saltas al siguiente. El 3D se camina libre y trae las medidas. Depende de la propiedad y de para qué lo usas; te lo recomendamos en la propuesta."
+      },
+      {
+        "p": "¿Con esto vendo más rápido o más caro?",
+        "r": "No te lo prometemos. El estudio independiente más grande que encontramos (Harvard e Ivey, 2023, 75.178 ventas en Los Ángeles) no halló efecto en el precio al tomar en cuenta la calidad de las fotos, y vio que el recorrido puede alargar el tiempo de venta. Lo que sí logras es que el interesado conozca el espacio antes de ir."
+      },
+      {
+        "p": "¿Puedo ver uno antes de contratar?",
+        "r": "Sí. En el laboratorio del sitio hay un recorrido 360 y uno 3D de un apartamento de ejemplo."
+      }
+    ],
+    "ejemplo": "Ejemplo: un agente alquila un apartamento de dos recámaras en El Cangrejo y le escriben muchos interesados desde el extranjero. Les manda el enlace del recorrido 3D y cada uno mide la recámara principal desde su teléfono antes de agendar la visita."
+  },
+  B02: {
+    "como": [
+      {
+        "titulo": "Lo sumas al recorrido",
+        "texto": "Cuando pides el recorrido 360 o 3D, nos dices que también quieres fotos. Se toman en la misma visita, sin otra cita."
+      },
+      {
+        "titulo": "Sesión en la propiedad",
+        "texto": "Fotografiamos cada ambiente buscando la mejor luz del lugar y el ángulo que muestra el espacio."
+      },
+      {
+        "titulo": "Edición",
+        "texto": "Corregimos la luz y el color de cada foto y te las entregamos listas para subir a tu anuncio."
+      },
+      {
+        "titulo": "Las publicas",
+        "texto": "Las usas en los portales, en redes y en tu página, junto al enlace del recorrido."
+      }
+    ],
+    "necesitas": [
+      "Contratar también el recorrido 360 o 3D: las fotos se toman en esa visita",
+      "La propiedad limpia y ordenada, con cortinas y luces listas"
+    ],
+    "no_incluye": [
+      "Video de la propiedad",
+      "Tomas aéreas con dron, que son otro servicio",
+      "Decoración o muebles para la sesión"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Cuánto cuestan?",
+        "r": "$300 más sobre el precio del recorrido 360 o 3D."
+      },
+      {
+        "p": "¿Puedo pedir solo las fotos, sin recorrido?",
+        "r": "Hoy las ofrecemos como extra del recorrido, porque salen de la misma visita. Si solo necesitas fotos, escríbenos y lo vemos."
+      },
+      {
+        "p": "¿Cuántas fotos me entregan?",
+        "r": "Depende de cuántos ambientes tiene la propiedad. El número va en la propuesta."
+      }
+    ],
+    "ejemplo": "Ejemplo: una casa de playa en Coronado que se alquila por temporada. En la misma visita del recorrido 360 salen las fotos de la terraza y de cada recámara, que luego sirven para el anuncio y para la página de reservas."
+  },
+  B03: {
+    "como": [
+      {
+        "titulo": "Escaneo 3D",
+        "texto": "El plano sale del escaneo 3D con LiDAR. Si ya pediste el recorrido 3D, es la misma visita."
+      },
+      {
+        "titulo": "Trazamos el plano",
+        "texto": "A partir del escaneo dibujamos el plano en planta con las medidas de cada ambiente."
+      },
+      {
+        "titulo": "Te llega en PDF",
+        "texto": "Recibes el plano en PDF con los metros cuadrados de cada ambiente, listo para imprimir o adjuntar."
+      },
+      {
+        "titulo": "Lo usas",
+        "texto": "Lo pones en la ficha de la propiedad o se lo das a quien te va a cotizar la remodelación."
+      }
+    ],
+    "necesitas": [
+      "Acceso a la propiedad para el escaneo, con todas las puertas abiertas",
+      "Decirnos si es para anunciar o para remodelar, para marcar lo que te importa"
+    ],
+    "no_incluye": [
+      "Un plano firmado por arquitecto o ingeniero para permisos o trámites",
+      "Planos eléctricos, de plomería o de estructura",
+      "La medición de los linderos del terreno, que hace un agrimensor"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Qué tan exactas son las medidas?",
+        "r": "Salen del escaneo con LiDAR y sirven para anunciar y para planear una remodelación. Si vas a construir o a hacer un trámite, que un profesional confirme las medidas en sitio."
+      },
+      {
+        "p": "¿Puedo tener el plano sin el recorrido?",
+        "r": "Hace falta la visita de escaneo, porque el plano sale de ahí. Publicar el recorrido o no es decisión tuya."
+      }
+    ],
+    "ejemplo": "Ejemplo: el dueño de una bodega en Juan Díaz la quiere alquilar dividida en dos. Con el plano y los metros cuadrados de cada área, el interesado sabe qué le cabe antes de ir a verla."
+  },
+  B04: {
+    "como": [
+      {
+        "titulo": "Nos pasas tus propiedades",
+        "texto": "Nos das cada propiedad con precio, zona, recámaras y lo que más te preguntan, y las preguntas de filtro que quieres hacer."
+      },
+      {
+        "titulo": "Lo conectamos",
+        "texto": "Conectamos el agente al WhatsApp del negocio y a tu calendario, con los horarios en que puedes mostrar."
+      },
+      {
+        "titulo": "Lo probamos contigo",
+        "texto": "Le escribimos como si fuéramos interesados hasta que conteste como lo harías tú."
+      },
+      {
+        "titulo": "Te llegan las visitas",
+        "texto": "Contesta a cualquier hora, pregunta presupuesto, fecha y financiamiento, y te deja la visita en el calendario. Si alguien pide hablar con una persona, te lo pasa."
+      }
+    ],
+    "necesitas": [
+      "Un número de teléfono para el WhatsApp del negocio; si quieres usar el que ya tienes, lo revisamos en la propuesta",
+      "Los datos de cada propiedad, y avisar cuando una se vende, se alquila o cambia de precio",
+      "Un calendario donde agendar las visitas"
+    ],
+    "no_incluye": [
+      "Lo que Meta cobra por los mensajes de WhatsApp: según su tarifa de octubre de 2026, los primeros 1.000 mensajes de servicio al mes por número no se cobran y después son unos US$0,011 cada uno",
+      "Los anuncios pagados para atraer interesados",
+      "La visita: la sigues haciendo tú o tu agente"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Y si le preguntan algo que no sabe?",
+        "r": "Contesta solo con los datos que le cargas de cada propiedad. Lo que no está ahí, te lo pasa a ti en vez de inventarlo."
+      },
+      {
+        "p": "¿Qué pasa con los datos de los interesados?",
+        "r": "Se guardan para darte el seguimiento. La Ley 81 de 2019 pide el consentimiento del interesado y decirle para qué se usan sus datos, así que el agente se lo avisa al empezar la conversación."
+      },
+      {
+        "p": "¿Cuánto cuesta?",
+        "r": "Depende de cuántas propiedades manejas y de cómo agendas; la cifra va cerrada en la propuesta. Los mensajes de WhatsApp los cobra Meta aparte."
+      }
+    ],
+    "ejemplo": "Ejemplo: una inmobiliaria pequeña de Boquete con 15 casas en venta, que recibe consultas desde el extranjero a medianoche. El agente contesta, pregunta presupuesto y fecha de viaje, y solo agenda a quien tiene las dos cosas claras."
+  },
+  B05: {
+    "como": [
+      {
+        "titulo": "Nos cuentas cómo vendes",
+        "texto": "Vemos cuántas propiedades manejas, en qué zonas y por dónde te escribe la gente hoy."
+      },
+      {
+        "titulo": "Armamos las fichas",
+        "texto": "Cada propiedad lleva su ficha con fotos, y con plano y recorrido si los tiene. El sitio se filtra por zona, precio y recámaras."
+      },
+      {
+        "titulo": "Publicamos en tu dominio",
+        "texto": "El sitio queda en tu dominio y cada ficha lleva su botón para escribirte por WhatsApp sobre esa propiedad."
+      },
+      {
+        "titulo": "Lo mantienes al día",
+        "texto": "Cuando entra o sale una propiedad, se actualiza el sitio. Si la cargas tú o nos avisas, lo definimos en la propuesta."
+      }
+    ],
+    "necesitas": [
+      "Fotos y datos de cada propiedad: precio, zona, recámaras y metros",
+      "Un número de WhatsApp para recibir los contactos",
+      "Tu dominio, si ya tienes uno"
+    ],
+    "no_incluye": [
+      "Los recorridos 3D, los planos y las fotos profesionales de cada propiedad: son servicios aparte",
+      "Los anuncios pagados en redes o en buscadores",
+      "Publicar tus propiedades en portales de terceros"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Tengo que dejar los portales?",
+        "r": "No. Tu sitio convive con tus anuncios en los portales. El contacto que llega por tu sitio te llega directo a ti."
+      },
+      {
+        "p": "¿Necesito tener dominio?",
+        "r": "Si ya tienes uno, lo usamos. Si no, se registra a nombre de tu negocio y su costo va en la propuesta."
+      },
+      {
+        "p": "¿Puedo subir las propiedades yo mismo?",
+        "r": "Si manejas muchas o cambian seguido, conviene un panel para que las subas tú. Depende de tu caso y va en la propuesta."
+      }
+    ],
+    "ejemplo": "Ejemplo: una inmobiliaria de dos agentes en Santiago de Veraguas con 30 casas y lotes. El comprador filtra por precio y recámaras, abre la ficha con su recorrido y escribe por WhatsApp desde el botón de esa casa."
+  },
+  B06: {
+    "como": [
+      {
+        "titulo": "Nos dices qué mostrar",
+        "texto": "Nos cuentas dónde queda el terreno o el edificio y qué quieres que se vea, como los accesos o la vista. Antes de ir revisamos si la zona tiene restricciones de vuelo."
+      },
+      {
+        "titulo": "Vuelo en sitio",
+        "texto": "Vamos con el dron y tomamos fotos y video desde el aire. El dron lo llevamos nosotros."
+      },
+      {
+        "titulo": "Mapa del terreno",
+        "texto": "Con las fotos armamos un mapa del terreno visto desde arriba."
+      },
+      {
+        "titulo": "Lo usas al vender",
+        "texto": "Te entregamos fotos, video y mapa para el anuncio, la página del proyecto o la reunión con el comprador."
+      }
+    ],
+    "necesitas": [
+      "Permiso del dueño o de la administración para volar sobre la propiedad",
+      "La ubicación exacta y, si es un terreno, más o menos por dónde van sus límites"
+    ],
+    "no_incluye": [
+      "La medición oficial de linderos: el mapa muestra el terreno, pero no es un plano de agrimensor",
+      "Fotos de interiores, que van en el recorrido 360 o 3D o en las fotos profesionales",
+      "La inspección técnica de techos u obras, que es el servicio de inspección con dron"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Se puede volar en cualquier lugar?",
+        "r": "No. Cerca de los aeropuertos y en algunas zonas hay restricciones. Lo revisamos antes de agendar la visita."
+      },
+      {
+        "p": "¿Qué pasa si llueve el día acordado?",
+        "r": "Con lluvia o viento fuerte no se vuela. Movemos la fecha."
+      }
+    ],
+    "ejemplo": "Ejemplo: un promotor vende lotes en una finca de Chame. Las tomas aéreas muestran la calle de acceso y la cercanía a la carretera, y el mapa deja ver cómo se reparte la finca."
+  },
   C01: {
     "como": [
       {
@@ -876,6 +1136,453 @@ export const FICHAS = {
       }
     ],
     "ejemplo": "Ejemplo: en tres cabañas de playa en Las Lajas, el huésped del sábado llega a las 9 de la noche. A las 8:30 la cabaña ya tiene el aire prendido y la luz del portal encendida; el domingo, cuando se va, la escena de salida apaga todo y el dueño lo ve en el celular desde la ciudad."
+  },
+  I01: {
+    "como": [
+      {
+        "titulo": "Visita al local",
+        "texto": "Vemos qué quieres vigilar: neveras, el tablero eléctrico, el tanque o una puerta. Ahí decidimos qué sensor va en cada lugar."
+      },
+      {
+        "titulo": "Instalación",
+        "texto": "Ponemos los sensores y la puerta de enlace que los conecta, por Wi-Fi o LoRa según la distancia y las paredes."
+      },
+      {
+        "titulo": "Límites de aviso",
+        "texto": "Contigo fijamos a qué temperatura avisar, qué consumo es raro y desde qué nivel del tanque. Los avisos llegan al WhatsApp de quien tú digas."
+      },
+      {
+        "titulo": "Lo miras cuando quieras",
+        "texto": "Ves todo en el teléfono o en la computadora y comparas un mes con otro en el historial."
+      }
+    ],
+    "necesitas": [
+      "Internet en el local y un enchufe para la puerta de enlace",
+      "Acceso a las neveras, el tablero o el tanque el día de la instalación",
+      "Los números de WhatsApp de quienes reciben los avisos"
+    ],
+    "no_incluye": [
+      "Lo que Meta cobra por cada aviso por WhatsApp: unos US$0,011 por mensaje en Panamá, según su tarifa de octubre de 2026",
+      "La conexión a internet del local",
+      "Reparar lo que el sensor detecte, como la nevera que falla o la fuga"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Qué pasa si se cae el internet?",
+        "r": "El aviso no sale hasta que vuelve la conexión. Si eso te preocupa, se puede usar una puerta de enlace con chip celular; va en la propuesta."
+      },
+      {
+        "p": "¿Sirven los sensores que ya tengo?",
+        "r": "Si se pueden conectar, sí. Lo revisamos en la visita."
+      },
+      {
+        "p": "¿Puedo ver cómo se ve antes?",
+        "r": "Sí. En el laboratorio del sitio hay un tablero de sensores con datos simulados."
+      }
+    ],
+    "ejemplo": "Ejemplo: una distribuidora de mariscos en Vacamonte con dos cuartos fríos y un tanque de agua. Si un cuarto pasa del límite de madrugada, el encargado recibe el aviso al WhatsApp y el historial muestra desde qué hora empezó a subir."
+  },
+  I02: {
+    "como": [
+      {
+        "titulo": "Nos cuentas tu flota",
+        "texto": "Nos dices cuántos camiones o motos tienes, por dónde se mueven y de qué zonas no deberían salir."
+      },
+      {
+        "titulo": "Rastreador en cada vehículo",
+        "texto": "Instalamos un rastreador GPS con chip de datos en cada uno. Necesitamos el vehículo en tu patio mientras lo ponemos."
+      },
+      {
+        "titulo": "Zonas en el mapa",
+        "texto": "Marcamos en el mapa las zonas de trabajo. Si un vehículo sale de la suya, te llega un aviso."
+      },
+      {
+        "titulo": "El día en el mapa",
+        "texto": "Ves dónde está cada vehículo en vivo y, al cierre, por dónde pasó y cuánto tiempo estuvo detenido en cada parada."
+      }
+    ],
+    "necesitas": [
+      "Los vehículos en tu patio el día de la instalación",
+      "La lista de vehículos con su placa y quién lo maneja",
+      "Las zonas o rutas que cubre cada uno"
+    ],
+    "no_incluye": [
+      "Apagar el motor a distancia o medir el combustible",
+      "Cámaras dentro del vehículo",
+      "El mantenimiento de los vehículos"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Hay que pagar algo cada mes?",
+        "r": "Sí. Cada rastreador usa un chip con datos móviles, que tiene un costo mensual. Cuánto y cómo se paga va en la propuesta."
+      },
+      {
+        "p": "¿Funciona en el interior del país?",
+        "r": "Reporta en vivo donde hay señal celular. En los tramos sin cobertura el mapa no se actualiza en vivo."
+      },
+      {
+        "p": "¿Tengo que avisarles a los conductores?",
+        "r": "Conviene avisarles por escrito que el vehículo lleva rastreador y para qué se usa."
+      }
+    ],
+    "ejemplo": "Ejemplo: una distribuidora de agua en botellón en La Chorrera con cuatro camiones. Al cierre del día, el dueño ve qué camión estuvo una hora detenido fuera de su ruta y en qué calle."
+  },
+  I03: {
+    "como": [
+      {
+        "titulo": "Visita a la entrada",
+        "texto": "Revisamos la pluma o el portón y buscamos dónde va la cámara para que vea la placa de frente."
+      },
+      {
+        "titulo": "Cámara y conexión",
+        "texto": "Instalamos la cámara de lectura de placas y la conectamos al controlador de la pluma o del portón."
+      },
+      {
+        "titulo": "Placas autorizadas",
+        "texto": "Cargamos la lista de placas que pueden entrar, como las de residentes, empleados o proveedores fijos. Se agregan y se quitan cuando haga falta."
+      },
+      {
+        "titulo": "Abre sola",
+        "texto": "Cuando llega un vehículo de la lista, la pluma abre sola. Todos los vehículos quedan en el registro con su hora de entrada y de salida."
+      }
+    ],
+    "necesitas": [
+      "Una pluma o un portón con motor que ya funcione",
+      "Corriente y red en la entrada",
+      "La lista de placas autorizadas"
+    ],
+    "no_incluye": [
+      "La pluma o el motor del portón, si no los tienes",
+      "El cobro por tiempo de estacionamiento o los tickets",
+      "Obra civil o cableado nuevo hasta la entrada"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Y si llega una visita sin placa registrada?",
+        "r": "La pluma no abre sola. El guardia la abre como siempre y la entrada queda registrada con la placa."
+      },
+      {
+        "p": "¿Lee las placas de noche?",
+        "r": "La cámara se escoge y se coloca para la luz de tu entrada. Lo probamos de día y de noche antes de entregarlo."
+      },
+      {
+        "p": "¿Hay que avisar que hay cámara?",
+        "r": "Sí. La ANTAI trata el video de vigilancia como dato sensible y la Ley 81 de 2019 pide informar a las personas. Conviene un letrero visible en la entrada."
+      }
+    ],
+    "ejemplo": "Ejemplo: un edificio de oficinas en Obarrio con 60 estacionamientos para inquilinos. La pluma abre sola a las placas de la lista y la administración sabe a qué hora entró y salió cada carro, incluidas las visitas."
+  },
+  I04: {
+    "como": [
+      {
+        "titulo": "Visita a las puertas",
+        "texto": "Vemos qué puertas quieres controlar, de qué material son y dónde hay corriente cerca."
+      },
+      {
+        "titulo": "Lector y cerradura",
+        "texto": "Instalamos en cada puerta el lector de QR o tarjeta y la cerradura electromagnética."
+      },
+      {
+        "titulo": "Permisos por persona",
+        "texto": "Cargamos a cada empleado con su horario y sus puertas. Para una visita o un proveedor, creas un pase que vence solo."
+      },
+      {
+        "titulo": "Entran con QR o tarjeta",
+        "texto": "Cada entrada queda registrada con nombre y hora. Si alguien deja la empresa, le quitas el permiso desde tu teléfono."
+      }
+    ],
+    "necesitas": [
+      "Puertas en buen estado que cierren bien",
+      "Corriente cerca de cada puerta e internet en el local",
+      "La lista de personas con su horario"
+    ],
+    "no_incluye": [
+      "Cambiar la puerta o el marco",
+      "Cámaras de vigilancia en la puerta",
+      "Calcular la planilla de pago a partir de la asistencia"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Qué pasa si se va la luz?",
+        "r": "La cerradura electromagnética se suelta sin corriente, así que nadie queda encerrado. Si necesitas que la puerta siga cerrada durante un apagón, se agrega una batería de respaldo y va en la propuesta."
+      },
+      {
+        "p": "¿QR o tarjeta?",
+        "r": "El QR lo lleva cada quien en su teléfono; la tarjeta sirve para quien no quiere usar el suyo. Puedes dar QR a unos y tarjeta a otros, y el lector se escoge para lo que uses."
+      },
+      {
+        "p": "¿Me sirve como control de asistencia?",
+        "r": "Sí: cada entrada queda con nombre y hora. Si quieres que esos datos pasen a tu sistema de planilla, la conexión se cotiza aparte."
+      }
+    ],
+    "ejemplo": "Ejemplo: una clínica en Penonomé con una puerta al cuarto de medicamentos. Solo las enfermeras del turno abren con su tarjeta, y el técnico del aire acondicionado entra con un pase que vence a las 5 de la tarde."
+  },
+  I05: {
+    "como": [
+      {
+        "titulo": "Visita a la zona de trabajo",
+        "texto": "Vemos dónde se exige casco y chaleco, cuánta luz hay y si tus cámaras actuales sirven."
+      },
+      {
+        "titulo": "Cámaras y equipo local",
+        "texto": "Instalamos las cámaras que falten y un equipo que analiza el video dentro de tu planta."
+      },
+      {
+        "titulo": "Marcamos las zonas",
+        "texto": "En la imagen de cada cámara marcamos el área donde el equipo es obligatorio. Fuera de ella no avisa."
+      },
+      {
+        "titulo": "Avisos y reporte",
+        "texto": "Cuando alguien entra sin casco o sin chaleco, el supervisor recibe la foto del momento. Cada semana llega el reporte por zona."
+      }
+    ],
+    "necesitas": [
+      "Buena luz en las zonas a vigilar, también en el turno de noche si lo hay",
+      "Corriente y red donde van las cámaras",
+      "Un aviso por escrito a tu personal y letreros de que hay cámaras"
+    ],
+    "no_incluye": [
+      "Los cascos y los chalecos",
+      "Saber quién es la persona: el aviso trae la foto, sin el nombre",
+      "Grabación de vigilancia contra robos"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Puedo usar las cámaras que ya tengo?",
+        "r": "Si dan buena imagen de la zona y se pueden conectar al equipo, sí. Lo revisamos en la visita."
+      },
+      {
+        "p": "¿Se equivoca?",
+        "r": "Puede pasar. Por eso cada aviso trae la foto: el supervisor la mira y decide."
+      },
+      {
+        "p": "¿El video sale de la planta?",
+        "r": "Se analiza en el equipo que queda en tu planta. Lo que sale es el aviso con la foto."
+      }
+    ],
+    "ejemplo": "Ejemplo: una bloquera en Las Cumbres con un patio por donde pasan montacargas. Si alguien cruza la zona marcada sin chaleco, el jefe de patio recibe la foto en el momento, y el viernes ve en qué horas pasó más."
+  },
+  I06: {
+    "como": [
+      {
+        "titulo": "Vemos la línea",
+        "texto": "Revisamos qué se cuenta (sacos, cajas o piezas), cómo pasan y dónde cabe el sensor o la cámara."
+      },
+      {
+        "titulo": "Sensor o cámara",
+        "texto": "Si pasan de uno en uno, a veces basta un sensor de barrera. Si pasan juntos o hay de varios tipos, va una cámara."
+      },
+      {
+        "titulo": "Prueba contra el conteo a mano",
+        "texto": "Cargamos tus turnos y comparamos lo que cuenta el sistema con un conteo a mano antes de entregarlo."
+      },
+      {
+        "titulo": "Tablero en la oficina",
+        "texto": "Desde la oficina ves cuánto va por hora y por turno, sin esperar al cierre."
+      }
+    ],
+    "necesitas": [
+      "Acceso a la línea o al portón, con corriente cerca",
+      "Red o Wi-Fi que llegue hasta la línea",
+      "Los horarios de tus turnos"
+    ],
+    "no_incluye": [
+      "Revisar la calidad o separar piezas dañadas",
+      "Pesar lo que pasa: eso es el servicio de básculas conectadas",
+      "Pasar el conteo a tu sistema de inventario, que se cotiza aparte"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Cuenta bien si las cajas pasan pegadas?",
+        "r": "Con sensor de barrera, dos cajas pegadas pueden contar como una; ahí conviene la cámara. Por eso lo comparamos con un conteo a mano antes de entregarlo."
+      },
+      {
+        "p": "¿Puedo ver cómo funciona?",
+        "r": "En el laboratorio del sitio hay una demo que usa la cámara de tu computadora o tu teléfono y cuenta a las personas que cruzan una línea. En la planta se hace lo mismo sobre la banda o el portón."
+      }
+    ],
+    "ejemplo": "Ejemplo: un molino de arroz en Chitré que despacha sacos por el portón de carga. El gerente ve desde la oficina cuántos sacos salieron en cada turno, sin esperar la hoja del capataz."
+  },
+  I07: {
+    "como": [
+      {
+        "titulo": "Escogemos los equipos",
+        "texto": "Contigo elegimos los motores, bombas o compresores que más te cuesta tener parados."
+      },
+      {
+        "titulo": "Sensores en cada equipo",
+        "texto": "Montamos en cada uno un sensor inalámbrico de vibración y temperatura, y la puerta de enlace que los conecta."
+      },
+      {
+        "titulo": "Línea base",
+        "texto": "Primero registramos cómo vibra y cuánto calienta cada equipo cuando trabaja bien. Los avisos se ajustan a esa medida."
+      },
+      {
+        "titulo": "Aviso con la tendencia",
+        "texto": "Si un equipo empieza a salirse de su normal, mantenimiento recibe por WhatsApp el aviso con la gráfica de cómo viene cambiando."
+      }
+    ],
+    "necesitas": [
+      "La lista de equipos críticos y acceso a ellos",
+      "Internet o red en la planta para la puerta de enlace",
+      "Una persona de mantenimiento que reciba los avisos"
+    ],
+    "no_incluye": [
+      "La reparación o el mantenimiento del equipo",
+      "La causa exacta de la falla: el aviso dice que algo cambió y tu técnico revisa qué es",
+      "Lo que Meta cobra por cada aviso por WhatsApp: unos US$0,011 por mensaje en Panamá, según su tarifa de octubre de 2026"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Hay que tirar cable hasta la oficina?",
+        "r": "No. Los sensores son inalámbricos y le pasan los datos a la puerta de enlace."
+      },
+      {
+        "p": "¿Avisa desde el primer día?",
+        "r": "Primero tiene que registrar cómo trabaja cada equipo cuando está bien. Cuánto toma depende del equipo y de sus horarios de uso."
+      },
+      {
+        "p": "¿Me garantiza que no se dañe nada?",
+        "r": "No. Te da tiempo de revisar antes de que pare la producción, cuando el daño empieza con más vibración o más calor."
+      }
+    ],
+    "ejemplo": "Ejemplo: una planta de hielo en Santiago con dos compresores y una bomba de agua. Cuando un compresor empieza a calentarse más que su normal, el técnico recibe el aviso y lo revisa en el cambio de turno."
+  },
+  I08: {
+    "como": [
+      {
+        "titulo": "Revisamos la báscula",
+        "texto": "Vemos la marca y el modelo de tu báscula o medidor y si tiene salida de datos."
+      },
+      {
+        "titulo": "La conectamos",
+        "texto": "Ponemos el adaptador que pasa la lectura a la red y la mandamos a tu sistema."
+      },
+      {
+        "titulo": "Registro por camión",
+        "texto": "El peso entra solo. Quien pesa escoge el camión, el lote o el turno, y nadie copia el número a mano."
+      },
+      {
+        "titulo": "Reporte diario",
+        "texto": "Al cierre te llega el reporte del día con lo que se pesó."
+      }
+    ],
+    "necesitas": [
+      "Una báscula o un medidor que funcione y tenga salida de datos; si no la tiene, lo vemos en la visita",
+      "Red o Wi-Fi cerca de la báscula",
+      "Saber a qué sistema o planilla deben llegar los datos"
+    ],
+    "no_incluye": [
+      "La báscula ni su calibración",
+      "Leer la placa del camión de forma automática: es el servicio de lectura de placas",
+      "Cambiar el sistema que ya usas"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Sirve con mi báscula vieja?",
+        "r": "Depende de si tiene salida de datos. Lo revisamos en la visita antes de proponerte nada."
+      },
+      {
+        "p": "¿Cambia el peso o la calibración?",
+        "r": "No. Lee lo que la báscula marca. La calibración sigue siendo cosa de tu proveedor de la báscula."
+      },
+      {
+        "p": "¿Funciona con el sistema que ya uso?",
+        "r": "Depende de si tu sistema acepta datos que vienen de afuera. Lo revisamos contigo y va en la propuesta."
+      }
+    ],
+    "ejemplo": "Ejemplo: un patio de chatarra en Colón donde las pesadas de los camiones se anotaban en un cuaderno. Ahora el peso entra solo, el pesador marca el camión y el turno, y al cierre el dueño compara lo pesado contra lo pagado."
+  },
+  I09: {
+    "como": [
+      {
+        "titulo": "Visita al tablero",
+        "texto": "Revisamos tu tablero eléctrico, los circuitos que quieres ver por separado y el inversor de los paneles, si tienes."
+      },
+      {
+        "titulo": "Medidores con pinza",
+        "texto": "Instalamos medidores con pinza en cada circuito y conectamos la lectura del inversor."
+      },
+      {
+        "titulo": "Cargamos tu tarifa",
+        "texto": "Con tus facturas de luz recientes cargamos lo que pagas por kWh, para calcular el ahorro en dinero."
+      },
+      {
+        "titulo": "Pantalla y reporte",
+        "texto": "En una pantalla ves cuánto producen los paneles y cuánto gasta cada área. Cada mes te llega el reporte de ahorro."
+      }
+    ],
+    "necesitas": [
+      "Acceso al tablero eléctrico",
+      "Tus facturas de luz recientes",
+      "Acceso a la cuenta o la app del inversor, si tienes paneles",
+      "Wi-Fi que llegue al tablero"
+    ],
+    "no_incluye": [
+      "Vender o instalar paneles solares",
+      "La limpieza o el mantenimiento de los paneles",
+      "Trámites con la empresa de distribución eléctrica"
+    ],
+    "preguntas": [
+      {
+        "p": "¿Me sirve si todavía no tengo paneles?",
+        "r": "Sí. Ves cuánto gasta cada área, y si un día pones paneles ya tienes con qué comparar."
+      },
+      {
+        "p": "¿Funciona con cualquier inversor?",
+        "r": "Depende de si el inversor entrega sus datos. Lo revisamos en la visita con la marca y el modelo."
+      },
+      {
+        "p": "¿Cuánto voy a ahorrar?",
+        "r": "No te lo prometemos: medir no ahorra por sí solo. Una revisión de estudios en hogares (ACEEE, 2010) midió entre 4 % y 12 % menos consumo cuando la gente ve su gasto; para negocios no encontramos una cifra independiente."
+      }
+    ],
+    "ejemplo": "Ejemplo: un hotel de 12 habitaciones en Pedasí con paneles en el techo. La dueña ve en una pantalla cuánto producen los paneles y cuánto gastan los aires de las habitaciones frente a la cocina, y cada mes recibe el reporte de ahorro."
+  },
+  I10: {
+    "como": [
+      {
+        "titulo": "Qué hay que revisar",
+        "texto": "Nos dices qué quieres ver: filtraciones en un techo, el avance de una obra o el estado de un terreno. Revisamos si la zona tiene restricciones de vuelo."
+      },
+      {
+        "titulo": "Vuelo",
+        "texto": "Volamos el área y tomamos fotos de alta resolución, sin andamios y sin subir a nadie al techo."
+      },
+      {
+        "titulo": "Mapa del área",
+        "texto": "Unimos las fotos en un mapa del área completa para ubicar cada punto."
+      },
+      {
+        "titulo": "Informe",
+        "texto": "Recibes el informe con las fotos de lo encontrado y su ubicación en el mapa. Con eso decides la reparación o reportas el avance."
+      }
+    ],
+    "necesitas": [
+      "Permiso para volar sobre la propiedad o la obra",
+      "Decirnos qué buscar: goteras, avance de obra o el estado del terreno",
+      "Los planos de la obra, si quieres comparar el avance"
+    ],
+    "no_incluye": [
+      "La reparación del techo o de lo que se encuentre",
+      "Un dictamen firmado por un ingeniero",
+      "La medición oficial de linderos, que hace un agrimensor"
+    ],
+    "preguntas": [
+      {
+        "p": "¿El informe sirve para un trámite o para el seguro?",
+        "r": "Es un informe con fotos y su ubicación. No reemplaza el dictamen firmado de un ingeniero, pero le dice a ese ingeniero dónde mirar."
+      },
+      {
+        "p": "¿Se puede volar cada mes para ver el avance de la obra?",
+        "r": "Sí. Repetir el vuelo permite comparar un mapa con otro; la frecuencia y el costo van en la propuesta."
+      },
+      {
+        "p": "¿Qué pasa si llueve?",
+        "r": "Con lluvia o viento fuerte no se vuela. Se mueve la fecha."
+      }
+    ],
+    "ejemplo": "Ejemplo: una bodega en Tocumen con techo de zinc que gotea en dos pasillos. El vuelo muestra las láminas levantadas y el informe marca en el mapa dónde está cada una, para que el techero vaya directo."
   },
   R01: {
     "como": [
