@@ -91,7 +91,7 @@ function bloqueVacio(consulta) {
   const div = document.createElement('div');
   div.className = 'sin-resultados';
   const enlaceWa = enlaceWhatsApp(mensajePregunta(consulta), contacto());
-  div.innerHTML = `<p class="sin-resultados__titulo">No encontramos «<span></span>» en la lista.</p><p>Igual puede que lo hagamos: si se resuelve con tecnología, probablemente sí. Pregúntanos tal como lo escribiste.</p><p class="sin-resultados__acciones"><a class="boton boton--senal" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-whatsapp-logo"></use></svg>Preguntar por WhatsApp</a><a class="boton boton--linea">Escribir más detalles</a></p>`;
+  div.innerHTML = `<p class="sin-resultados__titulo">No encontramos «<span></span>» en la lista.</p><p>Puede que igual lo hagamos: la lista tiene lo que más nos piden, no todo. Pregúntanos tal como lo escribiste.</p><p class="sin-resultados__acciones"><a class="boton boton--senal" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-whatsapp-logo"></use></svg>Preguntar por WhatsApp</a><a class="boton boton--linea">Escribir más detalles</a></p>`;
   div.querySelector('span').textContent = consulta;
   const [wa, mas] = div.querySelectorAll('a');
   wa.href = enlaceWa;

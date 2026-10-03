@@ -10,9 +10,10 @@ import { DEMOS } from '../datos/demos.mjs';
 import { PAQUETES, ESCALONES } from '../datos/paquetes.mjs';
 import { SOLUCIONES } from '../datos/soluciones.mjs';
 import { PALABRAS } from '../datos/busqueda.mjs';
+import { FICHAS } from '../datos/fichas.mjs';
 import { construirIndice } from '../js/indice.mjs';
 import { ACTUALIZADO, CONTACTO, URL_BASE } from '../datos/sitio.mjs';
-import { validarCatalogo } from '../js/catalogo-reglas.mjs';
+import { validarCatalogo, PALABRAS_PROHIBIDAS } from '../js/catalogo-reglas.mjs';
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 const existe = (ruta) => existsSync(join(RAIZ, ruta));
@@ -54,6 +55,13 @@ for (const so of SOLUCIONES) {
   for (const p of so.problemas) for (const id of p.servicios) if (!idsServicios.has(id)) errores.push(`solución ${so.slug}: servicio ${id} no existe`);
 }
 for (const s of SERVICIOS) if (!PALABRAS[s.id]) errores.push(`${s.id}: sin palabras de búsqueda en datos/busqueda.mjs`);
+for (const [id, f] of Object.entries(FICHAS)) {
+  if (!idsServicios.has(id)) errores.push(`ficha ${id}: el servicio no existe`);
+  const texto = [...f.como.flatMap((c) => [c.titulo, c.texto]), ...f.necesitas, ...f.no_incluye, ...f.preguntas.flatMap((q) => [q.p, q.r]), f.ejemplo].join('\n');
+  for (const re of PALABRAS_PROHIBIDAS) if (re.test(texto)) errores.push(`ficha ${id}: texto con «${texto.match(re)[0]}»`);
+  if (/\$\s?\d/.test(texto.replace(/\$10 al mes|\+?\$300/g, ''))) errores.push(`ficha ${id}: menciona un precio no decidido`);
+  if (!/^Ejemplo:/.test(f.ejemplo)) errores.push(`ficha ${id}: el ejemplo debe empezar con «Ejemplo:»`);
+}
 if (process.env.PERMITIR_PENDIENTES === '1') {
   const pendientes = errores.filter((e) => /no existe en el repo|falta la captura/.test(e));
   if (pendientes.length) console.warn('Pendiente (no bloquea con PERMITIR_PENDIENTES=1):\n- ' + pendientes.join('\n- '));
@@ -240,7 +248,7 @@ function tarjetaServicio(s, prefijo) {
 </article>`;
 }
 
-function bandaPreguntanos(prefijo, { titulo = '¿No encontraste lo que buscas?', texto = 'Si se puede resolver con tecnología, probablemente lo hacemos. Cuéntanos qué necesitas y te respondemos.' } = {}) {
+function bandaPreguntanos(prefijo, { titulo = '¿No encontraste lo que buscas?', texto = 'La lista tiene lo que más nos piden, no todo lo que hacemos. Cuéntanos qué necesitas y te decimos si lo podemos hacer.' } = {}) {
   return `<section class="banda-pregunta" aria-labelledby="banda-titulo">
   <div class="envoltura banda-pregunta__fila">
     <div class="banda-pregunta__texto">
@@ -294,7 +302,7 @@ function escalera(pq, prefijo, { conTitulo = true } = {}) {
 
 const PREGUNTAS = [
   ['¿Hacen solo software o también instalan equipos?', 'Las dos cosas. Hacemos páginas web, apps, sistemas a medida, automatizaciones e inteligencia artificial, y además vamos a tu local a instalar lo físico: placas QR y NFC, pantallas, cámaras, sensores, cerraduras y redes.'],
-  ['¿Y si lo que necesito no está en la lista?', 'Pregúntanos. La lista tiene lo que más nos piden, pero si se puede resolver con tecnología probablemente lo hacemos. Escríbelo en el buscador o en «Pregúntanos» con tus palabras.'],
+  ['¿Y si lo que necesito no está en la lista?', 'Pregúntanos. La lista tiene lo que más nos piden, no todo lo que hacemos. Escríbelo con tus palabras en el buscador o en «Pregúntanos» y te decimos si lo podemos hacer.'],
   ['¿Tengo que comprar equipo?', 'Solo si el servicio lo necesita. En la propuesta te detallamos qué equipo y cuánto cuesta, y lo compramos después de que la apruebas. Si ya tienes algo que sirve (cámaras, una tableta, un televisor), lo usamos.'],
   ['¿De quién son el dominio, la página y los QR?', 'Tuyos. El dominio se registra a nombre de tu negocio y los QR impresos apuntan a una dirección de ese dominio, así que siguen funcionando aunque un día cambies de proveedor.'],
   ['¿Cuánto cuesta?', 'Depende del servicio y de tu negocio; la cifra va cerrada en la propuesta. Lo que ya tiene precio lo ves en cada servicio, como el menú QR a $10 al mes.'],
@@ -357,7 +365,7 @@ function paginaInicio() {
   const negocios = `<section class="seccion envoltura" id="soluciones" aria-labelledby="sol-titulo">
   <div class="seccion__cabeza">
     <h2 id="sol-titulo" class="display seccion__titulo">¿Qué tipo de negocio tienes?</h2>
-    <p class="seccion__bajada">Empieza por tu negocio: te mostramos lo que le resolvemos, con demos y por dónde empezar.</p>
+    <p class="seccion__bajada">Cada página muestra los problemas que resolvemos en ese tipo de negocio, sus demos y por dónde empezar.</p>
   </div>
   <ul class="negocios" role="list">
     ${SOLUCIONES.map(
@@ -392,7 +400,7 @@ function paginaInicio() {
   const capacidades = `<section class="seccion envoltura" id="servicios" aria-labelledby="cap-titulo">
   <div class="seccion__cabeza">
     <h2 id="cap-titulo" class="display seccion__titulo">Lo que hacemos</h2>
-    <p class="seccion__bajada">${SERVICIOS.length} servicios en ${TIPOS.length} tipos de solución, del software que vive en la nube al sensor que va dentro de la nevera.</p>
+    <p class="seccion__bajada">${SERVICIOS.length} servicios en ${TIPOS.length} tipos de solución. Elige uno para ver todo lo que incluye.</p>
   </div>
   <ul class="indice" role="list">
     ${TIPOS.map(
@@ -411,7 +419,7 @@ function paginaInicio() {
   ${fotoInst ? `<div class="dividida__foto">${fotoInst}</div>` : ''}
   <div class="dividida__texto">
     <h2 id="inst-titulo" class="display seccion__titulo">Lo instalamos en tu local</h2>
-    <p class="seccion__bajada">Casi todas las agencias entregan una página o una app y ahí termina. Nosotros también vamos al local: ponemos las placas QR en las mesas, la pantalla en la cocina, la cámara sobre la puerta y el sensor en la nevera, y le enseñamos a tu equipo a usarlo.</p>
+    <p class="seccion__bajada">Además de programar, vamos al local: ponemos las placas QR en las mesas, la pantalla en la cocina, la cámara sobre la puerta y el sensor en la nevera, y le enseñamos a tu equipo a usarlo.</p>
     <ul class="lista-check">
       <li>${icono('check')}Compramos el equipo después de que apruebas la propuesta, no antes.</li>
       <li>${icono('check')}Si ya tienes equipo que sirve (cámaras, una tableta, un televisor), lo usamos.</li>
@@ -610,6 +618,26 @@ ${bandaPreguntanos(prefijo)}`,
   });
 }
 
+function detalleFicha(s) {
+  const f = FICHAS[s.id];
+  if (!f) return '';
+  return `<section class="seccion envoltura ficha-detalle" aria-labelledby="como-titulo">
+  <div class="ficha-detalle__como">
+    <h2 id="como-titulo" class="display seccion__titulo seccion__titulo--chico">Cómo funciona</h2>
+    <ol class="linea-tiempo">${f.como.map((c) => `<li><h3>${esc(c.titulo)}</h3><p>${esc(c.texto)}</p></li>`).join('')}</ol>
+  </div>
+  <div class="ficha-detalle__lado">
+    <div class="ficha-detalle__bloque"><h2>Qué necesitas tener</h2><ul class="lista-check">${f.necesitas.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul></div>
+    <div class="ficha-detalle__bloque ficha-detalle__bloque--no"><h2>Qué no incluye</h2><ul class="lista-no">${f.no_incluye.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>
+    <p class="ficha-detalle__ejemplo">${esc(f.ejemplo)}</p>
+  </div>
+</section>
+<section class="seccion seccion--junta envoltura" aria-labelledby="pf-titulo">
+  <h2 id="pf-titulo" class="display seccion__titulo seccion__titulo--chico">Preguntas sobre este servicio</h2>
+  <div class="preguntas">${f.preguntas.map((q) => `<details class="pregunta"><summary>${esc(q.p)}</summary><p>${esc(q.r)}</p></details>`).join('')}</div>
+</section>`;
+}
+
 // ── ficha de un servicio ──
 function paginaServicio(s) {
   const prefijo = '../../';
@@ -658,6 +686,7 @@ function paginaServicio(s) {
     ${s.aparte ? `<p class="ficha-cuerpo__aparte"><strong>Aparte:</strong> ${esc(s.aparte)}</p>` : ''}
   </div>
 </section>
+${detalleFicha(s)}
 ${
   relacionados.length
     ? `<section class="seccion envoltura" aria-labelledby="rel-titulo">

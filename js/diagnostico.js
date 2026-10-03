@@ -78,7 +78,7 @@ function mostrarResultado({ guardar = true } = {}) {
     <div class="diag-resultado__cabeza">
       <p class="diag-resultado__negocio">${ico(so.icono)}${esc(so.nombre)}</p>
       <h2 class="display diag-resultado__titulo">${servicios.length ? `Esto es lo que te recomendamos (${servicios.length})` : 'Cuéntanos más y te orientamos'}</h2>
-      <p class="seccion__bajada">${servicios.length ? 'Ordenado por lo que más te resuelve. Empieza por los primeros; lo demás se suma después.' : (e.otro ? 'Lo que escribiste no encaja con un servicio de la lista, pero probablemente lo hacemos. Mándanos el mensaje.' : 'Ya tienes lo que te habríamos recomendado. Si buscas otra cosa, escríbela.')}</p>
+      <p class="seccion__bajada">${servicios.length ? 'Ordenado por lo que más te resuelve. Empieza por los primeros; lo demás se suma después.' : (e.otro ? 'Lo que escribiste no está en la lista. Mándanos el mensaje y te decimos si lo podemos hacer.' : 'Ya tienes lo que te habríamos recomendado. Si buscas otra cosa, escríbela.')}</p>
     </div>
     ${principales.length ? `<ol class="recs recs--principales" role="list">${principales.map((s) => tarjeta(s, true)).join('')}</ol>` : ''}
     ${resto.length ? `<h3 class="diag-resultado__sub">También te sirve</h3><ol class="recs" role="list">${resto.map((s) => tarjeta(s, false)).join('')}</ol>` : ''}

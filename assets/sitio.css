@@ -2466,3 +2466,104 @@ main:has(> .banda-pregunta:last-child) + .pie {
   flex-wrap: wrap;
   gap: var(--e-2);
 }
+
+/* ── detalle de la ficha ── */
+.ficha-detalle {
+  display: grid;
+  gap: var(--e-7);
+}
+@media (min-width: 960px) {
+  .ficha-detalle {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+.linea-tiempo {
+  list-style: none;
+  margin: var(--e-5) 0 0;
+  padding: 0;
+  counter-reset: paso;
+  display: grid;
+}
+.linea-tiempo li {
+  counter-increment: paso;
+  position: relative;
+  padding: 0 0 var(--e-5) 52px;
+}
+.linea-tiempo li::before {
+  content: counter(paso);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--tinta);
+  color: var(--senal);
+  font-weight: 800;
+  font-size: var(--t-s);
+}
+.linea-tiempo li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 36px;
+  bottom: 4px;
+  width: 2px;
+  background: var(--linea);
+}
+.linea-tiempo h3 {
+  font-size: var(--t-m);
+  padding-top: 4px;
+}
+.linea-tiempo p {
+  color: var(--tinta-2);
+  font-size: var(--t-s);
+  margin-top: 2px;
+  max-width: 52ch;
+}
+.ficha-detalle__lado {
+  display: grid;
+  gap: var(--e-4);
+}
+.ficha-detalle__bloque {
+  padding: var(--e-5);
+  border-radius: var(--radio-grande);
+  background: var(--tarjeta);
+  border: 1px solid var(--tarjeta-borde);
+  display: grid;
+  gap: var(--e-3);
+}
+.ficha-detalle__bloque h2 {
+  font-size: var(--t-m);
+}
+.lista-no {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--e-2);
+  font-size: var(--t-s);
+  color: var(--tinta-2);
+}
+.lista-no li {
+  display: flex;
+  gap: var(--e-2);
+}
+.lista-no li::before {
+  content: "";
+  flex: none;
+  width: 14px;
+  height: 2px;
+  margin-top: 0.7em;
+  background: var(--linea-fuerte);
+}
+.ficha-detalle__ejemplo {
+  padding: var(--e-4) var(--e-5);
+  border-left: 3px solid var(--senal);
+  background: var(--senal-suave);
+  border-radius: 0 10px 10px 0;
+  font-size: var(--t-s);
+}
