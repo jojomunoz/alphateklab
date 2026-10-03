@@ -3169,7 +3169,7 @@ html.sin-desplazar {
   box-shadow: 0 18px 40px -12px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.06);
 }
 .dispositivo--telefono .dispositivo__pantalla {
-  aspect-ratio: 9 / 18.5;
+  aspect-ratio: 9 / 19.5; /* la del video y las capturas (390 × 844); con 9/18,5 se cortaba la barra del pedido */
   border-radius: 19px;
   background: #efe9e1;
 }
@@ -3847,10 +3847,52 @@ html.sin-desplazar {
   object-fit: cover;
   object-position: top;
 }
+/* pie del video: el botón de pausa redondo al lado del texto, que va en un solo bloque */
+.heroe__pie-video {
+  display: flex;
+  align-items: center;
+  gap: var(--e-3);
+}
 .heroe__pausa {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--h-texto, currentColor) 35%, transparent);
+  background: transparent;
   color: var(--h-texto, inherit);
-  font-weight: 700;
-  margin-right: 4px;
+  cursor: pointer;
+  transition: background-color var(--dur-estado) var(--ease-salida), border-color var(--dur-estado) var(--ease-salida);
+}
+.heroe__pausa .ico {
+  width: 16px;
+  height: 16px;
+}
+.heroe__pausa .ico--reproducir,
+.heroe__pausa[aria-pressed="true"] .ico--pausa {
+  display: none;
+}
+.heroe__pausa[aria-pressed="true"] .ico--reproducir {
+  display: block;
+}
+.heroe__pausa:focus-visible {
+  outline: 2px solid var(--senal);
+  outline-offset: 2px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .heroe__pausa:hover {
+    background: color-mix(in srgb, var(--h-texto, currentColor) 12%, transparent);
+    border-color: color-mix(in srgb, var(--h-texto, currentColor) 60%, transparent);
+  }
+}
+@media (pointer: coarse) {
+  .heroe__pausa {
+    width: 44px;
+    height: 44px;
+  }
 }
 
 /* ── portada más corta en el teléfono (era 15.7 pantallas), sin quitar contenido ── */
@@ -4011,5 +4053,12 @@ html.sin-desplazar {
     display: -webkit-box;
     grid-column: 1 / -1;
     grid-row: 3;
+  }
+}
+/* en el teléfono, el pie del video centrado como bloque y el texto alineado junto al botón */
+@media (max-width: 1039px) {
+  .heroe--portada .heroe__producto .heroe__pie-video {
+    justify-content: center;
+    text-align: left;
   }
 }

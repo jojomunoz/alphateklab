@@ -32,6 +32,12 @@ Reglas del proyecto: `~/alphateklab/BRIEF.md`. Guía de diseño: `~/Documents/No
 - Capturas: `node herramientas/capturas.mjs http://localhost:4900 <demo>` (cartel de cada demo) y
   `node herramientas/producto.mjs http://localhost:4900` (las pantallas reales que van en los héroes de la portada y de
   las páginas de negocio). Las imágenes del sitio son del producto, no escenas generadas.
+- Video de la portada: `node herramientas/video-producto.mjs http://localhost:4900` (~80 s). Graba la demo real de la mesa
+  cuadro por cuadro con el tiempo bajo control (reloj falso de Playwright + animaciones pausadas y puestas en su tiempo),
+  30 por segundo, y codifica AV1 (`.av1.mp4`, con su códec en `video-codecs.json`) y H.264 (`.mp4`), 4:2:0 de 8 bits, con
+  el póster sacado del primer cuadro. Probado y descartado: la transmisión de pantalla de Chrome (CDP screencast) da
+  ~15 cuadros por segundo y sin doble densidad; el webm VP9 de antes salía en 4:4:4 (Profile 1), que muchos
+  decodificadores de teléfono no aceptan.
 - Cerrojos, contra local y contra el sitio en vivo después de cada push:
   `PERMITIR_PENDIENTES=1 node --test pruebas/*.test.mjs`, `node pruebas/navegador/sitio.mjs <url>` y
   `node pruebas/navegador/interaccion.mjs <url>` (cada falla que encontró la revisión de clase mundial es un paso).

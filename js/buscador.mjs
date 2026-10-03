@@ -33,10 +33,23 @@ export function normalizar(texto) {
     .trim();
 }
 
-export function fichas(texto) {
+export function fichas(texto, otrasVacias) {
   return normalizar(texto)
     .split(' ')
-    .filter((t) => t && !VACIAS.has(t) && (t.length > 1 || /\d/.test(t)));
+    .filter((t) => t && !VACIAS.has(t) && !otrasVacias?.has(t) && (t.length > 1 || /\d/.test(t)));
+}
+
+// Cambia cómo se dice en Panamá o en el chat («pelaos», «juega vivo», «chofer») por la palabra del catálogo, sobre el
+// texto ya normalizado y por palabras enteras; las expresiones largas primero.
+function prepararEquivalencias(lista = []) {
+  const mapa = new Map(lista.map(([dice, significa]) => [normalizar(dice), normalizar(significa)]).filter(([d, s]) => d && s && d !== s));
+  if (!mapa.size) return null;
+  const claves = [...mapa.keys()].sort((a, b) => b.length - a.length).map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  return { mapa, re: new RegExp(`(?<=^| )(?:${claves.join('|')})(?= |$)`, 'g') };
+}
+function aplicarEquivalencias(texto, eq) {
+  const t = normalizar(texto);
+  return eq ? t.replace(eq.re, (m) => eq.mapa.get(m)) : t;
 }
 
 // Dos palabras «coinciden» si son iguales o si, después de la raíz común, lo que sobra en cada una es una terminación
@@ -80,14 +93,21 @@ export function parecido(a, b, fa, fb) {
   return familia(fa, fb) * 0.9;
 }
 
-const PESOS = { nombre: 6, corto: 6, palabras: 4, problemas: 3, tipos: 2.5, sectores: 2.5, para: 2, incluye: 1.2, ficha: 0.8 };
+const PESOS = { nombre: 6, corto: 6, palabras: 4, problemas: 3, situaciones: 3, tipos: 2.5, sectores: 2.5, para: 2, incluye: 1.2, ficha: 0.8 };
+const FUERTES = ['nombre', 'corto', 'palabras', 'problemas', 'situaciones'];
 
 // entrada: { id, tipo:'servicio'|'solucion'|'demo', titulo, url, campos:{ nombre, corto, palabras, para, incluye, tipos, sectores } }
-export function prepararIndice(entradas) {
-  return entradas.map((e) => ({
+// datos: lo que escribe herramientas/generar.mjs en assets/indice.json ({ equivalencias, vacias, entradas }) o, como
+// antes, la lista de entradas sola. Devuelve la lista con las equivalencias y el relleno colgados de ella.
+export function prepararIndice(datos) {
+  const { entradas, equivalencias = [], vacias = [] } = Array.isArray(datos) ? { entradas: datos } : datos;
+  const lista = entradas.map((e) => ({
     ...e,
     _fichas: Object.fromEntries(Object.entries(e.campos).map(([campo, texto]) => [campo, [...new Set(fichas(texto))].map((t) => [t, fonetica(t)])])),
   }));
+  lista.equivalencias = prepararEquivalencias(equivalencias);
+  lista.vacias = new Set(vacias.map(normalizar));
+  return lista;
 }
 
 // Para cada palabra de la consulta, la mejor coincidencia dentro de una entrada: [puntos, campo].
@@ -126,7 +146,7 @@ function puntuar(m, conocidas) {
     if (!mejor || !conocidas[i]) return;
     encontradas++;
     total += mejor;
-    if (['nombre', 'corto', 'palabras', 'problemas'].includes(campo)) fuertes++;
+    if (FUERTES.includes(campo)) fuertes++;
   });
   if (!encontradas) return 0;
   // si parte de la frase no se reconoce, solo se responde cuando lo que sí coincide es central en la entrada (nombre,
@@ -143,7 +163,7 @@ function puntuar(m, conocidas) {
 
 // prefijo: true mientras la persona escribe; la última palabra (de 3 letras o más) vale también como comienzo de palabra.
 export function buscar(indice, texto, { limite = 8, prefijo = false } = {}) {
-  const palabras = [...new Set(fichas(texto))];
+  const palabras = [...new Set(fichas(aplicarEquivalencias(texto, indice.equivalencias), indice.vacias))];
   if (!palabras.length) return [];
   const consulta = palabras.map((q) => [q, fonetica(q)]);
   const ultima = palabras[palabras.length - 1];

@@ -454,10 +454,9 @@ if (figuraVideo) {
     const [a, b] = videos;
     if (b && b.offsetParent && Math.abs(a.currentTime - b.currentTime) > 0.25) b.currentTime = a.currentTime;
   });
-  const pintarBoton = () => {
-    boton.textContent = pausadoPorPersona ? 'Reproducir' : 'Pausar';
-    boton.setAttribute('aria-pressed', String(pausadoPorPersona));
-  };
+  // nombre fijo («Pausar la demo») y el estado en aria-pressed: cambiar el texto y además marcar «presionado» hacía
+  // que un lector de pantalla dijera «Reproducir, presionado»
+  const pintarBoton = () => boton.setAttribute('aria-pressed', String(pausadoPorPersona));
   boton.addEventListener('click', () => {
     pausadoPorPersona = !pausadoPorPersona;
     if (pausadoPorPersona) pausar();

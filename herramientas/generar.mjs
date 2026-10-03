@@ -384,15 +384,17 @@ function paginaInicio() {
   // En el teléfono, la carta QR de la demo de mesa si está publicada; si no, el aviso de WhatsApp de la de sensores.
   const conCarta = demoPorClave.has('mesa') && existe('assets/producto/mesa-carta.webp');
   // con los videos de la demo de mesa, el héroe cuenta una sola historia: se pide en el teléfono y el salón lo recibe
-  const conVideo = conCarta && ['mesa-pedido-telefono', 'mesa-pedido-salon'].every((v) => existe(`assets/producto/${v}.mp4`) && existe(`assets/producto/${v}.webm`)) && existe('assets/producto/mesa-salon.webp');
-  const video = (nombre, poster, ancho, alto, alt) => `<video data-video-producto muted loop playsinline preload="metadata" poster="${prefijo}assets/producto/${poster}.webp" width="${ancho}" height="${alto}" aria-label="${esc(alt)}"><source src="${prefijo}assets/producto/${nombre}.webm" type="video/webm" /><source src="${prefijo}assets/producto/${nombre}.mp4" type="video/mp4" /></video>`;
+  // (herramientas/video-producto.mjs): AV1 para quien lo decodifica y H.264 para el resto; el póster es su primer cuadro
+  const conVideo = conCarta && existe('assets/producto/video-codecs.json') && ['mesa-pedido-telefono', 'mesa-pedido-salon'].every((v) => ['av1.mp4', 'mp4', 'webp'].every((x) => existe(`assets/producto/${v}.${x}`)));
+  const codecs = conVideo ? JSON.parse(readFileSync(join(RAIZ, 'assets/producto/video-codecs.json'), 'utf8')) : {};
+  const video = (nombre, ancho, alto, alt) => `<video data-video-producto muted loop playsinline preload="metadata" poster="${prefijo}assets/producto/${nombre}.webp" width="${ancho}" height="${alto}" aria-label="${esc(alt)}"><source src="${prefijo}assets/producto/${nombre}.av1.mp4" type='video/mp4; codecs="${codecs[nombre]}"' /><source src="${prefijo}assets/producto/${nombre}.mp4" type="video/mp4" /></video>`;
   const producto = conVideo
     ? `<figure class="heroe__producto" data-producto-video>
         <div class="heroe__dispositivos">
-          <div class="dispositivo dispositivo--portatil"><div class="dispositivo__pantalla">${video('mesa-pedido-salon', 'mesa-salon', 1280, 800, 'El salón de un restaurante de ejemplo en la computadora de la caja: entra el pedido de la mesa 7.')}</div></div>
-          <div class="dispositivo dispositivo--telefono"><div class="dispositivo__pantalla">${video('mesa-pedido-telefono', 'mesa-carta', 540, 1168, 'La carta QR de la mesa 7 en el teléfono: se elige un plato, se agrega al pedido y se envía.')}</div></div>
+          <div class="dispositivo dispositivo--portatil"><div class="dispositivo__pantalla">${video('mesa-pedido-salon', 1280, 800, 'El salón de un restaurante de ejemplo en la computadora de la caja: entra el pedido de la mesa 7.')}</div></div>
+          <div class="dispositivo dispositivo--telefono"><div class="dispositivo__pantalla">${video('mesa-pedido-telefono', 720, 1560, 'La carta QR de la mesa 7 en el teléfono: se elige un plato, se agrega al pedido y se envía.')}</div></div>
         </div>
-        <figcaption><button type="button" class="enlace-boton heroe__pausa" data-pausa-video aria-pressed="false">Pausar</button> Demo con un restaurante de ejemplo: se pide desde la mesa 7 y el salón lo ve al instante. <a href="${enlace(demoPorClave.get('mesa').url, prefijo)}">Pruébala</a></figcaption>
+        <figcaption class="heroe__pie-video"><button type="button" class="heroe__pausa" data-pausa-video aria-pressed="false" aria-label="Pausar la demo">${icono('pausa', 'ico ico--pausa')}${icono('reproducir', 'ico ico--reproducir')}</button><span>Demo con un restaurante de ejemplo: se pide desde la mesa 7 y el salón lo ve al instante. <a href="${enlace(demoPorClave.get('mesa').url, prefijo)}">Pruébala</a></span></figcaption>
       </figure>`
     : `<figure class="heroe__producto">
         <div class="heroe__dispositivos">
