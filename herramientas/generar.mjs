@@ -210,7 +210,17 @@ function pie(prefijo) {
 </footer>`;
 }
 
+// El recurso de la marca: el cuadrado ámbar del logo como punto final de los titulares que afirman algo (no en los que
+// preguntan). Se aplica al HTML ya armado para que sea igual en todas las páginas.
+const MODULO = '<span class="modulo" aria-hidden="true"></span>';
+function conModulo(html) {
+  return html
+    .replace(/(<h1 [^>]*class="(?![^"]*ficha-heroe)[^"]*heroe__titulo[^"]*"[^>]*>)([^<]*[^?<\s])(<\/h1>)/, (_, a, t, c) => `${a}${t.replace(/\.$/, '')}${MODULO}${c}`)
+    .replace(/(<h2 [^>]*class="(?![^"]*--chico)[^"]*seccion__titulo[^"]*"[^>]*>)([^<]*[^?<\s])(<\/h2>)/g, (_, a, t, c) => `${a}${t.replace(/\.$/, '')}${MODULO}${c}`);
+}
+
 function documento({ titulo, descripcion, prefijo, cuerpo, scripts = '', canonica, robots = '', clase = '', datos = null, imagen = 'assets/og.jpg' }) {
+  cuerpo = conModulo(cuerpo);
   return `<!doctype html>
 <html lang="es-PA" data-raiz="${prefijo || './'}" data-whatsapp="${esc(CONTACTO.whatsapp || '')}">
 <head>

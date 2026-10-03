@@ -3921,3 +3921,14 @@ html.sin-desplazar {
     line-height: 1.4;
   }
 }
+
+/* el cuadrado ámbar del logo como punto final de los titulares */
+.modulo {
+  display: inline-block;
+  width: 0.2em;
+  height: 0.2em;
+  margin-left: 0.07em;
+  background: var(--senal);
+  border-radius: 0.03em;
+  vertical-align: baseline;
+}
