@@ -3526,3 +3526,19 @@ html.sin-desplazar {
 .grupo__cabeza--texto .grupo__titulo {
   font-size: var(--t-sub);
 }
+
+/* migas alineadas aunque los enlaces tengan 44 px de toque */
+.migas {
+  align-items: center;
+}
+/* cifras sueltas: proporcionales («11» con tabulares en Manrope se leía «1 1») */
+.indice__cuenta,
+.negocio__mas,
+.etapa__num {
+  font-variant-numeric: proportional-nums;
+}
+.tarjeta-servicio__pie .nota-lista {
+  flex-basis: 100%;
+  text-align: right;
+  font-size: var(--t-xs);
+}

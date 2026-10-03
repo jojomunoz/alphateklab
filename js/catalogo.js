@@ -49,7 +49,7 @@ async function aplicar({ url = true } = {}) {
   let orden = null;
   if (f.q) {
     try {
-      const res = buscar(await cargarIndice(), f.q, { limite: 200 }).filter((r) => r.tipo === 'servicio');
+      const res = buscar(await cargarIndice(), f.q, { limite: 200, prefijo: escribiendo }).filter((r) => r.tipo === 'servicio');
       orden = new Map(res.map((r, i) => [r.id, i]));
     } catch {
       orden = new Map(); // sin índice no se puede buscar: se dice abajo
@@ -79,9 +79,11 @@ async function aplicar({ url = true } = {}) {
 }
 
 let espera;
+let escribiendo = false; // mientras la persona escribe en el campo, «cam» ya trae las cámaras
 form.addEventListener('input', (e) => {
   clearTimeout(espera);
-  espera = setTimeout(() => aplicar(), e.target.name === 'q' ? 160 : 0);
+  escribiendo = e.target.name === 'q';
+  espera = setTimeout(() => aplicar(), escribiendo ? 160 : 0);
 });
 form.addEventListener('submit', (e) => {
   e.preventDefault();

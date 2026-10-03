@@ -507,3 +507,7 @@ kbd {
     min-height: 44px;
   }
 }
+
+.migas {
+  align-items: center;
+}

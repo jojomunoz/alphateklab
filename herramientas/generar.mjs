@@ -294,8 +294,8 @@ function marcoDispositivo(tipo, contenido) {
   return `<div class="dispositivo dispositivo--${tipo}"><div class="dispositivo__pantalla">${contenido}</div></div>`;
 }
 
-function capturaDemo(d, prefijo, alt) {
-  return d && d.imagen && existe(d.imagen) ? `<img src="${prefijo}${d.imagen}" alt="${esc(alt ?? `Captura de la demo: ${d.nombre}`)}" width="640" height="400" loading="lazy" decoding="async" />` : '';
+function capturaDemo(d, prefijo, alt, { prioridad = false } = {}) {
+  return d && d.imagen && existe(d.imagen) ? `<img src="${prefijo}${d.imagen}" alt="${esc(alt ?? `Captura de la demo: ${d.nombre}`)}" width="640" height="400" ${prioridad ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async" />` : '';
 }
 
 function tarjetaDemo(d, prefijo, { nivel = 'h3', grande = false } = {}) {
@@ -445,7 +445,7 @@ function paginaInicio() {
       <p class="seccion__bajada">Funcionan en tu navegador, con negocios de ejemplo; cada una dice qué parte es simulada.${proximas.length ? ` Hay ${enLetras(proximas.length).replace(/^una$/, 'una')} más en preparación.` : ''}</p>
     </div>
     <ul class="demos" role="list">
-      ${DEMOS.map((d, i) => tarjetaDemo(d, prefijo, { grande: i === 0 && DEMOS.length > 2 })).join('\n      ')}
+      ${DEMOS.map((d) => tarjetaDemo(d, prefijo)).join('\n      ')}
     </ul>
     ${proximas.length ? `<p class="demos__proximas">${icono('wrench')}<span><strong>En preparación:</strong> ${proximas.map((d) => esc(d.nombre)).join(', ')}.</span></p>` : ''}
     <p class="seccion__pie"><a class="boton boton--claro" href="${prefijo}laboratorio/">Ver todas las demos</a></p>
@@ -623,7 +623,7 @@ function paginaServicios() {
   ${migas(prefijo, [['Servicios', null]])}
   <div class="catalogo__cabeza">
     <h1 class="display pagina-simple__titulo">Todos los servicios</h1>
-    <p class="seccion__bajada">${SERVICIOS.length} servicios. Busca con tus palabras o filtra por tu tipo de negocio; si no está, pregúntanos. Se cotizan según tu negocio, salvo los que muestran precio.</p>
+    <p class="seccion__bajada">Busca con tus palabras o filtra; si no está, pregúntanos. Se cotizan según tu negocio, salvo los que muestran precio.</p>
   </div>
   <form class="filtros" id="filtros" role="search" aria-label="Buscar y filtrar servicios">
     <div class="filtros__buscar">${icono('magnifying-glass')}<label class="sr" for="filtro-q">Buscar</label><input id="filtro-q" name="q" type="search" enterkeyhint="search" placeholder="Busca con tus palabras: inventario, cámara, pedir desde la mesa…" autocomplete="off" /></div>
@@ -707,7 +707,7 @@ function paginaServicio(s) {
   const relacionados = SERVICIOS.filter((x) => x.id !== s.id && x.sectores.some((y) => s.sectores.includes(y)) && x.tipos.some((y) => s.tipos.includes(y))).slice(0, 3);
   const d = s.demo ? demoPorClave.get(claveDeDemo(s.demo)) : null;
   // La pantalla real de la demo cuando la hay; si no, la ficha va solo con texto (sin foto de sector generada).
-  const visual = d && capturaDemo(d, prefijo) ? marcoDispositivo('portatil', capturaDemo(d, prefijo)) : '';
+  const visual = d && capturaDemo(d, prefijo) ? marcoDispositivo('portatil', capturaDemo(d, prefijo, undefined, { prioridad: true })) : '';
   return documento({
     titulo: `${s.nombre} · alphateklab`,
     descripcion: s.para,

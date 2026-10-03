@@ -236,7 +236,10 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
     } catch {
       if (vacio) {
         vacio.hidden = false;
-        vacio.replaceChildren(Object.assign(document.createElement('p'), { textContent: 'No se pudo cargar el buscador. Revisa tu conexión o usa la lista de servicios.' }));
+        const bloque = bloqueVacio(q);
+        bloque.querySelector('.sin-resultados__titulo').textContent = 'No se pudo cargar el buscador.';
+        bloque.querySelector('.sin-resultados__titulo + p').textContent = 'Revisa tu conexión, usa la lista de servicios o pregúntanos tal como lo escribiste.';
+        vacio.replaceChildren(bloque);
       }
       return;
     }
@@ -435,7 +438,7 @@ document.addEventListener('click', (e) => {
   alternarEnCotizacion(b.dataset.cotizar);
   pintarCotizacion();
   // junto al botón grande de la ficha, una línea que dice dónde quedó y cuántos van
-  if (!b.classList.contains('boton-chico')) {
+  {
     const { elegidos } = leerCotizacion();
     let nota = b.parentElement.querySelector('.nota-lista');
     if (!nota) {

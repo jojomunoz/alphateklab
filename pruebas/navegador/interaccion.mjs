@@ -132,6 +132,16 @@ try {
     assert.match(texto, /acceso/i);
   });
 
+  await paso('en el catálogo, escribir «cam» ya muestra las cámaras (no «0 resultados»)', async () => {
+    await p.goto(`${BASE}servicios/`, { waitUntil: 'networkidle' });
+    await p.click('#filtro-q');
+    await p.keyboard.type('cam');
+    await p.waitForTimeout(500);
+    const visibles = await p.$$eval('.tarjeta-servicio', (xs) => xs.filter((x) => x.getBoundingClientRect().height > 0).length);
+    assert.ok(visibles >= 5, `solo ${visibles}`);
+    assert.equal(await p.isVisible('#catalogo-vacio'), false);
+  });
+
   await paso('Pregúntanos no muestra códigos internos en la lista', async () => {
     await p.goto(`${BASE}cotizar/?servicio=R02`, { waitUntil: 'networkidle' });
     const texto = await p.$eval('#cot-elegidos', (r) => r.innerText);
