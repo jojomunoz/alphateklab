@@ -45,7 +45,7 @@ export function prepararIndice(entradas) {
   }));
 }
 
-function puntuar(entrada, consulta) {
+function puntuar(entrada, consulta, prefijo = '') {
   let total = 0;
   let encontradas = 0;
   let fuertes = 0;
@@ -55,7 +55,9 @@ function puntuar(entrada, consulta) {
     for (const [campo, lista] of Object.entries(entrada._fichas)) {
       const peso = PESOS[campo] ?? 1;
       for (const t of lista) {
-        const p = parecido(q, t) * peso;
+        let p = parecido(q, t) * peso;
+        // la palabra que se está escribiendo cuenta como comienzo de otra («cam» → cámaras), con menos peso
+        if (!p && q === prefijo && t.length > q.length && t.startsWith(q)) p = 0.7 * peso;
         if (p > mejor) {
           mejor = p;
           campoMejor = campo;
@@ -77,11 +79,14 @@ function puntuar(entrada, consulta) {
   return total * (0.5 + cobertura) + (cobertura === 1 ? 2 : 0);
 }
 
-export function buscar(indice, texto, { limite = 8 } = {}) {
+// prefijo: true mientras la persona escribe; la última palabra (de 3 letras o más) vale también como comienzo de palabra.
+export function buscar(indice, texto, { limite = 8, prefijo = false } = {}) {
   const consulta = [...new Set(fichas(texto))];
   if (!consulta.length) return [];
+  const ultima = consulta[consulta.length - 1];
+  const pre = prefijo && /[a-zñ]$/.test(normalizar(texto)) && ultima.length >= 3 ? ultima : '';
   return indice
-    .map((e) => ({ e, puntos: puntuar(e, consulta) * (e.tipo === 'servicio' ? 1 : 0.9) }))
+    .map((e) => ({ e, puntos: puntuar(e, consulta, pre) * (e.tipo === 'servicio' ? 1 : 0.9) }))
     .filter((x) => x.puntos >= 3)
     .sort((a, b) => b.puntos - a.puntos || a.e.titulo.localeCompare(b.e.titulo))
     .slice(0, limite)

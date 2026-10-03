@@ -32,7 +32,7 @@ export function recomendar(solucion, elegidos, tengo = []) {
 
 export function mensajeDiagnostico({ negocio, problemas = [], servicios = [], otro = '' }) {
   const lineas = ['Hola, alphateklab. Hice el diagnóstico en su página.'];
-  if (negocio) lineas.push(`Mi negocio: ${negocio}.`);
+  if (negocio) lineas.push(/^cualquier negocio$/i.test(negocio) ? 'Mi negocio: otro tipo (lo explico abajo).' : `Mi negocio: ${negocio}.`);
   if (problemas.length) {
     lineas.push('', 'Lo que quiero resolver:');
     for (const p of problemas) lineas.push(`- ${p}`);
@@ -41,7 +41,7 @@ export function mensajeDiagnostico({ negocio, problemas = [], servicios = [], ot
   if (extra) lineas.push('', `Además: ${extra}`);
   if (servicios.length) {
     lineas.push('', 'Me recomendó:');
-    for (const s of servicios) lineas.push(`- ${s.id} ${s.nombre}`);
+    for (const s of servicios) lineas.push(`- ${s.nombre} (ref. ${s.id})`);
   }
   return lineas.join('\n');
 }

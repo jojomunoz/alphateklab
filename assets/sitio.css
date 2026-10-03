@@ -478,8 +478,7 @@ body.menu-abierto {
   border-radius: var(--r-control);
   background: var(--papel-2);
 }
-.resultado[aria-selected="true"] .resultado__fila,
-.resultado__fila:hover {
+.resultado[aria-selected="true"] .resultado__fila {
   background: var(--senal-suave);
 }
 .resultado__texto strong {
@@ -3027,4 +3026,22 @@ input[type='search']::-webkit-search-cancel-button {
 }
 .fuentes--guia h2 {
   font-size: var(--t-m);
+}
+
+/* el diálogo del buscador bloquea el desplazamiento de la página de atrás; el hueco de la barra no salta */
+html {
+  scrollbar-gutter: stable;
+  scroll-padding-top: calc(var(--cabecera-alto) + 16px);
+}
+html.sin-desplazar {
+  overflow: hidden;
+}
+
+.filtros__mas {
+  align-items: center;
+  gap: 6px;
+}
+.filtros__mas .ico {
+  width: 18px;
+  height: 18px;
 }

@@ -7,9 +7,11 @@ import { recomendar, mensajeDiagnostico, estadoDesdeParams, paramsDesdeEstado, Y
 const restaurante = SOLUCIONES.find((s) => s.slug === 'restaurantes');
 
 test('recomienda los servicios de los problemas marcados, la respuesta principal primero', () => {
+  // «Esperan para pedir, para otra ronda y para pagar»: lo que lo resuelve es pedir y pagar desde la mesa (R02);
+  // el menú QR solo muestra la carta, por eso va último (auditoría del 3-oct).
   const r = recomendar(restaurante, [0]);
-  assert.equal(r[0].id, 'R01');
-  assert.deepEqual(r.map((x) => x.id), ['R01', 'R02', 'R03']);
+  assert.equal(r[0].id, 'R02');
+  assert.deepEqual(r.map((x) => x.id), ['R02', 'R03', 'R01']);
   assert.ok(r.every((x) => x.motivos.length === 1));
 });
 
@@ -41,7 +43,7 @@ test('todo lo que puede recomendar existe en el catálogo', () => {
 
 test('el mensaje lleva negocio, problemas, lo extra y la recomendación', () => {
   const m = mensajeDiagnostico({ negocio: 'Restaurantes y cafés', problemas: ['Los clientes esperan.'], servicios: [{ id: 'R01', nombre: 'Menú QR a la medida' }], otro: 'tengo 12 mesas' });
-  assert.equal(m, 'Hola, alphateklab. Hice el diagnóstico en su página.\nMi negocio: Restaurantes y cafés.\n\nLo que quiero resolver:\n- Los clientes esperan.\n\nAdemás: tengo 12 mesas\n\nMe recomendó:\n- R01 Menú QR a la medida');
+  assert.equal(m, 'Hola, alphateklab. Hice el diagnóstico en su página.\nMi negocio: Restaurantes y cafés.\n\nLo que quiero resolver:\n- Los clientes esperan.\n\nAdemás: tengo 12 mesas\n\nMe recomendó:\n- Menú QR a la medida (ref. R01)');
 });
 
 test('el estado va y vuelve por la URL', () => {

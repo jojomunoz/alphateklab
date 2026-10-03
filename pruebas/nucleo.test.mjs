@@ -26,9 +26,9 @@ test('el filtro va y vuelve por la URL', () => {
 
 test('el mensaje lista los servicios en el orden elegido, con precio solo si lo hay', () => {
   const m = armarMensaje({ elegidos: ['C01', 'R01'], servicios: S, negocio: 'Fonda X', tipo: 'Restaurantes y cafés', lugar: 'David', notas: '' });
-  assert.equal(m, 'Hola, alphateklab.\nNegocio: Fonda X (Restaurantes y cafés), David\n\nQuiero una cotización de:\n- C01 Contador de personas en la entrada\n- R01 Menú QR a la medida ($10 al mes)');
+  assert.equal(m, 'Hola, alphateklab.\nNegocio: Fonda X (Restaurantes y cafés), David\n\nQuiero una cotización de:\n- Contador de personas en la entrada (ref. C01)\n- Menú QR a la medida, $10 al mes (ref. R01)');
   const conNotas = armarMensaje({ elegidos: ['R01'], servicios: S, notas: 'algo para la cocina' });
-  assert.equal(conNotas, 'Hola, alphateklab.\n\nLo que necesito: algo para la cocina\n\nServicios que me interesan:\n- R01 Menú QR a la medida ($10 al mes)');
+  assert.equal(conNotas, 'Hola, alphateklab.\n\nLo que necesito: algo para la cocina\n\nServicios que me interesan:\n- Menú QR a la medida, $10 al mes (ref. R01)');
   assert.equal(armarMensaje({ elegidos: [], servicios: S, notas: 'imprimir camisetas' }), 'Hola, alphateklab.\n\nLo que necesito: imprimir camisetas');
 });
 
@@ -48,4 +48,10 @@ test('alternar agrega y quita; elegidosValidos limpia lo guardado', () => {
   assert.deepEqual(alternar(['R01', 'C01'], 'R01'), ['C01']);
   assert.deepEqual(elegidosValidos(['R01', 'R01', 'X', 3, 'T01'], S), ['R01', 'T01']);
   assert.deepEqual(elegidosValidos('basura', S), []);
+});
+
+test('si lo escrito ya empieza con «necesito», no se repite «Lo que necesito:»', () => {
+  const m = armarMensaje({ elegidos: [], servicios: [], notas: 'necesito un sistema para mi gimnasio' });
+  assert.match(m, /\n\nNecesito un sistema para mi gimnasio/);
+  assert.doesNotMatch(m, /Lo que necesito: necesito/i);
 });

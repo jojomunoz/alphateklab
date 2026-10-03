@@ -14,16 +14,23 @@ function cerrarMenus(excepto) {
     if (b === excepto) continue;
     b.setAttribute('aria-expanded', 'false');
     g.querySelector('.mega').hidden = true;
+    g.dataset.abierto = '';
   }
 }
 for (const g of grupos) {
   const b = g.querySelector('.menu__boton');
   const panel = g.querySelector('.mega');
   b.addEventListener('click', () => {
-    const abrir = b.getAttribute('aria-expanded') !== 'true';
+    const abierto = b.getAttribute('aria-expanded') === 'true';
+    // Abierto por pasar el ratón: el clic lo deja fijo (lo que la persona quería era abrirlo), no lo cierra.
+    if (abierto && g.dataset.abierto === 'hover') {
+      g.dataset.abierto = 'clic';
+      return;
+    }
     cerrarMenus(b);
-    b.setAttribute('aria-expanded', String(abrir));
-    panel.hidden = !abrir;
+    b.setAttribute('aria-expanded', String(!abierto));
+    panel.hidden = abierto;
+    g.dataset.abierto = abierto ? '' : 'clic';
   });
   // con mouse, se abre al pasar por encima (con una pequeña espera para no abrirlo al cruzar)
   if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
@@ -31,16 +38,20 @@ for (const g of grupos) {
     g.addEventListener('mouseenter', () => {
       clearTimeout(t);
       t = setTimeout(() => {
+        if (b.getAttribute('aria-expanded') === 'true') return;
         cerrarMenus(b);
         b.setAttribute('aria-expanded', 'true');
         panel.hidden = false;
+        g.dataset.abierto = 'hover';
       }, 120);
     });
     g.addEventListener('mouseleave', () => {
       clearTimeout(t);
       t = setTimeout(() => {
+        if (g.dataset.abierto === 'clic') return; // fijado con clic: se cierra con Escape, con clic fuera o al salir con Tab
         b.setAttribute('aria-expanded', 'false');
         panel.hidden = true;
+        g.dataset.abierto = '';
       }, 180);
     });
   }
@@ -146,6 +157,7 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
   let activo = -1;
   let ultimo = '';
   let hubo = 0;
+  let esperaVacio;
   const items = () => [...lista.querySelectorAll('[role="option"]')];
   function marcar(i) {
     const xs = items();
@@ -163,6 +175,15 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
   lista.addEventListener('click', (e) => {
     const li = e.target.closest('[role="option"]');
     if (li) ir(li.dataset.url);
+  });
+  // El foco se queda en el campo al hacer clic en un resultado (si no, el desplegable se cierra antes del clic).
+  lista.addEventListener('mousedown', (e) => e.preventDefault());
+  // Con el ratón, la fila bajo el puntero es la elegida: un solo resaltado, el mismo que usan las flechas.
+  lista.addEventListener('mousemove', (e) => {
+    const li = e.target.closest('[role="option"]');
+    if (!li) return;
+    const i = items().indexOf(li);
+    if (i !== activo) marcar(i);
   });
   async function actualizar() {
     const q = campo.value.trim();
@@ -188,17 +209,41 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
       return;
     }
     if (q !== ultimo) return;
-    const res = buscar(idx, q, { limite: 8 });
+    // Mientras se escribe, la última palabra cuenta como comienzo de palabra («cam» encuentra cámaras).
+    const res = buscar(idx, q, { limite: 8, prefijo: true });
     hubo = res.length;
+    clearTimeout(esperaVacio);
     lista.replaceChildren(...res.map((r, i) => itemResultado(r, i, q)), ...(res.length ? [itemPreguntar(q, res.length)] : []));
-    if (sugerencias) sugerencias.hidden = true;
-    if (vacio) {
-      vacio.hidden = res.length > 0;
-      vacio.replaceChildren(...(res.length ? [] : [bloqueVacio(q)]));
-    }
-    if (estado) estado.textContent = res.length ? `${res.length} ${res.length === 1 ? 'resultado' : 'resultados'}. Usa las flechas para elegir.` : `Sin resultados para «${q}». Puedes preguntarnos.`;
     campo.setAttribute('aria-expanded', String(res.length > 0));
     marcar(-1);
+    if (res.length) {
+      if (sugerencias) sugerencias.hidden = true;
+      if (vacio) { vacio.hidden = true; vacio.replaceChildren(); }
+      if (estado) estado.textContent = `${res.length} ${res.length === 1 ? 'resultado' : 'resultados'}. Usa las flechas para elegir.`;
+      return;
+    }
+    // Sin resultados: no se dice «No encontramos» a media palabra. Con menos de 3 letras siguen las sugerencias;
+    // con 3 o más, el aviso sale tras 300 ms sin teclear.
+    if (vacio) { vacio.hidden = true; vacio.replaceChildren(); }
+    if (q.replace(/\s/g, '').length < 3) {
+      if (sugerencias) sugerencias.hidden = false;
+      return;
+    }
+    esperaVacio = setTimeout(() => {
+      if (campo.value.trim() !== q) return;
+      if (sugerencias) sugerencias.hidden = true;
+      if (vacio) { vacio.hidden = false; vacio.replaceChildren(bloqueVacio(q)); }
+      if (estado) estado.textContent = `Sin resultados para «${q}». Puedes preguntarnos.`;
+    }, 300);
+  }
+  // Enter (o «Buscar») sin una opción elegida: la lista completa si hubo resultados, preguntar si no.
+  async function enviar() {
+    const q = campo.value.trim();
+    if (!q) return;
+    const li = items()[activo];
+    if (li) return ir(li.dataset.url);
+    if (q !== ultimo) await actualizar();
+    ir(hubo ? `${RAIZ}servicios/?q=${encodeURIComponent(q)}` : `${RAIZ}cotizar/?q=${encodeURIComponent(q)}`);
   }
   campo.addEventListener('input', actualizar);
   campo.addEventListener('keydown', (e) => {
@@ -206,14 +251,10 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
     else if (e.key === 'ArrowUp') { e.preventDefault(); marcar(activo < 0 ? -2 : activo - 1); }
     else if (e.key === 'Enter') {
       e.preventDefault();
-      const q = campo.value.trim();
-      if (!q) return;
-      const li = items()[activo];
-      if (li) ir(li.dataset.url);
-      else ir(hubo ? `${RAIZ}servicios/?q=${encodeURIComponent(q)}` : `${RAIZ}cotizar/?q=${encodeURIComponent(q)}`);
+      enviar();
     }
   });
-  return { actualizar };
+  return { actualizar, enviar };
 }
 
 const dialogo = document.querySelector('[data-buscador]');
@@ -222,7 +263,7 @@ const sugerenciasDialogo = dialogo?.querySelector('[data-buscador-sugerencias]')
 if (dialogo) {
   sugerenciasDialogo.innerHTML = `<p class="buscador__ayuda">Escribe con tus palabras. Por ejemplo:</p><ul class="chips">${SUGERENCIAS.map((s) => `<li><button type="button" class="chip">${s}</button></li>`).join('')}</ul>`;
   dialogo.querySelector('[data-buscador-form]').addEventListener('submit', (e) => e.preventDefault());
-  const busqueda = conectarBusqueda({ campo: campoDialogo, lista: document.getElementById('buscador-resultados'), vacio: dialogo.querySelector('[data-buscador-vacio]'), sugerencias: sugerenciasDialogo, estado: dialogo.querySelector('[data-buscador-estado]'), alElegir: () => dialogo.close() });
+  const busqueda = conectarBusqueda({ campo: campoDialogo, lista: document.getElementById('buscador-resultados'), vacio: dialogo.querySelector('[data-buscador-vacio]'), sugerencias: sugerenciasDialogo, estado: dialogo.querySelector('[data-buscador-estado]'), alElegir: () => cerrarDialogo() });
   sugerenciasDialogo.addEventListener('click', (e) => {
     const b = e.target.closest('.chip');
     if (!b) return;
@@ -230,9 +271,24 @@ if (dialogo) {
     busqueda.actualizar();
     campoDialogo.focus();
   });
+  dialogo.addEventListener('close', () => document.documentElement.classList.remove('sin-desplazar'));
+  let abridor = null; // lo que tenía el foco antes de abrir: al cerrar, el foco vuelve ahí
+  function cerrarDialogo() {
+    dialogo.close();
+    document.documentElement.classList.remove('sin-desplazar');
+    // Sin esto, el foco puede quedarse un cuadro en el campo ya oculto y una «/» rápida caería ahí.
+    if (dialogo.contains(document.activeElement)) {
+      if (abridor?.isConnected && abridor !== document.body) abridor.focus();
+      else document.activeElement.blur();
+    }
+  }
   const abrir = (texto = '') => {
     cerrarMenus();
-    if (!dialogo.open) dialogo.showModal();
+    if (!dialogo.open) {
+      abridor = document.activeElement;
+      dialogo.showModal();
+      document.documentElement.classList.add('sin-desplazar');
+    }
     campoDialogo.value = texto;
     busqueda.actualizar();
     campoDialogo.focus();
@@ -244,16 +300,16 @@ if (dialogo) {
       if (!menuMovil.hidden) hamburguesa.click();
       abrir();
     }
-    if (e.target.closest('[data-cerrar-buscador]')) dialogo.close();
+    if (e.target.closest('[data-cerrar-buscador]')) cerrarDialogo();
   });
   dialogo.addEventListener('click', (e) => {
-    if (e.target === dialogo) dialogo.close(); // clic en el fondo
+    if (e.target === dialogo) cerrarDialogo(); // clic en el fondo
   });
   // En un campo de búsqueda, Escape solo borra el texto; aquí cierra el buscador a la primera.
   campoDialogo.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       e.preventDefault();
-      dialogo.close();
+      cerrarDialogo();
     }
   });
   document.addEventListener('keydown', (e) => {
@@ -285,6 +341,11 @@ if (formHeroe) {
   campo.addEventListener('input', mostrar);
   campo.addEventListener('focus', () => { cargarIndice().catch(() => {}); mostrar(); });
   document.addEventListener('click', (e) => { if (!formHeroe.contains(e.target)) caja.hidden = true; });
+  formHeroe.addEventListener('focusout', (e) => { if (!formHeroe.contains(e.relatedTarget)) caja.hidden = true; });
+  formHeroe.addEventListener('submit', (e) => {
+    e.preventDefault();
+    b.enviar();
+  });
   campo.addEventListener('keydown', (e) => { if (e.key === 'Escape') caja.hidden = true; });
   for (const chip of document.querySelectorAll('[data-buscar]')) {
     chip.addEventListener('click', async () => {
@@ -295,6 +356,9 @@ if (formHeroe) {
     });
   }
 }
+
+if ('requestIdleCallback' in window) requestIdleCallback(() => cargarIndice().catch(() => {}), { timeout: 4000 });
+else setTimeout(() => cargarIndice().catch(() => {}), 2000);
 
 // ── «Pregúntanos» rápido (banda al final de las páginas) ──
 for (const form of document.querySelectorAll('[data-pregunta-rapida]')) {

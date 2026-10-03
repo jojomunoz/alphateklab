@@ -121,3 +121,15 @@ test('resaltar no marca palabras vacías ni prefijos falsos', () => {
 test('resaltar sin consulta devuelve el texto entero sin marcar', () => {
   assert.deepEqual(resaltar('Menú QR', ''), [{ t: 'Menú QR', m: false }]);
 });
+
+test('mientras se escribe, la última palabra vale como comienzo: «cam», «coti», «whats» ya traen resultados', () => {
+  const ids = (q) => buscar(indice, q, { prefijo: true }).slice(0, 3).map((r) => r.id);
+  assert.ok(ids('cam').some((id) => ['C05', 'C01', 'T11'].includes(id)), ids('cam').join(','));
+  assert.ok(ids('coti').includes('T06'), ids('coti').join(','));
+  assert.ok(ids('whats').some((id) => ['C11', 'R13', 'T05', 'B04'].includes(id)), ids('whats').join(','));
+  assert.equal(buscar(indice, 'cam').length, 0, 'sin prefijo (búsqueda ya enviada), «cam» no es una palabra');
+});
+
+test('el comienzo de palabra no cambia lo que ya acertaba con palabras completas', () => {
+  for (const [q, esperado] of CASOS) assert.equal(buscar(indice, q, { prefijo: true })[0]?.id, buscar(indice, q)[0]?.id, q);
+});

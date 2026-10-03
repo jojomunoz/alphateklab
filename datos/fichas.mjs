@@ -972,7 +972,7 @@ export const FICHAS = {
     "como": [
       {
         "titulo": "Visita a las puertas",
-        "texto": "Vamos al lugar a medir cada puerta, revisar el marco y comprobar que llega la señal de internet."
+        "texto": "Vamos al lugar a medir cada puerta, revisar el marco y comprobar que llega el depósitol de internet."
       },
       {
         "titulo": "Instalación",
@@ -1054,7 +1054,7 @@ export const FICHAS = {
     "como": [
       {
         "titulo": "Visita al tablero y al tanque",
-        "texto": "Revisamos el tablero eléctrico, qué circuito alimenta cada cabaña, dónde está el tanque de agua y cómo llega la señal hasta ahí."
+        "texto": "Revisamos el tablero eléctrico, qué circuito alimenta cada cabaña, dónde está el tanque de agua y cómo llega el depósitol hasta ahí."
       },
       {
         "titulo": "Instalación de medidores",
@@ -2772,8 +2772,8 @@ export const FICHAS = {
   T10: {
     "como": [
       {
-        "titulo": "Recorrido midiendo la señal",
-        "texto": "Vamos al local y medimos la señal en cada área: el salón, la caja, la bodega, la terraza. Vemos dónde está el módem del proveedor y por dónde puede pasar el cable."
+        "titulo": "Recorrido midiendo el depósitol",
+        "texto": "Vamos al local y medimos el depósitol en cada área: el salón, la caja, la bodega, la terraza. Vemos dónde está el módem del proveedor y por dónde puede pasar el cable."
       },
       {
         "titulo": "Propuesta con ubicaciones",
@@ -2810,7 +2810,7 @@ export const FICHAS = {
       },
       {
         "p": "¿Sigo usando el módem que me dio el proveedor?",
-        "r": "Sí, por ahí sigue entrando el internet. Lo que se agrega es lo que reparte la señal y separa las redes."
+        "r": "Sí, por ahí sigue entrando el internet. Lo que se agrega es lo que reparte el depósitol y separa las redes."
       }
     ],
     "ejemplo": "Ejemplo: un restaurante de dos pisos en El Cangrejo donde el Wi-Fi no llega a la terraza y los clientes usan la misma red que la caja. Queda un punto de acceso por piso, una red para clientes con su clave, y la caja pasa al chip de datos cuando se cae el internet."
@@ -3438,12 +3438,12 @@ export const FICHAS = {
         "texto": "Nos pasas los servicios con su duración y precio, y el horario de cada barbero o estilista."
       },
       {
-        "titulo": "La regla de la seña",
-        "texto": "Decides cuánto se cobra de seña y qué pasa si el cliente no llega. Esa regla se muestra antes de pagar."
+        "titulo": "La regla del depósito",
+        "texto": "Decides cuánto se cobra de depósito y qué pasa si el cliente no llega. Esa regla se muestra antes de pagar."
       },
       {
         "titulo": "El cliente reserva",
-        "texto": "Desde un enlace, el cliente escoge servicio, profesional y hora libre, y deja la seña con Yappy o tarjeta."
+        "texto": "Desde un enlace, el cliente escoge servicio, profesional y hora libre, y deja el depósito con Yappy o tarjeta."
       },
       {
         "titulo": "Recordatorio y día a día",
@@ -3453,16 +3453,16 @@ export const FICHAS = {
     "necesitas": [
       "Los servicios con duración y precio",
       "El horario y los días libres de cada profesional",
-      "Una cuenta para cobrar la seña: Yappy Comercial o una pasarela de tarjetas"
+      "Una cuenta para cobrar el depósito: Yappy Comercial o una pasarela de tarjetas"
     ],
     "no_incluye": [
-      "La comisión de Yappy o de la pasarela de tarjetas por cada seña",
+      "La comisión de Yappy o de la pasarela de tarjetas por cada depósito",
       "Los mensajes de WhatsApp de los recordatorios, que Meta cobra aparte",
       "El cobro del resto del servicio en caja"
     ],
     "preguntas": [
       {
-        "p": "¿Qué pasa con la seña si el cliente no llega?",
+        "p": "¿Qué pasa con el depósito si el cliente no llega?",
         "r": "Lo decides tú: si se pierde, si se abona a otra cita o con cuántas horas de aviso se devuelve. El cliente ve esa regla antes de pagar."
       },
       {
@@ -3474,6 +3474,6 @@ export const FICHAS = {
         "r": "Sí. Arriba, en «Probar la demo», está la agenda de citas con datos de ejemplo."
       }
     ],
-    "ejemplo": "Ejemplo: en una barbería de Vía España con tres barberos, un cliente reserva para el viernes a las 6:00 con su barbero de siempre y deja la seña con Yappy. El jueves le llega el recordatorio; si cancela, el hueco queda libre para otro."
+    "ejemplo": "Ejemplo: en una barbería de Vía España con tres barberos, un cliente reserva para el viernes a las 6:00 con su barbero de siempre y deja el depósito con Yappy. El jueves le llega el recordatorio; si cancela, el hueco queda libre para otro."
   },
 };

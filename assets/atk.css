@@ -46,6 +46,7 @@
   --linea: #d9d6cc;
   --linea-fuerte: #a3aaa5;
   --senal: #f2b544;
+  --senal-fuerte: #e6a532; /* el ámbar al pasar el ratón: 7.08:1 con grafito */
   --senal-suave: #fbecc9;
   --sobre-senal: #202729;
   --acento: #176b64;
@@ -112,6 +113,8 @@
     --senal-suave: #3b3120;
     --acento: #6cc4b9;
     --apoyo: #1f3431;
+  --senal-fuerte: #f7c868;
+    --senal-fuerte: #f7c868; /* en oscuro, un paso más claro: 9.7:1 con grafito */
     --foco: #6cc4b9;
     --enlace: #7fd0c5;
     --ok: #5fcf8a;
@@ -313,8 +316,8 @@ kbd {
     border-color: var(--tinta);
   }
   .boton--senal:hover {
-    --b-fondo: var(--tinta);
-    --b-texto: var(--senal);
+    --b-fondo: var(--senal-fuerte);
+    --b-texto: var(--sobre-senal);
   }
   .boton--linea:hover {
     --b-fondo: var(--papel-2);

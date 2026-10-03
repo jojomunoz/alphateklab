@@ -12,6 +12,19 @@ const grupos = [...document.querySelectorAll('.grupo')];
 const total = tarjetas.length;
 const datos = new Map(tarjetas.map((t) => [t.dataset.id, { sectores: t.dataset.sectores.split(' '), tipos: t.dataset.tipos.split(' '), demo: t.dataset.demo === '1', instala: t.dataset.instala === '1' }]));
 let indice = null;
+const h1 = document.querySelector('.catalogo__cabeza h1');
+const h1Base = h1?.textContent || '';
+// El título dice qué se está viendo: «Software a medida (36)», «Servicios para clínicas y consultorios (7)».
+function titulo(f, visibles) {
+  const tipo = f.tipo ? form.elements.tipo.selectedOptions[0]?.text : '';
+  const sectorTxt = f.sector ? form.querySelector(`input[name="sector"][value="${CSS.escape(f.sector)}"]`)?.nextElementSibling?.textContent || '' : '';
+  const sector = sectorTxt ? sectorTxt.charAt(0).toLowerCase() + sectorTxt.slice(1) : '';
+  if (f.q) return `Resultados para «${f.q}»`;
+  if (tipo && sector) return `${tipo} para ${sector} (${visibles})`;
+  if (tipo) return `${tipo} (${visibles})`;
+  if (sector) return `Servicios para ${sector} (${visibles})`;
+  return h1Base;
+}
 
 async function cargarIndice() {
   if (!indice) indice = prepararIndice(await (await fetch(`${RAIZ}assets/indice.json`)).json());
@@ -53,6 +66,7 @@ async function aplicar({ url = true } = {}) {
   document.getElementById('catalogo').classList.toggle('catalogo--buscando', Boolean(f.q));
   form.classList.toggle('filtros--buscando', Boolean(f.q));
   for (const g of grupos) g.hidden = !g.querySelector('.tarjeta-servicio:not([hidden])');
+  if (h1) h1.textContent = titulo(f, visibles);
   cuenta.textContent = f.q ? `${visibles} ${visibles === 1 ? 'resultado' : 'resultados'} para «${f.q}»` : `Mostrando ${visibles} de ${total}`;
   vacio.hidden = visibles > 0;
   if (!visibles) preguntar.href = enlaceWhatsApp(mensajePregunta(f.q || 'Busco un servicio que no encontré en la lista'), document.documentElement.dataset.whatsapp || null);

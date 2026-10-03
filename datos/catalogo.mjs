@@ -820,7 +820,7 @@ export const SERVICIOS = [
     tipos: ['iot'],
     instala: true,
     para: 'Wi-Fi que llega a todo el local, una red para la caja y las cámaras separada de la de los clientes, y un respaldo cuando se cae el internet.',
-    incluye: ['Revisión del local y de la señal', 'Puntos de acceso y cableado', 'Red de clientes separada', 'Internet de respaldo para la caja'],
+    incluye: ['Revisión del local y de el depósitol', 'Puntos de acceso y cableado', 'Red de clientes separada', 'Internet de respaldo para la caja'],
     equipo: ['Puntos de acceso', 'Enrutador', 'Cableado'],
     precio: null,
     demo: null,
@@ -879,8 +879,8 @@ export const SERVICIOS = [
   {
     id: 'V03', slug: 'agenda-para-salones', nombre: 'Agenda para barberías y salones', corto: 'Agenda para salones',
     sectores: ['servicios'], tipos: ['software'], instala: false,
-    para: 'Citas por barbero o estilista, recordatorio por WhatsApp y seña en línea para que no se pierda el espacio.',
-    incluye: ['Agenda por profesional y servicio', 'Recordatorio y confirmación', 'Seña con Yappy o tarjeta'],
+    para: 'Citas por barbero o estilista, recordatorio por WhatsApp y depósito en línea para que no se pierda el espacio.',
+    incluye: ['Agenda por profesional y servicio', 'Recordatorio y confirmación', 'Depósito con Yappy o tarjeta'],
     equipo: [], precio: null, demo: 'https://jojomunoz.github.io/alphateklab-reservas/',
   },
   {

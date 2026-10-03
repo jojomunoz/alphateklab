@@ -82,7 +82,7 @@ if (errores.length) {
 }
 
 // ── utilidades ──
-export const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+export const esc = (s) => String(s).replace(/(\d) %/g, '$1\u202f%').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const jsonEnScript = (v) => JSON.stringify(v).replace(/</g, '\\u003c');
 const porId = new Map(SERVICIOS.map((s) => [s.id, s]));
 const sectorPorId = new Map(SECTORES.map((s) => [s.id, s]));
@@ -167,7 +167,7 @@ function cabecera(prefijo) {
       <button class="buscar-campo-falso" type="button" data-abrir-buscador>${icono('magnifying-glass')} ¿Qué necesitas?</button>
       <details class="menu-movil__grupo" open><summary>Soluciones por negocio</summary><ul>${SOLUCIONES.map((so) => `<li><a href="${prefijo}soluciones/${so.slug}/">${icono(so.icono)}${esc(sectorPorId.get(so.sector).nombre)}</a></li>`).join('')}</ul></details>
       <details class="menu-movil__grupo"><summary>Servicios por tipo</summary><ul>${TIPOS.map((t) => `<li><a href="${prefijo}servicios/?tipo=${t.id}">${icono(t.icono)}${esc(t.nombre)}</a></li>`).join('')}<li><a href="${prefijo}servicios/">${icono('list')}Todos los servicios</a></li></ul></details>
-      <ul class="menu-movil__enlaces"><li><a href="${prefijo}diagnostico/">¿Qué necesita mi negocio?</a></li><li><a href="${prefijo}laboratorio/">Demos</a></li><li><a href="${prefijo}guias/">Guías</a></li><li><a href="${prefijo}#como-trabajamos">Cómo trabajamos</a></li><li><a href="${prefijo}cotizar/">Pregúntanos</a></li></ul>
+      <ul class="menu-movil__enlaces"><li><a href="${prefijo}diagnostico/">¿Qué necesita tu negocio?</a></li><li><a href="${prefijo}laboratorio/">Demos</a></li><li><a href="${prefijo}guias/">Guías</a></li><li><a href="${prefijo}#como-trabajamos">Cómo trabajamos</a></li><li><a href="${prefijo}cotizar/">Pregúntanos</a></li></ul>
     </div>
   </div>
 </header>`;
@@ -202,7 +202,7 @@ function pie(prefijo) {
       <div><h2>Soluciones</h2><ul>${SOLUCIONES.map((so) => `<li><a href="${prefijo}soluciones/${so.slug}/">${esc(sectorPorId.get(so.sector).nombre)}</a></li>`).join('')}</ul></div>
       <div><h2>Servicios</h2><ul>${TIPOS.map((t) => `<li><a href="${prefijo}servicios/?tipo=${t.id}">${esc(t.nombre)}</a></li>`).join('')}<li><a href="${prefijo}servicios/">Todos los servicios</a></li></ul></div>
       <div><h2>Demos</h2><ul>${DEMOS.map((d) => `<li><a href="${enlace(d.url, prefijo)}">${esc(d.nombre)}</a></li>`).join('')}<li><a href="${prefijo}laboratorio/">Todas las demos</a></li></ul></div>
-      <div><h2>alphateklab</h2><ul><li><a href="${prefijo}diagnostico/">¿Qué necesita mi negocio?</a></li><li><a href="${prefijo}#como-trabajamos">Cómo trabajamos</a></li><li><a href="${prefijo}#preguntas">Preguntas frecuentes</a></li><li><a href="${prefijo}guias/">Guías</a></li><li><a href="${prefijo}cotizar/">Pregúntanos</a></li><li><a href="${prefijo}privacidad/">Privacidad</a></li><li><a href="${prefijo}creditos/">Créditos de fotos e íconos</a></li></ul></div>
+      <div><h2>alphateklab</h2><ul><li><a href="${prefijo}diagnostico/">¿Qué necesita tu negocio?</a></li><li><a href="${prefijo}#como-trabajamos">Cómo trabajamos</a></li><li><a href="${prefijo}#preguntas">Preguntas frecuentes</a></li><li><a href="${prefijo}guias/">Guías</a></li><li><a href="${prefijo}cotizar/">Pregúntanos</a></li><li><a href="${prefijo}privacidad/">Privacidad</a></li><li><a href="${prefijo}creditos/">Créditos de fotos e íconos</a></li></ul></div>
     </div>
     <p class="pie__nota">Las demos usan negocios de ejemplo: sus nombres, platos, pacientes y reservas son ficticios. Actualizado el ${esc(ACTUALIZADO.texto)}.</p>
   </div>
@@ -383,9 +383,9 @@ function paginaInicio() {
 </section>`;
 
   const situaciones = [
-    ['storefront', 'Voy a abrir un negocio', 'Lo que conviene tener desde el primer día.', `${prefijo}diagnostico/`],
+    ['storefront', 'Voy a abrir un negocio', 'Elige tu tipo de negocio y empieza por la etapa 1.', `${prefijo}soluciones/`],
     ['arrows-clockwise', 'Mi sistema no me sirve', 'Cambiar el Excel, el papel o el programa que se quedó corto.', `${prefijo}servicios/software-a-medida/`],
-    ['code', 'Quiero algo hecho a la medida', 'Una web, una app o un sistema que haga lo que tu negocio hace.', `${prefijo}servicios/?tipo=software`],
+    ['code', 'Quiero algo hecho a la medida', 'Una web, una app o un sistema que haga lo que tu negocio hace.', `${prefijo}servicios/software-a-medida/`],
     ['lifebuoy', 'Que me mantengan lo que tengo', 'Computadoras, red, respaldos y soporte cuando algo falla.', `${prefijo}servicios/soporte-tecnico/`],
   ].filter(([, , , u]) => !u.includes('/servicios/') || u.includes('?') || existeServicio(u));
   const entradas = `<section class="situaciones envoltura" aria-labelledby="sit-titulo">
@@ -431,7 +431,7 @@ function paginaInicio() {
   <div class="envoltura">
     <div class="seccion__cabeza">
       <h2 id="demos-titulo" class="display seccion__titulo">Míralo funcionando</h2>
-      <p class="seccion__bajada">Demos que funcionan en tu navegador, con negocios de ejemplo. Varias están hechas para abrirse en el teléfono.</p>
+      <p class="seccion__bajada">Demos que funcionan en tu navegador, con negocios de ejemplo. Algunas se abren mejor en el teléfono.</p>
     </div>
     <ul class="demos" role="list">
       ${DEMOS.map((d, i) => tarjetaDemo(d, prefijo, { grande: i === 0 && DEMOS.length > 2 })).join('\n      ')}
@@ -654,7 +654,7 @@ function paginaServicios() {
     <div class="catalogo__vacio" id="catalogo-vacio" hidden>
       <h2>No encontramos eso en la lista</h2>
       <p>Igual puede que lo hagamos. Mándanos la pregunta tal como la escribiste:</p>
-      <p class="catalogo__vacio-acciones"><a class="boton boton--senal" id="vacio-preguntar" href="${prefijo}cotizar/" target="_blank" rel="noopener">${icono('whatsapp-logo')}Preguntar por WhatsApp</a> <button class="enlace-boton" type="button" id="limpiar-filtros">Quitar los filtros</button></p>
+      <p class="catalogo__vacio-acciones"><a class="boton boton--senal" id="vacio-preguntar" href="${prefijo}cotizar/" target="_blank" rel="noopener">${icono('whatsapp-logo')}Preguntar por WhatsApp</a> <button class="enlace-boton" type="button" id="limpiar-filtros">Borrar la búsqueda y los filtros</button></p>
     </div>
   </div>
 </main>
@@ -860,7 +860,7 @@ function paginaCotizar() {
     cuerpo: `<main id="contenido" class="envoltura pagina-simple">
   ${migas(prefijo, [['Pregúntanos o cotiza', null]])}
   <h1 class="display pagina-simple__titulo">Pregúntanos lo que necesites</h1>
-  <p class="seccion__bajada">Escríbelo con tus palabras y, si quieres, suma servicios de la lista. Te queda un mensaje listo para mandar por WhatsApp. Nada sale de tu equipo hasta que lo mandas; lo que escribes queda guardado solo en este navegador hasta que pulses «Vaciar».</p>
+  <p class="seccion__bajada">Escríbelo con tus palabras y, si quieres, suma servicios de la lista. Te queda un mensaje listo para mandar por WhatsApp. Nada sale de tu teléfono o tu computadora hasta que lo mandas; lo que escribes se guarda solo en este navegador, hasta que pulses «Vaciar».</p>
   <form class="cotizador" id="cotizador" novalidate>
     <div class="cotizador__col">
       <label class="campo"><span>¿Qué necesitas?</span><textarea id="cot-notas" rows="5" maxlength="800" placeholder="Ej.: tengo un restaurante de 15 mesas y quiero que pidan desde la mesa y que la cocina lo vea en una pantalla"></textarea></label>
@@ -1001,7 +1001,7 @@ function paginaDiagnostico() {
       </div>
     </fieldset>
     <fieldset class="diag__paso" data-paso="2" hidden>
-      <legend class="diag__pregunta">¿Qué te gustaría resolver? <small>Marca todo lo que aplique.</small></legend>
+      <legend class="diag__pregunta">¿Qué te gustaría resolver? <small>Puedes marcar varias.</small></legend>
       <div class="diag__problemas" data-problemas></div>
       <label class="campo diag__otro"><span>¿Algo más que no esté en la lista?</span><textarea id="diag-otro" rows="2" maxlength="600" placeholder="Escríbelo con tus palabras"></textarea></label>
       <p class="diag__acciones"><button class="boton boton--linea" type="button" data-atras>Atrás</button><button class="boton boton--senal" type="button" data-siguiente>Siguiente</button></p>

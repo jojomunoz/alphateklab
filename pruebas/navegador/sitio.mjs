@@ -138,7 +138,8 @@ try {
     const q = await m.newPage();
     vigilar(q);
     await q.goto(BASE, { waitUntil: 'networkidle' });
-    assert.equal(await q.evaluate(() => document.documentElement.scrollWidth), 390);
+    const [sw, cw] = await q.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
+    assert.ok(sw <= cw, `scrollWidth ${sw} > clientWidth ${cw}`);
     await q.click('[data-hamburguesa]');
     assert.equal(await q.isVisible('#menu-movil'), true);
     await q.click('#menu-movil [data-abrir-buscador]');
@@ -162,8 +163,8 @@ try {
       const q = await m.newPage();
       for (const ruta of ['', 'servicios/', 'soluciones/restaurantes/', 'servicios/menu-qr/', 'cotizar/', 'diagnostico/']) {
         await q.goto(BASE + ruta, { waitUntil: 'networkidle' });
-        const sw = await q.evaluate(() => document.documentElement.scrollWidth);
-        assert.ok(sw <= ancho, `${ancho}px /${ruta}: scrollWidth ${sw}`);
+        const [sw, cw] = await q.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
+        assert.ok(sw <= cw, `${ancho}px /${ruta}: scrollWidth ${sw} > clientWidth ${cw}`);
       }
       await m.close();
     }

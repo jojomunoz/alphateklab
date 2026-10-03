@@ -39,10 +39,12 @@ export function armarMensaje({ elegidos, servicios, negocio, tipo, lugar, notas 
   const lineas = ['Hola, alphateklab.'];
   const quien = [n, t && `(${t})`].filter(Boolean).join(' ');
   if (quien || l) lineas.push(`Negocio: ${[quien, l].filter(Boolean).join(', ')}`);
-  if (notasLimpias) lineas.push('', `Lo que necesito: ${notasLimpias}`);
+  // Si ya empieza con «necesito», no se le antepone «Lo que necesito:» (quedaría «Lo que necesito: Necesito…»).
+  if (notasLimpias) lineas.push('', /^(yo )?necesit/i.test(notasLimpias) ? notasLimpias.charAt(0).toUpperCase() + notasLimpias.slice(1) : `Lo que necesito: ${notasLimpias}`);
   if (lista.length) {
     lineas.push('', notasLimpias ? 'Servicios que me interesan:' : 'Quiero una cotización de:');
-    for (const s of lista) lineas.push(`- ${s.id} ${s.nombre}${s.precio && s.precio !== 'A cotizar' ? ` (${s.precio})` : ''}`);
+    // El código va al final, como referencia para el equipo; el cliente lee primero el nombre.
+    for (const s of lista) lineas.push(`- ${s.nombre}${s.precio && s.precio !== 'A cotizar' ? `, ${s.precio}` : ''} (ref. ${s.id})`);
   } else if (!notasLimpias) {
     lineas.push('', 'Todavía no elegí servicios: quiero que me orienten.');
   }

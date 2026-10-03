@@ -13,7 +13,7 @@ export const SOLUCIONES = [
     bajada: 'Que el cliente pida y pague desde la mesa, que la cocina vea cada comanda a tiempo y que tú veas el salón entero desde la caja.',
     demo: 'mesa',
     problemas: [
-      { problema: 'Los clientes esperan para pedir, para otra ronda y para pagar.', respuesta: 'Un QR o una etiqueta NFC en cada mesa: piden, llaman al mesero y pagan desde su teléfono, con la propina que ellos eligen.', servicios: ['R01', 'R02', 'R03'] },
+      { problema: 'Los clientes esperan para pedir, para otra ronda y para pagar.', respuesta: 'Un QR o una etiqueta NFC en cada mesa: piden, llaman al mesero y pagan desde su teléfono, con la propina que ellos eligen.', servicios: ['R02', 'R03', 'R01'] },
       { problema: 'Las comandas en papel se pierden o se leen mal.', respuesta: 'Pantalla en la cocina con cada pedido por estación y el tiempo que lleva esperando.', servicios: ['R05'] },
       { problema: 'No sabes qué mesa lleva cuánto ni cuál pidió la cuenta.', respuesta: 'El plano del salón en la caja con el estado de cada mesa y su cuenta abierta, lista para cobrar y facturar.', servicios: ['R04', 'R11', 'T07'] },
       { problema: 'Pagas comisión por cada pedido a domicilio.', respuesta: 'Tu propia app o página de pedidos, para tu restaurante, tus sucursales o un grupo de restaurantes, con tus motorizados y pago con Yappy o tarjeta.', servicios: ['R12', 'R07', 'T09'] },
@@ -131,7 +131,7 @@ export const SOLUCIONES = [
     problemas: [
       { problema: 'El cliente espera sin saber cuánto le falta.', respuesta: 'Turnos en línea con su lugar en la fila y aviso por WhatsApp cuando está listo.', servicios: ['V01'] },
       { problema: 'Presupuestos aprobados de palabra que luego se discuten.', respuesta: 'Órdenes de trabajo con fotos del vehículo y aprobación del cliente por WhatsApp.', servicios: ['V02'] },
-      { problema: 'Citas que se cruzan en la barbería o el salón.', respuesta: 'Agenda por profesional con recordatorio y seña en línea.', servicios: ['V03'] },
+      { problema: 'Citas que se cruzan en la barbería o el salón.', respuesta: 'Agenda por profesional con recordatorio y depósito en línea.', servicios: ['V03'] },
     ],
   },
   {
