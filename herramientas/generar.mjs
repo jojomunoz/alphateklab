@@ -547,7 +547,10 @@ const PRODUCTO_POR_NEGOCIO = {
 };
 function productoDeNegocio(so, prefijo) {
   const pr = PRODUCTO_POR_NEGOCIO[so.slug];
-  if (!pr || !demoPorClave.has(pr.demo) || !existe(`assets/producto/${pr.portatil}.webp`)) return '';
+  // sin demo, la otra mitad del héroe dice los problemas que se resuelven, con las palabras del cliente
+  if (!pr || !demoPorClave.has(pr.demo) || !existe(`assets/producto/${pr.portatil}.webp`)) {
+    return `<ul class="heroe__problemas" role="list" aria-label="Lo que te resolvemos">${so.problemas.slice(0, 3).map((p) => `<li>«${esc(p.problema.replace(/\.$/, ''))}»</li>`).join('')}</ul>`;
+  }
   const d = demoPorClave.get(pr.demo);
   const tel = pr.telefono && existe(`assets/producto/${pr.telefono}.webp`) ? pr.telefono : null;
   return `<figure class="heroe__producto">
@@ -575,7 +578,7 @@ function paginaSolucion(so) {
     imagen: existe(`assets/og/${so.slug}.jpg`) ? `assets/og/${so.slug}.jpg` : 'assets/og.jpg',
     datos: ld(migasLd([['Soluciones', `${URL_BASE}soluciones/`], [sector.nombre, null]])),
     cuerpo: `<main id="contenido">
-<section class="heroe heroe--producto heroe--negocio${producto ? '' : ' heroe--solo-texto'}" aria-labelledby="negocio-titulo">
+<section class="heroe heroe--producto heroe--negocio" aria-labelledby="negocio-titulo">
   <div class="envoltura heroe__fila">
     <div class="heroe__texto">
       ${migas(prefijo, [['Soluciones', `${prefijo}soluciones/`], [sector.nombre, null]])}
