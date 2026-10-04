@@ -4908,3 +4908,18 @@ html.sin-desplazar {
 .texto-largo li {
   max-width: 36rem;
 }
+
+/* Restaurantes, «Pruébalo ahora»: el video de la mesa con el teléfono a la derecha y abajo. A la izquierda tapaba
+   «Por atender», justo donde entra el pedido de la mesa 7; abajo a la derecha solo queda plano vacío del salón. */
+.dividida__foto [data-producto-video] .heroe__dispositivos {
+  padding-left: 0;
+  padding-right: 15%;
+}
+.dividida__foto [data-producto-video] .dispositivo--telefono {
+  left: auto;
+  right: 0;
+  width: 26%;
+}
+.dividida__foto [data-producto-video] .heroe__pie-video {
+  padding-left: 0;
+}

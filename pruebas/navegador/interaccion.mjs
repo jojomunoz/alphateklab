@@ -279,6 +279,8 @@ try {
     const c2 = await b.newContext({ viewport: { width: 1280, height: 800 } });
     const q = await c2.newPage();
     await q.goto(`${BASE}soluciones/restaurantes/`, { waitUntil: 'networkidle' });
+    // el video está en «Pruébalo ahora» (el héroe de restaurantes es la cocina): corre cuando se ve
+    await q.locator('[data-producto-video]').scrollIntoViewIfNeeded();
     await q.waitForTimeout(1800);
     const andando = await q.$$eval('[data-video-producto]', (vs) => vs.map((v) => !v.paused && v.currentTime > 0.3));
     assert.deepEqual(andando, [true, true], 'no corren los dos');
@@ -289,6 +291,7 @@ try {
     const c3 = await b.newContext({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
     const r = await c3.newPage();
     await r.goto(`${BASE}soluciones/restaurantes/`, { waitUntil: 'networkidle' });
+    await r.locator('[data-producto-video]').scrollIntoViewIfNeeded();
     await r.waitForTimeout(1200);
     assert.equal(await r.$$eval('[data-video-producto]', (vs) => vs.every((v) => v.paused)), true, 'con reducir movimiento corren');
     await c3.close();
@@ -298,6 +301,7 @@ try {
     const c4 = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
     const t = await c4.newPage();
     await t.goto(`${BASE}soluciones/restaurantes/`, { waitUntil: 'load' });
+    await t.locator('[data-producto-video]').scrollIntoViewIfNeeded();
     await t.waitForTimeout(3500);
     const tel = await t.$eval('.dispositivo--telefono [data-video-producto]', (v) => ({ t: v.currentTime, pausado: v.paused, visible: v.offsetParent !== null }));
     await c4.close();
@@ -336,6 +340,18 @@ try {
     // el texto va junto: del titular a «¿No sabes qué pedir?» sin huecos de la altura de la foto
     assert.ok(diag.bottom - titulo.top <= 460, `el texto ocupa ${Math.round(diag.bottom - titulo.top)} px de alto`);
     await c6.close();
+  });
+
+  await paso('cada página de negocio abre con su escena (restaurantes incluida: la cocina con su pantalla real)', async () => {
+    const sin = [];
+    for (const slug of ['restaurantes', 'tiendas', 'clinicas', 'hospedaje', 'bienes-raices', 'escuelas', 'talleres-y-salones']) {
+      await p.goto(`${BASE}soluciones/${slug}/`, { waitUntil: 'load' });
+      if (!(await p.$('.heroe--negocio .heroe__escena img'))) sin.push(slug);
+    }
+    assert.equal(sin.length, 0, `sin escena: ${sin.join(', ')}`);
+    // y el video de la mesa sigue en la página, en «Pruébalo ahora»
+    await p.goto(`${BASE}soluciones/restaurantes/`, { waitUntil: 'load' });
+    assert.ok(await p.$('.seccion--oscura [data-producto-video]'), 'el video de la mesa no está en «Pruébalo ahora»');
   });
 
   await paso('el desplegable de la portada no salta mientras se escribe una frase (ni queda una franja vacía)', async () => {

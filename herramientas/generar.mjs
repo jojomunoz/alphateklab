@@ -441,11 +441,12 @@ const IMAGEN_SERVICIO = {
   S01: { escena: 'en-recepcion' }, S02: { escena: 'en-barberia' }, V01: { escena: 'en-barberia' }, V03: { escena: 'en-barberia' },
   B01: { escena: 'en-sala-360' },
 };
-// la escena que abre cada página de negocio (el equipo instalado en un lugar que el dueño reconoce); restaurantes
-// sigue con el video de la mesa e industria con el tablero de sensores
+// la escena que abre cada página de negocio (el equipo instalado en un lugar que el dueño reconoce); industria sigue
+// con el tablero de sensores. Restaurantes abre con la cocina y su pantalla real, y el video de la mesa baja a
+// «Pruébalo ahora» (medición liviana del 3-oct: era la única página de negocio sin escena).
 const ESCENA_NEGOCIO = {
-  escuelas: 'en-colegio', clinicas: 'en-recepcion', 'talleres-y-salones': 'en-barberia', hospedaje: 'en-cabana-puerta',
-  'bienes-raices': 'en-sala-360', tiendas: 'en-minisuper',
+  restaurantes: 'en-cocina', escuelas: 'en-colegio', clinicas: 'en-recepcion', 'talleres-y-salones': 'en-barberia',
+  hospedaje: 'en-cabana-puerta', 'bienes-raices': 'en-sala-360', tiendas: 'en-minisuper',
 };
 const hayEscena = (e) => e && ESCENAS[e] && existe(`assets/fotos/${e}.webp`);
 const hayPieza = (p) => p && existe(`assets/equipo/${p}-400.webp`);
@@ -478,7 +479,7 @@ const sinCorte = (t) => t.replace(/(\d) (a\. m\.|p\. m\.|°C|%)/g, '$1\u00a0$2')
 // El video de la demo de mesa (herramientas/video-producto.mjs): el teléfono pide y el salón recibe. AV1 para quien lo
 // decodifica y H.264 para el resto; el póster es su primer cuadro.
 const hayVideoMesa = () => existe('assets/producto/video-codecs.json') && ['mesa-pedido-telefono', 'mesa-pedido-salon'].every((v) => ['av1.mp4', 'mp4', 'webp'].every((x) => existe(`assets/producto/${v}.${x}`)));
-function videoMesa(prefijo, demoUrl) {
+function videoMesa(prefijo, demoUrl, { conEnlace = true } = {}) {
   const codecs = JSON.parse(readFileSync(join(RAIZ, 'assets/producto/video-codecs.json'), 'utf8'));
   const video = (nombre, ancho, alto, alt) => `<video data-video-producto muted loop playsinline preload="metadata" poster="${prefijo}assets/producto/${nombre}.webp" width="${ancho}" height="${alto}" aria-label="${esc(alt)}"><source src="${prefijo}assets/producto/${nombre}.av1.mp4" type='video/mp4; codecs="${codecs[nombre]}"' /><source src="${prefijo}assets/producto/${nombre}.mp4" type="video/mp4" /></video>`;
   return `<figure class="heroe__producto" data-producto-video>
@@ -486,7 +487,7 @@ function videoMesa(prefijo, demoUrl) {
           <div class="dispositivo dispositivo--portatil"><div class="dispositivo__pantalla">${video('mesa-pedido-salon', 1280, 800, 'El salón de un restaurante de ejemplo en la computadora de la caja: entra el pedido de la mesa 7.')}</div></div>
           <div class="dispositivo dispositivo--telefono"><div class="dispositivo__pantalla">${video('mesa-pedido-telefono', 720, 1560, 'La carta QR de la mesa 7 en el teléfono: se elige un plato, se agrega al pedido y se envía.')}</div></div>
         </div>
-        <figcaption class="heroe__pie-video"><button type="button" class="heroe__pausa" data-pausa-video aria-pressed="false" aria-label="Pausar la demo">${icono('pausa', 'ico ico--pausa')}${icono('reproducir', 'ico ico--reproducir')}</button><span>Demo con un restaurante de ejemplo: se pide desde la mesa 7 y el salón lo ve al instante. <a href="${enlace(demoUrl, prefijo)}">Pruébala</a></span></figcaption>
+        <figcaption class="heroe__pie-video"><button type="button" class="heroe__pausa" data-pausa-video aria-pressed="false" aria-label="Pausar la demo">${icono('pausa', 'ico ico--pausa')}${icono('reproducir', 'ico ico--reproducir')}</button><span>Demo con un restaurante de ejemplo: se pide desde la mesa 7 y el salón lo ve al instante.${conEnlace ? ` <a href="${enlace(demoUrl, prefijo)}">Pruébala</a>` : ''}</span></figcaption>
       </figure>`;
 }
 
@@ -746,7 +747,7 @@ ${
   d
     ? `<section class="seccion seccion--oscura" aria-labelledby="demo-titulo">
   <div class="envoltura dividida">
-    <div class="dividida__foto">${marcoDispositivo('portatil', capturaDemo(d, prefijo) || `<span class="demo__sincaptura">${icono('play-circle', 'ico ico--grande')}</span>`)}</div>
+    <div class="dividida__foto">${so.demo === 'mesa' && hayVideoMesa() ? videoMesa(prefijo, d.url, { conEnlace: false }) : marcoDispositivo('portatil', capturaDemo(d, prefijo) || `<span class="demo__sincaptura">${icono('play-circle', 'ico ico--grande')}</span>`)}</div>
     <div class="dividida__texto">
       <h2 id="demo-titulo" class="display seccion__titulo">Pruébalo ahora</h2>
       <p class="seccion__bajada"><strong>${esc(d.nombre)}.</strong> ${esc(d.que)}</p>

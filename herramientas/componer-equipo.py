@@ -239,6 +239,9 @@ def trabajos(orig, pant):
             dict(contenido=pant / 'recepcion.png', modo='pantalla', region=dict(semilla=(1620, 720), lo=150, hi=250, sat=22))]),
         dict(salida='en-barberia', base=v6 / 'en-barberia.png', capas=[
             dict(contenido=pant / 'turnos.png', modo='pantalla', region=dict(semilla=(1760, 360), lo=150, hi=250, sat=32))]),
+        # la cocina de la portada y de Restaurantes: la tableta venía apagada a propósito para poner la pantalla real
+        dict(salida='en-cocina', base=orig / 'instalado' / 'instalacion-cocina.png', capas=[
+            dict(contenido=pant / 'cocina.png', modo='pantalla', rayos=dict(centro=(1672, 453)))]),
     ]
 
 
