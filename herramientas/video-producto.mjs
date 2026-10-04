@@ -9,7 +9,7 @@
 // el póster del primer cuadro para que no haya salto al arrancar.
 // Uso: servir ~/alphateklab/repos en un puerto y: node herramientas/video-producto.mjs http://localhost:4900
 // Escribe assets/producto/mesa-pedido-{telefono,salon}.{av1.mp4,mp4,webp} (misma duración: van juntos).
-import { chromium } from '/home/jonathan/alphatend-do/sitio/node_modules/playwright/index.mjs';
+import { chromium } from './navegador.mjs';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';

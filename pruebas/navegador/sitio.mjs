@@ -2,7 +2,7 @@
 // catálogo con búsqueda y filtros, página de un negocio, cotización compartida entre páginas y teléfono.
 // Uso: servir ~/alphateklab/repos y: node pruebas/navegador/sitio.mjs http://localhost:4900/alphateklab/
 // PW apunta a otro Playwright si hace falta (el WebKit instalado en esta máquina es el de la versión de guia-anfibios-panama).
-const { chromium, webkit } = await import(process.env.PW || '/home/jonathan/alphatend-do/sitio/node_modules/playwright/index.mjs');
+const { chromium, webkit } = await import('../../herramientas/navegador.mjs');
 import assert from 'node:assert/strict';
 
 const BASE = process.argv[2] || 'http://localhost:4900/alphateklab/';

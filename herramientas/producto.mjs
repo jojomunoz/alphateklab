@@ -1,7 +1,7 @@
 // Capturas del producto real (las demos) para la portada: lo que se ve dentro de los marcos de dispositivo.
 // Uso: servir ~/alphateklab/repos en un puerto y: node herramientas/producto.mjs http://localhost:4900
 // Escribe assets/producto/<nombre>.webp (con ImageMagick). Cada toma deja la demo trabajando, no vacía.
-import { chromium } from '/home/jonathan/alphatend-do/sitio/node_modules/playwright/index.mjs';
+import { chromium } from './navegador.mjs';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';

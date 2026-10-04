@@ -10,7 +10,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { chromium } from '/home/jonathan/alphatend-do/sitio/node_modules/playwright/index.mjs';
+import { chromium } from '../../../herramientas/navegador.mjs';
 
 const DEMO = join(dirname(fileURLToPath(import.meta.url)), '..');
 const REPOS = join(DEMO, '..', '..', '..');

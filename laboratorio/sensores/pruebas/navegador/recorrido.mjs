@@ -19,7 +19,7 @@ const capturas = join(raizDemo, 'pruebas/capturas');
 mkdirSync(capturas, { recursive: true });
 const PUERTO = Number(process.env.PUERTO || 4830);
 const BASE = `http://localhost:${PUERTO}/alphateklab/laboratorio/sensores/`;
-const { chromium } = await import(process.env.PLAYWRIGHT || '/home/jonathan/alphatend-do/sitio/node_modules/playwright/index.mjs');
+const { chromium } = await import('../../../../herramientas/navegador.mjs');
 
 const resultados = [];
 let fallos = 0;
@@ -55,8 +55,10 @@ function vigilarConsola(page, errores) {
   });
   page.on('pageerror', (e) => errores.push(`pageerror: ${e.message}`));
   page.on('requestfailed', (r) => {
-    // las conexiones largas al relevo se cortan al cerrar la página: no son un error de la demo
-    if (!r.url().startsWith('https://ntfy.sh/')) errores.push(`requestfailed: ${r.url()} ${r.failure()?.errorText}`);
+    // las conexiones largas al relevo se cortan al cerrar la página: no son un error de la demo; tampoco la carga del
+    // índice del buscador que corta la navegación (ERR_ABORTED: falló 1 de 3 corridas el 3-oct). Un 404 no llega aquí.
+    const cortadaAlNavegar = r.failure()?.errorText === 'net::ERR_ABORTED' && /\/assets\/indice\.json/.test(r.url());
+    if (!r.url().startsWith('https://ntfy.sh/') && !cortadaAlNavegar) errores.push(`requestfailed: ${r.url()} ${r.failure()?.errorText}`);
   });
 }
 

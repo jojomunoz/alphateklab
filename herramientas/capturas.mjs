@@ -1,7 +1,7 @@
 // Saca la captura real de cada demo para la portada (assets/demos/<clave>.webp, 1280×800 reducida a 640×400).
 // Uso: servir ~/alphateklab/repos en un puerto y: node herramientas/capturas.mjs http://localhost:4900
 // Las demos de otros repos se abren en local con la misma ruta que tienen en GitHub Pages.
-import { chromium } from '/home/jonathan/alphatend-do/sitio/node_modules/playwright/index.mjs';
+import { chromium } from './navegador.mjs';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';

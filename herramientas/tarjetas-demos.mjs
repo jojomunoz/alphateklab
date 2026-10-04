@@ -3,7 +3,7 @@
 // marca, siempre en el mismo lugar. Salen assets/demos/tarjeta-<clave>.webp (640×400) y tarjeta-<clave>-1280.webp.
 // Las capturas sueltas de assets/demos/<clave>.webp (las que van dentro del portátil) siguen saliendo de capturas.mjs.
 // Uso: servir ~/alphateklab/repos y: node herramientas/tarjetas-demos.mjs http://localhost:4900 [clave] [--probar]
-import { chromium } from '/home/jonathan/alphatend-do/sitio/node_modules/playwright/index.mjs';
+import { chromium } from './navegador.mjs';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, rmSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';

@@ -1,7 +1,7 @@
 // Las pantallas reales que van encima de las fotos del equipo (herramientas/componer-equipo.py): la cocina, el
 // kiosco y la carta en el teléfono de la demo de la mesa, la placa impresa de la mesa 7 (con un QR que abre la demo),
 // la agenda de la demo de reservas, una pantalla de turnos (servicio S02) y el teclado de la cerradura. Uso: con ~/alphateklab/repos servido, node herramientas/pantallas-equipo.mjs http://localhost:4900 <carpeta>
-import { chromium } from '/home/jonathan/alphatend-do/sitio/node_modules/playwright/index.mjs';
+import { chromium } from './navegador.mjs';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';

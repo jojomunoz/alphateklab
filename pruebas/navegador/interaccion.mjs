@@ -1,7 +1,7 @@
 // Fallas de interacción que encontró la revisión de clase mundial (3-oct-2026), cada una como paso que debe pasar.
 // Uso: servir ~/alphateklab/repos y: node pruebas/navegador/interaccion.mjs http://localhost:4900/alphateklab/
 // PW apunta a otro Playwright si hace falta (el WebKit instalado en esta máquina es el de la versión de guia-anfibios-panama).
-const { chromium, webkit } = await import(process.env.PW || '/home/jonathan/alphatend-do/sitio/node_modules/playwright/index.mjs');
+const { chromium, webkit } = await import('../../herramientas/navegador.mjs');
 import assert from 'node:assert/strict';
 
 const BASE = process.argv[2] || 'http://localhost:4900/alphateklab/';

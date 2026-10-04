@@ -6,7 +6,7 @@
 import { mkdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { chromium } from '/home/jonathan/alphatend-do/sitio/node_modules/playwright/index.mjs';
+import { chromium } from './navegador.mjs';
 import { SOLUCIONES } from '../datos/soluciones.mjs';
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');

@@ -7,7 +7,7 @@
 import { writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { chromium } from '/home/jonathan/alphatend-do/sitio/node_modules/playwright/index.mjs';
+import { chromium } from '../../../herramientas/navegador.mjs';
 
 const DEMO = join(dirname(fileURLToPath(import.meta.url)), '..');
 const URL = process.env.URL_DEMO ?? 'http://localhost:4750/alphateklab/laboratorio/recorrido-3d/?prueba=1';

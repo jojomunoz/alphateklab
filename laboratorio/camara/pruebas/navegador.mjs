@@ -25,7 +25,7 @@ const REPOS = path.resolve(DEMO, '../../..');
 const PUERTO = Number(process.env.PUERTO || 4790);
 const DIRECCION = `http://localhost:${PUERTO}/alphateklab/laboratorio/camara/`;
 const CAPTURAS = path.resolve(process.argv[2] || path.join(os.tmpdir(), 'capturas-camara'));
-const { chromium } = await import(process.env.PLAYWRIGHT_MJS || '/home/jonathan/alphatend-do/sitio/node_modules/playwright/index.mjs');
+const { chromium } = await import('../../../herramientas/navegador.mjs');
 
 fs.mkdirSync(CAPTURAS, { recursive: true });
 const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'camara-prueba-'));
