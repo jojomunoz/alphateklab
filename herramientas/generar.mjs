@@ -1054,7 +1054,7 @@ function paginaCotizar() {
       <div class="cotizador__datos">
         <label class="campo"><span>Nombre del negocio</span><input id="cot-negocio" autocomplete="organization" maxlength="80" /></label>
         <label class="campo"><span>Tipo de negocio</span><select id="cot-tipo"><option value="">Elige uno…</option>${SECTORES.filter((s) => s.id !== 'todos').map((s) => `<option>${esc(s.nombre)}</option>`).join('')}<option>Otro</option></select></label>
-        <label class="campo"><span>Provincia o ciudad</span><input id="cot-lugar" autocomplete="address-level1" maxlength="60" placeholder="Panamá, Chiriquí, Veraguas…" /></label>
+        <label class="campo"><span>Provincia o ciudad</span><input id="cot-lugar" autocomplete="address-level1" maxlength="60" placeholder="Ej.: Chiriquí" /></label>
       </div>
       </details>
       <h2 class="cotizador__subtitulo">Servicios que te interesan <span class="num" id="cot-cuenta">(0)</span></h2>
@@ -1067,7 +1067,7 @@ function paginaCotizar() {
       <pre class="mensaje" id="cot-mensaje" aria-live="polite"></pre>
       <div class="cotizador__acciones">
         <a class="boton boton--senal" id="cot-whatsapp" href="#" target="_blank" rel="noopener">${icono('whatsapp-logo')}Mandar por WhatsApp</a>
-        <button class="boton boton--linea" type="button" id="cot-copiar">${icono('copy')}Copiar</button>
+        <button class="boton boton--linea boton--dos-estados" type="button" id="cot-copiar"><span class="boton__estado">${icono('copy')}Copiar</span><span class="boton__estado">${icono('check')}Copiado</span></button>
       </div>
       <p class="cotizador__aviso" id="cot-aviso" role="status"></p>
       <p class="cotizador__pie">Nada sale de tu equipo hasta que lo mandas; lo que escribes se guarda solo en este navegador. <button class="enlace-boton" type="button" id="cot-vaciar">Vaciar</button></p>

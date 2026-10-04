@@ -1664,8 +1664,9 @@ main:has(> .banda-pregunta:last-child) + .pie {
     color var(--dur-estado) var(--ease-salida);
 }
 @media (hover: hover) and (pointer: fine) {
+  /* sobre la tarjeta, el papel-2 casi no se distinguía: un 8 % de tinta se ve en los dos modos */
   .boton-chico:hover {
-    background: var(--papel-2);
+    background: color-mix(in srgb, var(--tinta) 8%, var(--papel));
   }
 }
 .boton-chico[aria-pressed="true"],
@@ -1827,7 +1828,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
   color: var(--tinta);
   background: var(--papel);
   border: 1px solid var(--borde-control);
-  border-radius: var(--r-tarjeta);
+  border-radius: var(--r-control);
   padding: 0.55em 0.8em;
   min-height: 46px;
   width: 100%;
@@ -2119,6 +2120,25 @@ main:has(> .banda-pregunta:last-child) + .pie {
 }
 .cotizador__acciones .boton {
   border-radius: var(--r-control);
+}
+/* un botón con dos textos en la misma celda («Copiar» / «Copiado»): mide lo que el más ancho y no salta al cambiar;
+   lo oculto con visibility tampoco entra en el nombre accesible */
+.boton--dos-estados {
+  display: inline-grid;
+}
+.boton--dos-estados > .boton__estado {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+.boton--dos-estados > .boton__estado + .boton__estado,
+.boton--dos-estados.hecho > .boton__estado:first-child {
+  visibility: hidden;
+}
+.boton--dos-estados.hecho > .boton__estado + .boton__estado {
+  visibility: visible;
 }
 .cotizador__aviso {
   font-size: var(--t-s);
@@ -3144,6 +3164,13 @@ html.sin-desplazar {
 }
 .heroe--producto :focus-visible {
   outline-color: var(--senal);
+}
+/* «Buscar» va dentro de la caja crema: el anillo ámbar sobre el botón ámbar no se veía (1,75:1). Anillo doble, crema y
+   grafito, dentro de la caja; el contorno transparente queda para el modo de alto contraste. */
+.heroe--producto .heroe__buscar .boton:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px #fbfaf6, 0 0 0 4px #202729;
 }
 .heroe__producto {
   margin: 0;
@@ -4630,18 +4657,52 @@ html.sin-desplazar {
     display: none;
   }
 }
-/* El ámbar queda para la acción principal y el módulo del logo (revisión de dirección de arte: hacía siete oficios).
-   Los números de etapas y pasos y la insignia «Demo» pasan al petróleo de la marca. */
+/* El ámbar queda para la acción (botones, «Probar la demo», lo agregado a la lista) y el módulo del logo (revisión de
+   dirección de arte: hacía siete oficios). Números, palomitas, franjas, antetítulos y subrayados van en el petróleo. */
 .paso__titulo::before,
 .etapa__num,
-.insignia--demo {
+.insignia--demo,
+.linea-tiempo li::before,
+.lista-check .ico {
   background: var(--apoyo);
   color: var(--acento);
 }
-/* los enlaces «Con:» de los problemas, con 44 px de toque en el teléfono (medían de 19 a 32) */
+.rec--principal {
+  border-top-color: var(--acento);
+}
+.negocio__mas {
+  text-decoration-color: color-mix(in srgb, var(--acento) 45%, transparent);
+}
+/* el antetítulo de las páginas de negocio, sobre el petróleo oscuro: el verde claro de la marca (8,2:1). Solo en el
+   teléfono: en pantalla ancha las migas ya terminan con el nombre del negocio y se leía dos veces seguidas. */
+.heroe__negocio {
+  color: #7fd0c5;
+}
+@media (min-width: 640px) {
+  .heroe__negocio {
+    display: none;
+  }
+}
+/* los enlaces «Con:» de los problemas, con 44 px de toque en el teléfono (medían de 19 a 32; con 11 px, 41) */
 @media (pointer: coarse) {
   .problema__servicios a {
-    padding-block: 11px;
+    padding-block: 13px;
+  }
+  /* los servicios de cada etapa son una lista, no una oración: una fila de 44 px por enlace (medían 20) */
+  .etapa__servicios {
+    gap: 0;
+  }
+  .etapa__servicios a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  /* «Pruébala» al pie de la demo: el toque crece a 44 px sin mover el renglón */
+  .heroe__pie-video a,
+  .heroe__producto figcaption a {
+    display: inline-block;
+    padding-block: 14px;
+    margin-block: -14px;
   }
 }
 /* el menú del teléfono entra en 200 ms (bajaba de golpe) */

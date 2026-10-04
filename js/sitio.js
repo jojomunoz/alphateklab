@@ -112,6 +112,23 @@ hamburguesa?.addEventListener('click', () => {
 menuMovil?.addEventListener('click', (e) => {
   if (e.target.closest('a') && hamburguesa.getAttribute('aria-expanded') === 'true') hamburguesa.click();
 });
+// Con el menú abierto lo único que se ve es la cabecera: Tab da la vuelta dentro de ella. Antes, después del último
+// enlace el foco se iba a la barra del navegador (la revisión lo vio salir 2 de 30 veces).
+const cabeceraEl = document.querySelector('[data-cabecera]');
+cabeceraEl?.addEventListener('keydown', (e) => {
+  if (e.key !== 'Tab' || hamburguesa?.getAttribute('aria-expanded') !== 'true') return;
+  // solo lo que se ve: el menú grande está oculto en el teléfono y lo de un grupo cerrado no se dibuja
+  const visibles = [...cabeceraEl.querySelectorAll('a[href], button:not([disabled]), summary, input:not([disabled])')].filter((el) => el.getClientRects().length > 0);
+  const primero = visibles[0];
+  const ultimo = visibles.at(-1);
+  if (!e.shiftKey && document.activeElement === ultimo) {
+    e.preventDefault();
+    primero.focus();
+  } else if (e.shiftKey && document.activeElement === primero) {
+    e.preventDefault();
+    ultimo.focus();
+  }
+});
 
 // ── buscador ──
 let indice = null;
@@ -518,8 +535,8 @@ else setTimeout(() => cargarIndice().catch(() => {}), 2000);
 
 // Mientras el héroe oscuro (portada y páginas de negocio) está bajo la cabecera, la cabecera es del mismo petróleo y
 // se funde con él; al pasarlo vuelve a ser clara. La clase ya viene puesta en el HTML para que no parpadee al cargar.
+// (cabeceraEl se declara arriba, con el menú del teléfono)
 const heroePortada = document.querySelector('.heroe--producto');
-const cabeceraEl = document.querySelector('[data-cabecera]');
 if (heroePortada && cabeceraEl && 'IntersectionObserver' in window) {
   new IntersectionObserver(([e]) => cabeceraEl.classList.toggle('cabecera--sobre-heroe', e.isIntersecting), { rootMargin: '-80px 0px 0px 0px' }).observe(heroePortada);
 }

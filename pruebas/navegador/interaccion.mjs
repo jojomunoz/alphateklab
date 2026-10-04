@@ -435,6 +435,67 @@ try {
     assert.equal(malos, 0);
     assert.ok(await p.$('a[href="../../cotizar/?servicio=B01"]'), 'falta preguntar por el recorrido');
   });
+
+  // detalles de oficio (brecha 21 de la medición de las 17:10)
+  await paso('«Copiar» no cambia de ancho al pasar a «Copiado», y su nombre dice lo que muestra', async () => {
+    const webkitSinPortapapeles = process.env.MOTOR === 'webkit';
+    const c12 = await b.newContext({ viewport: { width: 1280, height: 800 }, permissions: webkitSinPortapapeles ? [] : ['clipboard-read', 'clipboard-write'] });
+    const t = await c12.newPage();
+    await t.goto(`${BASE}cotizar/?q=camaras`, { waitUntil: 'load' });
+    const ancho = () => t.$eval('#cot-copiar', (e) => e.getBoundingClientRect().width);
+    const antes = await ancho();
+    await t.$eval('#cot-copiar', (e) => e.classList.add('hecho'));
+    const hecho = await ancho();
+    await t.$eval('#cot-copiar', (e) => e.classList.remove('hecho'));
+    assert.equal(Math.round(hecho), Math.round(antes), `pasa de ${antes.toFixed(1)} a ${hecho.toFixed(1)} px`);
+    if (!webkitSinPortapapeles) {
+      await t.click('#cot-copiar');
+      await t.waitForTimeout(150);
+      assert.equal(await t.getByRole('button', { name: 'Copiado', exact: true }).count(), 1, 'después de copiar el botón no se llama «Copiado»');
+      assert.equal(Math.round(await ancho()), Math.round(antes));
+    }
+    await c12.close();
+  });
+
+  await paso('con el menú del teléfono abierto, Tab y Mayús+Tab dan la vuelta dentro de la cabecera', async () => {
+    const c13 = await b.newContext({ viewport: { width: 390, height: 844 } });
+    const t = await c13.newPage();
+    await t.goto(BASE, { waitUntil: 'load' });
+    await t.click('[data-hamburguesa]');
+    await t.waitForTimeout(250);
+    const fuera = [];
+    for (let i = 0; i < 40; i++) {
+      // 30 hacia adelante (más de una vuelta) y 10 hacia atrás, para pasar por los dos bordes
+      await t.keyboard.press(i >= 30 ? 'Shift+Tab' : 'Tab');
+      if (!(await t.evaluate(() => Boolean(document.activeElement?.closest('[data-cabecera]'))))) fuera.push(i + 1);
+    }
+    await c13.close();
+    assert.equal(fuera.length, 0, `el foco salió de la cabecera en las teclas ${fuera.join(', ')} de 40`);
+  });
+
+  await paso('el foco de «Buscar» en la portada se ve dentro de la caja: anillo grafito, no ámbar sobre ámbar', async () => {
+    const c14 = await b.newContext({ viewport: { width: 1280, height: 800 } });
+    const t = await c14.newPage();
+    await t.goto(BASE, { waitUntil: 'load' });
+    await t.focus('#heroe-campo');
+    await t.keyboard.press('Tab');
+    const [clase, sombra] = await t.evaluate(() => [document.activeElement.className, getComputedStyle(document.activeElement).boxShadow]);
+    await c14.close();
+    assert.match(clase, /boton--senal/, 'Tab desde el campo no llegó a «Buscar»');
+    assert.match(sombra, /rgb\(32, 39, 41\)/, `sin anillo grafito: ${sombra}`);
+  });
+
+  await paso('en el teléfono, los servicios de cada etapa y «Pruébala» miden 44 px de toque', async () => {
+    const c15 = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const t = await c15.newPage();
+    await t.goto(`${BASE}soluciones/restaurantes/`, { waitUntil: 'load' });
+    const etapas = await t.$$eval('.etapa__servicios a', (xs) => xs.map((x) => x.getBoundingClientRect().height));
+    const pruebala = await t.$$eval('.heroe__pie-video a, .heroe__producto figcaption a', (xs) => xs.map((x) => x.getBoundingClientRect().height));
+    await c15.close();
+    assert.ok(etapas.length >= 6, `solo ${etapas.length} enlaces de etapas`);
+    const bajos = [...etapas, ...pruebala].filter((h) => h < 44);
+    assert.equal(bajos.length, 0, `${bajos.length} de ${etapas.length + pruebala.length} bajo 44 px: ${bajos.map((h) => h.toFixed(0)).join(', ')}`);
+  });
 } finally {
   await b.close();
 }

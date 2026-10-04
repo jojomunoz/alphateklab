@@ -116,14 +116,17 @@ selAgregar.addEventListener('change', () => {
 });
 for (const el of Object.values(campos)) el.addEventListener('input', actualizar);
 
+// «Copiar» y «Copiado» van los dos en el botón, en la misma celda (CSS .boton--dos-estados): cambiar es mostrar el
+// otro, así el botón no cambia de ancho (antes pasaba de 110 a 122 px)
 const btnCopiar = document.getElementById('cot-copiar');
-const textoCopiar = btnCopiar.innerHTML;
+let volverCopiar = 0;
 btnCopiar.addEventListener('click', async () => {
   try {
     await navigator.clipboard.writeText(mensaje.textContent);
     aviso.textContent = 'Mensaje copiado. Pégalo en WhatsApp o en un correo.';
-    btnCopiar.innerHTML = '<svg class="ico" aria-hidden="true"><use href="#i-check"></use></svg>Copiado';
-    setTimeout(() => (btnCopiar.innerHTML = textoCopiar), 1500);
+    btnCopiar.classList.add('hecho');
+    clearTimeout(volverCopiar);
+    volverCopiar = setTimeout(() => btnCopiar.classList.remove('hecho'), 1500);
   } catch {
     const r = document.createRange();
     r.selectNodeContents(mensaje);
