@@ -22,17 +22,21 @@ git clone https://github.com/jojomunoz/alphateklab-mesa.git
 git clone https://github.com/jojomunoz/alphateklab-reservas.git
 for r in alphateklab alphateklab-mesa alphateklab-reservas; do (cd $r && npm install); done
 (cd alphateklab && npx playwright install chromium)    # y «webkit» para probar como en un iPhone
-python3 -m http.server 4900                               # desde alphateklab-trabajo: sirve los tres
+node alphateklab/herramientas/servir.mjs                  # sirve los tres en http://localhost:4900/alphateklab/
 ```
 
-Los tres van en la misma carpeta, porque el sitio enlaza las demos por ruta. Hace falta Node 22. Algunas herramientas
-de imagen piden además ImageMagick 7 (`magick`), ffmpeg y Python 3 con Pillow y numpy.
+Los tres van en la misma carpeta, porque el sitio enlaza las demos por ruta. Hace falta Node 22 y Git. Algunas
+herramientas de imagen piden además ImageMagick 7 (`magick`), ffmpeg y Python 3 con Pillow y numpy.
+
+**Edwin** puede publicar directo en `main` (Jonathan lo autorizó el 3-oct-2026). El acceso es una llave de despliegue
+con escritura por repositorio, que Jonathan crea en GitHub (Settings → Deploy keys de cada uno) y le pasa en su paquete
+junto con un `preparar.sh` que clona los tres por SSH con ellas. Jonathan las revoca ahí mismo cuando quiera.
 
 ## Cómo entra un cambio
 
-1. **Nada directo a `main`** salvo que Jonathan lo autorice. Se trabaja en una rama (o en un fork) y se abre un pull
-   request contra `main`.
-2. **Antes de abrir el pull request**, en el sitio:
+1. **Nada directo a `main`** salvo que Jonathan lo autorice (Jonathan y Edwin sí empujan a `main`). Los demás trabajan
+   en una rama o en un fork y abren un pull request contra `main`.
+2. **Antes de empujar o de abrir el pull request**, en el sitio:
    - `node herramientas/generar.mjs`. Las páginas se generan desde `datos/` y el resultado se versiona. Los HTML no se
      editan a mano.
    - `node --test pruebas/*.test.mjs pruebas/control/*.test.mjs`
@@ -43,13 +47,18 @@ de imagen piden además ImageMagick 7 (`magick`), ffmpeg y Python 3 con Pillow y
    En las demos: `node --test pruebas/` y su recorrido (`herramientas/recorrido.mjs`; ver el README de cada una).
 3. **Cada arreglo deja su prueba**, y se comprueba que la prueba falla contra lo publicado antes del arreglo. Si no
    falla, no está probando nada.
-4. **En la descripción del pull request** van:
+4. **En el mensaje del commit o del pull request** van:
    - qué cambió y por qué;
    - cómo se comprobó, con las cifras;
    - lo que no se hizo o quedó a medias.
-5. **Una cosa por pull request**, chico. Antes de empezar, `git pull` y avisar qué parte se toma, para no tocar a la vez
-   los mismos archivos que otra persona. Los más compartidos son `herramientas/generar.mjs` y `assets/sitio.css`.
-6. **Verificar contra el artefacto** (el código, la página en el navegador, el sitio publicado) y no contra la memoria
+5. **Una cosa por commit**, chico. Antes de empezar, `git pull --rebase` y avisar qué parte se toma, para no tocar a la
+   vez los mismos archivos que otra persona. Los más compartidos son `herramientas/generar.mjs` y `assets/sitio.css`.
+   Antes de empujar, otra vez `git pull --rebase`. Si chocan los archivos generados (los `.html`, `assets/indice.json`),
+   se resuelven primero las fuentes (`datos/`, `herramientas/`, `js/`, `assets/*.css`), se vuelve a correr
+   `node herramientas/generar.mjs` y se agrega lo generado. Nunca `git push --force` a `main`.
+6. **Después de empujar**, mirar que GitHub Pages haya publicado (uno o dos minutos) y correr las dos pruebas de
+   navegador contra el sitio publicado (cambiando `http://localhost:4900` por `https://jojomunoz.github.io`).
+7. **Verificar contra el artefacto** (el código, la página en el navegador, el sitio publicado) y no contra la memoria
    ni contra una nota.
 
 ## Lo que no se hace

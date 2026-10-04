@@ -63,6 +63,10 @@ diseño de la casa: `~/Documents/NovahWEB/conocimiento/GUIA-DISENO-SIN-SLOP.md` 
   no se vea el borde, y se exporta a `assets/heroe/heroe-portada-{640,960,1250}.webp`. En la computadora mide hasta
   620 px (con 520 los objetos ocupaban el 8,5 % de la pantalla). Si faltan los archivos, vuelve la caja de avisos.
   Los avisos del teléfono de la foto salen de la portada anterior a 1b15188 (pantallas-equipo.mjs los toma de git).
+- Edwin puede empujar a `main` (autorizado el 3-oct; llaves de despliegue que crea Jonathan, ver COLABORAR.md): siempre
+  `git pull --rebase` antes de empezar y antes de empujar; si chocan archivos generados, resolver las fuentes y regenerar.
+- Servidor local sin Python: `node herramientas/servir.mjs` (sirve la carpeta de los tres repos en el 4900, con rangos
+  de bytes para los videos).
 - Después de cada push, mirar que GitHub Pages haya publicado: `gh api repos/jojomunoz/<repo>/pages/builds --jq '.[0]'`
   (un despliegue de reservas falló una vez por un tiempo de espera de Jekyll; los tres repos llevan `.nojekyll`).
 - Cerrojos, contra local y contra el sitio en vivo después de cada push:
