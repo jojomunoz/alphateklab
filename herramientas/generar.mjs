@@ -512,17 +512,22 @@ function heroeAvisos(prefijo) {
 // consultorio, los avisos de varios negocios y una placa cuyo QR abre las demos). Varios negocios a propósito: con
 // la mesa sola, los dueños concluían «hacen menús QR para restaurantes». Se arma con herramientas/pantallas-equipo.mjs
 // y herramientas/componer-equipo.py.
-const hayHeroeVitrina = () => existe('assets/heroe/heroe-portada-640.webp') && existe('assets/heroe/heroe-portada-1200.webp');
+// Recorte de 1250 px de la compuesta de 2048 (objetos con ~4 % de aire) y el fondo llevado al petróleo de la banda;
+// se exporta a 640, 960 y 1250 (ver CLAUDE.md, «héroe de la portada»).
+const ANCHOS_HEROE = [640, 960, 1250];
+const hayHeroeVitrina = () => ANCHOS_HEROE.every((a) => existe(`assets/heroe/heroe-portada-${a}.webp`));
 function heroeVitrina(prefijo) {
   return `<figure class="heroe__producto heroe-vitrina">
-        <img src="${prefijo}assets/heroe/heroe-portada-640.webp" srcset="${prefijo}assets/heroe/heroe-portada-640.webp 640w, ${prefijo}assets/heroe/heroe-portada-1200.webp 1200w" sizes="(min-width: 1040px) 540px, (min-width: 640px) 440px, 100vw" width="1200" height="1200" alt="Una placa con un código QR que abre las demos, un teléfono con avisos de una tienda, la facturación, un colegio y una clínica, y una tableta en la pared con la agenda de un consultorio." fetchpriority="high" decoding="async" />
-        <figcaption>Las pantallas son de nuestras demos y el QR de la placa las abre. Imagen ilustrativa.</figcaption>
+        <img src="${prefijo}assets/heroe/heroe-portada-640.webp" srcset="${ANCHOS_HEROE.map((a) => `${prefijo}assets/heroe/heroe-portada-${a}.webp ${a}w`).join(', ')}" sizes="(min-width: 1040px) 620px, (min-width: 640px) 520px, 100vw" width="1250" height="1250" alt="Una placa con un código QR que abre las demos, un teléfono con avisos de una tienda, la facturación, un colegio y una clínica, y una tableta en la pared con la agenda de un consultorio." fetchpriority="high" decoding="async" />
+        <figcaption>El QR de la placa abre nuestras demos. Imagen ilustrativa.</figcaption>
       </figure>`;
 }
 
 // ── portada ──
 function paginaInicio() {
   const prefijo = '';
+  // «Prueba con:» solo con la caja de avisos: junto a la foto eran seis acciones compitiendo en el héroe (medición
+  // liviana del 3-oct); el buscador y «¿No sabes qué pedir?» bastan
   const chips = [
     ['Pedidos con QR', 'pedir desde la mesa con qr'],
     ['Contar clientes', 'contar personas que entran'],
@@ -542,7 +547,7 @@ function paginaInicio() {
         <button class="boton boton--senal" type="submit">Buscar</button>
         <div class="heroe__resultados" id="heroe-resultados" tabindex="-1" hidden></div>
       </form>
-      <p class="heroe__prueba">Prueba con: ${chips.map(([t, q], i) => `<span class="sin-corte"><button type="button" class="chip-texto" data-buscar="${esc(q)}">${esc(t)}</button>${i < chips.length - 1 ? ',' : '.'}</span>`).join(' ')}</p>
+      ${vitrina ? '' : `<p class="heroe__prueba">Prueba con: ${chips.map(([t, q], i) => `<span class="sin-corte"><button type="button" class="chip-texto" data-buscar="${esc(q)}">${esc(t)}</button>${i < chips.length - 1 ? ',' : '.'}</span>`).join(' ')}</p>`}
       <p class="heroe__diagnostico"><a class="boton boton--linea" href="${prefijo}diagnostico/">${icono('question')}¿No sabes qué pedir? Responde 3 preguntas</a></p>
     </div>
     ${vitrina ? heroeVitrina(prefijo) : heroeAvisos(prefijo)}

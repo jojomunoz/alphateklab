@@ -39,14 +39,18 @@ Reglas del proyecto: `~/alphateklab/BRIEF.md`. Guía de diseño: `~/Documents/No
   ~15 cuadros por segundo y sin doble densidad; el webm VP9 de antes salía en 4:4:4 (Profile 1), que muchos
   decodificadores de teléfono no aceptan.
 - Fotos con pantallas reales (3-oct): las fotos de GPT traen las pantallas en gris o apagadas y la placa en blanco;
-  encima van las pantallas de las demos y QR que funcionan. `node herramientas/pantallas-equipo.mjs http://localhost:4900 <tmp>`
-  captura los contenidos y `python3 herramientas/componer-equipo.py ~/alphateklab/originales <tmp> <salida> [nombres]`
+  encima van las pantallas de las demos y QR que funcionan. `node herramientas/pantallas-equipo.mjs http://localhost:4900 ~/alphateklab/originales/pantallas`
+  captura los contenidos y `python3 herramientas/componer-equipo.py ~/alphateklab/originales ~/alphateklab/originales/pantallas ~/alphateklab/originales/compuestas [nombres]`
   busca cada pantalla (región de luz pareja o rayos hasta el bisel), la deforma en perspectiva y la mezcla con la luz
-  de la foto (deja `<nombre>-contorno.png` para revisar las esquinas). Los originales viven en `~/alphateklab/originales`
-  (fuera del repo). Después de componer, comprobar que los QR se leen (jsQR sobre la imagen publicada).
-- El héroe de la portada es esa foto compuesta (`assets/heroe/heroe-portada-{640,1200}.webp`) con pantallas de varios
-  negocios a propósito: con solo la mesa, los dueños leían «hacen menús QR para restaurantes». Si faltan los archivos,
-  vuelve la caja de avisos.
+  de la foto (deja `<nombre>-contorno.png` para revisar las esquinas). Todo eso vive en `~/alphateklab/originales`
+  (fuera del repo, y no en /tmp: el apagón del 3-oct se llevó las compuestas que estaban ahí). Después de componer,
+  comprobar que los QR se leen (jsQR sobre cada tamaño publicado).
+- El héroe de la portada es esa foto compuesta con pantallas de varios negocios a propósito: con solo la mesa, los
+  dueños leían «hacen menús QR para restaurantes». Se recorta a 1250 px alrededor de los objetos (424, 392, 1674,
+  1642 de la de 2048), se lleva su fondo (12, 47, 43) al petróleo de la banda (15, 44, 41) sumando (3, -3, -2) para que
+  no se vea el borde, y se exporta a `assets/heroe/heroe-portada-{640,960,1250}.webp`. En la computadora mide hasta
+  620 px (con 520 los objetos ocupaban el 8,5 % de la pantalla). Si faltan los archivos, vuelve la caja de avisos.
+  Los avisos del teléfono de la foto salen de la portada anterior a 1b15188 (pantallas-equipo.mjs los toma de git).
 - Después de cada push, mirar que GitHub Pages haya publicado: `gh api repos/jojomunoz/<repo>/pages/builds --jq '.[0]'`
   (un despliegue de reservas falló una vez por un tiempo de espera de Jekyll; los tres repos llevan `.nojekyll`).
 - Cerrojos, contra local y contra el sitio en vivo después de cada push:

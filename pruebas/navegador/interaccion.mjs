@@ -329,7 +329,12 @@ try {
     assert.ok(Math.abs(centroFoto - centroTexto) <= 60, `la foto está ${Math.round(centroFoto - centroTexto)} px corrida del centro del texto`);
     // su borde derecho, en el de «Pregúntanos» de la cabecera
     assert.ok(Math.abs(img.right - cta.right) <= 2, `la foto termina en ${Math.round(img.right)} y la cabecera en ${Math.round(cta.right)}`);
-    assert.ok(img.width >= 400, `la foto mide ${Math.round(img.width)} px`);
+    // la foto es la pieza del héroe: con 520 px de ancho los objetos ocupaban el 8,5 % de la pantalla (medición liviana)
+    assert.ok(img.width >= 540, `la foto mide ${Math.round(img.width)} px`);
+    const parte = (img.width * (Math.min(img.bottom, 900) - Math.max(img.top, 0))) / (1440 * 900);
+    assert.ok(parte >= 0.22, `la foto ocupa el ${(100 * parte).toFixed(1)} % de la primera pantalla`);
+    // el texto va junto: del titular a «¿No sabes qué pedir?» sin huecos de la altura de la foto
+    assert.ok(diag.bottom - titulo.top <= 460, `el texto ocupa ${Math.round(diag.bottom - titulo.top)} px de alto`);
     await c6.close();
   });
 

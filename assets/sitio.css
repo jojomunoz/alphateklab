@@ -4350,7 +4350,7 @@ html.sin-desplazar {
     grid-template-areas: 'titulo' 'bajada' 'buscar' 'producto' 'prueba' 'diag';
   }
   .heroe--portada.heroe--vitrina .heroe-vitrina {
-    width: min(100%, 440px);
+    width: min(100%, 520px);
     justify-self: center;
   }
 }
@@ -4364,15 +4364,18 @@ html.sin-desplazar {
    bajo «¿No sabes qué pedir?» y la nota casi al pie de la pantalla (Jonathan, 3-oct: «me incomoda algo del hero»). */
 @media (min-width: 1040px) {
   .heroe--portada.heroe--vitrina .heroe__fila {
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    /* la foto es más alta que el texto: el sobrante va a las dos filas vacías de los extremos y el texto queda junto y
+       centrado (con solo filas «auto», el alto de la foto se repartía entre ellas y abría huecos dentro del texto) */
     grid-template-areas:
+      '. producto'
       'titulo producto'
       'bajada producto'
       'buscar producto'
-      'prueba producto'
-      'diag producto';
-    grid-template-rows: auto auto auto auto auto;
-    column-gap: var(--e-8);
+      'diag producto'
+      '. producto';
+    grid-template-rows: 1fr auto auto auto auto 1fr;
+    column-gap: var(--e-7);
     align-content: center;
   }
   .heroe--portada.heroe--vitrina .heroe__titulo {
@@ -4380,11 +4383,16 @@ html.sin-desplazar {
     max-width: 22ch;
     text-wrap: balance;
   }
-  /* el borde derecho de la foto, en el mismo borde que «Pregúntanos» de la cabecera */
+  /* La foto es la pieza del héroe: hasta 620 px (los objetos ocupaban el 8,5 % de la pantalla con 520), sin pasarse
+     del alto de la primera pantalla. Su borde derecho, en el de «Pregúntanos» de la cabecera. */
   .heroe--portada.heroe--vitrina .heroe-vitrina {
-    width: min(100%, 520px);
+    width: min(100%, 620px, calc(100vh - 160px));
+    width: min(100%, 620px, calc(100svh - 160px));
     justify-self: end;
     align-self: center;
+  }
+  .heroe--portada.heroe--vitrina .heroe-vitrina figcaption {
+    opacity: 0.8;
   }
 }
 

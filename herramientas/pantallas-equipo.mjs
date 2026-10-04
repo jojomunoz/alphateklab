@@ -2,6 +2,7 @@
 // kiosco y la carta en el teléfono de la demo de la mesa, la placa impresa de la mesa 7 (con un QR que abre la demo),
 // la agenda de la demo de reservas, una pantalla de turnos (servicio S02) y el teclado de la cerradura. Uso: con ~/alphateklab/repos servido, node herramientas/pantallas-equipo.mjs http://localhost:4900 <carpeta>
 import { chromium } from '/home/jonathan/alphatend-do/sitio/node_modules/playwright/index.mjs';
+import { execFileSync } from 'node:child_process';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -10,6 +11,14 @@ const SALIDA = process.argv[3] || 'pantallas';
 const MESA = `${BASE}/alphateklab-mesa/`;
 const DEMO_PUBLICA = 'https://jojomunoz.github.io/alphateklab-mesa/';
 mkdirSync(SALIDA, { recursive: true });
+// Desde 1b15188 el héroe de la portada es la foto y la caja de avisos ya no está en la página: los avisos del teléfono
+// se toman de la portada anterior a ese commit (sus estilos siguen en sitio.css, que la usa de respaldo).
+const AVISOS_DESDE = '1b15188^';
+const avisosAnteriores = () => {
+  const h = execFileSync('git', ['show', `${AVISOS_DESDE}:index.html`], { cwd: new URL('..', import.meta.url).pathname, encoding: 'utf8' });
+  const i = h.lastIndexOf('<figure', h.indexOf('data-avisos'));
+  return h.slice(i, h.indexOf('</figure>', i) + '</figure>'.length);
+};
 
 const b = await chromium.launch();
 try {
@@ -149,7 +158,8 @@ try {
     const p = await c.newPage();
     await p.goto(`${BASE}/alphateklab/`, { waitUntil: 'load' });
     await p.evaluate(() => document.fonts.ready);
-    await p.evaluate(() => {
+    await p.evaluate((anterior) => {
+      if (!document.querySelector('[data-avisos]')) document.body.insertAdjacentHTML('beforeend', anterior);
       const fig = document.querySelector('[data-avisos]').cloneNode(true); // la copia ya no la mueve el script
       fig.querySelectorAll('li[hidden]').forEach((li) => { li.hidden = false; });
       fig.querySelector('.avisos-heroe__pausa')?.remove();
@@ -162,7 +172,7 @@ try {
       document.body.className = '';
       Object.assign(document.body.style, { margin: '0', background: '#0a1f1c', padding: '58px 12px 16px', minHeight: '844px', boxSizing: 'border-box' });
       Object.assign(fig.style, { margin: '0', width: '100%', maxWidth: 'none' });
-    });
+    }, avisosAnteriores());
     await p.waitForTimeout(400);
     await p.screenshot({ path: join(SALIDA, 'avisos-telefono.png') });
     await c.close();
