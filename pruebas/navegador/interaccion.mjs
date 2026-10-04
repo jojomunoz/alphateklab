@@ -496,6 +496,34 @@ try {
     const bajos = [...etapas, ...pruebala].filter((h) => h < 44);
     assert.equal(bajos.length, 0, `${bajos.length} de ${etapas.length + pruebala.length} bajo 44 px: ${bajos.map((h) => h.toFixed(0)).join(', ')}`);
   });
+
+  // sistema de títulos (brecha 7): un estilo por papel, todo en Manrope 700, y el H1 siempre por encima de los H2
+  await paso('los títulos siguen un sistema: Manrope 700, un solo tamaño de H2 por página de documento y el H1 por encima', async () => {
+    const problemas = [];
+    for (const ancho of [1440, 390]) {
+      const c16 = await b.newContext({ viewport: { width: ancho, height: 900 } });
+      const t = await c16.newPage();
+      for (const ruta of ['', 'soluciones/restaurantes/', 'servicios/menu-qr/', 'servicios/', 'guias/factura-electronica/', 'cotizar/', 'diagnostico/']) {
+        await t.goto(BASE + ruta, { waitUntil: 'load' });
+        const r = await t.evaluate(() => {
+          const vis = (e) => e.getClientRects().length && !e.closest('dialog, [hidden], .mega, .menu-movil, .pie, .sr, .banda-pregunta');
+          const est = (e) => { const s = getComputedStyle(e); return { px: Math.round(parseFloat(s.fontSize)), w: s.fontWeight, f: s.fontFamily.split(',')[0].replace(/"/g, ''), txt: e.textContent.trim().slice(0, 30) }; };
+          return { h1: [...document.querySelectorAll('h1')].filter(vis).map(est), h2: [...document.querySelectorAll('main h2')].filter(vis).map(est), h3: [...document.querySelectorAll('main h3')].filter(vis).map(est) };
+        });
+        const todos = [...r.h1, ...r.h2, ...r.h3];
+        for (const x of todos) if (x.w !== '700' || x.f !== 'Manrope') problemas.push(`${ancho} /${ruta} «${x.txt}» ${x.f} ${x.w}`);
+        const maxH2 = Math.max(0, ...r.h2.map((x) => x.px));
+        for (const h of r.h1) if (h.px <= maxH2) problemas.push(`${ancho} /${ruta} H1 de ${h.px} px no supera al H2 de ${maxH2}`);
+        // en las páginas de documento (fichas y guías) todos los H2 van del mismo tamaño
+        if (/servicios\/menu-qr|guias\//.test(ruta)) {
+          const tam = [...new Set(r.h2.map((x) => x.px))];
+          if (tam.length > 1) problemas.push(`${ancho} /${ruta} H2 de ${tam.join(', ')} px`);
+        }
+      }
+      await c16.close();
+    }
+    assert.equal(problemas.length, 0, problemas.slice(0, 6).join(' · '));
+  });
 } finally {
   await b.close();
 }

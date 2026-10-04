@@ -201,9 +201,10 @@ h4 {
   letter-spacing: 0;
 }
 
+/* Manrope 700 como pide la marca (600-700 para títulos); con 800 todo el sitio se leía en negrita */
 .display {
   font-family: var(--f-titulo);
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 1.04;
   word-spacing: 0.04em;

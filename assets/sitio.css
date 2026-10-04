@@ -166,7 +166,7 @@ main {
   margin-bottom: var(--e-3);
 }
 .mega__cabeza a {
-  font-weight: 650;
+  font-weight: 600;
 }
 .mega__lista {
   list-style: none;
@@ -332,7 +332,7 @@ main {
   border-bottom: 1px solid var(--linea);
 }
 .menu-movil__enlaces a {
-  font-weight: 650;
+  font-weight: 600;
 }
 @media (max-width: 1060px) {
   .menu,
@@ -1195,7 +1195,7 @@ body.menu-abierto {
 }
 .nivel__nombre {
   font-size: var(--t-xs);
-  font-weight: 800;
+  font-weight: 700;
   color: var(--tinta-2);
 }
 .nivel__servicios {
@@ -1294,7 +1294,7 @@ body.menu-abierto {
   align-items: center;
   min-height: 60px;
   padding-block: var(--e-3);
-  font-weight: 650;
+  font-weight: 600;
 }
 .pregunta summary::-webkit-details-marker {
   display: none;
@@ -1507,7 +1507,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
   border: 1px solid var(--tarjeta-borde);
 }
 .problema__que {
-  font-weight: 750;
+  font-weight: 700;
   font-size: var(--t-m);
 }
 .problema__que::before {
@@ -1529,7 +1529,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
 .chip--enlace {
   min-height: 34px;
   font-size: var(--t-xs);
-  font-weight: 650;
+  font-weight: 600;
   background: var(--apoyo);
   color: var(--acento);
   border-color: transparent;
@@ -1585,7 +1585,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
 }
 .tarjeta-servicio__nombre {
   font-size: var(--t-m);
-  font-weight: 720;
+  font-weight: 700;
   line-height: 1.25;
 }
 .tarjeta-servicio__nombre a {
@@ -1619,7 +1619,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
   align-items: center;
   gap: 4px;
   font-size: 0.75rem;
-  font-weight: 650;
+  font-weight: 600;
   padding: 3px 8px;
   border-radius: var(--r-chico);
   background: var(--papel-2);
@@ -1642,7 +1642,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
   border-top: 1px solid var(--tarjeta-borde);
 }
 .tarjeta-servicio__precio {
-  font-weight: 750;
+  font-weight: 700;
   font-size: var(--t-s);
 }
 .boton-chico {
@@ -1812,7 +1812,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
   font-size: var(--t-s);
 }
 .campo > span {
-  font-weight: 650;
+  font-weight: 600;
   color: var(--tinta-2);
 }
 .campo--en-linea {
@@ -1995,7 +1995,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
 }
 .ficha-cuerpo__cifra {
   font-size: var(--t-2xl);
-  font-weight: 820;
+  font-weight: 700;
 }
 .ficha-cuerpo__aparte {
   font-size: var(--t-xs);
@@ -2219,7 +2219,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
 }
 .pasos-diag li[aria-current] {
   color: var(--tinta);
-  font-weight: 650;
+  font-weight: 600;
 }
 .pasos-diag li[aria-current] span {
   background: var(--tinta);
@@ -2241,7 +2241,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
 }
 .diag__pregunta {
   font-family: var(--f-titulo);
-  font-weight: 800;
+  font-weight: 700;
   font-size: var(--t-2xl);
   letter-spacing: -0.02em;
   padding: 0;
@@ -2292,7 +2292,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
   align-items: center;
   gap: var(--e-2);
   padding: var(--e-3) var(--e-4);
-  font-weight: 650;
+  font-weight: 700;
 }
 @media (hover: hover) and (pointer: fine) {
   .diag-negocio:hover {
@@ -2342,7 +2342,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
   border-color: var(--tinta);
 }
 .diag-problema__que {
-  font-weight: 650;
+  font-weight: 600;
 }
 .diag-problema__como {
   font-size: var(--t-s);
@@ -2395,7 +2395,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
   display: inline-flex;
   align-items: center;
   gap: var(--e-2);
-  font-weight: 650;
+  font-weight: 600;
   color: var(--acento);
 }
 .diag-resultado__titulo {
@@ -2493,7 +2493,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
 }
 .diag-resultado__accion-titulo {
   font-family: var(--f-titulo);
-  font-weight: 800;
+  font-weight: 700;
   font-size: var(--t-xl);
   color: var(--sobre-oscuro) !important;
 }
@@ -2690,7 +2690,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
 .situaciones__titulo {
   font-family: var(--f-titulo);
   font-size: var(--t-m);
-  font-weight: 800;
+  font-weight: 700;
   margin-bottom: var(--e-3);
 }
 .situaciones__lista {
@@ -2721,7 +2721,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
 .situacion strong {
   display: block;
   font-family: var(--f-titulo);
-  font-weight: 800;
+  font-weight: 700;
   text-decoration: underline;
   text-decoration-color: transparent;
   text-underline-offset: 4px;
@@ -2779,7 +2779,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
   color: var(--tinta-2);
 }
 .ficha-heroe__precio .num {
-  font-weight: 800;
+  font-weight: 700;
   color: var(--tinta);
 }
 
@@ -2918,7 +2918,7 @@ input[type='search']::-webkit-search-cancel-button {
   align-items: center;
   gap: var(--e-3);
   font-family: var(--f-titulo);
-  font-weight: 800;
+  font-weight: 700;
   font-size: var(--t-l);
 }
 .etapa__num {
@@ -3049,7 +3049,7 @@ input[type='search']::-webkit-search-cancel-button {
 .guia-fila strong {
   display: block;
   font-family: var(--f-titulo);
-  font-weight: 800;
+  font-weight: 700;
   font-size: var(--t-m);
   text-decoration: underline;
   text-decoration-color: transparent;
@@ -3653,7 +3653,7 @@ html.sin-desplazar {
 }
 .problema__que {
   font-family: var(--f-titulo);
-  font-weight: 800;
+  font-weight: 700;
   font-size: var(--t-l);
   line-height: 1.25;
 }
@@ -3833,7 +3833,7 @@ html.sin-desplazar {
   border-bottom: 1px solid var(--linea);
 }
 .equipo-lista strong {
-  font-weight: 650;
+  font-weight: 600;
 }
 .equipo-lista span {
   grid-column: 1;
@@ -4064,7 +4064,7 @@ html.sin-desplazar {
   .rejilla-servicios--indice .tarjeta-servicio__precio {
     grid-column: 1;
     grid-row: 2;
-    font-weight: 650;
+    font-weight: 600;
     color: var(--tinta-2);
   }
   .rejilla-servicios--indice .tarjeta-servicio__precio:empty {
@@ -4615,7 +4615,7 @@ html.sin-desplazar {
   display: flex;
   align-items: center;
   min-height: 44px;
-  font-weight: 650;
+  font-weight: 600;
   cursor: pointer;
 }
 .cotizador__detalles summary span {
@@ -4781,7 +4781,7 @@ html.sin-desplazar {
 .equipo__nombre {
   margin-top: 4px;
   font-family: var(--f-titulo);
-  font-weight: 750;
+  font-weight: 700;
   font-size: var(--t-m);
   line-height: 1.25;
 }
@@ -4846,4 +4846,57 @@ html.sin-desplazar {
 }
 .instala__texto .lista-check {
   margin-top: var(--e-2);
+}
+
+/* ── sistema de títulos (3-oct). La medición encontró H2 de 17, 20, 26 y 40 px, y 700 y 800 al mismo tamaño en la
+   misma ficha: la jerarquía dependía solo del tamaño y todo iba en negrita. Cuatro papeles, cada uno con un solo
+   estilo, todos en Manrope 700 (la marca pide 600-700 para títulos):
+   - H1 de página: 32 → 48 px. Los héroes de la portada y de los negocios llevan el suyo, más grande.
+   - H2 de sección, en las páginas de recorrido (portada, negocios, catálogo, laboratorio y las bandas): 26 → 40 px.
+   - Título de bloque: los H2 de las páginas de documento (fichas y guías), que van todos iguales, y los H3 de bloque
+     de las páginas de recorrido: 20 → 25 px.
+   - Título de tarjeta: 17 px (Manrope 700). ── */
+:root {
+  --t-h1: clamp(2rem, 1.25rem + 2.4vw, 3rem);
+  --t-seccion: clamp(1.625rem, 1rem + 2vw, 2.5rem);
+  --t-bloque: clamp(1.25rem, 1rem + 0.8vw, 1.5625rem);
+}
+.ficha-heroe__titulo,
+.pagina-simple__titulo,
+.texto-largo h1 {
+  font-size: var(--t-h1);
+}
+.seccion__titulo,
+.banda-pregunta__titulo {
+  font-size: var(--t-seccion);
+}
+.seccion__titulo--chico,
+.grupo__cabeza--texto .grupo__titulo,
+.cotizador__subtitulo,
+.ficha-cuerpo__col h2,
+.ficha-detalle__bloque h2,
+.texto-largo h2,
+.fuentes--guia h2,
+.grupo__titulo,
+.paso__titulo,
+.situaciones__titulo,
+.diag-resultado__accion-titulo {
+  font-family: var(--f-titulo);
+  font-size: var(--t-bloque);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+/* la cifra del precio en Manrope y por debajo del título de su bloque (iba en Inter 820 de 32 px, más grande que él) */
+.ficha-cuerpo__cifra {
+  font-family: var(--f-titulo);
+  font-size: var(--t-l);
+  letter-spacing: -0.01em;
+}
+/* las guías: el texto corrido a unos 66 caracteres por línea (llegaba a 80-84) */
+.texto-largo > p,
+.texto-largo > ul,
+.texto-largo > ol,
+.texto-largo li {
+  max-width: 36rem;
 }

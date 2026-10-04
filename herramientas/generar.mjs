@@ -430,8 +430,10 @@ const ESCENAS = {
   'en-cabana-puerta': { ancho: 1280, alto: 1600, texto: 'Cerradura con código en la puerta de una cabaña', encuadre: '70% 42%' },
 };
 // qué imagen va en la ficha de cada servicio que se instala
+// (la mesa usa la placa con el QR real de la mesa 7: la escena «en-mesa» traía la placa en blanco sobre una mesa de
+// cafetería estadounidense, medición liviana del 3-oct)
 const IMAGEN_SERVICIO = {
-  R01: { escena: 'en-mesa' }, R02: { escena: 'en-mesa' }, R03: { escena: 'en-mesa' },
+  R01: { pieza: 'equipo-1-placa-mesa' }, R02: { pieza: 'equipo-1-placa-mesa' }, R03: { pieza: 'equipo-1-placa-mesa' },
   R05: { escena: 'en-cocina' }, R06: { pieza: 'equipo-3-kiosco' },
   C01: { escena: 'en-tienda' }, C05: { escena: 'en-minisuper' }, T11: { escena: 'en-tienda' },
   R10: { escena: 'en-nevera' }, I01: { escena: 'en-nevera' },
