@@ -354,6 +354,16 @@ try {
     assert.ok(await p.$('.seccion--oscura [data-producto-video]'), 'el video de la mesa no está en «Pruébalo ahora»');
   });
 
+  await paso('las seis tarjetas de demos usan la misma receta (la pantalla clave en una ventana sobre el petróleo)', async () => {
+    for (const ruta of ['', 'laboratorio/']) {
+      await p.goto(BASE + ruta, { waitUntil: 'load' });
+      const srcs = await p.$$eval('.demos .demo__captura img', (xs) => xs.map((x) => x.getAttribute('src')));
+      assert.equal(srcs.length, 6, `/${ruta}: ${srcs.length} tarjetas`);
+      const otras = srcs.filter((s) => !/assets\/demos\/tarjeta-[a-z0-9-]+\.webp$/.test(s));
+      assert.equal(otras.length, 0, `/${ruta}: fuera de la receta: ${otras.join(', ')}`);
+    }
+  });
+
   await paso('el desplegable de la portada no salta mientras se escribe una frase (ni queda una franja vacía)', async () => {
     const c7 = await b.newContext({ viewport: { width: 1440, height: 900 } });
     const t = await c7.newPage();

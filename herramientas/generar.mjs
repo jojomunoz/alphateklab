@@ -342,9 +342,17 @@ function capturaDemo(d, prefijo, alt, { prioridad = false } = {}) {
   return d && d.imagen && existe(d.imagen) ? `<img src="${prefijo}${d.imagen}" alt="${esc(alt ?? `Captura de la demo: ${d.nombre}`)}" width="640" height="400" ${prioridad ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async" />` : '';
 }
 
+// La miniatura de las tarjetas: la pantalla clave de la demo en una ventana sobre el petróleo, la misma receta para las
+// seis (herramientas/tarjetas-demos.mjs); sin ella, la captura suelta.
+function miniaturaDemo(d, prefijo) {
+  const base = `assets/demos/tarjeta-${d.clave}`;
+  if (!existe(`${base}.webp`) || !existe(`${base}-1280.webp`)) return capturaDemo(d, prefijo, '');
+  return `<img src="${prefijo}${base}.webp" srcset="${prefijo}${base}.webp 640w, ${prefijo}${base}-1280.webp 1280w" sizes="(min-width: 900px) 400px, 100vw" alt="" width="640" height="400" loading="lazy" decoding="async" />`;
+}
+
 function tarjetaDemo(d, prefijo, { nivel = 'h3', grande = false } = {}) {
   return `<li class="demo${grande ? ' demo--grande' : ''}"><a class="demo__enlace" href="${enlace(d.url, prefijo)}">
-    <div class="demo__captura">${capturaDemo(d, prefijo, '') || `<span class="demo__sincaptura">${icono('play-circle', 'ico ico--grande')}</span>`}</div>
+    <div class="demo__captura">${miniaturaDemo(d, prefijo) || `<span class="demo__sincaptura">${icono('play-circle', 'ico ico--grande')}</span>`}</div>
     <div class="demo__texto"><${nivel} class="demo__nombre">${esc(d.nombre)}</${nivel}><p>${esc(d.que)}</p><span class="demo__probar">${icono('play-circle')}Probar la demo</span></div>
   </a></li>`;
 }
