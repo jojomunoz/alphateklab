@@ -2,20 +2,26 @@
 
 Sitio estático en GitHub Pages (https://jojomunoz.github.io/alphateklab/). Sin build en el navegador: HTML, CSS y
 módulos ES. Las páginas del catálogo se generan con `node herramientas/generar.mjs` a partir de `datos/catalogo.mjs`
-y el resultado se versiona (así el HTML trae el contenido sin esperar al JavaScript). Pruebas: `node --test pruebas/`
-y las de cada demo en `laboratorio/<demo>/pruebas/`.
+y el resultado se versiona (así el HTML trae el contenido sin esperar al JavaScript): no se editan a mano los HTML
+generados, se cambia `datos/` o `herramientas/generar.mjs` y se regenera. Pruebas: ver «Cerrojos» abajo, y las de cada
+demo en `laboratorio/<demo>/pruebas/`. Para trabajar desde otra máquina o como colaborador: `COLABORAR.md`.
 
-Reglas del proyecto: `~/alphateklab/BRIEF.md`. Guía de diseño: `~/Documents/NovahWEB/conocimiento/GUIA-DISENO-SIN-SLOP.md`.
+Reglas del proyecto: `~/alphateklab/BRIEF.md` (fuera del repo; los colaboradores la reciben en su paquete). Guía de
+diseño de la casa: `~/Documents/NovahWEB/conocimiento/GUIA-DISENO-SIN-SLOP.md` (solo en la máquina de Jonathan).
 
 ## Dirección visual (marca entregada por Jonathan el 3-oct-2026; manda sobre cualquier versión anterior)
 
 - **Marca:** logo «a» con módulo ámbar (`assets/marca/logo-claro.svg` en fondo claro, `logo-oscuro.svg` en oscuro, con
   `<picture>` y `prefers-color-scheme`).
-- **Paleta** (tokens en `assets/atk.css`, con modo oscuro): ámbar `#F2B544` (`--senal`: botones y señales; encima va
-  texto grafito, NUNCA blanco ni crema), verde petróleo `#176B64` (`--acento`/`--enlace`/`--foco`), grafito `#202729`,
-  claro `#F7F5EF`, apoyo `#DCE9E5`. Bordes de controles con `--borde-control` (≥ 3:1).
-- **Tipografía:** Manrope (títulos, 800) e Inter (texto), autoalojadas en `assets/fuentes/` (latin + latin-ext). Cifras con
-  `tabular-nums`, sin monoespaciada.
+- **Paleta** (tokens en `assets/atk.css`, con modo oscuro): ámbar `#F2B544` (`--senal`) SOLO para la acción (botones,
+  «Probar la demo», lo agregado a la lista) y el módulo del logo; encima va texto grafito, NUNCA blanco ni crema.
+  Números, palomitas, franjas, antetítulos y subrayados van en verde petróleo `#176B64` (`--acento`/`--enlace`/`--foco`,
+  sobre `--apoyo`). Grafito `#202729`, claro `#F7F5EF`, apoyo `#DCE9E5`. Bordes de controles con `--borde-control` (≥ 3:1).
+- **Tipografía:** Manrope 700 para todos los títulos (la marca pide 600-700; con 800 todo se leía en negrita) e Inter
+  para el texto (400, y 600 en controles y énfasis), autoalojadas en `assets/fuentes/`. Cuatro papeles, un estilo cada
+  uno (`--t-h1`, `--t-seccion`, `--t-bloque` al final de `sitio.css`): H1 de página 32 → 48 px; H2 de sección 26 → 40 px
+  en las páginas de recorrido; título de bloque 20 → 25 px (todos los H2 de fichas y guías, y los H3 de bloque); título
+  de tarjeta 17 px. Un paso de `interaccion.mjs` lo exige. Cifras con `tabular-nums`, sin monoespaciada.
 - **Radios:** solo tres, con rol: `--r-control` 8 px (botones, campos, íconos), `--r-tarjeta` 12 px (tarjetas y paneles),
   `--r-chico` 6 px (insignias, casillas). Nada de 999 px salvo la cuenta redonda de la cabecera.
 - **Composición:** filetes en vez de cajas donde se pueda (cómo trabajamos, ficha, etapas); una sola apuesta por pantalla.
@@ -31,7 +37,13 @@ Reglas del proyecto: `~/alphateklab/BRIEF.md`. Guía de diseño: `~/Documents/No
   una demo nueva que todavía no esté lista).
 - Capturas: `node herramientas/capturas.mjs http://localhost:4900 <demo>` (cartel de cada demo) y
   `node herramientas/producto.mjs http://localhost:4900` (las pantallas reales que van en los héroes de la portada y de
-  las páginas de negocio). Las imágenes del sitio son del producto, no escenas generadas.
+  las páginas de negocio). Las tarjetas de las seis demos salen de `node herramientas/tarjetas-demos.mjs
+  http://localhost:4900` (la pantalla clave de cada una en una ventana sobre el petróleo, siempre igual).
+- Imágenes: capturas reales de las demos y fotos generadas con GPT (autorizado mientras el sitio sea interno), rotuladas
+  «Imagen ilustrativa» y listadas en /creditos/. Las fotos generadas nunca llevan una pantalla o un QR inventado: encima
+  van las pantallas reales (abajo). Dos platos o dos cabañas nunca comparten foto.
+- Playwright (herramientas y pruebas de navegador) se carga con `herramientas/navegador.mjs`: la variable `PW`, el del
+  repositorio (`npm install`, fija la 1.61.1, y `npx playwright install chromium`) o el de la máquina de Jonathan.
 - Video de la portada: `node herramientas/video-producto.mjs http://localhost:4900` (~80 s). Graba la demo real de la mesa
   cuadro por cuadro con el tiempo bajo control (reloj falso de Playwright + animaciones pausadas y puestas en su tiempo),
   30 por segundo, y codifica AV1 (`.av1.mp4`, con su códec en `video-codecs.json`) y H.264 (`.mp4`), 4:2:0 de 8 bits, con
@@ -56,8 +68,9 @@ Reglas del proyecto: `~/alphateklab/BRIEF.md`. Guía de diseño: `~/Documents/No
 - Cerrojos, contra local y contra el sitio en vivo después de cada push:
   `PERMITIR_PENDIENTES=1 node --test pruebas/*.test.mjs pruebas/control/*.test.mjs`, `node pruebas/navegador/sitio.mjs <url>` y
   `node pruebas/navegador/interaccion.mjs <url>` (cada falla que encontró la revisión de clase mundial es un paso).
-- Las dos de navegador también con el motor de Safari (iPhone). En esta Fedora el WebKit de Playwright pide ICU 74 y
-  libjpeg8, que el sistema no trae; hay un lanzador que los pone, y el Playwright de la versión que coincide:
+- Las dos de navegador también con el motor de Safari (iPhone), `MOTOR=webkit`. En la Fedora de Jonathan el WebKit de
+  Playwright pide ICU 74 y libjpeg8, que el sistema no trae; hay un lanzador que los pone, y el Playwright de la versión
+  que coincide (en otra máquina basta `npx playwright install webkit` y `MOTOR=webkit`):
   `MOTOR=webkit WEBKIT_EXE=/home/jonathan/Documents/NovahWEB/proyectos/guia-anfibios/qa-2026-09-30/a11y/webkit-libs/run-webkit.sh PW=/home/jonathan/Documents/NovahWEB/proyectos/guia-anfibios-panama/node_modules/playwright-core/index.mjs node pruebas/navegador/sitio.mjs <url>`.
 - El buscador se mide de verdad con `node pruebas/control/medir.mjs`: 87 frases que escribieron agentes en el papel de
   dueños de negocios sin ver cómo está afinado (70 con respuesta, 17 de cosas que no hacemos), partidas en dos mitades.
