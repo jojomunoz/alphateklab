@@ -190,6 +190,7 @@ function dialogoBuscador() {
     <div class="buscador__sugerencias" data-buscador-sugerencias></div>
     <p class="sr" role="status" data-buscador-estado></p>
   </div>
+  <p class="buscador__pie" aria-hidden="true"><kbd>↑</kbd><kbd>↓</kbd> para moverte <span>·</span> <kbd>Enter</kbd> para abrir <span>·</span> <kbd>Esc</kbd> para cerrar</p>
 </dialog>`;
 }
 
@@ -1182,7 +1183,7 @@ function paginaDiagnostico() {
       foto: existe(`assets/fotos/${so.foto}-800.webp`) ? `${prefijo}assets/fotos/${so.foto}-800.webp` : null,
       problemas: so.problemas.map((p) => ({ problema: p.problema, respuesta: p.respuesta, servicios: p.servicios })),
     })),
-    servicios: Object.fromEntries(SERVICIOS.map((s) => [s.id, { nombre: s.nombre, corto: s.corto, para: s.para, url: `${prefijo}servicios/${s.slug}/`, precio: precioTexto(s), demo: s.demo ? enlace(s.demo, prefijo) : null, icono: tipoPorId.get(s.tipos[0]).icono, instala: s.instala }])),
+    servicios: Object.fromEntries(SERVICIOS.map((s) => [s.id, { nombre: s.nombre, corto: s.corto, para: s.para, url: `${prefijo}servicios/${s.slug}/`, precio: precioTexto(s), demo: s.demo ? enlace(s.demo, prefijo) : null, icono: s.icono || tipoPorId.get(s.tipos[0]).icono, instala: s.instala }])),
   };
   return documento({
     titulo: '¿Qué necesita tu negocio? · alphateklab',

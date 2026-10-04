@@ -364,6 +364,38 @@ try {
     }
   });
 
+  await paso('el buscador con teclado: pie con las teclas, Enter en la fila elegida (sin mover la fila) e ícono propio del servicio', async () => {
+    const c17 = await b.newContext({ viewport: { width: 1280, height: 800 } });
+    const t = await c17.newPage();
+    await t.goto(`${BASE}servicios/`, { waitUntil: 'load' });
+    await t.keyboard.press('/');
+    await t.keyboard.type('menu qr para mi restaurante', { delay: 30 });
+    await t.waitForSelector('.buscador .resultado[role="option"]');
+    await t.waitForTimeout(500);
+    const ancho = () => t.$eval('.buscador .resultado:not(.resultado--preguntar) .resultado__texto', (x) => x.getBoundingClientRect().width);
+    const antes = await ancho();
+    await t.keyboard.press('ArrowDown');
+    await t.waitForTimeout(150);
+    assert.equal(await t.isVisible('.buscador__pie'), true, 'falta el pie con las teclas');
+    assert.equal(await t.$eval('.buscador .resultado[aria-selected="true"] .resultado__enter', (x) => getComputedStyle(x).visibility), 'visible', 'la fila elegida no lleva Enter');
+    assert.equal(Math.round(await ancho()), Math.round(antes), 'la fila cambió de ancho al elegirla');
+    // el NFC con el ícono de pago sin contacto, no con el de pantallas
+    await t.fill('#buscador-campo', 'etiqueta nfc en la mesa');
+    await t.waitForTimeout(600);
+    const iconos = await t.$$eval('.buscador .resultado use', (xs) => xs.map((x) => x.getAttribute('href')));
+    await c17.close();
+    assert.ok(iconos.includes('#i-contactless-payment'), `íconos: ${iconos.join(', ')}`);
+    // en una pantalla táctil no hay pie de teclas
+    const c18 = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const u = await c18.newPage();
+    await u.goto(`${BASE}servicios/`, { waitUntil: 'load' });
+    await u.click('[data-abrir-buscador]:visible');
+    await u.waitForTimeout(300);
+    const pieTactil = await u.isVisible('.buscador__pie');
+    await c18.close();
+    assert.equal(pieTactil, false, 'el pie de teclas sale en la pantalla táctil');
+  });
+
   await paso('el desplegable de la portada no salta mientras se escribe una frase (ni queda una franja vacía)', async () => {
     const c7 = await b.newContext({ viewport: { width: 1440, height: 900 } });
     const t = await c7.newPage();

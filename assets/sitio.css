@@ -510,11 +510,61 @@ body.menu-abierto {
   color: var(--tinta-3);
   white-space: nowrap;
 }
+/* Con teclado y ratón, la fila elegida lleva la tecla que la abre, en una columna fija: la fila no cambia de ancho al
+   moverse la selección. En el diálogo, un pie con las teclas (revisión del 3-oct, como DocSearch). En pantallas
+   táctiles no hay ni una cosa ni la otra. */
+.resultado__enter,
+.buscador__pie {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .resultado__fila {
+    grid-template-columns: auto minmax(0, 1fr) auto 1.75rem;
+  }
+  .resultado--preguntar .resultado__fila {
+    grid-template-columns: auto minmax(0, 1fr) 1.75rem;
+  }
+  .resultado__enter {
+    display: block;
+    visibility: hidden;
+    justify-self: end;
+  }
+  .resultado[aria-selected="true"] .resultado__enter {
+    visibility: visible;
+  }
+  .buscador__pie {
+    display: flex;
+    flex: none;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 10px var(--e-4);
+    border-top: 1px solid var(--linea);
+    font-size: var(--t-xs);
+    color: var(--tinta-3);
+  }
+  .resultado__enter,
+  .buscador__pie kbd {
+    min-width: 22px;
+    padding: 1px 5px;
+    border: 1px solid var(--linea-fuerte);
+    border-radius: var(--r-chico);
+    background: var(--papel);
+    color: var(--tinta-2);
+    font-family: var(--f-texto);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    text-align: center;
+  }
+}
 @media (max-width: 520px) {
-  .resultado__tipo {
+  .resultado__tipo,
+  .resultado__enter {
     display: none;
   }
-  .resultado__fila {
+  .resultado__fila,
+  .resultado--preguntar .resultado__fila {
     grid-template-columns: auto minmax(0, 1fr);
   }
 }

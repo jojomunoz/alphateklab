@@ -16,7 +16,8 @@ export function construirIndice({ SERVICIOS, PALABRAS, SECTORES, TIPOS, SOLUCION
     titulo: s.nombre,
     url: `servicios/${s.slug}/`,
     resumen: s.para,
-    icono: iconoTipo[s.tipos[0]] || 'sparkle',
+    // el ícono propio del servicio cuando lo tiene (NFC, agendas, WhatsApp…); si no, el de su tipo
+    icono: s.icono || iconoTipo[s.tipos[0]] || 'sparkle',
     etiqueta: nombreTipo[s.tipos[0]],
     precio: s.precio ? s.precio.texto : null,
     demo: Boolean(s.demo),

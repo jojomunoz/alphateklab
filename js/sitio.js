@@ -156,7 +156,7 @@ function itemResultado(r, i, consulta = '') {
   // a la ficha de un servicio va la frase buscada, para que «Preguntar por este servicio» la lleve a «Pregúntanos»
   const u = url(r.url);
   li.dataset.url = r.tipo === 'servicio' && consulta ? `${u}${u.includes('?') ? '&' : '?'}q=${encodeURIComponent(consulta)}` : u;
-  li.innerHTML = `<div class="resultado__fila"><svg class="ico" aria-hidden="true"><use href="#i-${r.icono}"></use></svg><span class="resultado__texto"><strong></strong><small></small></span><span class="resultado__tipo"></span></div>`;
+  li.innerHTML = `<div class="resultado__fila"><svg class="ico" aria-hidden="true"><use href="#i-${r.icono}"></use></svg><span class="resultado__texto"><strong></strong><small></small></span><span class="resultado__tipo"></span><kbd class="resultado__enter" aria-hidden="true">↵</kbd></div>`;
   pintarResaltado(li.querySelector('strong'), r.titulo, consulta);
   pintarResaltado(li.querySelector('small'), r.resumen, consulta);
   li.querySelector('.resultado__tipo').textContent = r.tipo === 'servicio' ? (r.precio ? r.precio : r.etiqueta) : ETIQUETA[r.tipo];
@@ -172,7 +172,7 @@ function itemPreguntar(consulta, i, { dudosa = false, arriba = false } = {}) {
   li.id = `res-preguntar-${i}`;
   li.className = `resultado resultado--preguntar${dudosa ? ' resultado--dudosa' : ''}`;
   li.dataset.url = `${RAIZ}cotizar/?q=${encodeURIComponent(consulta)}`;
-  li.innerHTML = `<div class="resultado__fila"><svg class="ico" aria-hidden="true"><use href="#i-chat-circle-dots"></use></svg><span class="resultado__texto"><strong></strong><small></small></span></div>`;
+  li.innerHTML = `<div class="resultado__fila"><svg class="ico" aria-hidden="true"><use href="#i-chat-circle-dots"></use></svg><span class="resultado__texto"><strong></strong><small></small></span><kbd class="resultado__enter" aria-hidden="true">↵</kbd></div>`;
   // arriba de los resultados («¿No es esto?» antes de verlos no se entiende) o al final de la lista
   li.querySelector('strong').textContent = dudosa ? `No lo tenemos descrito así: pregúntanos por «${consulta}»` : arriba ? `Pregúntanos por «${consulta}»` : `¿No es esto? Pregúntanos por «${consulta}»`;
   li.querySelector('small').textContent = dudosa ? 'Lo hacemos a la medida. Debajo, lo más parecido que ya tenemos.' : arriba ? 'Si no está abajo, te decimos si lo podemos hacer.' : 'Te respondemos si lo podemos hacer.';

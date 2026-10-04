@@ -34,10 +34,13 @@ export const TIPOS = [
 const MESA = 'https://jojomunoz.github.io/alphateklab-mesa/';
 const RESERVAS = 'https://jojomunoz.github.io/alphateklab-reservas/';
 
+// «icono»: solo en los servicios donde un ícono propio dice más que el de su tipo (revisión del 3-oct: el NFC llevaba
+// el de pantallas y las agendas el de código); los demás usan el de su tipo.
 export const SERVICIOS = [
   // ── Restaurantes y cafés ──────────────────────────────────────────────
   {
     id: 'R01',
+    icono: 'qr-code',
     slug: 'menu-qr',
     nombre: 'Menú QR a la medida',
     corto: 'Menú QR',
@@ -58,6 +61,7 @@ export const SERVICIOS = [
   },
   {
     id: 'R02',
+    icono: 'fork-knife',
     slug: 'pedir-y-pagar-desde-la-mesa',
     nombre: 'Pedir, llamar al mesero y pagar desde la mesa',
     corto: 'Pedir y pagar en la mesa',
@@ -78,6 +82,7 @@ export const SERVICIOS = [
   },
   {
     id: 'R03',
+    icono: 'contactless-payment',
     slug: 'nfc-en-la-mesa',
     nombre: 'Etiqueta NFC en cada mesa',
     corto: 'NFC en la mesa',
@@ -153,6 +158,7 @@ export const SERVICIOS = [
   },
   {
     id: 'R08',
+    icono: 'calendar-check',
     slug: 'reservas-de-mesa',
     nombre: 'Reservas de mesa en línea',
     corto: 'Reservas de mesa',
@@ -181,6 +187,7 @@ export const SERVICIOS = [
   },
   {
     id: 'R10',
+    icono: 'thermometer-simple',
     slug: 'temperatura-de-neveras',
     nombre: 'Sensores de temperatura en neveras y cuartos fríos',
     corto: 'Temperatura de neveras',
@@ -295,6 +302,7 @@ export const SERVICIOS = [
   },
   {
     id: 'C08',
+    icono: 'handshake',
     slug: 'programa-de-lealtad',
     nombre: 'Programa de clientes frecuentes',
     corto: 'Clientes frecuentes',
@@ -325,6 +333,7 @@ export const SERVICIOS = [
   // ── Clínicas y consultorios ───────────────────────────────────────────
   {
     id: 'S01',
+    icono: 'calendar-check',
     slug: 'agente-de-citas',
     nombre: 'Agente de citas con recordatorios',
     corto: 'Agente de citas',
@@ -376,6 +385,7 @@ export const SERVICIOS = [
   // ── Hospedaje y turismo ───────────────────────────────────────────────
   {
     id: 'H01',
+    icono: 'calendar-check',
     slug: 'motor-de-reservas',
     nombre: 'Motor de reservas en tu propia página',
     corto: 'Motor de reservas',
@@ -390,6 +400,7 @@ export const SERVICIOS = [
   },
   {
     id: 'H02',
+    icono: 'calendar-check',
     slug: 'sincronizacion-con-booking-y-airbnb',
     nombre: 'Calendario sincronizado con Booking, Airbnb y Expedia, con vigilante',
     corto: 'Aviso de calendario caído',
@@ -404,6 +415,7 @@ export const SERVICIOS = [
   },
   {
     id: 'H03',
+    icono: 'lock-key',
     slug: 'cerraduras-con-codigo',
     nombre: 'Cerraduras con código por reserva',
     corto: 'Cerraduras con código',
@@ -418,6 +430,7 @@ export const SERVICIOS = [
   },
   {
     id: 'H04',
+    icono: 'bed',
     slug: 'check-in-en-linea',
     nombre: 'Registro de huéspedes en línea',
     corto: 'Registro de huéspedes',
@@ -432,6 +445,7 @@ export const SERVICIOS = [
   },
   {
     id: 'H05',
+    icono: 'lightning',
     slug: 'consumo-por-cabana',
     nombre: 'Consumo de luz y agua por cabaña',
     corto: 'Consumo por cabaña',
@@ -493,6 +507,7 @@ export const SERVICIOS = [
   },
   {
     id: 'B04',
+    icono: 'whatsapp-logo',
     slug: 'agente-de-whatsapp-para-inmobiliarias',
     nombre: 'Agente de WhatsApp para prospectos de bienes raíces',
     corto: 'Bot de prospectos en WhatsApp',
@@ -538,6 +553,7 @@ export const SERVICIOS = [
   // ── Bodegas, oficinas e industria ─────────────────────────────────────
   {
     id: 'I01',
+    icono: 'chart-line-up',
     slug: 'tablero-de-sensores',
     nombre: 'Tablero de sensores del negocio',
     corto: 'Tablero de sensores',
@@ -552,6 +568,7 @@ export const SERVICIOS = [
   },
   {
     id: 'I02',
+    icono: 'map-pin',
     slug: 'gps-de-flota',
     nombre: 'GPS de vehículos y rutas',
     corto: 'GPS de flota',
@@ -580,6 +597,7 @@ export const SERVICIOS = [
   },
   {
     id: 'I04',
+    icono: 'qr-code',
     slug: 'control-de-acceso',
     nombre: 'Control de acceso con QR o tarjeta',
     corto: 'Control de acceso',
@@ -594,6 +612,7 @@ export const SERVICIOS = [
   },
   {
     id: 'I05',
+    icono: 'shield-check',
     slug: 'deteccion-de-equipo-de-seguridad',
     nombre: 'Detección de casco y chaleco',
     corto: 'Casco y chaleco',
@@ -666,6 +685,7 @@ export const SERVICIOS = [
   },
   {
     id: 'T04',
+    icono: 'robot',
     slug: 'automatizaciones',
     nombre: 'Automatizaciones',
     corto: 'Automatizaciones',
@@ -680,6 +700,7 @@ export const SERVICIOS = [
   },
   {
     id: 'T05',
+    icono: 'whatsapp-logo',
     slug: 'chatbot-de-whatsapp',
     nombre: 'Asistente de WhatsApp y del sitio con IA',
     corto: 'Asistente con IA',
@@ -727,6 +748,7 @@ export const SERVICIOS = [
   },
   {
     id: 'T08',
+    icono: 'chart-line-up',
     slug: 'tablero-de-ventas',
     nombre: 'Tablero de ventas y operación',
     corto: 'Tablero de ventas',
@@ -757,6 +779,7 @@ export const SERVICIOS = [
   // ── añadidos: punto de venta, red, video, 3D de productos, industria ──
   {
     id: 'R11',
+    icono: 'credit-card',
     slug: 'punto-de-venta',
     nombre: 'Punto de venta para restaurante o tienda',
     corto: 'Punto de venta (POS)',
@@ -785,6 +808,7 @@ export const SERVICIOS = [
   },
   {
     id: 'I07',
+    icono: 'factory',
     slug: 'sensores-en-motores',
     nombre: 'Sensores de vibración y temperatura en motores',
     corto: 'Sensores en motores',
@@ -842,77 +866,77 @@ export const SERVICIOS = [
 
   // ── añadidos del 3-oct (2): escuelas, talleres y salones, y más software para cualquier negocio ──
   {
-    id: 'E01', slug: 'matricula-y-mensualidades', nombre: 'Matrícula y cobro de mensualidades en línea', corto: 'Matrícula y mensualidades',
+    id: 'E01', icono: 'graduation-cap', slug: 'matricula-y-mensualidades', nombre: 'Matrícula y cobro de mensualidades en línea', corto: 'Matrícula y mensualidades',
     sectores: ['educacion'], tipos: ['software', 'pagos'], instala: false,
     para: 'Los padres matriculan y pagan la mensualidad desde el teléfono con Yappy o tarjeta; tú ves quién está al día sin perseguir a nadie.',
     incluye: ['Formulario de matrícula con documentos', 'Cobro de mensualidades con recordatorio', 'Estado de cuenta por estudiante', 'Reporte de morosidad'],
     equipo: [], precio: null, demo: null,
   },
   {
-    id: 'E02', slug: 'asistencia-con-qr', nombre: 'Asistencia con QR o tarjeta', corto: 'Asistencia con QR',
+    id: 'E02', icono: 'qr-code', slug: 'asistencia-con-qr', nombre: 'Asistencia con QR o tarjeta', corto: 'Asistencia con QR',
     sectores: ['educacion', 'operacion'], tipos: ['iot', 'software'], instala: true,
     para: 'Estudiantes o empleados marcan la entrada con su QR o tarjeta, y si alguien no llegó, se avisa a quien corresponda.',
     incluye: ['Lector en la entrada', 'Asistencia por día y por grupo', 'Aviso a padres o supervisores'],
     equipo: ['Lector QR o de tarjeta', 'Tableta o pantalla en la entrada'], precio: null, demo: null,
   },
   {
-    id: 'E03', slug: 'avisos-a-padres', nombre: 'Avisos a padres por WhatsApp', corto: 'Avisos a padres',
+    id: 'E03', icono: 'whatsapp-logo', slug: 'avisos-a-padres', nombre: 'Avisos a padres por WhatsApp', corto: 'Avisos a padres',
     sectores: ['educacion'], tipos: ['software', 'ia'], instala: false,
     para: 'Circulares, notas, recordatorios de pago y avisos de último momento que llegan al WhatsApp de cada familia.',
     incluye: ['Envío por grupo, grado o estudiante', 'Confirmación de lectura', 'Respuestas automáticas a las preguntas de siempre'],
     equipo: [], precio: null, demo: null,
   },
   {
-    id: 'V01', slug: 'turnos-y-aviso-de-listo', nombre: 'Turnos en línea y aviso cuando está listo', corto: 'Turnos y aviso de listo',
+    id: 'V01', icono: 'clock', slug: 'turnos-y-aviso-de-listo', nombre: 'Turnos en línea y aviso cuando está listo', corto: 'Turnos y aviso de listo',
     sectores: ['servicios'], tipos: ['software'], instala: false,
     para: 'El cliente del autolavado o del taller saca turno, ve cuántos tiene adelante y recibe un WhatsApp cuando su carro está listo.',
     incluye: ['Turno desde el teléfono o en el local', 'Fila en vivo', 'Aviso de listo por WhatsApp'],
     equipo: [], precio: null, demo: null,
   },
   {
-    id: 'V02', slug: 'ordenes-de-trabajo', nombre: 'Órdenes de trabajo del taller', corto: 'Órdenes de trabajo',
+    id: 'V02', icono: 'wrench', slug: 'ordenes-de-trabajo', nombre: 'Órdenes de trabajo del taller', corto: 'Órdenes de trabajo',
     sectores: ['servicios'], tipos: ['software'], instala: false,
     para: 'Recepción del vehículo con fotos, presupuesto que el cliente aprueba por WhatsApp, estado del trabajo e historial por placa.',
     incluye: ['Fotos del vehículo al recibirlo', 'Presupuesto con aprobación del cliente', 'Historial por placa', 'Aviso de entrega'],
     equipo: [], precio: null, demo: null,
   },
   {
-    id: 'V03', slug: 'agenda-para-salones', nombre: 'Agenda para barberías y salones', corto: 'Agenda para salones',
+    id: 'V03', icono: 'calendar-check', slug: 'agenda-para-salones', nombre: 'Agenda para barberías y salones', corto: 'Agenda para salones',
     sectores: ['servicios'], tipos: ['software'], instala: false,
     para: 'Citas por barbero o estilista, recordatorio por WhatsApp y depósito en línea para que no se pierda el espacio.',
     incluye: ['Agenda por profesional y servicio', 'Recordatorio y confirmación', 'Depósito con Yappy o tarjeta'],
     equipo: [], precio: null, demo: 'https://jojomunoz.github.io/alphateklab-reservas/',
   },
   {
-    id: 'S04', slug: 'videoconsulta', nombre: 'Videoconsulta con cobro previo', corto: 'Videoconsulta',
+    id: 'S04', icono: 'stethoscope', slug: 'videoconsulta', nombre: 'Videoconsulta con cobro previo', corto: 'Videoconsulta',
     sectores: ['salud'], tipos: ['software', 'pagos'], instala: false,
     para: 'El paciente agenda, paga y entra a la consulta por video desde el enlace que le llega, sin instalar nada.',
     incluye: ['Sala de video por cita', 'Cobro antes de la consulta', 'Recordatorio con el enlace'],
     equipo: [], precio: null, demo: null,
   },
   {
-    id: 'S05', slug: 'expediente-del-paciente', nombre: 'Expediente digital del paciente', corto: 'Expediente digital',
+    id: 'S05', icono: 'stethoscope', slug: 'expediente-del-paciente', nombre: 'Expediente digital del paciente', corto: 'Expediente digital',
     sectores: ['salud'], tipos: ['software'], instala: false,
     para: 'La historia del paciente, sus citas, fotos de control y documentos en un solo lugar, con acceso solo para quien debe verla.',
     incluye: ['Ficha por paciente con historial', 'Fotos de control por fecha', 'Permisos por persona', 'Consentimiento según la Ley 81 de 2019'],
     equipo: [], precio: null, demo: null,
   },
   {
-    id: 'H06', slug: 'domotica-para-alquileres', nombre: 'Luces, aire y cerraduras desde el teléfono', corto: 'Luces, aire y cerraduras',
+    id: 'H06', icono: 'lightning', slug: 'domotica-para-alquileres', nombre: 'Luces, aire y cerraduras desde el teléfono', corto: 'Luces, aire y cerraduras',
     sectores: ['hospedaje'], tipos: ['iot'], instala: true,
     para: 'Apagas el aire de la cabaña que quedó vacía, prendes las luces antes de que llegue el huésped y abres la puerta desde donde estés.',
     incluye: ['Interruptores y enchufes inteligentes', 'Control del aire acondicionado', 'Escenas por reserva (llegada, salida)'],
     equipo: ['Interruptores inteligentes', 'Control infrarrojo para el aire', 'Puerta de enlace Wi-Fi'], precio: null, demo: null,
   },
   {
-    id: 'C11', slug: 'catalogo-por-whatsapp', nombre: 'Catálogo y pedidos por WhatsApp', corto: 'Pedidos por WhatsApp',
+    id: 'C11', icono: 'whatsapp-logo', slug: 'catalogo-por-whatsapp', nombre: 'Catálogo y pedidos por WhatsApp', corto: 'Pedidos por WhatsApp',
     sectores: ['comercio', 'restaurantes'], tipos: ['web', 'ia'], instala: false,
     para: 'Tu catálogo con precios y fotos en un enlace; el cliente arma el pedido y te llega ordenado al WhatsApp, listo para cobrar.',
     incluye: ['Catálogo con fotos, precios y existencias', 'Pedido que llega armado al WhatsApp', 'Cobro con enlace de pago'],
     equipo: [], precio: null, demo: null,
   },
   {
-    id: 'I09', slug: 'energia-solar-y-consumo', nombre: 'Medición de energía solar y consumo', corto: 'Energía y paneles solares',
+    id: 'I09', icono: 'lightning', slug: 'energia-solar-y-consumo', nombre: 'Medición de energía solar y consumo', corto: 'Energía y paneles solares',
     sectores: ['operacion', 'hospedaje'], tipos: ['iot'], instala: true,
     para: 'Cuánto producen tus paneles, cuánto consume cada área y cuánto te ahorras al mes, en una pantalla.',
     incluye: ['Medidores por circuito', 'Lectura del inversor solar', 'Reporte mensual de ahorro'],
@@ -926,14 +950,14 @@ export const SERVICIOS = [
     equipo: ['Dron (lo llevamos nosotros)'], precio: null, demo: null,
   },
   {
-    id: 'T12', slug: 'correo-y-dominio', nombre: 'Correo y dominio con el nombre de tu negocio', corto: 'Correo y dominio',
+    id: 'T12', icono: 'envelope-simple', slug: 'correo-y-dominio', nombre: 'Correo y dominio con el nombre de tu negocio', corto: 'Correo y dominio',
     sectores: ['todos'], tipos: ['web'], instala: false,
     para: 'ventas@tunegocio.com en vez de un Gmail personal, configurado en el teléfono y la computadora de cada persona.',
     incluye: ['Registro del dominio a nombre de tu negocio', 'Cuentas de correo por persona', 'Configuración en sus equipos'],
     equipo: [], precio: null, demo: null,
   },
   {
-    id: 'T13', slug: 'negocio-en-google', nombre: 'Tu negocio en Google Maps y reseñas', corto: 'Google Maps y reseñas',
+    id: 'T13', icono: 'map-pin', slug: 'negocio-en-google', nombre: 'Tu negocio en Google Maps y reseñas', corto: 'Google Maps y reseñas',
     sectores: ['todos'], tipos: ['web'], instala: false,
     para: 'Que aparezcas cuando te buscan cerca, con horario, fotos, teléfono y reseñas, y que respondas a cada reseña.',
     incluye: ['Perfil de negocio de Google completo', 'Fotos y horario al día', 'Pedido de reseñas a tus clientes'],
@@ -947,7 +971,7 @@ export const SERVICIOS = [
     equipo: [], precio: null, demo: null,
   },
   {
-    id: 'T15', slug: 'seguimiento-de-clientes', nombre: 'Seguimiento de clientes y ventas', corto: 'Clientes y ventas (CRM)',
+    id: 'T15', icono: 'handshake', slug: 'seguimiento-de-clientes', nombre: 'Seguimiento de clientes y ventas', corto: 'Clientes y ventas (CRM)',
     sectores: ['todos'], tipos: ['software'], instala: false,
     para: 'Cada cliente con su historial, en qué etapa va cada venta y qué toca hacer hoy, para que ninguna se enfríe.',
     incluye: ['Ficha por cliente', 'Embudo de ventas por etapa', 'Recordatorios de seguimiento', 'Reportes por vendedor'],
@@ -968,21 +992,21 @@ export const SERVICIOS = [
     equipo: [], precio: null, demo: null,
   },
   {
-    id: 'T18', slug: 'respaldo-y-seguridad', nombre: 'Respaldo de datos y seguridad informática', corto: 'Respaldo y seguridad',
+    id: 'T18', icono: 'shield-check', slug: 'respaldo-y-seguridad', nombre: 'Respaldo de datos y seguridad informática', corto: 'Respaldo y seguridad',
     sectores: ['todos'], tipos: ['software'], instala: true,
     para: 'Copias automáticas de lo importante fuera de la oficina, contraseñas en orden y equipos protegidos, para que un disco dañado no te cueste el negocio.',
     incluye: ['Respaldo automático diario', 'Prueba de restauración', 'Gestor de contraseñas para el equipo', 'Revisión de equipos y accesos'],
     equipo: ['Disco o servicio de respaldo'], precio: null, demo: null,
   },
   {
-    id: 'T19', slug: 'soporte-tecnico', nombre: 'Soporte técnico para tu oficina', corto: 'Soporte técnico',
+    id: 'T19', icono: 'lifebuoy', slug: 'soporte-tecnico', nombre: 'Soporte técnico para tu oficina', corto: 'Soporte técnico',
     sectores: ['todos'], tipos: ['software'], instala: true,
     para: 'Alguien a quien escribirle cuando la impresora no imprime, el correo no sale o una computadora está lenta.',
     incluye: ['Atención por WhatsApp y remota', 'Visitas cuando hace falta', 'Inventario de equipos y licencias'],
     equipo: ['Lo que haga falta reparar o reemplazar'], precio: null, demo: null,
   },
   {
-    id: 'T20', slug: 'conexion-entre-sistemas', nombre: 'Conexión entre sistemas', corto: 'Conexión entre sistemas',
+    id: 'T20', icono: 'arrows-clockwise', slug: 'conexion-entre-sistemas', nombre: 'Conexión entre sistemas', corto: 'Conexión entre sistemas',
     sectores: ['todos'], tipos: ['software'], instala: false,
     para: 'Que tu tienda, tu sistema de ventas, tu contabilidad, Yappy o el banco se pasen los datos solos.',
     incluye: ['Conexión por API entre tus sistemas', 'Sincronización programada', 'Aviso cuando algo no cuadra'],
@@ -996,7 +1020,7 @@ export const SERVICIOS = [
     equipo: [], precio: null, demo: null,
   },
   {
-    id: 'T22', slug: 'capacitacion-en-ia', nombre: 'Capacitación en IA para tu equipo', corto: 'Capacitación en IA',
+    id: 'T22', icono: 'graduation-cap', slug: 'capacitacion-en-ia', nombre: 'Capacitación en IA para tu equipo', corto: 'Capacitación en IA',
     sectores: ['todos'], tipos: ['ia'], instala: false,
     para: 'Una sesión práctica para que tu equipo use la IA en su trabajo de todos los días: redactar, resumir, cotizar y analizar.',
     incluye: ['Taller con ejemplos de tu propio negocio', 'Guía de qué datos no subir', 'Plantillas para las tareas de siempre'],
@@ -1018,7 +1042,7 @@ export const SERVICIOS = [
     equipo: [], precio: null, demo: null,
   },
   {
-    id: 'R13', slug: 'pedidos-por-whatsapp-automaticos', nombre: 'Pedidos por WhatsApp automáticos, con la comanda directo a la cocina', corto: 'Pedidos por WhatsApp a cocina',
+    id: 'R13', icono: 'whatsapp-logo', slug: 'pedidos-por-whatsapp-automaticos', nombre: 'Pedidos por WhatsApp automáticos, con la comanda directo a la cocina', corto: 'Pedidos por WhatsApp a cocina',
     sectores: ['restaurantes'], tipos: ['ia', 'software', 'pantallas'], instala: true,
     para: 'El cliente pide por WhatsApp como siempre, un asistente toma el pedido con tu carta, confirma la dirección y el pago, y la comanda sale sola en la impresora o la pantalla de la cocina.',
     incluye: [
