@@ -5,7 +5,7 @@
 // Uso: servir ~/alphateklab/repos y: node herramientas/tarjetas-demos.mjs http://localhost:4900 [clave] [--probar]
 import { chromium } from './navegador.mjs';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, rmSync, readFileSync } from 'node:fs';
+import { mkdtempSync, rmSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -26,6 +26,24 @@ const ZONA = {
 };
 // las que ya son una captura real guardada en el repositorio (era la del contador con cámara, que se fue en oct-2026)
 const ARCHIVO = {};
+
+// WebP desde el mismo navegador (no hace falta ImageMagick): el PNG va a un lienzo, se achica si se pide y se codifica.
+async function aWebp(pagina, origen, destino, ancho, alto, calidad) {
+  const datos = readFileSync(origen).toString('base64');
+  const b64 = await pagina.evaluate(async ({ datos, ancho, alto, calidad }) => {
+    const img = new Image();
+    img.src = `data:image/png;base64,${datos}`;
+    await img.decode();
+    const c = document.createElement('canvas');
+    c.width = ancho || img.naturalWidth;
+    c.height = alto || img.naturalHeight;
+    const g = c.getContext('2d');
+    g.imageSmoothingQuality = 'high';
+    g.drawImage(img, 0, 0, c.width, c.height);
+    return c.toDataURL('image/webp', calidad).split(',')[1];
+  }, { datos, ancho, alto, calidad });
+  writeFileSync(destino, Buffer.from(b64, 'base64'));
+}
 
 const tmp = mkdtempSync(join(tmpdir(), 'atk-tarjetas-'));
 const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
@@ -61,16 +79,16 @@ try {
         await c.close();
       }
     }
-    // la receta: ventana clara con esquinas de 10 px y sombra, 32 px de aire a los lados y arriba, sobre el petróleo
+    // la receta: ventana clara con esquinas de 10 px y sombra, 32 px de aire a los lados y arriba, sobre la superficie oscura de marca
     const datos = readFileSync(png).toString('base64');
-    await lienzo.setContent(`<html><body style="margin:0;width:640px;height:400px;background:#0f2c29;overflow:hidden;position:relative">
+    await lienzo.setContent(`<html><body style="margin:0;width:640px;height:400px;background:#151a30;overflow:hidden;position:relative">
       <img src="data:image/png;base64,${datos}" style="position:absolute;left:32px;top:32px;width:576px;height:360px;object-fit:cover;object-position:top left;border-radius:10px;box-shadow:0 18px 40px -12px rgb(0 0 0/.6),0 0 0 1px rgb(255 255 255/.08)">
     </body></html>`);
     await lienzo.waitForTimeout(150);
     const salida = join(tmp, `tarjeta-${d.clave}.png`);
     await lienzo.screenshot({ path: salida });
-    execFileSync('magick', [salida, '-quality', '80', join(RAIZ, `assets/demos/tarjeta-${d.clave}-1280.webp`)]);
-    execFileSync('magick', [salida, '-resize', '640x400', '-quality', '82', join(RAIZ, `assets/demos/tarjeta-${d.clave}.webp`)]);
+    await aWebp(lienzo, salida, join(RAIZ, `assets/demos/tarjeta-${d.clave}-1280.webp`), 0, 0, 0.8);
+    await aWebp(lienzo, salida, join(RAIZ, `assets/demos/tarjeta-${d.clave}.webp`), 640, 400, 0.82);
     console.log('ok', d.clave);
   }
 } finally {

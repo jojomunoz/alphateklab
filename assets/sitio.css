@@ -2,8 +2,8 @@
    Las demos del laboratorio cargan atk.css y no este archivo. */
 
 :root {
-  --tarjeta: #fdfcf9;
-  --tarjeta-borde: #e2dfd5;
+  --tarjeta: #ffffff;
+  --tarjeta-borde: #e3e7ee;
   /* tres radios con rol: control (botones, campos, íconos), tarjeta (tarjetas y paneles) y chico (insignias, casillas) */
   --r-chico: 6px;
   --r-control: 8px;
@@ -12,33 +12,39 @@
   --radio-grande: var(--r-tarjeta);
   --sombra: 0 1px 2px rgb(16 18 22 / 0.05), 0 12px 32px -14px rgb(16 18 22 / 0.22);
   --sombra-flota: 0 2px 4px rgb(16 18 22 / 0.08), 0 24px 48px -16px rgb(16 18 22 / 0.35);
-  --oscuro: #202729;
-  --oscuro-2: #283133;
-  --oscuro-3: #364144;
-  --sobre-oscuro: #f7f5ef;
-  --sobre-oscuro-2: #c3cbc8;
+  --oscuro: #141a2e;
+  --oscuro-2: #1c2340;
+  --oscuro-3: #2a3252;
+  --sobre-oscuro: #f6f7f9;
+  --sobre-oscuro-2: #c5cbd8;
+  --acento-sobre-oscuro: #5fd3c4; /* el acento sobre las superficies oscuras (héroe, bandas) */
+  /* Superficies claras que siguen claras en el tema oscuro (la caja de búsqueda y los avisos del héroe) */
+  --caja-clara: #ffffff;
+  --caja-clara-2: #eef0f4;
+  --sobre-caja: #141922;
+  --sobre-caja-2: #535d6c;
   --cabecera-alto: 68px;
-  --borde-control: #7f8682;
+  --borde-control: #7c8596;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --tarjeta: #171a1e;
-    --tarjeta-borde: #2b3036;
+    --tarjeta: #151922;
+    --tarjeta-borde: #262c38;
     --sombra: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px -14px rgb(0 0 0 / 0.6);
-    --oscuro: #121718;
-    --oscuro-2: #1b2223;
-    --oscuro-3: #2a3436;
-    --borde-control: #68716f;
+    --oscuro: #0b0e14;
+    --oscuro-2: #121620;
+    --oscuro-3: #1f2533;
+    --borde-control: #6b7385;
   }
 }
 :root[data-theme="dark"] {
-  --tarjeta: #171a1e;
-  --tarjeta-borde: #2b3036;
+  --tarjeta: #151922;
+  --tarjeta-borde: #262c38;
   --sombra: 0 1px 2px rgb(0 0 0 / 0.3), 0 12px 32px -14px rgb(0 0 0 / 0.6);
-  --oscuro: #121718;
-  --oscuro-2: #1b2223;
-  --oscuro-3: #2a3436;
-  --borde-control: #68716f;
+  --oscuro: #0b0e14;
+  --oscuro-2: #121620;
+  --oscuro-3: #1f2533;
+  --borde-control: #6b7385;
 }
 
 main {
@@ -64,7 +70,7 @@ main {
 .boton--claro {
   --b-fondo: transparent;
   --b-texto: var(--sobre-oscuro);
-  border-color: rgb(247 245 239 / 0.45);
+  border-color: rgb(246 247 249 / 0.45);
 }
 @media (hover: hover) and (pointer: fine) {
   .boton--claro:hover {
@@ -824,7 +830,7 @@ body.menu-abierto {
   gap: 6px;
 }
 .tira .ico {
-  --ico-acento: #202729;
+  --ico-acento: var(--tinta);
   --ico-opacidad: 0.2;
 }
 
@@ -1068,8 +1074,8 @@ body.menu-abierto {
   height: 44px;
   padding: 9px;
   border-radius: var(--r-tarjeta);
-  background: #202729;
-  color: #f7f5ef;
+  background: var(--oscuro);
+  color: var(--sobre-oscuro);
 }
 .capacidad__nombre {
   font-size: var(--t-l);
@@ -1191,7 +1197,7 @@ body.menu-abierto {
   padding: 3px;
   border-radius: 50%;
   background: var(--senal);
-  color: #202729;
+  color: var(--sobre-senal);
 }
 
 /* escalones */
@@ -1407,7 +1413,7 @@ body.menu-abierto {
   min-height: 110px;
 }
 .banda-pregunta__form textarea::placeholder {
-  color: #8d948c;
+  color: var(--sobre-oscuro-2);
 }
 .banda-pregunta__form textarea:focus-visible {
   outline: 2px solid var(--senal);
@@ -1480,7 +1486,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
 .pie__nota {
   margin-top: var(--e-6);
   font-size: var(--t-xs);
-  color: #949b93;
+  color: var(--sobre-oscuro-2);
 }
 
 /* ── página de un tipo de negocio ── */
@@ -1507,7 +1513,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
   background: linear-gradient(180deg, rgb(10 12 14 / 0.3) 0%, rgb(10 12 14 / 0.9) 72%);
 }
 .heroe-sector--sinfoto::after {
-  background: radial-gradient(60% 80% at 85% 0%, rgb(242 181 68 / 0.16), transparent 70%);
+  background: radial-gradient(60% 80% at 85% 0%, rgb(99 102 241 / 0.2), transparent 70%);
 }
 .heroe-sector__texto {
   position: relative;
@@ -1518,16 +1524,16 @@ main:has(> .banda-pregunta:last-child) + .pie {
 }
 .heroe-sector .migas,
 .heroe-sector .migas a {
-  color: #d4d8d2;
+  color: var(--sobre-oscuro-2);
 }
 .heroe-sector__titulo {
   font-size: clamp(2.2rem, 5vw, 3.8rem);
-  color: #fdfcf9;
+  color: var(--sobre-oscuro);
   max-width: 18ch;
 }
 .heroe-sector__bajada {
   font-size: var(--t-l);
-  color: #e3e6e1;
+  color: var(--sobre-oscuro);
   max-width: 52ch;
 }
 .heroe-sector__acciones {
@@ -1681,7 +1687,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
 }
 .insignia--demo {
   background: var(--senal);
-  color: #202729;
+  color: var(--sobre-senal);
 }
 .tarjeta-servicio__pie {
   display: flex;
@@ -1722,10 +1728,10 @@ main:has(> .banda-pregunta:last-child) + .pie {
 .boton-chico[aria-pressed="true"],
 .boton[data-cotizar][aria-pressed="true"] {
   --b-fondo: var(--senal);
-  --b-texto: #202729;
+  --b-texto: var(--sobre-senal);
   background: var(--senal);
-  color: #202729;
-  border-color: #202729;
+  color: var(--sobre-senal);
+  border-color: var(--senal-fuerte);
 }
 
 /* ── páginas simples, catálogo y ficha ── */
@@ -2549,7 +2555,7 @@ main:has(> .banda-pregunta:last-child) + .pie {
 }
 .diag-resultado__accion .boton--linea {
   --b-texto: var(--sobre-oscuro);
-  border-color: rgb(247 245 239 / 0.4);
+  border-color: rgb(246 247 249 / 0.4);
 }
 @media (min-width: 900px) {
   .diag-resultado__accion {
@@ -2934,12 +2940,12 @@ input[type='search']::-webkit-search-cancel-button {
 /* en oscuro, las bandas grafito se separan del fondo */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) .seccion--oscura {
-    background: #151a1b;
+    background: var(--oscuro);
     border-block: 1px solid var(--linea);
   }
 }
 :root[data-theme='dark'] .seccion--oscura {
-  background: #151a1b;
+  background: var(--oscuro);
   border-block: 1px solid var(--linea);
 }
 
@@ -3171,8 +3177,8 @@ html.sin-desplazar {
 
 /* ── portada con el producto: superficie petróleo, titular en crema y las demos en sus dispositivos ── */
 .heroe--producto {
-  --h-texto: #f7f5ef;
-  --h-texto-2: #c3d3cf;
+  --h-texto: var(--sobre-oscuro);
+  --h-texto-2: var(--sobre-oscuro-2);
   background: var(--petroleo-hondo);
   color: var(--h-texto);
   border-bottom: 0;
@@ -3220,7 +3226,7 @@ html.sin-desplazar {
 .heroe--producto .heroe__buscar .boton:focus-visible {
   outline: 2px solid transparent;
   outline-offset: 2px;
-  box-shadow: 0 0 0 2px #fbfaf6, 0 0 0 4px #202729;
+  box-shadow: 0 0 0 2px var(--caja-clara), 0 0 0 4px var(--sobre-caja);
 }
 .heroe__producto {
   margin: 0;
@@ -3248,7 +3254,7 @@ html.sin-desplazar {
 .dispositivo--telefono .dispositivo__pantalla {
   aspect-ratio: 9 / 19.5; /* la del video y las capturas (390 × 844); con 9/18,5 se cortaba la barra del pedido */
   border-radius: 19px;
-  background: #efe9e1;
+  background: #eef0f4;
 }
 .heroe__producto figcaption {
   font-size: var(--t-xs);
@@ -3271,14 +3277,14 @@ html.sin-desplazar {
 
 /* la caja del buscador de la portada es crema en los dos modos, con su texto oscuro */
 .heroe--producto .heroe__buscar {
-  background: #fbfaf6;
+  background: var(--caja-clara);
 }
 .heroe--producto .heroe__buscar input {
-  color: #202729;
+  color: var(--sobre-caja);
 }
 .heroe--producto .heroe__buscar input::placeholder,
 .heroe--producto .heroe__buscar > .ico {
-  color: #5b6563;
+  color: var(--sobre-caja-2);
 }
 /* en oscuro, las bandas oscuras van en petróleo para separarse del fondo */
 @media (prefers-color-scheme: dark) {
@@ -4181,7 +4187,7 @@ html.sin-desplazar {
   justify-self: center;
   padding: 16px 12px 18px;
   border-radius: 30px;
-  background: #0a1f1c;
+  background: var(--oscuro);
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.07), 0 30px 60px -24px rgb(0 0 0 / 0.65);
 }
 .avisos-heroe__cabeza {
@@ -4233,8 +4239,8 @@ html.sin-desplazar {
   align-items: start;
   padding: 10px 12px;
   border-radius: 14px;
-  background: #f7f5ef;
-  color: #202729;
+  background: var(--caja-clara);
+  color: var(--sobre-caja);
   text-decoration: none;
   transition: background-color var(--dur-estado) var(--ease-salida);
 }
@@ -4244,11 +4250,11 @@ html.sin-desplazar {
 }
 @media (hover: hover) and (pointer: fine) {
   .aviso-heroe:hover {
-    background: #ffffff;
+    background: var(--caja-clara-2);
   }
   .aviso-heroe:hover .aviso-heroe__texto {
     text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, #202729 35%, transparent);
+    text-decoration-color: color-mix(in srgb, var(--sobre-caja) 35%, transparent);
     text-underline-offset: 3px;
   }
 }
@@ -4267,8 +4273,8 @@ html.sin-desplazar {
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: #176b64;
-  color: #f7f5ef;
+  background: #0f766e;
+  color: #ffffff;
 }
 .aviso-heroe__icono .ico {
   width: 20px;
@@ -4279,10 +4285,10 @@ html.sin-desplazar {
   justify-content: space-between;
   gap: 8px;
   font-size: var(--t-xs);
-  color: #5b6466;
+  color: var(--sobre-caja-2);
 }
 .aviso-heroe__cabeza strong {
-  color: #202729;
+  color: var(--sobre-caja);
   font-weight: 750;
 }
 .aviso-heroe__texto {
@@ -4534,25 +4540,25 @@ html.sin-desplazar {
 }
 .cabecera--sobre-heroe .menu__boton,
 .cabecera--sobre-heroe .menu__enlace {
-  color: #f7f5ef;
+  color: var(--sobre-oscuro);
 }
 .cabecera--sobre-heroe .buscar-boton,
 .cabecera--sobre-heroe .hamburguesa {
   background: rgb(255 255 255 / 0.06);
   border-color: rgb(255 255 255 / 0.2);
-  color: #f7f5ef;
+  color: var(--sobre-oscuro);
 }
 .cabecera--sobre-heroe .buscar-boton {
-  color: #c3d3cf;
+  color: var(--sobre-oscuro-2);
 }
 .cabecera--sobre-heroe .buscar-boton kbd {
   border-color: rgb(255 255 255 / 0.25);
-  color: #c3d3cf;
+  color: var(--sobre-oscuro-2);
 }
 .cabecera--sobre-heroe .cabecera__cta {
   --b-fondo: transparent;
-  --b-texto: #f7f5ef;
-  border-color: rgb(247 245 239 / 0.75);
+  --b-texto: var(--sobre-oscuro);
+  border-color: rgb(246 247 249 / 0.75);
 }
 .cabecera--sobre-heroe .cabecera__cuenta {
   box-shadow: 0 0 0 2px var(--petroleo-hondo);
@@ -4565,7 +4571,7 @@ html.sin-desplazar {
   }
   .cabecera--sobre-heroe .cabecera__cta:hover {
     --b-fondo: rgb(255 255 255 / 0.12);
-    border-color: #f7f5ef;
+    border-color: var(--sobre-oscuro);
   }
 }
 /* el foco del teclado en ámbar en todas las franjas oscuras (el petróleo claro de --foco no llegaba a 3:1) */
@@ -4734,7 +4740,7 @@ html.sin-desplazar {
 /* el antetítulo de las páginas de negocio, sobre el petróleo oscuro: el verde claro de la marca (8,2:1). Solo en el
    teléfono: en pantalla ancha las migas ya terminan con el nombre del negocio y se leía dos veces seguidas. */
 .heroe__negocio {
-  color: #7fd0c5;
+  color: var(--acento-sobre-oscuro);
 }
 @media (min-width: 640px) {
   .heroe__negocio {
@@ -4833,7 +4839,7 @@ html.sin-desplazar {
   height: auto;
   aspect-ratio: 1;
   border-radius: var(--r-tarjeta);
-  background: #176b64;
+  background: var(--acento);
   transition: transform var(--dur-estado) var(--ease-salida);
 }
 .equipo__nombre {

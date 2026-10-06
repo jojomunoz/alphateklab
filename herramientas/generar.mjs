@@ -260,7 +260,7 @@ function documento({ titulo, descripcion, prefijo, cuerpo, scripts = '', canonic
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="theme-color" content="#202729" />
+<meta name="theme-color" content="#151a30" />
 <link rel="icon" href="${prefijo}assets/marca/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="${prefijo}assets/marca/favicon-32.png" sizes="32x32" type="image/png" />
 <link rel="apple-touch-icon" href="${prefijo}assets/marca/favicon-180.png" />

@@ -566,7 +566,7 @@ try {
     const [clase, sombra] = await t.evaluate(() => [document.activeElement.className, getComputedStyle(document.activeElement).boxShadow]);
     await c14.close();
     assert.match(clase, /boton--senal/, 'Tab desde el campo no llegó a «Buscar»');
-    assert.match(sombra, /rgb\(32, 39, 41\)/, `sin anillo grafito: ${sombra}`);
+    assert.match(sombra, /rgb\(20, 25, 34\)/, `sin anillo oscuro (--sobre-caja): ${sombra}`);
   });
 
   await paso('en el teléfono, los servicios de cada etapa y «Pruébala» miden 44 px de toque', async () => {

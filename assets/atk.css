@@ -1,7 +1,8 @@
-/* alphateklab · sistema visual (marca v1 de Jonathan, 3-oct-2026: ver ~/alphateklab/marca/marca/README.md)
-   Ámbar #F2B544 para botones y detalles (con texto grafito encima, nunca blanco), verde petróleo #176B64 para enlaces
-   y énfasis, grafito #202729 para texto y fondos oscuros, claro #F7F5EF de fondo y apoyo #DCE9E5 para paneles.
-   Manrope para títulos y Inter para texto, autoalojadas. Los nombres de los tokens se mantienen (senal = ámbar). */
+/* alphateklab · sistema visual. Paleta versátil del 6-oct-2026 (antes: la marca v1 de Jonathan del 3-oct, ámbar y verde
+   petróleo): base neutra fría, índigo #4F46E5 para la acción (botones; texto blanco encima, y en oscuro índigo claro
+   #8B93F8 con texto oscuro) y verde azulado #0F766E para números, palomitas y antetítulos. Todo color sale de los
+   tokens de abajo (claro y oscuro). Manrope para títulos e Inter para texto, autoalojadas. Los nombres de los tokens se
+   mantienen (senal = la acción; petroleo-hondo = la superficie oscura de marca). */
 
 @font-face {
   font-family: "Manrope";
@@ -37,23 +38,26 @@
 }
 
 :root {
-  --papel: #f7f5ef;
-  --papel-2: #efece4;
-  --papel-3: #e5e2d8;
-  --tinta: #202729;
-  --tinta-2: #3a4446;
-  --tinta-3: #5a6466;
-  --linea: #d9d6cc;
-  --linea-fuerte: #a3aaa5;
-  --senal: #f2b544;
-  --senal-fuerte: #e6a532; /* el ámbar al pasar el ratón: 7.08:1 con grafito */
-  --senal-suave: #fbecc9;
-  --sobre-senal: #202729;
-  --acento: #176b64;
-  --petroleo-hondo: #0f2c29; /* superficie de marca: el petróleo del logo, oscuro */
-  --apoyo: #dce9e5;
-  --foco: #176b64;
-  --enlace: #176b64;
+  /* Paleta versátil (6-oct-2026): base neutra fría, una acción (índigo) y un acento (verde azulado). Todo sale de
+     estos tokens: para cambiar de paleta basta con cambiarlos aquí (y su versión oscura abajo). Contrastes revisados:
+     texto ≥ 4.5:1, bordes de control y foco ≥ 3:1, en claro y en oscuro. */
+  --papel: #f6f7f9;
+  --papel-2: #eef0f4;
+  --papel-3: #e3e7ee;
+  --tinta: #141922;
+  --tinta-2: #343c4a;
+  --tinta-3: #535d6c;
+  --linea: #dde2ea;
+  --linea-fuerte: #9aa3b2;
+  --senal: #4f46e5; /* la acción: botones, «Agregar a mi lista»; encima va --sobre-senal */
+  --senal-fuerte: #4338ca;
+  --senal-suave: #e7e6fd;
+  --sobre-senal: #ffffff;
+  --acento: #0f766e; /* números, palomitas, antetítulos */
+  --petroleo-hondo: #151a30; /* superficie de marca oscura (el héroe de la portada) */
+  --apoyo: #e2f3f0;
+  --foco: #4f46e5;
+  --enlace: #4338ca;
   --ok: #157a3c;
   --aviso: #9a5a0a;
   --peligro: #b42318;
@@ -106,21 +110,22 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --papel: #161b1c;
-    --papel-2: #1e2526;
-    --papel-3: #273032;
-    --tinta: #f7f5ef;
-    --tinta-2: #c9cec9;
-    --tinta-3: #9ea8a5;
-    --linea: #2e3739;
-    --linea-fuerte: #4c5658;
-    --senal-suave: #3b3120;
-    --acento: #6cc4b9;
-    --apoyo: #1f3431;
-  --senal-fuerte: #f7c868;
-    --senal-fuerte: #f7c868; /* en oscuro, un paso más claro: 9.7:1 con grafito */
-    --foco: #6cc4b9;
-    --enlace: #7fd0c5;
+    --papel: #0f1218;
+    --papel-2: #161a22;
+    --papel-3: #1f2430;
+    --tinta: #eef1f6;
+    --tinta-2: #c7cdd8;
+    --tinta-3: #9aa3b2;
+    --linea: #282e3a;
+    --linea-fuerte: #4a5263;
+    --senal: #8b93f8; /* en oscuro, la acción más clara, con texto oscuro encima */
+    --senal-fuerte: #a5abff;
+    --senal-suave: #23264a;
+    --sobre-senal: #0f1218;
+    --acento: #3fc9b8;
+    --apoyo: #12302d;
+    --foco: #a5abff;
+    --enlace: #a9b0ff;
     --ok: #5fcf8a;
     --aviso: #f0a35a;
     --peligro: #ff8a7a;
@@ -131,19 +136,22 @@
   }
 }
 :root[data-theme="dark"] {
-  --papel: #161b1c;
-  --papel-2: #1e2526;
-  --papel-3: #273032;
-  --tinta: #f7f5ef;
-  --tinta-2: #c9cec9;
-  --tinta-3: #9ea8a5;
-  --linea: #2e3739;
-  --linea-fuerte: #4c5658;
-  --senal-suave: #3b3120;
-  --acento: #6cc4b9;
-  --apoyo: #1f3431;
-  --foco: #6cc4b9;
-  --enlace: #7fd0c5;
+  --papel: #0f1218;
+  --papel-2: #161a22;
+  --papel-3: #1f2430;
+  --tinta: #eef1f6;
+  --tinta-2: #c7cdd8;
+  --tinta-3: #9aa3b2;
+  --linea: #282e3a;
+  --linea-fuerte: #4a5263;
+  --senal: #8b93f8; /* en oscuro, la acción más clara, con texto oscuro encima */
+  --senal-fuerte: #a5abff;
+  --senal-suave: #23264a;
+  --sobre-senal: #0f1218;
+  --acento: #3fc9b8;
+  --apoyo: #12302d;
+  --foco: #a5abff;
+  --enlace: #a9b0ff;
   --ok: #5fcf8a;
   --aviso: #f0a35a;
   --peligro: #ff8a7a;
