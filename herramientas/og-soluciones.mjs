@@ -3,6 +3,8 @@
 // negocio o, si no tiene, avisos de ejemplo de sus servicios. Antes eran fotos generadas, y la revisión del 3-oct vio
 // que se delataban en lo primero que recibe quien abre un enlace por WhatsApp.
 // Uso: node herramientas/og-soluciones.mjs http://localhost:4900/alphateklab/   (con el sitio servido en local)
+// Solo software (oct-2026): la portada lleva los avisos (la foto del héroe con el equipo se fue) y tiendas y bienes
+// raíces, sin la demo de la cámara ni la del recorrido 3D, llevan avisos de ejemplo.
 import { mkdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -22,22 +24,19 @@ const icono = (n) => {
 
 const PANTALLA = {
   restaurantes: 'mesa-salon',
-  tiendas: 'camara',
   clinicas: 'reservas-agenda',
   hospedaje: 'reservas-alojamiento',
-  'bienes-raices': 'recorrido-3d',
-  'industria-y-oficinas': 'sensores-tablero',
   'talleres-y-salones': 'reservas-barberia',
 };
 const AVISOS = {
+  // los mismos del héroe de la portada (herramientas/generar.mjs, AVISOS)
   portada: [
-    ['storefront', 'Tienda', '10:42 a. m.', '214 personas hoy, 18 % más que el sábado pasado.'],
-    ['credit-card', 'Facturación', '10:38 a. m.', 'La factura 0001-0245 fue autorizada por la DGI.'],
+    ['credit-card', 'Facturación', '10:42 a. m.', 'La factura 0001-0245 fue autorizada por la DGI.'],
+    ['calendar-check', 'Clínica', '10:38 a. m.', 'La paciente de mañana a las 10:30 a. m. confirmó su cita.'],
     ['graduation-cap', 'Colegio', '10:31 a. m.', '12 familias ya pagaron la mensualidad con Yappy.'],
   ],
   escuelas: [
     ['graduation-cap', 'Mensualidades', '7:52 a. m.', '12 familias ya pagaron octubre con Yappy.'],
-    ['calendar-check', 'Asistencia', '7:40 a. m.', '5 alumnos de 4.° B todavía no marcan entrada.'],
     ['chat-circle-dots', 'Avisos a padres', '7:15 a. m.', 'La circular del viernes llegó a 186 de 190 familias.'],
   ],
   'cualquier-negocio': [
@@ -70,17 +69,17 @@ try {
     console.log('og', salida);
   };
   await hacer('assets/og.jpg', {
-    titulo: 'Hacemos la tecnología de tu negocio y la instalamos en tu local',
-    bajada: 'Software, apps, inteligencia artificial y equipos instalados para negocios de Panamá.',
-    // la misma foto del héroe de la portada (placa, teléfono y tableta con las pantallas de las demos)
-    lado: `<img class="heroe-foto" src="../assets/heroe/heroe-portada-640.webp" alt="" />`,
+    titulo: 'Hacemos el software de tu negocio, a la medida de cómo trabajas',
+    bajada: 'Páginas y apps, WhatsApp con inteligencia artificial, cobros y factura electrónica para negocios de Panamá.',
+    // los mismos avisos del héroe de la portada
+    lado: htmlAvisos(AVISOS.portada),
   });
   for (const so of SOLUCIONES) {
     const pantalla = PANTALLA[so.slug];
     await hacer(`assets/og/${so.slug}.jpg`, {
       titulo: so.h1 || so.titulo,
       bajada: `alphateklab · ${so.titulo}, en Panamá.`,
-      lado: pantalla ? `<div class="pantalla"><img src="../assets/producto/${pantalla}.webp" alt="" /></div>` : htmlAvisos(AVISOS[so.slug] || AVISOS.portada),
+      lado: pantalla ? `<div class="pantalla"><img src="../assets/producto/${pantalla}.webp" alt="" /></div>` : htmlAvisos(AVISOS[so.slug] || AVISOS['cualquier-negocio']),
     });
   }
 } finally {
