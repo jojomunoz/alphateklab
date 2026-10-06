@@ -20,7 +20,8 @@ test('dice «no lo tenemos descrito así» a un negocio que no tenemos descrito'
 });
 
 test('no lo dice a lo que sí hacemos, ni a una palabra a medio escribir', () => {
-  for (const f of ['camara', 'camaras', 'sensor', 'whatsapp', 'kiosco', 'cam', 'menu qr', 'pedir y pagar desde la mesa', 'recordar citas', 'pagina web', 'inventario', 'factura electronica']) {
+  // solo software desde oct-2026: sin «cámara», «sensor» ni «kiosco», que ya no hacemos
+  for (const f of ['whatsapp', 'yappy', 'agenda', 'respaldo', 'tienda en linea', 'coti', 'cam', 'menu qr', 'pedir y pagar desde la mesa', 'recordar citas', 'pagina web', 'inventario', 'factura electronica']) {
     assert.equal(esDudosa(indice, f), false, f);
   }
 });

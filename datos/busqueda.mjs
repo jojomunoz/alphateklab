@@ -4,26 +4,15 @@
 export const PALABRAS = {
   R01: 'menu carta digital qr codigo escanear platos precios restaurante cafe fonda bar idiomas ingles turistas agotado',
   R02: 'pedir ordenar orden pedido mesa mesero mozo camarero llamar cuenta pagar pago propina dividir separar cuenta qr comensal ronda esperan espera demoran demora lento tardan yappy paguen pague pagan cobrar cobran cobro mesas',
-  R03: 'nfc etiqueta tag acercar telefono placa mesa contactless sin camara',
   R04: 'mapa mesas salon plano distribucion cuentas abiertas mesa ocupada libre cobrar caja facturar',
   R05: 'cocina pantalla kds comandas tickets chef pedidos cocinero estacion parrilla bar demoran lento tardan',
-  R06: 'kiosco kiosko pantalla tactil touch autoservicio autopedido mostrador comida rapida fila',
   R07: 'delivery domicilio para llevar pedidos en linea sin comision apps pedidosya ubereats appetito repartidor',
   R08: 'reservas reservar mesa reservacion restaurante turno lista de espera',
-  R09: 'menu pantallas televisor tv senalizacion digital menu board plato del dia',
-  R10: 'temperatura nevera refrigerador congelador cuarto frio cadena de frio sensor alarma puerta abierta',
   R12: 'app delivery propia pedidosya ubereats uber eats appetito domicilio motorizados repartidores sucursales varios restaurantes collab marca propia sin comision app de pedidos',
   R13: 'pedidos whatsapp automaticos bot chatbot comanda cocina impresora automatico delivery domicilio tomar pedidos',
   R11: 'pos punto de venta caja registradora cajero cierre de caja ventas impresora tickets cajon codigo de barras',
-  C01: 'contar personas contador clientes entran visitas trafico aforo conversion puerta afluencia',
-  C02: 'mapa de calor heatmap recorrido pasillos zonas calientes permanencia exhibidor',
-  C03: 'filas colas caja espera abrir otra caja aviso',
-  C04: 'inventario conteo escanear rfid etiquetas existencias mercancia stock estantes',
-  C05: 'robo perdidas hurto mermas camaras ia caja cajon bodega quien roba vigilancia inteligente roban robar robando ladron ladrones empleados faltante faltantes cuadre descuadre merma pierde perdida mercancia desaparece robos ferreteria farmacia minisuper',
   C06: 'tienda en linea ecommerce e-commerce vender por internet carrito shop online web de ventas',
-  C07: 'etiquetas electronicas precios estante esl cambiar precios tinta electronica',
   C08: 'lealtad fidelizacion puntos sellos tarjeta cliente frecuente premios recompensas',
-  C09: 'wifi wi-fi internet clientes portal cautivo registro hotspot',
   C10: '3d realidad aumentada ar producto modelo girar muebles visualizar',
   C11: 'whatsapp catalogo pedidos ventas por whatsapp vender por whatsapp enlace',
   S01: 'citas agenda agendar recordatorio recordar confirmar pacientes consultorio clinica doctor medico no show inasistencia turnos agente llegan faltan ausentes plantado plantan olvidan huecos vienen ausentismo ausencias',
@@ -33,26 +22,9 @@ export const PALABRAS = {
   S05: 'expediente historia clinica historial paciente ficha medica',
   H01: 'reservas motor de reservas booking engine hotel cabanas hostal habitaciones directo sin comision deposito',
   H02: 'sincronizar calendario airbnb booking expedia ical doble reserva channel manager overbooking',
-  H03: 'cerradura inteligente codigo puerta llave smart lock acceso huesped',
   H04: 'check-in registro huespedes formulario documento pasaporte firma',
-  H05: 'consumo luz agua electricidad energia cabana medidor tanque fuga',
-  H06: 'domotica casa inteligente luces aire acondicionado control remoto smart home alquiler',
-  B01: 'recorrido 360 3d tour virtual propiedad apartamento casa bienes raices inmobiliaria matterport videojuego escaneo mostrar extranjeros extranjero afuera exterior lejos venir visitar distancia compradores',
-  B02: 'fotos fotografia profesional propiedad inmueble fotografo',
-  B03: 'plano planos medidas metros cuadrados planta remodelar',
   B04: 'agente whatsapp inmobiliario prospectos leads calificar visitas bienes raices chatbot',
   B05: 'sitio web propiedades inmobiliaria portal listado fichas',
-  B06: 'dron drone aereo tomas aereas terreno proyecto video',
-  I01: 'sensores iot tablero monitoreo telemetria alertas planta temperatura energia',
-  I02: 'gps rastreo flota vehiculos camiones motos repartidores ubicacion rutas tracking',
-  I03: 'placas matriculas lpr anpr estacionamiento parking porton pluma camara',
-  I04: 'control de acceso tarjeta qr puerta empleados visitas asistencia biometrico reloj marcador ponchar ponche marcacion gimnasio gym membresias socios',
-  I05: 'casco chaleco epp seguridad industrial camaras ia accidentes obreros trabajadores personal',
-  I06: 'contador produccion linea banda sacos cajas piezas conteo turno',
-  I07: 'vibracion motores bombas compresores mantenimiento predictivo falla temperatura',
-  I08: 'bascula balanza peso pesaje camiones medidor conectado',
-  I09: 'solar paneles energia consumo inversor ahorro electricidad',
-  I10: 'dron inspeccion techos obra construccion avance terreno',
   T01: 'pagina web sitio web website landing presencia en internet dominio',
   T02: 'software a medida sistema programa desarrollo excel papel automatizar procesos aplicacion interna erp',
   T03: 'app aplicacion movil android iphone ios celular vendedores vendedor fuerza ventas ruta calle interna empleados',
@@ -62,8 +34,6 @@ export const PALABRAS = {
   T07: 'factura electronica facturacion dgi pac fiscal comprobante',
   T08: 'tablero dashboard reportes ventas indicadores kpi bi graficos',
   T09: 'pagos en linea cobrar yappy tarjeta enlace de pago link de pago pasarela tilopay ach',
-  T10: 'red wifi internet cableado router access point oficina senal conexion',
-  T11: 'camaras de seguridad cctv videovigilancia grabador dvr nvr ver desde el celular',
   T12: 'correo corporativo email dominio cuenta de correo profesional',
   T13: 'google maps perfil de negocio google my business resenas ubicacion aparecer en google seo local',
   T14: 'inventario compras existencias stock bodega proveedores reposicion erp',
@@ -71,12 +41,10 @@ export const PALABRAS = {
   T16: 'portal clientes acceso usuarios pedidos facturas documentos estado',
   T17: 'firma electronica firmar documentos contratos digital',
   T18: 'respaldo backup copia de seguridad seguridad informatica virus contrasenas ciberseguridad',
-  T19: 'soporte tecnico computadoras impresoras reparacion mantenimiento it informatica',
   T20: 'integracion api conectar sistemas sincronizar datos webhook',
   T21: 'ocr leer facturas documentos ia extraer datos pdf formularios digitalizar',
   T22: 'capacitacion curso taller ia chatgpt claude inteligencia artificial equipo entrenamiento',
   E01: 'matricula mensualidades colegio escuela academia cobro pagos padres morosidad gimnasio gym membresias socios',
-  E02: 'asistencia estudiantes alumnos marcar entrada qr tarjeta',
   E03: 'avisos padres circulares comunicados escuela whatsapp notificaciones',
   V01: 'turnos fila autolavado carwash lavado de autos taller aviso listo cola',
   V02: 'taller mecanico ordenes de trabajo presupuesto vehiculo placa reparacion',
@@ -90,16 +58,19 @@ export const PALABRAS_NEGOCIO = {
   clinicas: 'clinica consultorio odontologo dentista veterinaria laboratorio medico doctor fisioterapia',
   hospedaje: 'hotel hostal cabanas cabana airbnb alojamiento',
   'bienes-raices': 'corredor inmobiliaria bienes raices propiedades',
-  'industria-y-oficinas': 'fabrica planta bodega oficina logistica industria',
   escuelas: 'colegio academia escuela kinder universidad instituto',
   'talleres-y-salones': 'taller barberia salon spa carwash lavado peluqueria',
-  'cualquier-negocio': 'emprendimiento pyme',
+  // con las de «Bodegas, oficinas e industria», que se juntó con «Cualquier negocio» (oct-2026)
+  'cualquier-negocio': 'emprendimiento pyme oficina bodega fabrica planta logistica industria',
 };
 
 // Cómo se escribe en Panamá o en el chat → la palabra que usa el catálogo; el buscador lo cambia antes de buscar,
 // salvo las palabras que el propio índice ya usa («router», «stock», «chofer» si alguna situación lo dice). Lo armó un
 // agente sin ver la batería de control (3-oct-2026); se quitaron «tranque» (llevaba al contador de personas por
-// «tráfico»), «tildeo» (llevaba a motores por «falla») y «hackearon».
+// «tráfico»), «tildeo» (llevaba a motores por «falla») y «hackearon». Con solo software (oct-2026) se fueron las de
+// equipos («cctv», «dvr», «nvr», «router», «drone», «epp», «garita», «carnet») y las de las cámaras contra pérdidas
+// («faltante», «merma» → «pérdida»): sin sus servicios, «cctv» llevaba al respaldo por «seguridad», «carnet» a los
+// cobros por «tarjeta» y «faltantes en caja» a la pantalla de cocina por las comandas «perdidas».
 export const EQUIVALENCIAS = [
   ['q', 'que'], ['k', 'que'], ['ke', 'que'], ['xq', 'porque'], ['pq', 'porque'], ['porq', 'porque'],
   ['xk', 'porque'], ['x', 'por'], ['xa', 'para'], ['pa', 'para'], ['pal', 'para el'], ['tb', 'tambien'],
@@ -114,16 +85,14 @@ export const EQUIVALENCIAS = [
   ['chef', 'cocinero'], ['norsa', 'enfermera'], ['norsas', 'enfermeras'], ['chofer', 'conductor'],
   ['choferes', 'conductores'], ['busero', 'conductor'], ['buseros', 'conductores'], ['aseo', 'limpieza'],
   ['housekeeping', 'limpieza'], ['maestro de obra', 'capataz'], ['profe', 'maestro'], ['profes', 'maestros'],
-  ['part time', 'medio tiempo'], ['full time', 'tiempo completo'], ['carnet', 'tarjeta'],
-  ['epp', 'equipo de seguridad'], ['guachiman', 'guardia'], ['wachiman', 'guardia'],
-  ['garita', 'control de acceso'], ['bravo', 'enojado'], ['bravos', 'enojados'], ['brava', 'enojada'],
+  ['part time', 'medio tiempo'], ['full time', 'tiempo completo'],
+  ['guachiman', 'guardia'], ['wachiman', 'guardia'], ['bravo', 'enojado'], ['bravos', 'enojados'], ['brava', 'enojada'],
   ['chifear', 'ignorar'], ['chifean', 'ignoran'], ['en visto', 'sin respuesta'], ['review', 'reseña'],
   ['reviews', 'reseñas'], ['clientes fijos', 'clientes frecuentes'], ['full', 'lleno'], ['plata', 'dinero'],
   ['platita', 'dinero'], ['chen chen', 'dinero'], ['chenchen', 'dinero'], ['flus', 'dinero'],
   ['cash', 'efectivo'], ['ach', 'transferencia bancaria'], ['voucher', 'comprobante'], ['fiao', 'credito'],
   ['fiado', 'credito'], ['rebaja', 'descuento'], ['rebajas', 'descuentos'], ['promo', 'promocion'],
   ['promos', 'promociones'], ['iva', 'itbms'], ['descuadre', 'no cuadra'], ['descuadrada', 'no cuadra'],
-  ['faltante', 'perdida'], ['faltantes', 'perdidas'], ['merma', 'perdida'], ['mermas', 'perdidas'],
   ['juega vivo', 'trampa'], ['juegavivo', 'trampa'], ['juegan vivo', 'hacen trampa'],
   ['jugando vivo', 'haciendo trampa'], ['ponchera', 'desorden'], ['arroz con mango', 'desorden'],
   ['carro', 'vehiculo'], ['carros', 'vehiculos'], ['pick up', 'vehiculo'], ['pickup', 'vehiculo'],
@@ -154,10 +123,9 @@ export const EQUIVALENCIAS = [
   ['website', 'pagina web'], ['email', 'correo'], ['mail', 'correo'], ['postear', 'publicar'],
   ['marketing', 'publicidad'], ['mercadeo', 'publicidad'], ['compu', 'computadora'], ['laptop', 'computadora'],
   ['pc', 'computadora'], ['tablet', 'tableta'], ['ipad', 'tableta'], ['smartphone', 'celular'],
-  ['tele', 'televisor'], ['tv', 'televisor'], ['touch', 'tactil'], ['router', 'enrutador'], ['data', 'datos'],
-  ['backup', 'respaldo'], ['password', 'contraseña'], ['dvr', 'grabador'], ['nvr', 'grabador'],
-  ['cctv', 'camaras de seguridad'], ['dashboard', 'tablero'], ['ecommerce', 'tienda en linea'],
-  ['e commerce', 'tienda en linea'], ['tracking', 'seguimiento'], ['drone', 'dron'], ['scanner', 'lector'],
+  ['tele', 'televisor'], ['tv', 'televisor'], ['touch', 'tactil'], ['data', 'datos'],
+  ['backup', 'respaldo'], ['password', 'contraseña'], ['dashboard', 'tablero'], ['ecommerce', 'tienda en linea'],
+  ['e commerce', 'tienda en linea'], ['tracking', 'seguimiento'], ['scanner', 'lector'],
   ['barcode', 'codigo de barras'], ['sticker', 'etiqueta'], ['stickers', 'etiquetas'], ['cloud', 'nube'],
   ['hackeo', 'ataque informatico'], ['chatgpt', 'ia'],
 ];
@@ -168,4 +136,6 @@ export const VACIAS = 'buco rantan pocoton rato ratito toca chuleta chuzo ayala 
 // Palabras de dos sentidos: «contador» es quien lleva la contabilidad y también el contador de personas; «caja», la
 // registradora y la de cartón. Si lo único que una búsqueda sin resultados tiene en común con el catálogo es una de
 // estas, no se ofrece «lo más parecido» (le ofrecía el contador de personas a quien buscaba un contador).
-export const AMBIGUAS = 'contador contadora contadores caja cajas cuenta cuentas mesa mesas pantalla pantallas red redes reloj relojes plano planos'.split(' ');
+// Con solo software (oct-2026), también «seguridad» (la del local o la de los datos) y «cámara» (la de seguridad o la
+// del teléfono): «cámaras de seguridad» salía como el respaldo y la seguridad informática.
+export const AMBIGUAS = 'contador contadora contadores caja cajas cuenta cuentas mesa mesas pantalla pantallas red redes reloj relojes plano planos seguridad camara camaras'.split(' ');

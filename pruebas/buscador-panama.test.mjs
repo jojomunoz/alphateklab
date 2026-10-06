@@ -29,7 +29,8 @@ test('cómo se escribe en el chat vale lo mismo que la palabra del catálogo', (
 
 test('el diccionario no cambia palabras que el índice ya usa', () => {
   assert.ok(indice.equivalencias, 'no se cargaron equivalencias');
-  for (const palabra of ['router', 'stock', 'ach', 'dvr']) assert.equal(indice.equivalencias.mapa.has(palabra), false, palabra);
+  // («router» y «dvr» eran los ejemplos hasta oct-2026; se fueron con la red y las cámaras)
+  for (const palabra of ['stock', 'ach', 'backup', 'dashboard']) assert.equal(indice.equivalencias.mapa.has(palabra), false, palabra);
 });
 
 test('una frase sobre algo que no hacemos no trae resultados, pero sí «lo más parecido» si algo se acerca', () => {

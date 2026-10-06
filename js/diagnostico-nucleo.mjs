@@ -1,11 +1,10 @@
 // «¿Qué necesita mi negocio?»: de las respuestas a una recomendación. Sin DOM; lo prueba pruebas/diagnostico.test.mjs.
 
-// Lo que el negocio ya tiene, y los servicios que eso vuelve innecesarios.
+// Lo que el negocio ya tiene, y los servicios que eso vuelve innecesarios. Solo software (oct-2026): se fueron las
+// cámaras de seguridad y el Wi-Fi, que eran servicios de instalación.
 export const YA_TENGO = [
   { id: 'web', texto: 'Página web', quita: ['T01'] },
   { id: 'caja', texto: 'Sistema de caja o punto de venta', quita: ['R11'] },
-  { id: 'camaras', texto: 'Cámaras de seguridad', quita: ['T11'] },
-  { id: 'wifi', texto: 'Wi-Fi que llega a todo el local', quita: ['T10'] },
   { id: 'factura', texto: 'Factura electrónica', quita: ['T07'] },
   { id: 'google', texto: 'Perfil en Google Maps', quita: ['T13'] },
 ];
@@ -14,7 +13,7 @@ export const YA_TENGO = [
 export const YA_TENGO_POR_NEGOCIO = {
   restaurantes: [
     { id: 'carta-qr', texto: 'Carta digital o menú QR', quita: ['R01'] },
-    { id: 'pantalla-cocina', texto: 'Pantalla de comandas en la cocina', quita: ['R05'] },
+    { id: 'pantalla-cocina', texto: 'Sistema de comandas en pantalla para la cocina', quita: ['R05'] },
   ],
   tiendas: [
     { id: 'tienda-en-linea', texto: 'Tienda en línea', quita: ['C06'] },
@@ -29,10 +28,6 @@ export const YA_TENGO_POR_NEGOCIO = {
     { id: 'calendarios', texto: 'Calendarios de Booking y Airbnb sincronizados', quita: ['H02'] },
   ],
   'bienes-raices': [{ id: 'sitio-propiedades', texto: 'Sitio con tus propiedades', quita: ['B05'] }],
-  'industria-y-oficinas': [
-    { id: 'gps', texto: 'GPS en los vehículos', quita: ['I02'] },
-    { id: 'acceso', texto: 'Control de acceso', quita: ['I04'] },
-  ],
   escuelas: [{ id: 'cobro-mensualidades', texto: 'Cobro de mensualidades en línea', quita: ['E01'] }],
   'talleres-y-salones': [{ id: 'agenda-en-linea', texto: 'Agenda en línea', quita: ['V03'] }],
 };

@@ -1,10 +1,11 @@
 // Lógica pura de la portada (filtros y cotizador). Sin DOM: la prueban pruebas/*.test.mjs.
 
+// Filtros del catálogo: negocio, tipo y «Con demo». El de «Se instala en el local» se fue con los equipos (oct-2026,
+// solo software); un enlace viejo con ?instala=1 se ignora.
 export function coincide(servicio, filtro) {
   if (filtro.sector && !servicio.sectores.includes(filtro.sector)) return false;
   if (filtro.tipo && !servicio.tipos.includes(filtro.tipo)) return false;
   if (filtro.demo && !servicio.demo) return false;
-  if (filtro.instala && !servicio.instala) return false;
   return true;
 }
 
@@ -13,7 +14,6 @@ export function filtroDesdeParams(params) {
     sector: params.get('sector') || '',
     tipo: params.get('tipo') || '',
     demo: params.get('demo') === '1',
-    instala: params.get('instala') === '1',
   };
 }
 
@@ -22,7 +22,6 @@ export function paramsDesdeFiltro(f) {
   if (f.sector) p.set('sector', f.sector);
   if (f.tipo) p.set('tipo', f.tipo);
   if (f.demo) p.set('demo', '1');
-  if (f.instala) p.set('instala', '1');
   return p;
 }
 

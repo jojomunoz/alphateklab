@@ -216,10 +216,13 @@ export function buscar(indice, texto, { limite = 8, prefijo = false, minimo } = 
 // de desarrollo de pruebas/control/bateria.json: salta en 2 frases, las dos con el primer resultado equivocado, sin
 // falsas alarmas; en la mitad de control no salta en ninguna (3-oct-2026).
 // Se juzga con las palabras completas: «cam» a medio escribir también trae muchos resultados flojos por prefijo. Y una
-// sola palabra que nombra algo que hacemos («cámara», «sensor», «kiosco») no es dudosa sino amplia: su lista sirve.
+// sola palabra que nombra algo que hacemos («whatsapp», «inventario») no es dudosa sino amplia: su lista sirve.
+// «Muchos» es el 6 % de las entradas: 6 de 98 el 3-oct; con solo software (6-oct-2026) quedan 60 y son 4, y con 6
+// «sistema para mi gimnasio» (5 flojos) volvía a contestarse con barberías.
 export function esDudosa(indice, texto) {
   const res = buscar(indice, texto, { limite: 8 });
-  if (res.length < 6 || res[0].puntos >= 8) return false;
+  const muchos = Math.max(3, Math.round(indice.length * 0.06));
+  if (res.length < muchos || res[0].puntos >= 8) return false;
   const palabras = [...new Set(fichas(aplicarEquivalencias(texto, indice.equivalencias), indice.vacias))];
   if (palabras.length === 1) {
     const [q] = palabras;

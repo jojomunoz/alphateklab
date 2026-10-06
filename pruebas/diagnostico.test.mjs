@@ -2,16 +2,16 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { SOLUCIONES } from '../datos/soluciones.mjs';
 import { SERVICIOS } from '../datos/catalogo.mjs';
-import { recomendar, mensajeDiagnostico, estadoDesdeParams, paramsDesdeEstado, YA_TENGO } from '../js/diagnostico-nucleo.mjs';
+import { recomendar, mensajeDiagnostico, estadoDesdeParams, paramsDesdeEstado, YA_TENGO, YA_TENGO_POR_NEGOCIO } from '../js/diagnostico-nucleo.mjs';
 
 const restaurante = SOLUCIONES.find((s) => s.slug === 'restaurantes');
 
 test('recomienda los servicios de los problemas marcados, la respuesta principal primero', () => {
   // «Esperan para pedir, para otra ronda y para pagar»: lo que lo resuelve es pedir y pagar desde la mesa (R02);
-  // el menú QR solo muestra la carta, por eso va último (auditoría del 3-oct).
+  // el menú QR solo muestra la carta, por eso va último (auditoría del 3-oct). Sin la etiqueta NFC desde oct-2026.
   const r = recomendar(restaurante, [0]);
   assert.equal(r[0].id, 'R02');
-  assert.deepEqual(r.map((x) => x.id), ['R02', 'R03', 'R01']);
+  assert.deepEqual(r.map((x) => x.id), ['R02', 'R01']);
   assert.ok(r.every((x) => x.motivos.length === 1));
 });
 
@@ -38,7 +38,9 @@ test('índices inválidos o repetidos no rompen nada', () => {
 test('todo lo que puede recomendar existe en el catálogo', () => {
   const ids = new Set(SERVICIOS.map((s) => s.id));
   for (const so of SOLUCIONES) for (const r of recomendar(so, so.problemas.map((_, i) => i))) assert.ok(ids.has(r.id), r.id);
-  for (const y of YA_TENGO) for (const id of y.quita) assert.ok(ids.has(id), id);
+  for (const y of [...YA_TENGO, ...Object.values(YA_TENGO_POR_NEGOCIO).flat()]) for (const id of y.quita) assert.ok(ids.has(id), id);
+  // y cada «ya tengo» por negocio es de un negocio que existe (el de bodegas y oficinas se fue en oct-2026)
+  for (const slug of Object.keys(YA_TENGO_POR_NEGOCIO)) assert.ok(SOLUCIONES.some((so) => so.slug === slug), slug);
 });
 
 test('el mensaje lleva negocio, problemas, lo extra y la recomendación', () => {

@@ -30,33 +30,36 @@ test('cada servicio tiene sus palabras de búsqueda', () => {
   assert.deepEqual(Object.keys(PALABRAS).filter((id) => !SERVICIOS.some((s) => s.id === id)), []);
 });
 
-// Lo que escribiría alguien que llega por curiosidad, y lo que debería ver primero.
+// Lo que escribiría alguien que llega por curiosidad, y lo que debería ver primero. Solo software (oct-2026): los
+// casos de equipos (kiosco, contador de personas, recorrido 3D, cámaras, sensores, GPS, dron) pasaron a
+// pruebas/buscador-solo-software.test.mjs, donde se exige que no se contesten como si los hiciéramos.
 const CASOS = [
   ['que los clientes pidan desde la mesa', 'R02'],
   ['menú QR', 'R01'],
   ['llamar al mesero', 'R02'],
   ['pantalla para la cocina', 'R05'],
-  ['kiosco táctil para pedidos', 'R06'],
-  ['contar cuántas personas entran a mi tienda', 'C01'],
   ['recordar las citas a mis pacientes', 'S01'],
   ['doble reserva airbnb', 'H02'],
-  ['recorrido virtual de un apartamento', 'B01'],
-  ['inventario', 'C04|T14'],
+  ['inventario', 'T14'],
   ['página web', 'T01'],
   ['una app para mi negocio', 'T03'],
   ['chatbot de whatsapp', 'T05|B04'],
   ['factura electrónica', 'T07'],
-  ['cámaras de seguridad', 'T11|C05'],
-  ['sensor de temperatura para la nevera', 'R10'],
-  ['gps para mis camiones', 'I02'],
   ['lavado de autos', 'V01'],
   ['cobrar mensualidades del colegio', 'E01'],
   ['pos', 'R11'],
   ['delivery sin comisión', 'R07'],
   ['backup de las computadoras', 'T18'],
   ['leer facturas con inteligencia artificial', 'T21'],
-  ['dron', 'B06|I10'],
   ['excel', 'T02'],
+  ['tienda en línea', 'C06'],
+  ['pedidos por whatsapp', 'C11|R13'],
+  ['reservas de cabañas sin comisión', 'H01'],
+  ['expediente del paciente', 'S05'],
+  ['firmar contratos en línea', 'T17'],
+  ['cobrar con yappy', 'T09'],
+  ['turnos en la sala de espera', 'S02'],
+  ['la caja no cuadra', 'R11'],
 ];
 
 for (const [consulta, esperado] of CASOS) {
@@ -66,8 +69,9 @@ for (const [consulta, esperado] of CASOS) {
   });
 }
 
-// Falsos parecidos que encontró la auditoría del 3-oct: ninguno puede volver a salir.
-for (const [q, prohibido] of [['contabilidad', 'C01'], ['planilla', 'B03'], ['impresora 3d de chocolate', 'C10'], ['reparar celulares', 'R12'], ['diseño de logo', null]]) {
+// Falsos parecidos que encontró la auditoría del 3-oct: ninguno puede volver a salir. (Los de «contabilidad» con el
+// contador de personas y «planilla» con los planos se fueron con esos servicios.)
+for (const [q, prohibido] of [['impresora 3d de chocolate', 'C10'], ['reparar celulares', 'R12'], ['diseño de logo', null], ['planilla', null]]) {
   test(`«${q}» no trae ${prohibido ?? 'ningún servicio'}`, () => {
     const ids = buscar(indice, q).filter((r) => r.tipo === 'servicio').map((r) => r.id);
     if (prohibido) assert.ok(!ids.includes(prohibido), ids.join(', '));
@@ -91,15 +95,13 @@ test('buscar un tipo de negocio sugiere su página de soluciones', () => {
   assert.ok(buscar(indice, 'clínica').some((r) => r.id === 'sol-clinicas'));
 });
 
-// Las cuatro personas de la auditoría del 3-oct: el problema dicho con sus palabras, no el nombre del producto.
+// Las personas de la auditoría del 3-oct: el problema dicho con sus palabras, no el nombre del producto. (Las de robos,
+// mercancía que se pierde y reloj marcador pedían cámaras y lectores: ver pruebas/buscador-solo-software.test.mjs.)
 for (const [q, esperado] of [
-  ['creo que mis empleados me roban', 'C05'],
   ['pacientes que no llegan', 'S01'],
   ['los pacientes faltan a la cita', 'S01'],
-  ['se me pierde mercancia', 'C05'],
   ['minisuper', 'sol-tiendas'],
   ['tengo una fonda', 'R01'],
-  ['reloj marcador para empleados', 'I04'],
 ]) {
   test(`con sus palabras: «${q}» trae ${esperado} primero`, () => {
     assert.equal(primeros(q, 1)[0], esperado, `salió ${primeros(q, 3).join(', ')}`);
@@ -122,12 +124,12 @@ test('resaltar sin consulta devuelve el texto entero sin marcar', () => {
   assert.deepEqual(resaltar('Menú QR', ''), [{ t: 'Menú QR', m: false }]);
 });
 
-test('mientras se escribe, la última palabra vale como comienzo: «cam», «coti», «whats» ya traen resultados', () => {
+test('mientras se escribe, la última palabra vale como comienzo: «fact», «coti», «whats» ya traen resultados', () => {
   const ids = (q) => buscar(indice, q, { prefijo: true }).slice(0, 3).map((r) => r.id);
-  assert.ok(ids('cam').some((id) => ['C05', 'C01', 'T11'].includes(id)), ids('cam').join(','));
+  assert.ok(ids('fact').some((id) => ['T07', 'T21'].includes(id)), ids('fact').join(','));
   assert.ok(ids('coti').includes('T06'), ids('coti').join(','));
   assert.ok(ids('whats').some((id) => ['C11', 'R13', 'T05', 'B04'].includes(id)), ids('whats').join(','));
-  assert.equal(buscar(indice, 'cam').length, 0, 'sin prefijo (búsqueda ya enviada), «cam» no es una palabra');
+  assert.equal(buscar(indice, 'fact').length, 0, 'sin prefijo (búsqueda ya enviada), «fact» no es una palabra');
 });
 
 test('el comienzo de palabra no cambia lo que ya acertaba con palabras completas', () => {
@@ -143,7 +145,7 @@ test('las faltas comunes al escribir no impiden encontrar: s/z/c, b/v, h muda, l
   assert.notEqual(fonetica('casa'), fonetica('cosa'), 'las vocales no se juntan');
   assert.ok(parecido('cotisaciones', 'cotizaciones') > 0);
   assert.equal(buscar(indice, 'cotisaciones con mi inventario')[0]?.id, 'T06');
-  assert.equal(buscar(indice, 'vascula para pesar camiones')[0]?.id, 'I08');
+  assert.equal(buscar(indice, 'facturasion electronica')[0]?.id, 'T07');
 });
 
 test('las palabras de relleno de una frase larga no la anulan', () => {

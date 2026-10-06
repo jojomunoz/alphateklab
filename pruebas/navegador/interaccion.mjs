@@ -62,10 +62,10 @@ try {
     await p.waitForTimeout(300);
   });
 
-  await paso('mientras se escribe «cam» no sale «No encontramos»: salen resultados', async () => {
+  await paso('mientras se escribe «fact» no sale «No encontramos»: salen resultados', async () => {
     await p.mouse.click(5, 500);
     await p.keyboard.press('/');
-    await p.keyboard.type('cam');
+    await p.keyboard.type('fact');
     await p.waitForTimeout(450);
     assert.equal(await p.isVisible('[data-buscador-vacio] .sin-resultados'), false, 'sale el bloque vacío');
     assert.ok((await p.$$('#buscador-resultados [role=option]')).length >= 2);
@@ -83,7 +83,7 @@ try {
 
   await paso('en el buscador hay un solo resaltado: el ratón mueve la selección', async () => {
     await p.keyboard.press('/');
-    await p.keyboard.type('camaras');
+    await p.keyboard.type('whatsapp');
     await p.waitForSelector('#buscador-resultados [role=option]');
     const filas = await p.$$('#buscador-resultados [role=option]');
     await filas[1].hover();
@@ -142,9 +142,9 @@ try {
 
   await paso('al filtrar por tipo, el catálogo empieza por ese tipo, sin encabezados de otros, y la cifra es la de la portada', async () => {
     await p.goto(BASE, { waitUntil: 'load' });
-    // las cifras de la portada: el número al final de cada enlace del índice de «79 servicios»
+    // las cifras de la portada: el número al final de cada enlace del índice de «47 servicios» (4 tipos desde oct-2026)
     const cifras = await p.$$eval('a[href*="servicios/?tipo="]', (as) => Object.fromEntries(as.map((a) => [new URL(a.href).searchParams.get('tipo'), (a.textContent.match(/(\d+)\s*$/) || [])[1]]).filter(([, n]) => n)));
-    assert.ok(Object.keys(cifras).length >= 6, `cifras de la portada: ${JSON.stringify(cifras)}`);
+    assert.ok(Object.keys(cifras).length >= 4, `cifras de la portada: ${JSON.stringify(cifras)}`);
     for (const [tipo, n] of Object.entries(cifras)) {
       await p.goto(`${BASE}servicios/?tipo=${tipo}`, { waitUntil: 'load' });
       await p.waitForTimeout(300);
@@ -167,7 +167,7 @@ try {
       const q = await c2.newPage();
       await q.goto(BASE, { waitUntil: 'networkidle' });
       await q.click('#heroe-campo');
-      await q.keyboard.type('camaras');
+      await q.keyboard.type('whatsapp');
       await q.waitForSelector('#heroe-resultados .resultado--preguntar');
       await q.waitForTimeout(200);
       const visible = await q.evaluate(() => {
@@ -234,20 +234,20 @@ try {
 
   await paso('el diagnóstico busca lo que la persona escribió y no dice «no está» si existe', async () => {
     await p.goto(`${BASE}diagnostico/?n=cualquier-negocio`, { waitUntil: 'networkidle' });
-    await p.fill('#diag-otro', 'cobrar mensualidades y control de acceso de los socios');
+    await p.fill('#diag-otro', 'cobrar mensualidades y mandar avisos a los padres');
     await p.click('[data-paso="2"] [data-siguiente]');
     await p.click('[data-paso="3"] [data-ver]');
     await p.waitForSelector('[data-resultado]:not([hidden])');
     const texto = await p.$eval('[data-resultado]', (r) => r.innerText);
     assert.doesNotMatch(texto, /no está en la lista/);
     assert.match(texto, /mensualidades/i);
-    assert.match(texto, /acceso/i);
+    assert.match(texto, /avisos a padres/i);
   });
 
-  await paso('en el catálogo, escribir «cam» ya muestra las cámaras (no «0 resultados»)', async () => {
+  await paso('en el catálogo, escribir «fact» ya muestra la factura electrónica (no «0 resultados»)', async () => {
     await p.goto(`${BASE}servicios/`, { waitUntil: 'networkidle' });
     await p.click('#filtro-q');
-    await p.keyboard.type('cam');
+    await p.keyboard.type('fact');
     await p.waitForTimeout(500);
     const visibles = await p.$$eval('.tarjeta-servicio', (xs) => xs.filter((x) => x.getBoundingClientRect().height > 0).length);
     assert.ok(visibles >= 5, `solo ${visibles}`);
@@ -265,8 +265,8 @@ try {
     await m.close();
   });
 
-  await paso('servicios/?q=cam desde la dirección trae las cámaras; con 2 letras no se dice «No encontramos»', async () => {
-    await p.goto(`${BASE}servicios/?q=cam`, { waitUntil: 'networkidle' });
+  await paso('servicios/?q=fact desde la dirección trae la factura electrónica; con 2 letras no se dice «No encontramos»', async () => {
+    await p.goto(`${BASE}servicios/?q=fact`, { waitUntil: 'networkidle' });
     await p.waitForTimeout(300);
     const n = await p.$$eval('.tarjeta-servicio', (xs) => xs.filter((x) => x.getBoundingClientRect().height > 0).length);
     assert.ok(n >= 8, `solo ${n}`);
@@ -310,55 +310,76 @@ try {
     assert.ok(tel.t > 1.5, `el video del teléfono va en ${tel.t.toFixed(2)} s tras 3,5 s`);
   });
 
-  await paso('la portada: la foto del producto va al lado del texto, centrada y sin pisarlo; en el teléfono el buscador entra antes que ella', async () => {
-    // el héroe con la vitrina (placa, teléfono y tableta con las pantallas de las demos) reemplazó a la caja de avisos
-    const c5 = await b.newContext({ viewport: { width: 390, height: 664 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
+  await paso('la portada: avisos de distintos negocios, sin equipos; entra uno nuevo arriba, la pausa lo detiene y el buscador no se mueve', async () => {
+    // solo software (oct-2026): la foto de la placa, el teléfono y la tableta se fue y vuelve la caja de avisos (la
+    // prueba de antes de 1b15188, con el buscador dentro de los 664 px que deja ver Safari)
+    const c5 = await b.newContext({ viewport: { width: 390, height: 664 }, isMobile: true, hasTouch: true });
     const t = await c5.newPage();
     await t.goto(BASE, { waitUntil: 'load' });
-    await t.waitForFunction(() => { const i = document.querySelector('.heroe-vitrina img'); return i && i.complete && i.naturalWidth > 0; });
-    const [buscar, foto] = await t.evaluate(() => ['.heroe__buscar', '.heroe-vitrina img'].map((x) => document.querySelector(x).getBoundingClientRect().toJSON()));
-    assert.ok(buscar.bottom <= 664, `el buscador termina en ${Math.round(buscar.bottom)}: fuera de los 664 px que deja ver Safari`);
-    assert.ok(foto.top >= buscar.bottom && foto.top < 664, `la foto debe empezar debajo del buscador y dentro de la primera pantalla (empieza en ${Math.round(foto.top)})`);
+    assert.equal(await t.$('.heroe-vitrina'), null, 'sigue la foto con el equipo');
+    const arriba = () => t.$eval('.avisos-heroe__lista > li:not([hidden]) strong', (e) => e.textContent);
+    const visibles = await t.$$eval('.avisos-heroe__lista > li:not([hidden])', (ls) => ls.map((l) => l.querySelector('strong').textContent));
+    assert.equal(visibles.length, 3, `en el teléfono se ven ${visibles.length} avisos`);
+    assert.equal(new Set(visibles).size, 3, 'los avisos visibles son de negocios distintos');
+    assert.notEqual(visibles[0], 'Restaurante', 'la portada no abre con el restaurante');
+    const todos = await t.$$eval('.aviso-heroe__texto', (xs) => xs.map((x) => x.textContent).join(' '));
+    assert.doesNotMatch(todos, /nevera|personas hoy|camión|sensor|cámara/i, 'quedó un aviso de equipos');
+    const y0 = await t.$eval('.heroe__buscar', (e) => e.getBoundingClientRect().bottom);
+    assert.ok(y0 <= 664, `el buscador no entra en la primera pantalla (termina en ${Math.round(y0)})`);
+    const primero = await arriba();
+    await t.waitForTimeout(5600);
+    assert.notEqual(await arriba(), primero, 'no entró un aviso nuevo en 5,6 s');
+    assert.equal(Math.round(await t.$eval('.heroe__buscar', (e) => e.getBoundingClientRect().bottom)), Math.round(y0), 'el buscador se movió al entrar un aviso');
+    for (const href of await t.$$eval('.aviso-heroe', (as) => as.map((a) => a.href))) {
+      if (!href.startsWith(new URL(BASE).origin)) continue; // las demos de la mesa y de reservas viven en sus repositorios
+      const r = await t.request.get(href);
+      assert.ok(r.ok(), `aviso con enlace roto: ${href}`);
+    }
+    await t.click('[data-pausa-avisos]');
+    const quieto = await arriba();
+    await t.waitForTimeout(5600);
+    assert.equal(await arriba(), quieto, 'con pausa siguió cambiando');
     await c5.close();
-    const c6 = await b.newContext({ viewport: { width: 1440, height: 900 } });
+    // en la computadora, la caja va a la derecha de la bajada y bajo el titular, sin pisarlos
+    const c6 = await b.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
     const r = await c6.newPage();
     await r.goto(BASE, { waitUntil: 'load' });
-    await r.waitForFunction(() => { const i = document.querySelector('.heroe-vitrina img'); return i && i.complete && i.naturalWidth > 0; });
-    const [titulo, img, diag, cta] = await r.evaluate(() => ['.heroe__titulo', '.heroe-vitrina img', '.heroe__diagnostico', '.cabecera__cta'].map((x) => document.querySelector(x).getBoundingClientRect().toJSON()));
-    // al lado del texto, sin pisar el titular
-    assert.ok(img.left >= titulo.right - 1, `la foto (x=${Math.round(img.left)}) se monta sobre el titular (llega a ${Math.round(titulo.right)})`);
-    // centrada en el alto del texto (titular → «¿No sabes qué pedir?»): antes quedaba más abajo, con un hueco bajo el
-    // texto y la nota casi al pie (Jonathan: «me incomoda algo del hero»)
-    const centroTexto = (titulo.top + diag.bottom) / 2, centroFoto = (img.top + img.bottom) / 2;
-    assert.ok(Math.abs(centroFoto - centroTexto) <= 60, `la foto está ${Math.round(centroFoto - centroTexto)} px corrida del centro del texto`);
-    // su borde derecho, en el de «Pregúntanos» de la cabecera
-    assert.ok(Math.abs(img.right - cta.right) <= 2, `la foto termina en ${Math.round(img.right)} y la cabecera en ${Math.round(cta.right)}`);
-    // la foto es la pieza del héroe: con 520 px de ancho los objetos ocupaban el 8,5 % de la pantalla (medición liviana)
-    assert.ok(img.width >= 540, `la foto mide ${Math.round(img.width)} px`);
-    const parte = (img.width * (Math.min(img.bottom, 900) - Math.max(img.top, 0))) / (1440 * 900);
-    assert.ok(parte >= 0.22, `la foto ocupa el ${(100 * parte).toFixed(1)} % de la primera pantalla`);
-    // el texto va junto: del titular a «¿No sabes qué pedir?» sin huecos de la altura de la foto
-    assert.ok(diag.bottom - titulo.top <= 460, `el texto ocupa ${Math.round(diag.bottom - titulo.top)} px de alto`);
+    const [titulo, bajada, caja] = await r.evaluate(() => ['.heroe__titulo', '.heroe__bajada', '.avisos-heroe__marco'].map((x) => document.querySelector(x).getBoundingClientRect().toJSON()));
+    assert.ok(caja.top >= titulo.bottom - 1, `la caja (y=${Math.round(caja.top)}) se monta sobre el titular (llega a ${Math.round(titulo.bottom)})`);
+    assert.ok(caja.left >= bajada.right - 1, `la caja (x=${Math.round(caja.left)}) se monta sobre la bajada (llega a ${Math.round(bajada.right)})`);
+    const fijo = await r.$eval('.avisos-heroe__lista > li:not([hidden]) strong', (e) => e.textContent);
+    await r.waitForTimeout(5600);
+    assert.equal(await r.$eval('.avisos-heroe__lista > li:not([hidden]) strong', (e) => e.textContent), fijo, 'con reducir movimiento rota');
     await c6.close();
   });
 
-  await paso('cada página de negocio abre con su escena (restaurantes incluida: la cocina con su pantalla real)', async () => {
+  await paso('cada página de negocio abre con su escena, la pantalla de su demo o lo que resuelve (nunca equipo instalado)', async () => {
+    // solo software (oct-2026): quedan las escenas de nuestro software en la tableta o el televisor del negocio; las del
+    // equipo que ya no hacemos (cerradura, cámara 360, cámara del minisúper, lector del colegio) se fueron
+    const abre = {
+      restaurantes: '.heroe__escena img', clinicas: '.heroe__escena img', 'talleres-y-salones': '.heroe__escena img',
+      hospedaje: '.heroe__dispositivos img',
+      tiendas: '.heroe__problemas', 'bienes-raices': '.heroe__problemas', escuelas: '.heroe__problemas', 'cualquier-negocio': '.heroe__problemas',
+    };
     const sin = [];
-    for (const slug of ['restaurantes', 'tiendas', 'clinicas', 'hospedaje', 'bienes-raices', 'escuelas', 'talleres-y-salones']) {
+    for (const [slug, sel] of Object.entries(abre)) {
       await p.goto(`${BASE}soluciones/${slug}/`, { waitUntil: 'load' });
-      if (!(await p.$('.heroe--negocio .heroe__escena img'))) sin.push(slug);
+      if (!(await p.$(`.heroe--negocio ${sel}`))) sin.push(slug);
     }
-    assert.equal(sin.length, 0, `sin escena: ${sin.join(', ')}`);
+    assert.equal(sin.length, 0, `no abren como se espera: ${sin.join(', ')}`);
+    const r = await p.goto(`${BASE}soluciones/industria-y-oficinas/`);
+    assert.equal(r.status(), 404, 'la página de bodegas y oficinas sigue publicada');
     // y el video de la mesa sigue en la página, en «Pruébalo ahora»
     await p.goto(`${BASE}soluciones/restaurantes/`, { waitUntil: 'load' });
     assert.ok(await p.$('.seccion--oscura [data-producto-video]'), 'el video de la mesa no está en «Pruébalo ahora»');
   });
 
-  await paso('las seis tarjetas de demos usan la misma receta (la pantalla clave en una ventana sobre el petróleo)', async () => {
+  await paso('las dos tarjetas de demos usan la misma receta (la pantalla clave en una ventana sobre el petróleo)', async () => {
+    // solo software (oct-2026): quedan la mesa y las reservas; se fueron el recorrido 3D, el 360, la cámara y los sensores
     for (const ruta of ['', 'laboratorio/']) {
       await p.goto(BASE + ruta, { waitUntil: 'load' });
       const srcs = await p.$$eval('.demos .demo__captura img', (xs) => xs.map((x) => x.getAttribute('src')));
-      assert.equal(srcs.length, 6, `/${ruta}: ${srcs.length} tarjetas`);
+      assert.equal(srcs.length, 2, `/${ruta}: ${srcs.length} tarjetas`);
       const otras = srcs.filter((s) => !/assets\/demos\/tarjeta-[a-z0-9-]+\.webp$/.test(s));
       assert.equal(otras.length, 0, `/${ruta}: fuera de la receta: ${otras.join(', ')}`);
     }
@@ -379,12 +400,12 @@ try {
     assert.equal(await t.isVisible('.buscador__pie'), true, 'falta el pie con las teclas');
     assert.equal(await t.$eval('.buscador .resultado[aria-selected="true"] .resultado__enter', (x) => getComputedStyle(x).visibility), 'visible', 'la fila elegida no lleva Enter');
     assert.equal(Math.round(await ancho()), Math.round(antes), 'la fila cambió de ancho al elegirla');
-    // el NFC con el ícono de pago sin contacto, no con el de pantallas
-    await t.fill('#buscador-campo', 'etiqueta nfc en la mesa');
+    // el agente de citas con el ícono de calendario, no con el de código de su tipo
+    await t.fill('#buscador-campo', 'recordar citas a los pacientes');
     await t.waitForTimeout(600);
     const iconos = await t.$$eval('.buscador .resultado use', (xs) => xs.map((x) => x.getAttribute('href')));
     await c17.close();
-    assert.ok(iconos.includes('#i-contactless-payment'), `íconos: ${iconos.join(', ')}`);
+    assert.ok(iconos.includes('#i-calendar-check'), `íconos: ${iconos.join(', ')}`);
     // en una pantalla táctil no hay pie de teclas
     const c18 = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
     const u = await c18.newPage();
@@ -492,11 +513,11 @@ try {
     await o.close();
   });
 
-  await paso('la demo del 360 usa la cabecera del sitio y no tiene anclas muertas', async () => {
-    await p.goto(`${BASE}laboratorio/recorrido-360/`, { waitUntil: 'networkidle' });
-    const malos = await p.$$eval('a[href*="#laboratorio"], a[href*="#cotizar"]', (xs) => xs.length);
-    assert.equal(malos, 0);
-    assert.ok(await p.$('a[href="../../cotizar/?servicio=B01"]'), 'falta preguntar por el recorrido');
+  await paso('las demos de equipos ya no están publicadas (solo software)', async () => {
+    for (const demo of ['recorrido-3d', 'recorrido-360', 'camara', 'sensores']) {
+      const r = await p.goto(`${BASE}laboratorio/${demo}/`);
+      assert.equal(r.status(), 404, `laboratorio/${demo}/ sigue publicada`);
+    }
   });
 
   // detalles de oficio (brecha 21 de la medición de las 17:10)

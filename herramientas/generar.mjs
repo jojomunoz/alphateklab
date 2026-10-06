@@ -1,6 +1,6 @@
 // Genera el sitio estático de alphateklab a partir de datos/.
 // Uso: node herramientas/generar.mjs   (el resultado se versiona; ver CLAUDE.md y README.md)
-//   PUBLICAR_PARCIAL=1 DEMOS_LISTAS=recorrido-360,mesa  → publica solo las demos ya verificadas.
+//   PUBLICAR_PARCIAL=1 DEMOS_LISTAS=reservas,mesa  → publica solo las demos ya verificadas.
 
 import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -47,6 +47,7 @@ let errores = validarCatalogo({ SECTORES, TIPOS, SERVICIOS, DEMOS }, existe);
 const idsServicios = new Set(SERVICIOS.map((s) => s.id));
 for (const pq of PAQUETES) {
   const vistos = new Set();
+  if (pq.niveles.length !== ESCALONES.length || pq.niveles.some((n) => !n.length)) errores.push(`paquete ${pq.nombre}: necesita ${ESCALONES.length} escalones y ninguno vacío`);
   for (const id of pq.niveles.flat()) {
     if (!idsServicios.has(id)) errores.push(`paquete ${pq.nombre}: el servicio ${id} no existe`);
     if (vistos.has(id)) errores.push(`paquete ${pq.nombre}: ${id} aparece dos veces`);
@@ -62,7 +63,7 @@ for (const [id, f] of Object.entries(FICHAS)) {
   if (!idsServicios.has(id)) errores.push(`ficha ${id}: el servicio no existe`);
   const texto = [...f.como.flatMap((c) => [c.titulo, c.texto]), ...f.necesitas, ...f.no_incluye, ...f.preguntas.flatMap((q) => [q.p, q.r]), f.ejemplo].join('\n');
   for (const re of PALABRAS_PROHIBIDAS) if (re.test(texto)) errores.push(`ficha ${id}: texto con «${texto.match(re)[0]}»`);
-  if (/\$\s?\d/.test(texto.replace(/\$10 al mes|\+?\$300|US\$0\.\d+/g, ''))) errores.push(`ficha ${id}: menciona un precio no decidido`);
+  if (/\$\s?\d/.test(texto.replace(/\$10 al mes|US\$0\.\d+/g, ''))) errores.push(`ficha ${id}: menciona un precio no decidido`);
   if (!/^Ejemplo:/.test(f.ejemplo)) errores.push(`ficha ${id}: el ejemplo debe empezar con «Ejemplo:»`);
 }
 for (const g of GUIAS) {
@@ -199,7 +200,7 @@ function pie(prefijo) {
   <div class="envoltura">
     <div class="pie__cabeza">
       <a class="marca marca--pie" href="${prefijo}"><img src="${prefijo}assets/marca/logo-oscuro.svg" alt="alphateklab" width="178" height="40" /></a>
-      <p>Programamos el sistema de tu negocio en Panamá y vamos a tu local a instalar lo que haga falta: la pantalla, la cámara, el sensor o las placas con QR.</p>
+      <p>Programamos el sistema de tu negocio en Panamá: la página, la app, el WhatsApp que contesta solo, los cobros y la factura electrónica. Funciona en los teléfonos y computadoras que ya usas.</p>
       <a class="boton boton--senal" href="${prefijo}cotizar/">Pregúntanos lo que necesites</a>
     </div>
     <div class="pie__columnas">
@@ -282,7 +283,7 @@ ${scriptsConVersion(prefijo, scripts)}
 }
 
 // Datos estructurados (schema.org). Sin teléfono, dirección ni reseñas mientras no existan.
-const ORGANIZACION = { '@type': 'ProfessionalService', '@id': `${URL_BASE}#organizacion`, name: 'alphateklab', url: URL_BASE, logo: `${URL_BASE}assets/marca/favicon-180.png`, areaServed: { '@type': 'Country', name: 'Panamá' }, description: 'Software a medida, páginas, apps e inteligencia artificial, e instalación de pantallas, cámaras, sensores y QR en negocios de Panamá.' };
+const ORGANIZACION = { '@type': 'ProfessionalService', '@id': `${URL_BASE}#organizacion`, name: 'alphateklab', url: URL_BASE, logo: `${URL_BASE}assets/marca/favicon-180.png`, areaServed: { '@type': 'Country', name: 'Panamá' }, description: 'Software a medida, páginas web y apps, inteligencia artificial y WhatsApp, cobros y factura electrónica para negocios de Panamá.' };
 const migasLd = (partes) => ({ '@type': 'BreadcrumbList', itemListElement: [['Inicio', URL_BASE], ...partes].map(([name, item], i) => ({ '@type': 'ListItem', position: i + 1, name, ...(item ? { item } : {}) })) });
 const ld = (...nodos) => ({ '@context': 'https://schema.org', '@graph': nodos });
 
@@ -290,16 +291,13 @@ function migas(prefijo, partes) {
   return `<nav class="migas" aria-label="Ruta"><a href="${prefijo}">Inicio</a>${partes.map(([t, u]) => ` <span aria-hidden="true">/</span> ${u ? `<a href="${u}">${esc(t)}</a>` : `<span aria-current="page">${esc(t)}</span>`}`).join('')}</nav>`;
 }
 
+// Solo «Demo»: las de «Se instala» y «Vamos a tu propiedad» se fueron con los equipos (oct-2026, solo software).
 function insignias(s) {
-  const b = [];
-  if (s.demo) b.push(`<span class="insignia insignia--demo">Demo</span>`);
-  if (s.instala) b.push(`<span class="insignia">Se instala</span>`);
-  if (s.visita) b.push(`<span class="insignia">Vamos a tu propiedad</span>`);
-  return b.join('');
+  return s.demo ? `<span class="insignia insignia--demo">Demo</span>` : '';
 }
 
 function tarjetaServicio(s, prefijo) {
-  return `<article class="tarjeta-servicio" id="${s.slug}" data-id="${s.id}" data-sectores="${s.sectores.join(' ')}" data-tipos="${s.tipos.join(' ')}" data-demo="${s.demo ? 1 : 0}" data-instala="${s.instala ? 1 : 0}">
+  return `<article class="tarjeta-servicio" id="${s.slug}" data-id="${s.id}" data-sectores="${s.sectores.join(' ')}" data-tipos="${s.tipos.join(' ')}" data-demo="${s.demo ? 1 : 0}">
   <h3 class="tarjeta-servicio__nombre"><a href="${prefijo}servicios/${s.slug}/">${esc(s.nombre)}</a></h3>
   <p class="tarjeta-servicio__para">${esc(s.para)}</p>
   <div class="tarjeta-servicio__pie"><span class="tarjeta-servicio__insignias">${insignias(s)}</span><span class="tarjeta-servicio__precio num">${s.precio ? esc(s.precio.texto) : ''}</span><button class="boton-chico" type="button" data-cotizar="${s.id}" aria-pressed="false" aria-label="Agregar ${esc(s.nombre)} a mi lista">Agregar</button></div>
@@ -310,11 +308,10 @@ function tarjetaServicio(s, prefijo) {
 // vendedores y el inventario en todas las páginas)
 const EJEMPLO_PREGUNTA = {
   restaurantes: 'quiero que la cocina me avise cuando se acaba un plato',
-  tiendas: 'quiero saber cuánta gente entra y cuántos compran',
+  tiendas: 'quiero saber qué productos se venden más cada semana',
   clinicas: 'quiero que los pacientes confirmen la cita sin tener que llamarlos',
   hospedaje: 'quiero que Booking y mi página no vendan la misma noche',
-  'bienes-raices': 'quiero mostrarle el apartamento a un cliente que está fuera del país',
-  'industria-y-oficinas': 'quiero saber si se fue la luz en la bodega de noche',
+  'bienes-raices': 'quiero que los interesados agenden la visita sin tener que llamarme',
   'talleres-y-salones': 'quiero avisarle al cliente cuando su carro está listo',
   escuelas: 'quiero saber qué familias no han pagado la mensualidad',
 };
@@ -366,9 +363,9 @@ function demoPendiente(d) {
 }
 
 const ETAPA_DESC = [
-  'Lo que resuelve el problema más común, con poco equipo.',
+  'Lo que resuelve el problema más común, con los equipos que ya tienes.',
   'Cuando lo primero ya funciona y quieres ahorrar más tiempo.',
-  'El resto del local conectado: control, registro y datos.',
+  'Lo que completa el sistema, con menos trabajo a mano.',
 ];
 function escalera(pq, prefijo) {
   return `<ol class="etapas" aria-label="Etapas sugeridas para ${esc(pq.nombre.toLowerCase())}">
@@ -385,12 +382,12 @@ function escalera(pq, prefijo) {
 }
 
 const PREGUNTAS = [
-  ['¿Hacen solo software o también instalan equipos?', 'Las dos cosas. Hacemos páginas web, apps, sistemas a medida, automatizaciones e inteligencia artificial, y además vamos a tu local a instalar lo físico: placas QR y NFC, pantallas, cámaras, sensores, cerraduras y redes.'],
+  ['¿Hacen solo software o también instalan equipos?', 'Solo software. Hacemos páginas web, apps, sistemas a medida, automatizaciones, asistentes de WhatsApp con inteligencia artificial, cobros y factura electrónica. No vendemos ni instalamos equipos: lo que hacemos funciona en los teléfonos, tabletas y computadoras que ya tiene tu negocio.'],
   ['¿Y si lo que necesito no está en la lista?', 'Pregúntanos. Escríbelo con tus palabras en el buscador o en «Pregúntanos» y te decimos si lo podemos hacer, aunque no esté en la lista.'],
-  ['¿Tengo que comprar equipo?', 'Solo si el servicio lo necesita. En la propuesta te detallamos qué equipo y cuánto cuesta, y lo compramos después de que la apruebas. Si ya tienes algo que sirve (cámaras, una tableta, un televisor), lo usamos.'],
-  ['¿De quién son el dominio, la página y los QR?', 'Tuyos. El dominio se registra a nombre de tu negocio y los QR impresos apuntan a una dirección de ese dominio, así que siguen funcionando aunque un día cambies de proveedor.'],
+  ['¿Tengo que comprar equipo?', 'Casi siempre no: funciona en el teléfono, la tableta o la computadora que ya usas. Si un servicio necesita algo que no tienes, como una tableta para la cocina, te lo decimos en la propuesta y lo compras tú donde prefieras.'],
+  ['¿De quién son el dominio, la página y los QR?', 'Tuyos. El dominio se registra a nombre de tu negocio y los QR apuntan a una dirección de ese dominio, así que siguen funcionando aunque un día cambies de proveedor.'],
   ['¿Cuánto cuesta?', 'Depende del servicio y de tu negocio; la cifra va cerrada en la propuesta. Lo que ya tiene precio lo ves en cada servicio, como el menú QR a $10 al mes.'],
-  ['¿Las demos son de verdad?', 'Funcionan en tu navegador con negocios inventados para mostrarlas, y cada una dice qué parte es simulada (un pago, un sensor). Para tu negocio se hace con tus datos, en tu dominio y con el equipo real.'],
+  ['¿Las demos son de verdad?', 'Funcionan en tu navegador con negocios inventados para mostrarlas, y cada una dice qué parte es simulada (un pago, los recordatorios). Para tu negocio se hace con tus datos y en tu dominio.'],
   ['¿Y los datos de mis clientes?', 'Lo que hacemos cumple la Ley 81 de 2019 de protección de datos personales: pide el consentimiento cuando guarda datos de personas y no los comparte con terceros.'],
 ];
 
@@ -411,60 +408,31 @@ const NUMEROS = ['cero', 'una', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete
 const enLetras = (n) => NUMEROS[n] ?? String(n);
 const mayuscula = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 
-// ── imágenes del equipo (3-oct, generadas con IA para alphateklab; rotuladas «ilustrativa» y en /creditos/) ──
-// Catálogo: cada pieza sola sobre el petróleo de la marca (assets/equipo/<pieza>-{400,800}.webp, 1:1).
-// Escenas: el equipo ya instalado (assets/fotos/<escena>{,-800}.webp), con sus medidas para no saltar al cargar.
-const EQUIPOS = [
-  { pieza: 'equipo-1-placa-mesa', nombre: 'Placa con QR y NFC', donde: 'en cada mesa', servicio: 'R02' },
-  { pieza: 'equipo-2-tableta-cocina', nombre: 'Pantalla de cocina', donde: 'en la pared de la cocina', servicio: 'R05' },
-  { pieza: 'equipo-3-kiosco', nombre: 'Kiosco de autopedido', donde: 'junto al mostrador', servicio: 'R06' },
-  { pieza: 'equipo-4-camara-techo', nombre: 'Cámara que cuenta', donde: 'sobre la puerta', servicio: 'C01' },
-  { pieza: 'equipo-5-sensor-nevera', nombre: 'Sensor de temperatura', donde: 'dentro de la nevera', servicio: 'R10' },
-  { pieza: 'equipo-6-cerradura', nombre: 'Cerradura con código', donde: 'en la puerta de cada cabaña', servicio: 'H03' },
-  { pieza: 'equipo-7-lector-acceso', nombre: 'Lector de acceso', donde: 'en la entrada', servicio: 'I04' },
-  { pieza: 'equipo-8-gps', nombre: 'GPS del vehículo', donde: 'en cada camión o moto', servicio: 'I02' },
-];
+// ── escenas (3-oct, generadas con IA para alphateklab; rotuladas «ilustrativa» y en /creditos/) ──
+// Nuestro software en los equipos de un negocio: la tableta de la cocina, la de la recepción y el televisor de la sala
+// de espera, con la pantalla real de la demo compuesta encima (herramientas/componer-equipo.py). Con solo software
+// (oct-2026) se fueron la vitrina del equipo que se instalaba y las escenas del equipo que ya no hacemos (lector de
+// acceso, cámaras, sensor de nevera, cerradura, cámara 360 y la placa de la mesa).
 const ESCENAS = {
-  'en-cocina': { ancho: 1600, alto: 1067, texto: 'Pantalla de comandas e impresora instaladas en la cocina de un restaurante' },
-  'en-mesa': { ancho: 1600, alto: 1067, texto: 'Placa con QR sobre la mesa de una fonda' },
-  'en-colegio': { ancho: 1600, alto: 1067, texto: 'Lector de QR y tarjetas en la entrada de un colegio' },
-  'en-tienda': { ancho: 1280, alto: 1600, texto: 'Cámara en el techo, sobre la puerta de un minisúper' },
-  'en-nevera': { ancho: 1600, alto: 1600, texto: 'Sensor de temperatura dentro de una nevera comercial' },
-  // v6 (3-oct): en las pantallas va compuesta la pantalla real de la demo (herramientas/componer-equipo.py)
+  'en-cocina': { ancho: 1600, alto: 1067, texto: 'La pantalla de cocina de la demo en una tableta, junto a la impresora de comandas de un restaurante' },
   'en-recepcion': { ancho: 1600, alto: 1067, texto: 'Tableta con la agenda de la demo de citas en el mostrador de un consultorio' },
-  'en-barberia': { ancho: 1600, alto: 1067, texto: 'Pantalla de turnos en la sala de espera de una barbería' },
-  'en-sala-360': { ancho: 1600, alto: 1067, texto: 'Cámara 360 en su trípode, lista para escanear la sala de un apartamento' },
-  // las verticales se recortan en cuadrado en el héroe; «encuadre» dice qué parte queda (la cámara está arriba)
-  'en-minisuper': { ancho: 1280, alto: 1600, texto: 'Cámara en el techo de un minisúper, apuntando a la puerta', encuadre: '50% 12%' },
-  'en-cabana-puerta': { ancho: 1280, alto: 1600, texto: 'Cerradura con código en la puerta de una cabaña', encuadre: '70% 42%' },
+  'en-barberia': { ancho: 1600, alto: 1067, texto: 'Pantalla de turnos en el televisor de la sala de espera de una barbería' },
 };
-// qué imagen va en la ficha de cada servicio que se instala
-// (la mesa usa la placa con el QR real de la mesa 7: la escena «en-mesa» traía la placa en blanco sobre una mesa de
-// cafetería estadounidense, medición liviana del 3-oct)
+// qué imagen va en la ficha de cada servicio (solo los que se ven en una de las escenas)
 const IMAGEN_SERVICIO = {
-  R01: { pieza: 'equipo-1-placa-mesa' }, R02: { pieza: 'equipo-1-placa-mesa' }, R03: { pieza: 'equipo-1-placa-mesa' },
-  R05: { escena: 'en-cocina' }, R06: { pieza: 'equipo-3-kiosco' },
-  C01: { escena: 'en-tienda' }, C05: { escena: 'en-minisuper' }, T11: { escena: 'en-tienda' },
-  R10: { escena: 'en-nevera' }, I01: { escena: 'en-nevera' },
-  H03: { escena: 'en-cabana-puerta' }, I04: { escena: 'en-colegio' }, E02: { escena: 'en-colegio' }, I02: { pieza: 'equipo-8-gps' },
+  R05: { escena: 'en-cocina' },
   S01: { escena: 'en-recepcion' }, S02: { escena: 'en-barberia' }, V01: { escena: 'en-barberia' }, V03: { escena: 'en-barberia' },
-  B01: { escena: 'en-sala-360' },
 };
-// la escena que abre cada página de negocio (el equipo instalado en un lugar que el dueño reconoce); industria sigue
-// con el tablero de sensores. Restaurantes abre con la cocina y su pantalla real, y el video de la mesa baja a
-// «Pruébalo ahora» (medición liviana del 3-oct: era la única página de negocio sin escena).
+// la escena que abre cada página de negocio. Restaurantes abre con la cocina y su pantalla real, y el video de la mesa
+// baja a «Pruébalo ahora» (medición liviana del 3-oct). Hospedaje abre con el calendario de su demo, y tiendas,
+// bienes raíces, escuelas y cualquier negocio con los problemas que resuelven (sus escenas eran del equipo instalado).
 const ESCENA_NEGOCIO = {
-  restaurantes: 'en-cocina', escuelas: 'en-colegio', clinicas: 'en-recepcion', 'talleres-y-salones': 'en-barberia',
-  hospedaje: 'en-cabana-puerta', 'bienes-raices': 'en-sala-360', tiendas: 'en-minisuper',
+  restaurantes: 'en-cocina', clinicas: 'en-recepcion', 'talleres-y-salones': 'en-barberia',
 };
 const hayEscena = (e) => e && ESCENAS[e] && existe(`assets/fotos/${e}.webp`);
-const hayPieza = (p) => p && existe(`assets/equipo/${p}-400.webp`);
 function imgEscena(e, prefijo, { sizes = '(min-width: 1040px) 560px, 100vw', carga = 'lazy' } = {}) {
   const x = ESCENAS[e];
   return `<img src="${prefijo}assets/fotos/${e}-800.webp" srcset="${prefijo}assets/fotos/${e}-800.webp 800w, ${prefijo}assets/fotos/${e}.webp 1600w" sizes="${sizes}" alt="${esc(x.texto)}" width="${x.ancho}" height="${x.alto}" loading="${carga}" decoding="async" />`;
-}
-function imgPieza(p, prefijo, { sizes = '(min-width: 1040px) 260px, 45vw', alt = '' } = {}) {
-  return `<img src="${prefijo}assets/equipo/${p}-400.webp" srcset="${prefijo}assets/equipo/${p}-400.webp 400w, ${prefijo}assets/equipo/${p}-800.webp 800w" sizes="${sizes}" alt="${esc(alt)}" width="800" height="800" loading="lazy" decoding="async" />`;
 }
 
 // ── héroe de la portada ──
@@ -472,19 +440,21 @@ function imgPieza(p, prefijo, { sizes = '(min-width: 1040px) 260px, 45vw', alt =
 // queda a la vista en el teléfono. Reemplazó (3-oct) al video de la mesa: con él, tres de cuatro dueños de negocio que
 // no tenían restaurante concluyeron «hacen menús QR para restaurantes» y no seguían bajando; ahora va en la página de
 // restaurantes. Comparado a ciegas con unas pestañas por negocio y con el video: ganó con los dos jueces.
+// Con solo software (oct-2026) vuelve a ser el héroe (la foto de la placa, el teléfono y la tableta se fue) y se fueron
+// los avisos de equipos (el contador de la puerta, la nevera y el GPS); los de Google Maps y el respaldo son los de las
+// imágenes para compartir (herramientas/og-soluciones.mjs).
 const AVISOS = [
-  { servicio: 'C01', icono: 'storefront', quien: 'Tienda', texto: '214 personas hoy, 18 % más que el sábado pasado.' },
   { servicio: 'T07', icono: 'credit-card', quien: 'Facturación', texto: 'La factura 0001-0245 fue autorizada por la DGI.' },
-  { servicio: 'E01', icono: 'graduation-cap', quien: 'Colegio', texto: '12 familias ya pagaron la mensualidad con Yappy.' },
   { servicio: 'S01', icono: 'calendar-check', quien: 'Clínica', texto: 'La paciente de mañana a las 10:30 a. m. confirmó su cita.' },
+  { servicio: 'E01', icono: 'graduation-cap', quien: 'Colegio', texto: '12 familias ya pagaron la mensualidad con Yappy.' },
   { servicio: 'R02', icono: 'fork-knife', quien: 'Restaurante', texto: 'Mesa 7 pidió 2 hojaldras y una chicha de saril. B/. 6.50' },
-  { servicio: 'R10', icono: 'thermometer-simple', quien: 'Cocina', texto: 'La nevera va en 8.9 °C y sube. El límite es 5 °C.' },
   { servicio: 'H01', icono: 'bed', quien: 'Cabañas', texto: 'Cabaña 2: reserva directa, con depósito por Yappy.' },
-  { servicio: 'I02', icono: 'car', quien: 'Reparto', texto: 'El camión 3 lleva 25 minutos detenido fuera de su ruta.' },
+  { servicio: 'T13', icono: 'map-pin', quien: 'Google Maps', texto: 'Tienes 3 reseñas nuevas esta semana; una de 2 estrellas.' },
+  { servicio: 'T18', icono: 'shield-check', quien: 'Respaldo', texto: 'El respaldo de anoche terminó bien: 14 GB guardados.' },
 ];
 // hora de cada aviso: fija (no envejece al bajar en la pila); el de arriba es el más reciente
 const HORAS_AVISOS = ['10:42', '10:38', '10:31', '10:25'];
-const sinCorte = (t) => t.replace(/(\d) (a\. m\.|p\. m\.|°C|%)/g, '$1\u00a0$2').replace(/a\. m\./g, 'a.\u00a0m.').replace(/p\. m\./g, 'p.\u00a0m.').replace(/B\/\. /g, 'B/.\u00a0');
+const sinCorte = (t) => t.replace(/(\d) (a\. m\.|p\. m\.|°C|%|GB)/g, '$1\u00a0$2').replace(/a\. m\./g, 'a.\u00a0m.').replace(/p\. m\./g, 'p.\u00a0m.').replace(/B\/\. /g, 'B/.\u00a0');
 // El video de la demo de mesa (herramientas/video-producto.mjs): el teléfono pide y el salón recibe. AV1 para quien lo
 // decodifica y H.264 para el resto; el póster es su primer cuadro.
 const hayVideoMesa = () => existe('assets/producto/video-codecs.json') && ['mesa-pedido-telefono', 'mesa-pedido-salon'].every((v) => ['av1.mp4', 'mp4', 'webp'].every((x) => existe(`assets/producto/${v}.${x}`)));
@@ -517,39 +487,25 @@ function heroeAvisos(prefijo) {
       </figure>`;
 }
 
-// El héroe con el producto (3-oct, revisión de clase mundial: la caja de avisos se leía como un componente de kit):
-// la foto de una placa, un teléfono y una tableta con las pantallas reales compuestas encima (la agenda de un
-// consultorio, los avisos de varios negocios y una placa cuyo QR abre las demos). Varios negocios a propósito: con
-// la mesa sola, los dueños concluían «hacen menús QR para restaurantes». Se arma con herramientas/pantallas-equipo.mjs
-// y herramientas/componer-equipo.py.
-// Recorte de 1250 px de la compuesta de 2048 (objetos con ~4 % de aire) y el fondo llevado al petróleo de la banda;
-// se exporta a 640, 960 y 1250 (ver CLAUDE.md, «héroe de la portada»).
-const ANCHOS_HEROE = [640, 960, 1250];
-const hayHeroeVitrina = () => ANCHOS_HEROE.every((a) => existe(`assets/heroe/heroe-portada-${a}.webp`));
-function heroeVitrina(prefijo) {
-  return `<figure class="heroe__producto heroe-vitrina">
-        <img src="${prefijo}assets/heroe/heroe-portada-640.webp" srcset="${ANCHOS_HEROE.map((a) => `${prefijo}assets/heroe/heroe-portada-${a}.webp ${a}w`).join(', ')}" sizes="(min-width: 1040px) 620px, (min-width: 640px) 520px, 100vw" width="1250" height="1250" alt="Una placa con un código QR que abre las demos, un teléfono con avisos de una tienda, la facturación, un colegio y una clínica, y una tableta en la pared con la agenda de un consultorio." fetchpriority="high" decoding="async" />
-        <figcaption>El QR de la placa abre nuestras demos. Imagen ilustrativa.</figcaption>
-      </figure>`;
-}
+// La foto del héroe (una placa con QR, un teléfono y una tableta en la pared, 3-oct) se fue con los equipos
+// (oct-2026, solo software): mostraba equipo instalado y su QR abría el sitio viejo. Vuelve la caja de avisos.
 
 // ── portada ──
 function paginaInicio() {
   const prefijo = '';
-  // «Prueba con:» solo con la caja de avisos: junto a la foto eran seis acciones compitiendo en el héroe (medición
-  // liviana del 3-oct); el buscador y «¿No sabes qué pedir?» bastan
+  // «Prueba con:» va con la caja de avisos (junto a la foto eran seis acciones compitiendo en el héroe, medición
+  // liviana del 3-oct)
   const chips = [
     ['Pedidos con QR', 'pedir desde la mesa con qr'],
-    ['Contar clientes', 'contar personas que entran'],
+    ['Responder WhatsApp', 'responder whatsapp automatico'],
     ['Recordar citas', 'recordar citas a pacientes'],
     ['Página web', 'página web'],
   ];
-  const vitrina = hayHeroeVitrina();
-  const heroe = `<section class="heroe heroe--producto heroe--portada ${vitrina ? 'heroe--vitrina' : 'heroe--avisos'}" aria-labelledby="heroe-titulo">
+  const heroe = `<section class="heroe heroe--producto heroe--portada heroe--avisos" aria-labelledby="heroe-titulo">
   <div class="envoltura heroe__fila">
     <div class="heroe__texto">
-      <h1 id="heroe-titulo" class="display heroe__titulo">Hacemos la tecnología de tu negocio y la instalamos en tu local.</h1>
-      <p class="heroe__bajada">Software, apps e inteligencia artificial para negocios de Panamá, y los equipos que instalamos en tu local: cámaras, sensores, pantallas y QR.</p>
+      <h1 id="heroe-titulo" class="display heroe__titulo">Hacemos el software de tu negocio, a la medida de cómo trabajas.</h1>
+      <p class="heroe__bajada">Páginas y apps, asistentes de WhatsApp con inteligencia artificial, cobros con Yappy y tarjeta, y factura electrónica, hechos para negocios de Panamá.</p>
       <form class="heroe__buscar" role="search" data-buscar-en-linea action="${prefijo}servicios/">
         ${icono('magnifying-glass')}
         <label class="sr" for="heroe-campo">¿Qué necesitas?</label>
@@ -557,10 +513,10 @@ function paginaInicio() {
         <button class="boton boton--senal" type="submit">Buscar</button>
         <div class="heroe__resultados" id="heroe-resultados" tabindex="-1" hidden></div>
       </form>
-      ${vitrina ? '' : `<p class="heroe__prueba">Prueba con: ${chips.map(([t, q], i) => `<span class="sin-corte"><button type="button" class="chip-texto" data-buscar="${esc(q)}">${esc(t)}</button>${i < chips.length - 1 ? ',' : '.'}</span>`).join(' ')}</p>`}
+      <p class="heroe__prueba">Prueba con: ${chips.map(([t, q], i) => `<span class="sin-corte"><button type="button" class="chip-texto" data-buscar="${esc(q)}">${esc(t)}</button>${i < chips.length - 1 ? ',' : '.'}</span>`).join(' ')}</p>
       <p class="heroe__diagnostico"><a class="boton boton--linea" href="${prefijo}diagnostico/">${icono('question')}¿No sabes qué pedir? Responde 3 preguntas</a></p>
     </div>
-    ${vitrina ? heroeVitrina(prefijo) : heroeAvisos(prefijo)}
+    ${heroeAvisos(prefijo)}
   </div>
 </section>`;
 
@@ -568,7 +524,7 @@ function paginaInicio() {
     ['storefront', 'Voy a abrir un negocio', 'Elige tu tipo de negocio y empieza por la etapa 1.', `${prefijo}soluciones/`],
     ['arrows-clockwise', 'Mi sistema no me sirve', 'Cambiar el Excel, el papel o el programa que se quedó corto.', `${prefijo}servicios/software-a-medida/`],
     ['code', 'Quiero algo hecho a la medida', 'Una web, una app o un sistema que haga lo que tu negocio hace.', `${prefijo}servicios/software-a-medida/`],
-    ['lifebuoy', 'Que me mantengan lo que tengo', 'Computadoras, red, respaldos y soporte cuando algo falla.', `${prefijo}servicios/soporte-tecnico/`],
+    ['whatsapp-logo', 'No doy abasto con el WhatsApp', 'Un asistente que contesta lo de siempre y te pasa lo demás.', `${prefijo}servicios/chatbot-de-whatsapp/`],
   ].filter(([, , , u]) => !u.includes('/servicios/') || u.includes('?') || existeServicio(u));
   const entradas = `<section class="situaciones envoltura" aria-labelledby="sit-titulo">
   <h2 id="sit-titulo" class="situaciones__titulo">¿En qué punto estás?</h2>
@@ -616,33 +572,16 @@ function paginaInicio() {
   <p class="seccion__pie"><a class="boton boton--linea" href="${prefijo}servicios/">${icono('list')}Ver los ${SERVICIOS.length} servicios</a></p>
 </section>`;
 
-  // «Lo instalamos en tu local»: la cocina ya instalada y la vitrina del equipo, cada pieza con dónde va y su servicio
-  // (la revisión del 3-oct: vendemos algo físico y no se veía un solo objeto).
-  const equipos = EQUIPOS.filter((x) => hayPieza(x.pieza) && porId.has(x.servicio));
-  const instalacion = `<section class="seccion envoltura instala" aria-labelledby="inst-titulo">
-  <div class="instala__fila">
-    <div class="instala__texto">
-      <h2 id="inst-titulo" class="display seccion__titulo">Lo instalamos en tu local</h2>
-      <p class="seccion__bajada">Además de programar, vamos al local: ponemos las placas QR en las mesas, la pantalla en la cocina, la cámara sobre la puerta y el sensor en la nevera, y le enseñamos a tu equipo a usarlo.</p>
-      <ul class="lista-check">
-        <li>${icono('check')}Compramos el equipo después de que apruebas la propuesta, no antes.</li>
-        <li>${icono('check')}Si ya tienes equipo que sirve (cámaras, una tableta, un televisor), lo usamos.</li>
-        <li>${icono('check')}El dominio y los QR quedan a nombre de tu negocio.</li>
-      </ul>
-    </div>
-    ${hayEscena('en-cocina') ? `<figure class="instala__foto">${imgEscena('en-cocina', prefijo)}<figcaption>Pantalla de comandas e impresora en la cocina de un restaurante. Imagen ilustrativa.</figcaption></figure>` : ''}
-  </div>
-  ${equipos.length ? `<ul class="equipos" role="list" aria-label="Equipo que instalamos">${equipos.map((x) => `<li><a class="equipo" href="${prefijo}servicios/${porId.get(x.servicio).slug}/">${imgPieza(x.pieza, prefijo)}<span class="equipo__nombre">${esc(x.nombre)}</span><span class="equipo__donde">${esc(x.donde)}</span></a></li>`).join('')}</ul>` : ''}
-</section>`;
-
+  // La sección «Lo instalamos en tu local» (la cocina instalada y la vitrina de ocho piezas de equipo) se fue con los
+  // equipos (oct-2026, solo software).
   const pasos = [
-    ['Nos cuentas', 'Por WhatsApp o en una visita al local: qué te quita tiempo, qué se anota a mano, qué se cae.'],
-    ['Propuesta', 'Te mandamos por escrito qué haríamos, el equipo que hace falta, cuánto cuesta y en cuánto tiempo queda.'],
-    ['Lo hacemos', 'Programamos, configuramos y, si hay equipo, lo compramos e instalamos en tu local.'],
+    ['Nos cuentas', 'Por WhatsApp o en una reunión: qué te quita tiempo, qué se anota a mano, qué se cae.'],
+    ['Propuesta', 'Te mandamos por escrito qué haríamos, cuánto cuesta y en cuánto tiempo queda.'],
+    ['Lo hacemos', 'Programamos, lo probamos con tus datos y lo dejamos funcionando en los teléfonos y computadoras que ya usas.'],
     ['Lo usas', 'Le enseñamos a tu equipo y quedamos de soporte según lo acordado en la propuesta.'],
   ];
   const como = `<section class="seccion envoltura" id="como-trabajamos" aria-labelledby="como-titulo">
-  <div class="seccion__cabeza"><h2 id="como-titulo" class="display seccion__titulo">Cómo trabajamos: primero, la propuesta por escrito</h2><p class="seccion__bajada">El equipo se compra cuando la apruebas.</p></div>
+  <div class="seccion__cabeza"><h2 id="como-titulo" class="display seccion__titulo">Cómo trabajamos: primero, la propuesta por escrito</h2><p class="seccion__bajada">Empezamos a programar cuando la apruebas.</p></div>
   <ol class="pasos">${pasos.map(([t, p]) => `<li class="paso"><h3 class="paso__titulo">${t}</h3><p>${p}</p></li>`).join('')}</ol>
 </section>`;
 
@@ -652,8 +591,8 @@ function paginaInicio() {
 </section>`;
 
   return documento({
-    titulo: 'alphateklab · tecnología para tu negocio, hecha e instalada',
-    descripcion: `alphateklab hace software a medida, páginas, apps e inteligencia artificial, y va a tu local a instalar pantallas, cámaras con IA, sensores y QR por mesa. ${SERVICIOS.length} servicios para negocios en Panamá.`,
+    titulo: 'alphateklab · software, páginas y apps para negocios de Panamá',
+    descripcion: `alphateklab hace software a medida, páginas web y apps, asistentes de WhatsApp con inteligencia artificial, cobros y factura electrónica. ${SERVICIOS.length} servicios para negocios en Panamá.`,
     prefijo,
     canonica: URL_BASE,
     clase: 'pagina-inicio',
@@ -664,7 +603,6 @@ ${negocios}
 ${entradas}
 ${demos}
 ${capacidades}
-${instalacion}
 ${como}
 ${preguntas}
 ${bandaPreguntanos(prefijo)}
@@ -677,17 +615,14 @@ ${bandaPreguntanos(prefijo)}
 // las 9 páginas abrían con una foto de IA a sangre, «la segunda puerta del sitio». Sin demo, el héroe va solo con texto.
 const PRODUCTO_POR_NEGOCIO = {
   restaurantes: { demo: 'mesa', portatil: 'mesa-salon', telefono: 'mesa-carta', texto: 'la carta QR de la mesa 7 y el salón en la caja, con un restaurante de ejemplo' },
-  tiendas: { demo: 'camara', portatil: 'camara', texto: 'la cámara que cuenta quién entra y sale y avisa cuando se forma fila' },
   clinicas: { demo: 'reservas', portatil: 'reservas-agenda', texto: 'la agenda de un consultorio de ejemplo, con quién confirmó y a quién hay que llamar' },
   hospedaje: { demo: 'reservas', portatil: 'reservas-alojamiento', texto: 'el calendario de cabañas de ejemplo, con Booking, Airbnb y la venta directa' },
-  'bienes-raices': { demo: 'recorrido-3d', portatil: 'recorrido-3d', texto: 'un apartamento de ejemplo que se recorre de un cuarto a otro, con las medidas reales' },
-  'industria-y-oficinas': { demo: 'sensores', portatil: 'sensores-tablero', telefono: 'sensores-aviso', texto: 'el tablero de sensores y el aviso que llega al WhatsApp' },
   'talleres-y-salones': { demo: 'reservas', portatil: 'reservas-barberia', texto: 'la agenda de una barbería de ejemplo, por barbero' },
 };
 function productoDeNegocio(so, prefijo) {
   const pr = PRODUCTO_POR_NEGOCIO[so.slug];
-  // el equipo instalado en foto, con la pantalla real de la demo compuesta encima: se lee mejor que la captura de
-  // escritorio en un portátil de 448 px (revisión del 3-oct); la demo sigue en «Pruébalo ahora»
+  // la tableta o el televisor del negocio en foto, con la pantalla real de la demo compuesta encima: se lee mejor que
+  // la captura de escritorio en un portátil de 448 px (revisión del 3-oct); la demo sigue en «Pruébalo ahora»
   const escena = ESCENA_NEGOCIO[so.slug];
   if (hayEscena(escena)) {
     const x = ESCENAS[escena];
@@ -788,7 +723,7 @@ function paginaSoluciones() {
   const prefijo = '../';
   return documento({
     titulo: 'Soluciones por tipo de negocio · alphateklab',
-    descripcion: 'Lo que alphateklab le resuelve a restaurantes, tiendas, clínicas, hospedaje, bienes raíces, industria, escuelas, talleres y cualquier negocio.',
+    descripcion: 'Lo que alphateklab le resuelve a restaurantes, tiendas, clínicas, hospedaje, bienes raíces, escuelas, talleres y cualquier negocio.',
     prefijo,
     canonica: `${URL_BASE}soluciones/`,
     cuerpo: `<main id="contenido" class="envoltura pagina-simple">
@@ -810,7 +745,7 @@ function paginaServicios() {
   const grupos = TIPOS.map((t) => ({ t, lista: SERVICIOS.filter((s) => s.tipos[0] === t.id).map((s, i) => [s, i]).sort((a, b) => general(a[0]) - general(b[0]) || a[1] - b[1]).map(([s]) => s) })).filter((g) => g.lista.length);
   return documento({
     titulo: `Los ${SERVICIOS.length} servicios · alphateklab`,
-    descripcion: 'Todos los servicios de alphateklab: software a medida, web y apps, IA, cámaras, sensores, pantallas, 3D y cobros. Busca con tus palabras o filtra por tu negocio.',
+    descripcion: 'Todos los servicios de alphateklab: software a medida, web y apps, inteligencia artificial, y cobros y facturación. Busca con tus palabras o filtra por tu negocio.',
     prefijo,
     canonica: `${URL_BASE}servicios/`,
     cuerpo: `<main id="contenido" class="envoltura pagina-catalogo">
@@ -820,7 +755,7 @@ function paginaServicios() {
     <p class="seccion__bajada">Busca con tus palabras o filtra; si no está, pregúntanos.<span class="solo-escritorio"> Se cotizan según tu negocio, salvo los que muestran precio.</span></p>
   </div>
   <form class="filtros" id="filtros" role="search" aria-label="Buscar y filtrar servicios">
-    <div class="filtros__buscar">${icono('magnifying-glass')}<label class="sr" for="filtro-q">Buscar</label><input id="filtro-q" name="q" type="search" enterkeyhint="search" placeholder="Busca con tus palabras: inventario, cámara, pedir desde la mesa…" autocomplete="off" /></div>
+    <div class="filtros__buscar">${icono('magnifying-glass')}<label class="sr" for="filtro-q">Buscar</label><input id="filtro-q" name="q" type="search" enterkeyhint="search" placeholder="Busca con tus palabras: inventario, WhatsApp, pedir desde la mesa…" autocomplete="off" /></div>
     <fieldset class="filtros__grupo">
       <legend>Tu negocio</legend>
       <div class="filtros__opciones">
@@ -831,7 +766,6 @@ function paginaServicios() {
     <div class="filtros__fila">
       <label class="campo campo--en-linea"><span>Tipo</span><select name="tipo" id="filtro-tipo"><option value="">Todos los tipos</option>${TIPOS.map((t) => `<option value="${t.id}">${esc(t.nombre)}</option>`).join('')}</select></label>
       <label class="casilla"><input type="checkbox" name="demo" value="1" /><span>Con demo</span></label>
-      <label class="casilla"><input type="checkbox" name="instala" value="1" /><span>Se instala en el local</span></label>
       <button class="boton-chico filtros__mas" type="button" aria-expanded="false" aria-controls="filtros" data-filtros-mas>${icono('list')}Filtrar</button>
       <p class="filtros__cuenta num" id="filtros-cuenta" aria-live="polite">Mostrando ${SERVICIOS.length} de ${SERVICIOS.length}</p>
     </div>
@@ -849,7 +783,7 @@ function paginaServicios() {
       .join('\n    ')}
     <div class="catalogo__vacio" id="catalogo-vacio" hidden>
       <h2>No encontramos eso en la lista</h2>
-      <p>Igual puede que lo hagamos. Mándanos la pregunta tal como la escribiste:</p>
+      <p>Igual puede que lo hagamos; eso sí, hacemos solo software: no vendemos ni instalamos equipos. Mándanos la pregunta tal como la escribiste:</p>
       <p class="catalogo__vacio-acciones"><a class="boton boton--senal" id="vacio-preguntar" href="${prefijo}cotizar/" target="_blank" rel="noopener">${icono('whatsapp-logo')}Preguntar por WhatsApp</a> <button class="enlace-boton" type="button" id="limpiar-filtros">Borrar la búsqueda y los filtros</button></p>
     </div>
   </div>
@@ -860,9 +794,8 @@ ${bandaPreguntanos(prefijo)}`,
 }
 
 // Fuentes de las cifras que citan las fichas: si el texto las menciona, la ficha las enlaza (comprobadas el 3-oct-2026).
+// (las del recorrido virtual y de la medición de energía se fueron con sus fichas, oct-2026)
 const FUENTES_CITADAS = [
-  [/Harvard e Ivey/, 'Harvard Business School e Ivey: recorridos virtuales y 75,000 ventas de casas', 'https://www.library.hbs.edu/working-knowledge/are-virtual-tours-still-worth-it-in-real-estate-evidence-from-75000-home-sales'],
-  [/ACEEE/, 'ACEEE (2010): medición avanzada y programas de información al hogar', 'https://www.aceee.org/research-report/e105'],
   [/US\$0\.\d+|tarifa de octubre de 2026|cobra Meta|Meta cobra|Meta los cobra|Meta lo cobra/, 'Meta: precios de la plataforma de WhatsApp Business', 'https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing'],
   [/1 % más ITBMS/, 'Yappy Comercial: comisión por cobro', 'https://www.yappy.com.pa/comercial/'],
 ];
@@ -937,9 +870,9 @@ function paginaServicio(s) {
     <ul class="lista-check">${s.incluye.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
   </div>
   <div class="ficha-cuerpo__col">
-    <h2>${s.equipo.length && s.instala ? 'Equipo que se instala' : 'Equipo'}</h2>
-    ${s.equipo.length ? `<ul class="lista-check">${s.equipo.map((x) => `<li>${icono(s.instala ? 'wrench' : 'check')}${esc(x)}</li>`).join('')}</ul>` : '<p>No necesita equipo en el local.</p>'}
-    ${hayEscena(IMAGEN_SERVICIO[s.id]?.escena) ? `<figure class="ficha-equipo">${imgEscena(IMAGEN_SERVICIO[s.id].escena, prefijo, { sizes: '(min-width: 1040px) 360px, 100vw' })}<figcaption>Imagen ilustrativa.</figcaption></figure>` : hayPieza(IMAGEN_SERVICIO[s.id]?.pieza) ? `<figure class="ficha-equipo ficha-equipo--pieza">${imgPieza(IMAGEN_SERVICIO[s.id].pieza, prefijo, { sizes: '240px', alt: s.equipo[0] || '' })}<figcaption>Imagen ilustrativa.</figcaption></figure>` : ''}
+    <h2>Equipo</h2>
+    <p>Funciona en los teléfonos, tabletas o computadoras que ya usa tu negocio. No vendemos ni instalamos equipos.</p>
+    ${hayEscena(IMAGEN_SERVICIO[s.id]?.escena) ? `<figure class="ficha-equipo">${imgEscena(IMAGEN_SERVICIO[s.id].escena, prefijo, { sizes: '(min-width: 1040px) 360px, 100vw' })}<figcaption>Imagen ilustrativa.</figcaption></figure>` : ''}
   </div>
   <div class="ficha-cuerpo__col ficha-cuerpo__precio">
     <h2>Precio</h2>
@@ -972,7 +905,7 @@ function paginaLaboratorio() {
   const prefijo = '../';
   return documento({
     titulo: 'Demos · alphateklab',
-    descripcion: 'Demos de alphateklab que funcionan en tu navegador: pedir y pagar desde la mesa, agente de citas, recorridos 3D y 360, contador de personas y sensores.',
+    descripcion: 'Demos de alphateklab que funcionan en tu navegador: pedir y pagar desde la mesa, y el agente de citas con las reservas de unas cabañas.',
     prefijo,
     canonica: `${URL_BASE}laboratorio/`,
     cuerpo: `<main id="contenido" class="envoltura pagina-simple">
@@ -1000,7 +933,7 @@ function paginaGuias() {
   const prefijo = '../';
   return documento({
     titulo: 'Guías · alphateklab',
-    descripcion: 'Guías cortas con fuente oficial para negocios en Panamá: factura electrónica, Ley 81 y cámaras, ITBMS y propina, y cómo comparar una app propia con las plataformas.',
+    descripcion: 'Guías cortas con fuente oficial para negocios en Panamá: factura electrónica, ITBMS y propina, y cómo comparar una app propia con las plataformas de delivery.',
     prefijo,
     canonica: `${URL_BASE}guias/`,
     datos: ld(migasLd([['Guías', null]])),
@@ -1113,7 +1046,6 @@ function paginaPrivacidad() {
   <p>El buscador busca dentro de tu navegador. «Pregúntanos» y la cotización arman el mensaje en tu navegador, y solo sale de tu equipo si tú lo mandas por WhatsApp; desde ahí rige la política de WhatsApp. Los servicios que agregas a la cotización y lo que escribes se guardan en tu navegador para que no se pierdan al recargar; el botón «Vaciar» los borra.</p>
   <h2>Las demos</h2>
   <p>Usan negocios inventados y guardan sus datos de ejemplo en tu navegador. Las de restaurante y de citas pueden pasar mensajes entre dos dispositivos (tu teléfono y tu computadora) a través de un servidor público de pruebas, ntfy.sh; por eso piden que no escribas datos reales.</p>
-  <p>La demo de la cámara procesa el video dentro de tu navegador: ningún cuadro sale de tu equipo. Lo que sí se descarga es el modelo de detección, desde los servidores de quien lo publica.</p>
   <p>Las fotos de las páginas se sirven desde este mismo sitio. Las librerías de las demos se descargan de cdn.jsdelivr.net, que recibe la petición como cualquier sitio que visitas.</p>
 </main>`,
   });
@@ -1132,22 +1064,23 @@ function paginaCreditos() {
   <h1 class="display">Créditos</h1>
   <h2>Fotos</h2>
   ${filas.length ? `<ul class="creditos">${filas.map(([slot, c]) => `<li><strong>${esc(c.titulo || slot)}</strong>, de ${esc(c.autor || 'autor sin nombre')}${c.fuente ? ` (<a href="${esc(c.fuente)}">fuente</a>)` : ''}. ${c.urlLicencia ? `<a href="${esc(c.urlLicencia)}">${esc(c.licencia)}</a>` : esc(c.licencia || '')}.</li>`).join('')}</ul>` : '<p>Este sitio todavía no usa fotos de terceros.</p>'}
-  <h2>Equipo</h2>
-  <p>Las ocho imágenes del equipo de la portada (placa con QR, pantalla de cocina, kiosco, cámara, sensor de temperatura, cerradura, lector de acceso y GPS) son imágenes de catálogo generadas con IA para alphateklab, el 3 de octubre de 2026: productos genéricos y sin marca, que ilustran lo que se instala.</p>
-  <p>La foto del héroe de la portada y las escenas de las páginas de negocio (la recepción de un consultorio, una barbería, la puerta de una cabaña, una sala con la cámara 360 y un minisúper) también son ilustrativas, generadas con IA el 3 de octubre de 2026. Lo que se ve en sus pantallas y placas no es de la IA: son las pantallas reales de nuestras demos y códigos QR que funcionan, puestos encima con herramientas/componer-equipo.py.</p>
+  <h2>Escenas</h2>
+  <p>Las escenas de las páginas de negocio (la cocina de un restaurante, la recepción de un consultorio y la sala de espera de una barbería) son ilustrativas, generadas con IA para alphateklab el 3 de octubre de 2026. Lo que se ve en sus pantallas no es de la IA: son las pantallas reales de nuestras demos, puestas encima con herramientas/componer-equipo.py.</p>
   <h2>Íconos</h2>
   <p><a href="https://phosphoricons.com">Phosphor Icons</a> 2.1.1, licencia MIT.</p>
   <h2>Tipografía</h2>
   <p>Manrope, de Mikhail Sharanda, e Inter, de Rasmus Andersson, ambas con licencia SIL Open Font License 1.1.</p>
   <h2>Demos</h2>
-  <p>Fotos 360 de <a href="https://polyhaven.com">Poly Haven</a> (CC0); visor 360 <a href="https://pannellum.org">Pannellum</a> (MIT); three.js (MIT); TensorFlow.js y MediaPipe (Apache 2.0). Cada demo detalla los suyos.</p>
+  <p>Las demos de la mesa y de reservas dibujan sus QR con qrcode-generator 1.4.4 (MIT). Cada demo detalla lo suyo en su repositorio.</p>
   <p>Las fotos de los 26 platos y bebidas de la demo de la mesa y de las seis cabañas de la demo de reservas son ilustrativas, generadas con IA (ChatGPT, de OpenAI) para alphateklab el 3 de octubre de 2026. No son platos servidos ni propiedades reales.</p>
 </main>`,
   });
 }
 
+// El 404 lo sirve el alojamiento para cualquier dirección, así que sus enlaces van desde la raíz del dominio
+// (alphateklab.com, oct-2026; antes /alphateklab/ en GitHub Pages).
 function pagina404() {
-  const prefijo = '/alphateklab/';
+  const prefijo = new URL(URL_BASE).pathname;
   return documento({
     titulo: 'Página no encontrada · alphateklab',
     descripcion: 'Esta dirección no existe en el sitio de alphateklab.',
@@ -1183,7 +1116,7 @@ function paginaDiagnostico() {
       foto: existe(`assets/fotos/${so.foto}-800.webp`) ? `${prefijo}assets/fotos/${so.foto}-800.webp` : null,
       problemas: so.problemas.map((p) => ({ problema: p.problema, respuesta: p.respuesta, servicios: p.servicios })),
     })),
-    servicios: Object.fromEntries(SERVICIOS.map((s) => [s.id, { nombre: s.nombre, corto: s.corto, para: s.para, url: `${prefijo}servicios/${s.slug}/`, precio: precioTexto(s), demo: s.demo ? enlace(s.demo, prefijo) : null, icono: s.icono || tipoPorId.get(s.tipos[0]).icono, instala: s.instala }])),
+    servicios: Object.fromEntries(SERVICIOS.map((s) => [s.id, { nombre: s.nombre, corto: s.corto, para: s.para, url: `${prefijo}servicios/${s.slug}/`, precio: precioTexto(s), demo: s.demo ? enlace(s.demo, prefijo) : null, icono: s.icono || tipoPorId.get(s.tipos[0]).icono }])),
   };
   return documento({
     titulo: '¿Qué necesita tu negocio? · alphateklab',

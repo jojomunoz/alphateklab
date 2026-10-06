@@ -138,7 +138,7 @@ async function cargarIndice() {
 }
 
 const ETIQUETA = { servicio: 'Servicio', solucion: 'Para tu negocio', demo: 'Demo', guia: 'Guía' };
-const SUGERENCIAS = ['pedir desde la mesa', 'contar clientes', 'recordar citas', 'página web', 'inventario', 'cámaras de seguridad', 'recorrido 3D', 'chatbot de WhatsApp', 'factura electrónica', 'app para mi negocio'];
+const SUGERENCIAS = ['pedir desde la mesa', 'recordar citas', 'página web', 'inventario', 'chatbot de WhatsApp', 'factura electrónica', 'cobrar con Yappy', 'tienda en línea', 'app para mi negocio', 'software a medida'];
 const url = (u) => (/^https?:/.test(u) ? u : RAIZ + u);
 const contacto = () => document.documentElement.dataset.whatsapp || null;
 
@@ -215,7 +215,7 @@ function bloqueVacio(consulta) {
   const div = document.createElement('div');
   div.className = 'sin-resultados';
   const enlaceWa = enlaceWhatsApp(mensajePregunta(consulta), contacto());
-  div.innerHTML = `<p class="sin-resultados__titulo">No encontramos «<span></span>» en la lista.</p><p>Puede que igual lo hagamos: la lista es lo que ya tenemos descrito, no todo lo que podemos hacer. Pregúntanos tal como lo escribiste.</p><p class="sin-resultados__acciones"><a class="boton boton--senal" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-whatsapp-logo"></use></svg>Preguntar por WhatsApp</a><a class="boton boton--linea">Escribir más detalles</a></p>`;
+  div.innerHTML = `<p class="sin-resultados__titulo">No encontramos «<span></span>» en la lista.</p><p>Puede que igual lo hagamos: la lista es lo que ya tenemos descrito, no todo lo que podemos hacer. Eso sí, hacemos solo software: no vendemos ni instalamos equipos. Pregúntanos tal como lo escribiste.</p><p class="sin-resultados__acciones"><a class="boton boton--senal" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-whatsapp-logo"></use></svg>Preguntar por WhatsApp</a><a class="boton boton--linea">Escribir más detalles</a></p>`;
   div.querySelector('span').textContent = consulta;
   const [wa, mas] = div.querySelectorAll('a');
   wa.href = enlaceWa;
@@ -335,7 +335,7 @@ function conectarBusqueda({ campo, lista, vacio, sugerencias, estado, alElegir }
     lista.removeAttribute('aria-busy');
     lista.querySelector('.buscador__cargando')?.remove();
     if (q !== ultimo) return;
-    // Mientras se escribe, la última palabra cuenta como comienzo de palabra («cam» encuentra cámaras).
+    // Mientras se escribe, la última palabra cuenta como comienzo de palabra («fact» encuentra la factura electrónica).
     const res = buscar(idx, q, { limite: 8, prefijo: true });
     const dudosa = esDudosa(idx, q);
     hubo = dudosa ? 0 : res.length; // con una frase dudosa, Enter lleva a preguntar y no a la lista
@@ -484,7 +484,7 @@ if (dialogo) {
 const formHeroe = document.querySelector('[data-buscar-en-linea]');
 if (formHeroe) {
   const campo = formHeroe.querySelector('input');
-  if (matchMedia('(max-width: 480px)').matches) campo.placeholder = 'Ej.: menú QR, cámaras…';
+  if (matchMedia('(max-width: 480px)').matches) campo.placeholder = 'Ej.: menú QR, WhatsApp…';
   const caja = document.getElementById('heroe-resultados');
   const lista = Object.assign(document.createElement('ul'), { className: 'buscador__resultados', role: 'listbox', id: 'heroe-lista' });
   lista.setAttribute('role', 'listbox');

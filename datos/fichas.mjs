@@ -1,136 +1,6 @@
 // Detalle de cada servicio (cómo funciona, qué necesitas, qué no incluye, preguntas, ejemplo).
 // Redactado por agentes con los datos del catálogo y revisado por otro agente; se junta con herramientas/juntar-fichas.mjs.
 export const FICHAS = {
-  B01: {
-    "como": [
-      {
-        "titulo": "Nos cuentas la propiedad",
-        "texto": "Nos dices dónde queda, cuántos ambientes tiene y para qué lo quieres. Con eso te recomendamos el recorrido con fotos 360 o el 3D con medidas."
-      },
-      {
-        "titulo": "Visita con la cámara",
-        "texto": "Vamos a la propiedad con la cámara 360 o el teléfono con LiDAR y tomamos cada ambiente. El equipo lo llevamos nosotros."
-      },
-      {
-        "titulo": "Armamos el recorrido",
-        "texto": "Unimos las tomas en un recorrido que se abre en el navegador del teléfono y lo dejamos en tu dominio."
-      },
-      {
-        "titulo": "Lo mandas al interesado",
-        "texto": "Pegas el enlace en tu anuncio, en tu página o en el WhatsApp de quien pregunta. Recorre la propiedad antes de pedir la visita."
-      }
-    ],
-    "necesitas": [
-      "Alguien que nos abra la propiedad el día de la visita",
-      "La propiedad ordenada y con las luces funcionando: el recorrido muestra lo que hay ese día",
-      "Un dominio o una página donde publicarlo; si no tienes, lo vemos en la propuesta"
-    ],
-    "no_incluye": [
-      "Las fotos profesionales de la propiedad: son un extra de +$300",
-      "Las tomas aéreas con dron, que son otro servicio",
-      "Lo que cobre el portal donde anuncias la propiedad",
-      "Arreglar o decorar la propiedad antes de la visita"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Me conviene el 360 o el 3D?",
-        "r": "El 360 son fotos esféricas de cada ambiente: miras alrededor y saltas al siguiente. El 3D se camina libre y trae las medidas. Depende de la propiedad y de para qué lo usas; te lo recomendamos en la propuesta."
-      },
-      {
-        "p": "¿Con esto vendo más rápido o más caro?",
-        "r": "No te lo prometemos. El estudio independiente más grande que encontramos (Harvard e Ivey, 2023, 75,178 ventas en Los Ángeles) no halló efecto en el precio al tomar en cuenta la calidad de las fotos, y vio que el recorrido puede alargar el tiempo de venta. Lo que sí logras es que el interesado conozca el espacio antes de ir."
-      },
-      {
-        "p": "¿Puedo ver uno antes de contratar?",
-        "r": "Sí. En las demos del sitio hay recorridos de ejemplo que puedes mover con el dedo o el mouse."
-      }
-    ],
-    "ejemplo": "Ejemplo: un agente alquila un apartamento de dos recámaras en El Cangrejo y le escriben muchos interesados desde el extranjero. Les manda el enlace del recorrido 3D y cada uno mide la recámara principal desde su teléfono antes de agendar la visita."
-  },
-  B02: {
-    "como": [
-      {
-        "titulo": "Lo sumas al recorrido",
-        "texto": "Cuando pides el recorrido 360 o 3D, nos dices que también quieres fotos. Se toman en la misma visita, sin otra cita."
-      },
-      {
-        "titulo": "Sesión en la propiedad",
-        "texto": "Fotografiamos cada ambiente buscando la mejor luz del lugar y el ángulo que muestra el espacio."
-      },
-      {
-        "titulo": "Edición",
-        "texto": "Corregimos la luz y el color de cada foto y te las entregamos listas para subir a tu anuncio."
-      },
-      {
-        "titulo": "Las publicas",
-        "texto": "Las usas en los portales, en redes y en tu página, junto al enlace del recorrido."
-      }
-    ],
-    "necesitas": [
-      "Contratar también el recorrido 360 o 3D: las fotos se toman en esa visita",
-      "La propiedad limpia y ordenada, con cortinas y luces listas"
-    ],
-    "no_incluye": [
-      "Video de la propiedad",
-      "Tomas aéreas con dron, que son otro servicio",
-      "Decoración o muebles para la sesión"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Cuánto cuestan?",
-        "r": "$300 más sobre el precio del recorrido 360 o 3D."
-      },
-      {
-        "p": "¿Puedo pedir solo las fotos, sin recorrido?",
-        "r": "Hoy las ofrecemos como extra del recorrido, porque salen de la misma visita. Si solo necesitas fotos, escríbenos y lo vemos."
-      },
-      {
-        "p": "¿Cuántas fotos me entregan?",
-        "r": "Depende de cuántos ambientes tiene la propiedad. El número va en la propuesta."
-      }
-    ],
-    "ejemplo": "Ejemplo: una casa de playa en Coronado que se alquila por temporada. En la misma visita del recorrido 360 salen las fotos de la terraza y de cada recámara, que luego sirven para el anuncio y para la página de reservas."
-  },
-  B03: {
-    "como": [
-      {
-        "titulo": "Escaneo 3D",
-        "texto": "El plano sale del escaneo 3D con LiDAR. Si ya pediste el recorrido 3D, es la misma visita."
-      },
-      {
-        "titulo": "Trazamos el plano",
-        "texto": "A partir del escaneo dibujamos el plano en planta con las medidas de cada ambiente."
-      },
-      {
-        "titulo": "Te llega en PDF",
-        "texto": "Recibes el plano en PDF con los metros cuadrados de cada ambiente, listo para imprimir o adjuntar."
-      },
-      {
-        "titulo": "Lo usas",
-        "texto": "Lo pones en la ficha de la propiedad o se lo das a quien te va a cotizar la remodelación."
-      }
-    ],
-    "necesitas": [
-      "Acceso a la propiedad para el escaneo, con todas las puertas abiertas",
-      "Decirnos si es para anunciar o para remodelar, para marcar lo que te importa"
-    ],
-    "no_incluye": [
-      "Un plano firmado por arquitecto o ingeniero para permisos o trámites",
-      "Planos eléctricos, de plomería o de estructura",
-      "La medición de los linderos del terreno, que hace un agrimensor"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Qué tan exactas son las medidas?",
-        "r": "Salen del escaneo con LiDAR y sirven para anunciar y para planear una remodelación. Si vas a construir o a hacer un trámite, que un profesional confirme las medidas en sitio."
-      },
-      {
-        "p": "¿Puedo tener el plano sin el recorrido?",
-        "r": "Hace falta la visita de escaneo, porque el plano sale de ahí. Publicar el recorrido o no es decisión tuya."
-      }
-    ],
-    "ejemplo": "Ejemplo: el dueño de una bodega en Juan Díaz la quiere alquilar dividida en dos. Con el plano y los metros cuadrados de cada área, el interesado sabe qué le cabe antes de ir a verla."
-  },
   B04: {
     "como": [
       {
@@ -184,7 +54,7 @@ export const FICHAS = {
       },
       {
         "titulo": "Armamos las fichas",
-        "texto": "Cada propiedad lleva su ficha con fotos, y con plano y recorrido si los tiene. El sitio se filtra por zona, precio y recámaras."
+        "texto": "Cada propiedad lleva su ficha con tus fotos, y con su plano y su recorrido virtual si ya los tienes. El sitio se filtra por zona, precio y recámaras."
       },
       {
         "titulo": "Publicamos en tu dominio",
@@ -201,7 +71,7 @@ export const FICHAS = {
       "Tu dominio, si ya tienes uno"
     ],
     "no_incluye": [
-      "Los recorridos 3D, los planos y las fotos profesionales de cada propiedad: son servicios aparte",
+      "Tomar las fotos, hacer los planos o grabar recorridos de cada propiedad: el sitio muestra los que ya tengas",
       "Los anuncios pagados en redes o en buscadores",
       "Publicar tus propiedades en portales de terceros"
     ],
@@ -219,272 +89,7 @@ export const FICHAS = {
         "r": "Si manejas muchas o cambian seguido, conviene un panel para que las subas tú. Depende de tu caso y va en la propuesta."
       }
     ],
-    "ejemplo": "Ejemplo: una inmobiliaria de dos agentes en Santiago de Veraguas con 30 casas y lotes. El comprador filtra por precio y recámaras, abre la ficha con su recorrido y escribe por WhatsApp desde el botón de esa casa."
-  },
-  B06: {
-    "como": [
-      {
-        "titulo": "Nos dices qué mostrar",
-        "texto": "Nos cuentas dónde queda el terreno o el edificio y qué quieres que se vea, como los accesos o la vista. Antes de ir revisamos si la zona tiene restricciones de vuelo."
-      },
-      {
-        "titulo": "Vuelo en sitio",
-        "texto": "Vamos con el dron y tomamos fotos y video desde el aire. El dron lo llevamos nosotros."
-      },
-      {
-        "titulo": "Mapa del terreno",
-        "texto": "Con las fotos armamos un mapa del terreno visto desde arriba."
-      },
-      {
-        "titulo": "Lo usas al vender",
-        "texto": "Te entregamos fotos, video y mapa para el anuncio, la página del proyecto o la reunión con el comprador."
-      }
-    ],
-    "necesitas": [
-      "Permiso del dueño o de la administración para volar sobre la propiedad",
-      "La ubicación exacta y, si es un terreno, más o menos por dónde van sus límites"
-    ],
-    "no_incluye": [
-      "La medición oficial de linderos: el mapa muestra el terreno, pero no es un plano de agrimensor",
-      "Fotos de interiores, que van en el recorrido 360 o 3D o en las fotos profesionales",
-      "La inspección técnica de techos u obras, que es el servicio de inspección con dron"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Se puede volar en cualquier lugar?",
-        "r": "No. Cerca de los aeropuertos y en algunas zonas hay restricciones. Lo revisamos antes de agendar la visita."
-      },
-      {
-        "p": "¿Qué pasa si llueve el día acordado?",
-        "r": "Con lluvia o viento fuerte no se vuela. Movemos la fecha."
-      }
-    ],
-    "ejemplo": "Ejemplo: un promotor vende lotes en una finca de Chame. Las tomas aéreas muestran la calle de acceso y la cercanía a la carretera, y el mapa deja ver cómo se reparte la finca."
-  },
-  C01: {
-    "como": [
-      {
-        "titulo": "Visita a la puerta",
-        "texto": "Vamos al local a ver la entrada: el ancho, la altura del techo y si hay toma eléctrica cerca. De eso depende si va una cámara sobre la puerta o un sensor en el techo."
-      },
-      {
-        "titulo": "Instalación y línea de conteo",
-        "texto": "Montamos el equipo y marcamos la línea que la gente cruza al entrar y al salir. Se prueba contando a mano un rato y comparando con lo que marca el equipo."
-      },
-      {
-        "titulo": "Aforo y cruce con la caja",
-        "texto": "Fijas el máximo de personas adentro para el aviso de aforo. Con el número de ventas por hora de tu caja sale cuántos de los que entraron compraron."
-      },
-      {
-        "titulo": "El reporte del día",
-        "texto": "Ves en el teléfono o la computadora cuánta gente entró hoy, por hora, y la comparas con la semana pasada. Si se llena, te llega el aviso."
-      }
-    ],
-    "necesitas": [
-      "Una toma eléctrica cerca de la puerta e internet en el local",
-      "El reporte de ventas por hora de tu caja, para sacar cuántos compraron",
-      "El máximo de personas que aceptas adentro, si quieres el aviso de aforo"
-    ],
-    "no_incluye": [
-      "El sistema de caja: se usan las ventas del que ya tienes",
-      "Obras eléctricas si no hay toma cerca de la puerta",
-      "Reconocer quién es cada persona: el equipo cuenta cruces, sin nombres"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Cuenta dos veces a la misma persona?",
-        "r": "Cuenta cada vez que alguien cruza la puerta. Quien sale y vuelve a entrar suma dos, y tus empleados también cruzan; cómo separarlos depende de tu local y se ve en la visita."
-      },
-      {
-        "p": "¿Puedo verlo funcionar antes?",
-        "r": "Sí. En el laboratorio del sitio hay una demo que cuenta personas con la cámara de tu computadora, sin que el video salga de tu equipo."
-      },
-      {
-        "p": "¿Cuánto cuesta?",
-        "r": "Depende de cuántas puertas tengas y de si va cámara o sensor de techo. La cifra va cerrada en la propuesta."
-      }
-    ],
-    "ejemplo": "Ejemplo: una zapatería de David con una sola entrada pone el contador sobre la puerta. Un sábado ve que entre las 3 y las 5 de la tarde entraron muchas más personas que las ventas que marcó la caja, y decide poner una vendedora más en ese horario."
-  },
-  C02: {
-    "como": [
-      {
-        "titulo": "Recorrido por el local",
-        "texto": "Caminamos el local contigo y marcamos los pasillos, exhibidores y zonas que te interesa medir. Revisamos si tus cámaras actuales ven esas zonas desde arriba."
-      },
-      {
-        "titulo": "Cámaras de techo",
-        "texto": "Usamos las cámaras que sirvan y ponemos las que falten para cubrir el piso de venta. Cada zona queda con su nombre en el sistema."
-      },
-      {
-        "titulo": "Primer mapa",
-        "texto": "Con los datos que se van juntando ves por hora dónde se detiene la gente, cuánto tiempo y qué pasillos casi nadie recorre."
-      },
-      {
-        "titulo": "Mover y comparar",
-        "texto": "Cuando cambias un exhibidor de lugar, anotas la fecha y comparas el mapa de antes con el de después."
-      }
-    ],
-    "necesitas": [
-      "Internet en el local",
-      "Acceso a tus cámaras actuales, si quieres que revisemos si sirven",
-      "Anotar la fecha de cada cambio de exhibidor, para comparar"
-    ],
-    "no_incluye": [
-      "Decidir dónde va cada producto: el mapa muestra el recorrido y la decisión es tuya",
-      "Saber quién es cada persona: el mapa mide presencia por zona",
-      "Cuántos de los que entran compran: eso lo da el contador de personas en la entrada"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Sirven las cámaras que ya tengo?",
-        "r": "Depende de dónde están y de si se pueden conectar por la red. Las revisamos en la visita; las que sirven se usan y solo se compran las que falten."
-      },
-      {
-        "p": "¿Mis clientes van a saber que los miden?",
-        "r": "Deben saberlo. La Ley 81 de 2019 protege los datos personales y la ANTAI ha tratado el video de vigilancia como dato sensible, así que el local lleva un aviso visible de que hay cámaras y para qué se usan."
-      },
-      {
-        "p": "¿Y si mi local es pequeño?",
-        "r": "Con un solo pasillo el mapa dice poco. Te lo decimos en la conversación antes de proponerte nada."
-      }
-    ],
-    "ejemplo": "Ejemplo: un almacén de ropa en Santiago, con cuatro pasillos, ve en el mapa que casi nadie llega al fondo donde están los jeans. Pasa los jeans al frente y compara en el reporte el antes y el después."
-  },
-  C03: {
-    "como": [
-      {
-        "titulo": "Visita a las cajas",
-        "texto": "Vemos dónde se forma la fila y desde dónde una cámara la ve completa. Si ya hay una cámara que la cubre, se usa."
-      },
-      {
-        "titulo": "Marcar la zona de fila",
-        "texto": "En la imagen de la cámara se marca el área de la fila, sin tomar pasillos ni vitrinas. Tú decides con cuántas personas esperando salta el aviso."
-      },
-      {
-        "titulo": "Quién recibe el aviso",
-        "texto": "Eliges si el aviso llega al WhatsApp del encargado, a una pantalla en el local o a los dos. Se prueba con gente del local haciendo fila."
-      },
-      {
-        "titulo": "En el día a día",
-        "texto": "Cuando la fila pasa del número, el encargado recibe el aviso y abre otra caja. Al final de la semana ves los tiempos de espera por hora."
-      }
-    ],
-    "necesitas": [
-      "Internet en el local",
-      "El número de personas en fila que para ti ya es demasiado",
-      "Alguien que reciba el aviso y pueda abrir otra caja"
-    ],
-    "no_incluye": [
-      "El costo de los avisos por WhatsApp: Meta lo cobra por mensaje, unos US$0.011 cada uno en Panamá según su tarifa de octubre de 2026; el aviso en pantalla no tiene ese costo",
-      "Personal para abrir la otra caja: el aviso solo dice cuándo hace falta",
-      "La pantalla del local, si eliges ese aviso y no tienes una"
-    ],
-    "preguntas": [
-      {
-        "p": "¿La cámara va a contar a los que miran la vitrina junto a la caja?",
-        "r": "Cuenta a quien esté dentro de la zona marcada. Por eso la zona se ajusta en la visita para que no tome pasillos ni vitrinas."
-      },
-      {
-        "p": "¿Me van a llegar avisos todo el día?",
-        "r": "Solo cuando la fila pasa del número que fijaste. Si llegan demasiados, se sube el número."
-      },
-      {
-        "p": "¿Necesito una cámara nueva?",
-        "r": "Solo si ninguna de las tuyas ve la fila completa. Eso se ve en la visita."
-      }
-    ],
-    "ejemplo": "Ejemplo: en una farmacia de La Chorrera con tres cajas y una sola abierta al mediodía, la cámara avisa al WhatsApp del encargado cuando hay más de cinco personas esperando. El encargado abre la segunda caja y el reporte de la semana muestra a qué hora se repite la fila."
-  },
-  C04: {
-    "como": [
-      {
-        "titulo": "Ver tu mercancía",
-        "texto": "Vemos tu mercancía y cómo la cuentas hoy. Si es ropa, la vía es una etiqueta RFID por pieza; si son abarrotes, el teléfono lee las etiquetas del estante."
-      },
-      {
-        "titulo": "Etiquetas y lector",
-        "texto": "Se etiqueta la mercancía, o se registran las etiquetas del estante, y se deja el lector RFID de mano o el teléfono listo para escanear."
-      },
-      {
-        "titulo": "Conexión con tu sistema",
-        "texto": "El escaneo se conecta al sistema de inventario. Lo que cuentas se compara contra lo que dice tu sistema y sale la lista de diferencias."
-      },
-      {
-        "titulo": "Contar en un recorrido",
-        "texto": "Para contar, alguien recorre la tienda con el lector o el teléfono. Al terminar ves qué falta, qué sobra y dónde."
-      }
-    ],
-    "necesitas": [
-      "Tu lista de productos con su código y las existencias de tu sistema actual",
-      "Que la mercancía nueva entre con su etiqueta, si usas RFID",
-      "Internet o red en la tienda para subir cada conteo"
-    ],
-    "no_incluye": [
-      "Las etiquetas RFID de la mercancía que llegue después: se compran con cada pedido",
-      "El punto de venta y la factura electrónica: son otros servicios",
-      "Hacer el conteo por ti: el recorrido con el lector lo hace tu personal"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Sirve para una tienda de abarrotes?",
-        "r": "Sí, por otra vía. En vez de poner una etiqueta RFID a cada producto, la cámara del teléfono lee las etiquetas del estante."
-      },
-      {
-        "p": "¿Tengo que cambiar el sistema que uso?",
-        "r": "No necesariamente. El conteo se compara contra lo que dice tu sistema. Cómo se conectan depende de tu sistema y va en la propuesta."
-      },
-      {
-        "p": "¿Quién pone las etiquetas la primera vez?",
-        "r": "Depende de cuánta mercancía tengas. En la propuesta queda quién lo hace y cuánto cuesta."
-      }
-    ],
-    "ejemplo": "Ejemplo: una tienda de ropa en Los Andes con dos pisos etiqueta cada prenda con RFID. El conteo de fin de mes se hace pasando el lector de mano por los colgadores, y el sistema muestra qué tallas faltan contra lo que dice el inventario."
-  },
-  C05: {
-    "como": [
-      {
-        "titulo": "Qué pérdidas te preocupan",
-        "texto": "Nos cuentas dónde crees que se va la mercancía o el efectivo: la caja, la bodega o la puerta de atrás. Revisamos las cámaras que ya tienes."
-      },
-      {
-        "titulo": "Cámaras y grabador",
-        "texto": "Instalamos las cámaras que falten y un grabador que analiza el video en el local. Se definen los momentos a marcar, como el cajón abierto sin venta o mercancía saliendo por atrás."
-      },
-      {
-        "titulo": "Revisión de eventos",
-        "texto": "Cada momento marcado queda con su clip de video. Lo revisas desde el teléfono o la computadora, sin ver horas de grabación."
-      },
-      {
-        "titulo": "Buscar cuando pasa algo",
-        "texto": "Si falta algo en el cierre, buscas por hora y por cámara y vas directo al momento."
-      }
-    ],
-    "necesitas": [
-      "Internet en el local y un lugar seguro para el grabador",
-      "Que tu caja registre ventas y aperturas del cajón, si quieres cruzarlas con el video",
-      "Un letrero visible de que hay cámaras y el aviso por escrito a tu personal"
-    ],
-    "no_incluye": [
-      "Alguien vigilando el video en vivo: el sistema marca los momentos y los revisas tú",
-      "Reconocer caras o identificar personas por nombre",
-      "Concluir quién se llevó algo: eso lo decides tú con el clip"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Puedo grabar a mis empleados?",
-        "r": "La Ley 81 de 2019 protege los datos personales, y la ANTAI ha tratado el video de vigilancia como dato sensible. Pon letreros visibles y avisa a tu personal por escrito; para tu reglamento interno, consulta a tu abogado."
-      },
-      {
-        "p": "¿El video sale de mi local?",
-        "r": "El análisis se hace en el grabador del local, sin mandar el video a otro servicio. Verlo desde el teléfono es opcional y tú decides quién tiene acceso."
-      },
-      {
-        "p": "¿Sirven mis cámaras actuales?",
-        "r": "Depende de su ubicación y de si se pueden conectar por la red. Las revisamos en la visita y solo se compran las que falten."
-      }
-    ],
-    "ejemplo": "Ejemplo: un minisúper de Chitré con dos cajas y una bodega atrás no cuadra el efectivo algunos cierres. Las cámaras marcan cada vez que el cajón se abre sin venta y cada salida por la puerta de la bodega fuera de la hora de carga, y el dueño revisa esos clips desde su teléfono."
+    "ejemplo": "Ejemplo: una inmobiliaria de dos agentes en Santiago de Veraguas con 30 casas y lotes. El comprador filtra por precio y recámaras, abre la ficha con sus fotos y su plano y escribe por WhatsApp desde el botón de esa casa."
   },
   C06: {
     "como": [
@@ -533,51 +138,6 @@ export const FICHAS = {
     ],
     "ejemplo": "Ejemplo: una tienda de artículos de cocina en Vía España con unos 300 productos abre su tienda en línea con retiro en el local y envío dentro de la ciudad. El cliente paga con Yappy, al dueño le llega el aviso al WhatsApp y la existencia baja sola."
   },
-  C07: {
-    "como": [
-      {
-        "titulo": "Recorrido por los estantes",
-        "texto": "Vemos tus estantes, cuántos precios hay que cambiar y de dónde sale hoy tu lista de precios."
-      },
-      {
-        "titulo": "Etiquetas y antena",
-        "texto": "Ponemos las etiquetas de tinta electrónica en el borde de cada estante y la antena en el techo, que les manda los precios."
-      },
-      {
-        "titulo": "Conexión con tu lista",
-        "texto": "Cada etiqueta queda unida a su producto en tu lista de precios. Se prueba cambiando un precio en la computadora y viéndolo en el estante."
-      },
-      {
-        "titulo": "Cambiar y programar ofertas",
-        "texto": "Cambias el precio en la computadora y el estante muestra el mismo que la caja. Las ofertas del fin de semana se programan con su fecha de inicio y de fin."
-      }
-    ],
-    "necesitas": [
-      "Tu lista de precios en un sistema o archivo que se pueda conectar",
-      "Corriente cerca de donde va la antena en el techo, e internet en el local",
-      "Qué producto va en cada espacio del estante"
-    ],
-    "no_incluye": [
-      "El sistema de caja: las etiquetas toman los precios del que ya usas",
-      "Pantallas con ofertas en el local: son otro servicio",
-      "Cambiar o comprar estantes"
-    ],
-    "preguntas": [
-      {
-        "p": "¿El precio del estante puede quedar distinto al de la caja?",
-        "r": "Los dos salen de la misma lista de precios. Cómo se conecta tu caja a esa lista depende de tu sistema y va en la propuesta."
-      },
-      {
-        "p": "¿Y si se va la luz?",
-        "r": "La tinta electrónica mantiene lo que muestra sin corriente, así que el precio sigue a la vista. Los cambios llegan cuando vuelve la conexión."
-      },
-      {
-        "p": "¿Tengo que poner etiqueta electrónica en toda la tienda?",
-        "r": "No. Puedes empezar por los pasillos donde más cambian los precios y dejar papel en el resto."
-      }
-    ],
-    "ejemplo": "Ejemplo: un supermercado pequeño de Penonomé que cambia precios de granos y aceite casi cada semana pone etiquetas electrónicas en esos dos pasillos. El encargado cambia el precio en la computadora de la oficina y no tiene que imprimir ni pegar etiquetas."
-  },
   C08: {
     "como": [
       {
@@ -622,51 +182,6 @@ export const FICHAS = {
       }
     ],
     "ejemplo": "Ejemplo: una cafetería de Boquete da la décima bebida gratis. Cuando un cliente que venía cada semana pasa un mes sin aparecer, le llega un mensaje con un pan de regalo en su próxima visita."
-  },
-  C09: {
-    "como": [
-      {
-        "titulo": "Visita al local",
-        "texto": "Vemos dónde está tu módem, el tamaño del local y dónde se sientan o esperan los clientes, para ubicar el punto de acceso."
-      },
-      {
-        "titulo": "Red de clientes aparte",
-        "texto": "Instalamos el punto de acceso y dejamos la red de clientes separada de la de la caja y tus equipos. Tú eliges el límite de tiempo o de velocidad por cliente."
-      },
-      {
-        "titulo": "Página de entrada",
-        "texto": "Armamos la página con tu marca donde el cliente pone su correo o su WhatsApp y acepta el aviso de privacidad."
-      },
-      {
-        "titulo": "Ver quién vuelve",
-        "texto": "El cliente se conecta como en cualquier Wi-Fi. Tú ves cuántos se registran y cuántos vuelven."
-      }
-    ],
-    "necesitas": [
-      "Internet contratado en el local",
-      "Una toma eléctrica donde va el punto de acceso",
-      "El nombre y los datos de contacto de tu negocio, que aparecen en el aviso de privacidad como responsable de los datos"
-    ],
-    "no_incluye": [
-      "El plan de internet: lo sigue pagando tu negocio a su proveedor",
-      "Puntos de acceso adicionales si uno no cubre todo el local: se cotizan aparte",
-      "Mandar promociones a la lista: eso lo hace el programa de clientes frecuentes u otra herramienta"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Mis clientes pueden entrar a la red de la caja?",
-        "r": "No. La red de clientes va separada de la de la caja y de tus equipos."
-      },
-      {
-        "p": "¿Qué pide la ley para guardar sus datos?",
-        "r": "La Ley 81 de 2019 pide un consentimiento previo, informado y que se pueda comprobar. La página de entrada muestra para qué usas los datos y guarda la aceptación de cada cliente."
-      },
-      {
-        "p": "¿Uso el módem que ya tengo?",
-        "r": "El punto de acceso se conecta a tu internet actual. Si tu plan se queda corto para los clientes, te lo decimos en la visita."
-      }
-    ],
-    "ejemplo": "Ejemplo: una heladería de Las Tablas cambia la clave del Wi-Fi escrita en la pared por una página de entrada con su logo. Cada cliente entra con su WhatsApp, tiene una hora de conexión, y la dueña ve cuántos de los que se conectaron en un mes volvieron al siguiente."
   },
   C10: {
     "como": [
@@ -799,47 +314,6 @@ export const FICHAS = {
     ],
     "ejemplo": "Ejemplo: en un colegio pequeño de Chitré, de prekínder a sexto grado, los acudientes reciben el recordatorio antes del 5 de cada mes y pagan con Yappy desde el enlace. La secretaria abre el reporte de morosidad y ve quién falta sin cruzar comprobantes con el estado del banco."
   },
-  E02: {
-    "como": [
-      {
-        "titulo": "Visita a la entrada",
-        "texto": "Vemos por dónde entran los estudiantes o empleados, dónde va el lector y si hay tomacorriente e internet."
-      },
-      {
-        "titulo": "Listas y carnés",
-        "texto": "Cargamos la lista por grupo o por turno, y cada persona queda con su QR o su tarjeta."
-      },
-      {
-        "titulo": "Instalación del lector",
-        "texto": "Ponemos el lector y la tableta o pantalla en la entrada. Cada quien marca al pasar y ve su nombre en la pantalla."
-      },
-      {
-        "titulo": "Aviso de ausencias",
-        "texto": "A la hora que tú defines, el sistema revisa quién no marcó y avisa al acudiente o al supervisor que corresponda."
-      }
-    ],
-    "necesitas": [
-      "La lista de estudiantes o empleados con su grupo y el contacto a quien avisar",
-      "Un tomacorriente e internet en la entrada",
-      "Un lugar fijo en la entrada para el lector y la tableta"
-    ],
-    "no_incluye": [
-      "Los carnés o tarjetas, si no los tienen; se cotizan aparte según cuántos sean",
-      "Los mensajes de WhatsApp de los avisos, que Meta cobra aparte",
-      "Abrir una puerta o un torniquete: aquí solo se marca la asistencia"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Y si alguien olvida el carné?",
-        "r": "La persona en la entrada lo marca a mano en la tableta, y queda anotado que fue a mano."
-      },
-      {
-        "p": "¿Sirve también para empleados?",
-        "r": "Sí. La lista va por turno en vez de por grado, y el aviso le llega al supervisor."
-      }
-    ],
-    "ejemplo": "Ejemplo: en una escuela de Aguadulce, los estudiantes pasan el carné por el lector de la entrada entre las 6:45 y las 7:15. A las 7:30 los acudientes de quienes no marcaron reciben un WhatsApp, y cada maestra ya tiene la lista de su grado."
-  },
   E03: {
     "como": [
       {
@@ -968,47 +442,6 @@ export const FICHAS = {
     ],
     "ejemplo": "Ejemplo: un hostal en Bocas del Toro vende sus seis habitaciones en Booking, en Airbnb y en su propia página. Un domingo el calendario de Airbnb deja de actualizarse; al dueño le llega el aviso y su página deja de vender esas fechas mientras lo arregla."
   },
-  H03: {
-    "como": [
-      {
-        "titulo": "Visita a las puertas",
-        "texto": "Vamos al lugar a medir cada puerta, revisar el marco y comprobar que llega el depósitol de internet."
-      },
-      {
-        "titulo": "Instalación",
-        "texto": "Cambiamos la cerradura de cada unidad por una electrónica con teclado y la conectamos."
-      },
-      {
-        "titulo": "Un código por reserva",
-        "texto": "Con cada reserva se crea un código que abre solo esa puerta, desde la hora de entrada hasta la de salida. Limpieza tiene su propio código."
-      },
-      {
-        "titulo": "El día a día",
-        "texto": "El huésped recibe su código antes de llegar y entra sin esperar a nadie. Tú ves en el registro a qué hora se abrió cada puerta."
-      }
-    ],
-    "necesitas": [
-      "Puertas y marcos en buen estado",
-      "Internet que llegue a cada puerta",
-      "Saber de dónde salen tus reservas: tu página, Booking o Airbnb"
-    ],
-    "no_incluye": [
-      "Arreglos de carpintería en puertas o marcos",
-      "Llevar la red de internet hasta cada cabaña; si hace falta, es el servicio de red e internet del negocio",
-      "Prender luces o aire al llegar el huésped; eso es la domótica para alquileres"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Qué pasa si se va el internet o la luz?",
-        "r": "Depende del modelo de cerradura. En la propuesta te decimos cómo abre la que se escoja sin internet y sin luz, y cuál es la entrada de respaldo."
-      },
-      {
-        "p": "¿Y si el huésped se queda una noche más?",
-        "r": "Cambias la fecha de salida en la reserva y su código sigue abriendo hasta la nueva fecha."
-      }
-    ],
-    "ejemplo": "Ejemplo: en un edificio de cinco apartamentos de alquiler corto en Casco Viejo, el huésped que aterriza en Tocumen a medianoche llega directo al apartamento 3 y entra con su código. A las 11 de la mañana entra la persona de limpieza con el suyo, y el registro muestra las dos entradas."
-  },
   H04: {
     "como": [
       {
@@ -1050,540 +483,6 @@ export const FICHAS = {
     ],
     "ejemplo": "Ejemplo: en un hotel de doce habitaciones en Pedasí, la pareja que llega el viernes completa el registro el miércoles desde el celular, con foto del pasaporte y la firma de las normas. El viernes en recepción todo está listo y solo se les entrega la llave."
   },
-  H05: {
-    "como": [
-      {
-        "titulo": "Visita al tablero y al tanque",
-        "texto": "Revisamos el tablero eléctrico, qué circuito alimenta cada cabaña, dónde está el tanque de agua y cómo llega el depósitol hasta ahí."
-      },
-      {
-        "titulo": "Instalación de medidores",
-        "texto": "Ponemos un medidor de energía en los circuitos de cada cabaña y un sensor ultrasónico que mide el nivel del tanque."
-      },
-      {
-        "titulo": "Lo normal de cada unidad",
-        "texto": "Con los primeros datos y tus fechas de ocupación se ve cuánto gasta cada cabaña con huéspedes y sin ellos, y de ahí sale qué cuenta como fuera de lo normal."
-      },
-      {
-        "titulo": "Avisos al celular",
-        "texto": "Si una cabaña vacía gasta como si tuviera el aire prendido, o el tanque baja de noche sin que nadie use agua, te llega un aviso."
-      }
-    ],
-    "necesitas": [
-      "Que cada cabaña tenga su propio circuito en el tablero; si no lo tiene, lo vemos en la visita",
-      "Internet en la propiedad; cómo llegan los datos del tablero y del tanque lo vemos en la visita",
-      "Acceso al tanque de agua para poner el sensor",
-      "Las fechas en que cada cabaña está ocupada, desde tus reservas o anotadas a mano"
-    ],
-    "no_incluye": [
-      "Separar circuitos o cambiar el tablero, que es trabajo de electricista",
-      "Un medidor de agua en cada cabaña: el agua se mide por el nivel del tanque",
-      "Apagar el aire desde el teléfono; eso es la domótica para alquileres"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Cuánto voy a ahorrar?",
-        "r": "No te damos una cifra. Ves en qué cabaña se va la luz y cuándo baja el tanque; el ahorro depende de lo que hagas con esos avisos."
-      },
-      {
-        "p": "¿Hay que tocar el medidor de la compañía eléctrica?",
-        "r": "No. Los medidores van en tu tablero, después del de la compañía, y ese no se toca."
-      }
-    ],
-    "ejemplo": "Ejemplo: en unas cabañas en El Valle de Antón con seis unidades, el medidor muestra que la cabaña 4 pasó la tarde con el aire prendido y sin huéspedes. Otra madrugada el tanque baja sin que nadie use agua, y el aviso lleva a un inodoro que se quedó corriendo."
-  },
-  H06: {
-    "como": [
-      {
-        "titulo": "Visita a cada unidad",
-        "texto": "Vemos qué luces, enchufes y aires hay en cada cabaña, cómo se maneja cada aire y si llega el Wi-Fi."
-      },
-      {
-        "titulo": "Instalación",
-        "texto": "Cambiamos los interruptores por inteligentes, ponemos un control infrarrojo frente a cada aire y una puerta de enlace Wi-Fi que los conecta."
-      },
-      {
-        "titulo": "Escenas por reserva",
-        "texto": "Dejamos armadas las escenas de llegada y salida: antes de que entre el huésped se prenden luces y aire, y cuando sale se apaga todo."
-      },
-      {
-        "titulo": "Desde tu celular",
-        "texto": "Ves cada cabaña en el teléfono y apagas el aire de la que quedó vacía desde donde estés."
-      }
-    ],
-    "necesitas": [
-      "Wi-Fi que llegue a cada unidad",
-      "Aires que se manejen con control remoto infrarrojo",
-      "Cajas de interruptores que admitan el cambio; lo revisamos en la visita"
-    ],
-    "no_incluye": [
-      "La cerradura de la puerta: eso es el servicio de cerraduras con código",
-      "Arreglos eléctricos o de cableado que aparezcan en la visita",
-      "Llevar la red Wi-Fi hasta cada cabaña, si hoy no llega"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Sirve con cualquier aire acondicionado?",
-        "r": "Con los que se manejan con un control remoto infrarrojo. En la visita revisamos los tuyos."
-      },
-      {
-        "p": "¿El huésped puede usar los interruptores como siempre?",
-        "r": "Sí. Los interruptores siguen funcionando con la mano; el teléfono es para ti."
-      },
-      {
-        "p": "¿También abro la puerta desde el teléfono?",
-        "r": "Sí, si además instalas las cerraduras con código, que son otro servicio."
-      }
-    ],
-    "ejemplo": "Ejemplo: en tres cabañas de playa en Las Lajas, el huésped del sábado llega a las 9 de la noche. A las 8:30 la cabaña ya tiene el aire prendido y la luz del portal encendida; el domingo, cuando se va, la escena de salida apaga todo y el dueño lo ve en el celular desde la ciudad."
-  },
-  I01: {
-    "como": [
-      {
-        "titulo": "Visita al local",
-        "texto": "Vemos qué quieres vigilar: neveras, el tablero eléctrico, el tanque o una puerta. Ahí decidimos qué sensor va en cada lugar."
-      },
-      {
-        "titulo": "Instalación",
-        "texto": "Ponemos los sensores y la puerta de enlace que los conecta, por Wi-Fi o LoRa según la distancia y las paredes."
-      },
-      {
-        "titulo": "Límites de aviso",
-        "texto": "Contigo fijamos a qué temperatura avisar, qué consumo es raro y desde qué nivel del tanque. Los avisos llegan al WhatsApp de quien tú digas."
-      },
-      {
-        "titulo": "Lo miras cuando quieras",
-        "texto": "Ves todo en el teléfono o en la computadora y comparas un mes con otro en el historial."
-      }
-    ],
-    "necesitas": [
-      "Internet en el local y un enchufe para la puerta de enlace",
-      "Acceso a las neveras, el tablero o el tanque el día de la instalación",
-      "Los números de WhatsApp de quienes reciben los avisos"
-    ],
-    "no_incluye": [
-      "Lo que Meta cobra por cada aviso por WhatsApp: unos US$0.011 por mensaje en Panamá, según su tarifa de octubre de 2026",
-      "La conexión a internet del local",
-      "Reparar lo que el sensor detecte, como la nevera que falla o la fuga"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Qué pasa si se cae el internet?",
-        "r": "El aviso no sale hasta que vuelve la conexión. Si eso te preocupa, se puede usar una puerta de enlace con chip celular; va en la propuesta."
-      },
-      {
-        "p": "¿Sirven los sensores que ya tengo?",
-        "r": "Si se pueden conectar, sí. Lo revisamos en la visita."
-      },
-      {
-        "p": "¿Puedo ver cómo se ve antes?",
-        "r": "Sí. En el laboratorio del sitio hay un tablero de sensores con datos simulados."
-      }
-    ],
-    "ejemplo": "Ejemplo: una distribuidora de mariscos en Vacamonte con dos cuartos fríos y un tanque de agua. Si un cuarto pasa del límite de madrugada, el encargado recibe el aviso al WhatsApp y el historial muestra desde qué hora empezó a subir."
-  },
-  I02: {
-    "como": [
-      {
-        "titulo": "Nos cuentas tu flota",
-        "texto": "Nos dices cuántos camiones o motos tienes, por dónde se mueven y de qué zonas no deberían salir."
-      },
-      {
-        "titulo": "Rastreador en cada vehículo",
-        "texto": "Instalamos un rastreador GPS con chip de datos en cada uno. Necesitamos el vehículo en tu patio mientras lo ponemos."
-      },
-      {
-        "titulo": "Zonas en el mapa",
-        "texto": "Marcamos en el mapa las zonas de trabajo. Si un vehículo sale de la suya, te llega un aviso."
-      },
-      {
-        "titulo": "El día en el mapa",
-        "texto": "Ves dónde está cada vehículo en vivo y, al cierre, por dónde pasó y cuánto tiempo estuvo detenido en cada parada."
-      }
-    ],
-    "necesitas": [
-      "Los vehículos en tu patio el día de la instalación",
-      "La lista de vehículos con su placa y quién lo maneja",
-      "Las zonas o rutas que cubre cada uno"
-    ],
-    "no_incluye": [
-      "Apagar el motor a distancia o medir el combustible",
-      "Cámaras dentro del vehículo",
-      "El mantenimiento de los vehículos"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Hay que pagar algo cada mes?",
-        "r": "Sí. Cada rastreador usa un chip con datos móviles, que tiene un costo mensual. Cuánto y cómo se paga va en la propuesta."
-      },
-      {
-        "p": "¿Funciona en el interior del país?",
-        "r": "Reporta en vivo donde hay señal celular. En los tramos sin cobertura el mapa no se actualiza en vivo."
-      },
-      {
-        "p": "¿Tengo que avisarles a los conductores?",
-        "r": "Conviene avisarles por escrito que el vehículo lleva rastreador y para qué se usa."
-      }
-    ],
-    "ejemplo": "Ejemplo: una distribuidora de agua en botellón en La Chorrera con cuatro camiones. Al cierre del día, el dueño ve qué camión estuvo una hora detenido fuera de su ruta y en qué calle."
-  },
-  I03: {
-    "como": [
-      {
-        "titulo": "Visita a la entrada",
-        "texto": "Revisamos la pluma o el portón y buscamos dónde va la cámara para que vea la placa de frente."
-      },
-      {
-        "titulo": "Cámara y conexión",
-        "texto": "Instalamos la cámara de lectura de placas y la conectamos al controlador de la pluma o del portón."
-      },
-      {
-        "titulo": "Placas autorizadas",
-        "texto": "Cargamos la lista de placas que pueden entrar, como las de residentes, empleados o proveedores fijos. Se agregan y se quitan cuando haga falta."
-      },
-      {
-        "titulo": "Abre sola",
-        "texto": "Cuando llega un vehículo de la lista, la pluma abre sola. Todos los vehículos quedan en el registro con su hora de entrada y de salida."
-      }
-    ],
-    "necesitas": [
-      "Una pluma o un portón con motor que ya funcione",
-      "Corriente y red en la entrada",
-      "La lista de placas autorizadas"
-    ],
-    "no_incluye": [
-      "La pluma o el motor del portón, si no los tienes",
-      "El cobro por tiempo de estacionamiento o los tickets",
-      "Obra civil o cableado nuevo hasta la entrada"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Y si llega una visita sin placa registrada?",
-        "r": "La pluma no abre sola. El guardia la abre como siempre y la entrada queda registrada con la placa."
-      },
-      {
-        "p": "¿Lee las placas de noche?",
-        "r": "La cámara se escoge y se coloca para la luz de tu entrada. Lo probamos de día y de noche antes de entregarlo."
-      },
-      {
-        "p": "¿Hay que avisar que hay cámara?",
-        "r": "Sí. La ANTAI trata el video de vigilancia como dato sensible y la Ley 81 de 2019 pide informar a las personas. Conviene un letrero visible en la entrada."
-      }
-    ],
-    "ejemplo": "Ejemplo: un edificio de oficinas en Obarrio con 60 estacionamientos para inquilinos. La pluma abre sola a las placas de la lista y la administración sabe a qué hora entró y salió cada carro, incluidas las visitas."
-  },
-  I04: {
-    "como": [
-      {
-        "titulo": "Visita a las puertas",
-        "texto": "Vemos qué puertas quieres controlar, de qué material son y dónde hay corriente cerca."
-      },
-      {
-        "titulo": "Lector y cerradura",
-        "texto": "Instalamos en cada puerta el lector de QR o tarjeta y la cerradura electromagnética."
-      },
-      {
-        "titulo": "Permisos por persona",
-        "texto": "Cargamos a cada empleado con su horario y sus puertas. Para una visita o un proveedor, creas un pase que vence solo."
-      },
-      {
-        "titulo": "Entran con QR o tarjeta",
-        "texto": "Cada entrada queda registrada con nombre y hora. Si alguien deja la empresa, le quitas el permiso desde tu teléfono."
-      }
-    ],
-    "necesitas": [
-      "Puertas en buen estado que cierren bien",
-      "Corriente cerca de cada puerta e internet en el local",
-      "La lista de personas con su horario"
-    ],
-    "no_incluye": [
-      "Cambiar la puerta o el marco",
-      "Cámaras de vigilancia en la puerta",
-      "Calcular la planilla de pago a partir de la asistencia"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Qué pasa si se va la luz?",
-        "r": "La cerradura electromagnética se suelta sin corriente, así que nadie queda encerrado. Si necesitas que la puerta siga cerrada durante un apagón, se agrega una batería de respaldo y va en la propuesta."
-      },
-      {
-        "p": "¿QR o tarjeta?",
-        "r": "El QR lo lleva cada quien en su teléfono; la tarjeta sirve para quien no quiere usar el suyo. Puedes dar QR a unos y tarjeta a otros, y el lector se escoge para lo que uses."
-      },
-      {
-        "p": "¿Me sirve como control de asistencia?",
-        "r": "Sí: cada entrada queda con nombre y hora. Si quieres que esos datos pasen a tu sistema de planilla, la conexión se cotiza aparte."
-      }
-    ],
-    "ejemplo": "Ejemplo: una clínica en Penonomé con una puerta al cuarto de medicamentos. Solo las enfermeras del turno abren con su tarjeta, y el técnico del aire acondicionado entra con un pase que vence a las 5 de la tarde."
-  },
-  I05: {
-    "como": [
-      {
-        "titulo": "Visita a la zona de trabajo",
-        "texto": "Vemos dónde se exige casco y chaleco, cuánta luz hay y si tus cámaras actuales sirven."
-      },
-      {
-        "titulo": "Cámaras y equipo local",
-        "texto": "Instalamos las cámaras que falten y un equipo que analiza el video dentro de tu planta."
-      },
-      {
-        "titulo": "Marcamos las zonas",
-        "texto": "En la imagen de cada cámara marcamos el área donde el equipo es obligatorio. Fuera de ella no avisa."
-      },
-      {
-        "titulo": "Avisos y reporte",
-        "texto": "Cuando alguien entra sin casco o sin chaleco, el supervisor recibe la foto del momento. Cada semana llega el reporte por zona."
-      }
-    ],
-    "necesitas": [
-      "Buena luz en las zonas a vigilar, también en el turno de noche si lo hay",
-      "Corriente y red donde van las cámaras",
-      "Un aviso por escrito a tu personal y letreros de que hay cámaras"
-    ],
-    "no_incluye": [
-      "Los cascos y los chalecos",
-      "Saber quién es la persona: el aviso trae la foto, sin el nombre",
-      "Grabación de vigilancia contra robos"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Puedo usar las cámaras que ya tengo?",
-        "r": "Si dan buena imagen de la zona y se pueden conectar al equipo, sí. Lo revisamos en la visita."
-      },
-      {
-        "p": "¿Se equivoca?",
-        "r": "Puede pasar. Por eso cada aviso trae la foto: el supervisor la mira y decide."
-      },
-      {
-        "p": "¿El video sale de la planta?",
-        "r": "Se analiza en el equipo que queda en tu planta. Lo que sale es el aviso con la foto."
-      }
-    ],
-    "ejemplo": "Ejemplo: una bloquera en Las Cumbres con un patio por donde pasan montacargas. Si alguien cruza la zona marcada sin chaleco, el jefe de patio recibe la foto en el momento, y el viernes ve en qué horas pasó más."
-  },
-  I06: {
-    "como": [
-      {
-        "titulo": "Vemos la línea",
-        "texto": "Revisamos qué se cuenta (sacos, cajas o piezas), cómo pasan y dónde cabe el sensor o la cámara."
-      },
-      {
-        "titulo": "Sensor o cámara",
-        "texto": "Si pasan de uno en uno, a veces basta un sensor de barrera. Si pasan juntos o hay de varios tipos, va una cámara."
-      },
-      {
-        "titulo": "Prueba contra el conteo a mano",
-        "texto": "Cargamos tus turnos y comparamos lo que cuenta el sistema con un conteo a mano antes de entregarlo."
-      },
-      {
-        "titulo": "Tablero en la oficina",
-        "texto": "Desde la oficina ves cuánto va por hora y por turno, sin esperar al cierre."
-      }
-    ],
-    "necesitas": [
-      "Acceso a la línea o al portón, con corriente cerca",
-      "Red o Wi-Fi que llegue hasta la línea",
-      "Los horarios de tus turnos"
-    ],
-    "no_incluye": [
-      "Revisar la calidad o separar piezas dañadas",
-      "Pesar lo que pasa: eso es el servicio de básculas conectadas",
-      "Pasar el conteo a tu sistema de inventario, que se cotiza aparte"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Cuenta bien si las cajas pasan pegadas?",
-        "r": "Con sensor de barrera, dos cajas pegadas pueden contar como una; ahí conviene la cámara. Por eso lo comparamos con un conteo a mano antes de entregarlo."
-      },
-      {
-        "p": "¿Puedo ver cómo funciona?",
-        "r": "En el laboratorio del sitio hay una demo que usa la cámara de tu computadora o tu teléfono y cuenta a las personas que cruzan una línea. En la planta se hace lo mismo sobre la banda o el portón."
-      }
-    ],
-    "ejemplo": "Ejemplo: un molino de arroz en Chitré que despacha sacos por el portón de carga. El gerente ve desde la oficina cuántos sacos salieron en cada turno, sin esperar la hoja del capataz."
-  },
-  I07: {
-    "como": [
-      {
-        "titulo": "Escogemos los equipos",
-        "texto": "Contigo elegimos los motores, bombas o compresores que más te cuesta tener parados."
-      },
-      {
-        "titulo": "Sensores en cada equipo",
-        "texto": "Montamos en cada uno un sensor inalámbrico de vibración y temperatura, y la puerta de enlace que los conecta."
-      },
-      {
-        "titulo": "Línea base",
-        "texto": "Primero registramos cómo vibra y cuánto calienta cada equipo cuando trabaja bien. Los avisos se ajustan a esa medida."
-      },
-      {
-        "titulo": "Aviso con la tendencia",
-        "texto": "Si un equipo empieza a salirse de su normal, mantenimiento recibe por WhatsApp el aviso con la gráfica de cómo viene cambiando."
-      }
-    ],
-    "necesitas": [
-      "La lista de equipos críticos y acceso a ellos",
-      "Internet o red en la planta para la puerta de enlace",
-      "Una persona de mantenimiento que reciba los avisos"
-    ],
-    "no_incluye": [
-      "La reparación o el mantenimiento del equipo",
-      "La causa exacta de la falla: el aviso dice que algo cambió y tu técnico revisa qué es",
-      "Lo que Meta cobra por cada aviso por WhatsApp: unos US$0.011 por mensaje en Panamá, según su tarifa de octubre de 2026"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Hay que tirar cable hasta la oficina?",
-        "r": "No. Los sensores son inalámbricos y le pasan los datos a la puerta de enlace."
-      },
-      {
-        "p": "¿Avisa desde el primer día?",
-        "r": "Primero tiene que registrar cómo trabaja cada equipo cuando está bien. Cuánto toma depende del equipo y de sus horarios de uso."
-      },
-      {
-        "p": "¿Me garantiza que no se dañe nada?",
-        "r": "No. Te da tiempo de revisar antes de que pare la producción, cuando el daño empieza con más vibración o más calor."
-      }
-    ],
-    "ejemplo": "Ejemplo: una planta de hielo en Santiago con dos compresores y una bomba de agua. Cuando un compresor empieza a calentarse más que su normal, el técnico recibe el aviso y lo revisa en el cambio de turno."
-  },
-  I08: {
-    "como": [
-      {
-        "titulo": "Revisamos la báscula",
-        "texto": "Vemos la marca y el modelo de tu báscula o medidor y si tiene salida de datos."
-      },
-      {
-        "titulo": "La conectamos",
-        "texto": "Ponemos el adaptador que pasa la lectura a la red y la mandamos a tu sistema."
-      },
-      {
-        "titulo": "Registro por camión",
-        "texto": "El peso entra solo. Quien pesa escoge el camión, el lote o el turno, y nadie copia el número a mano."
-      },
-      {
-        "titulo": "Reporte diario",
-        "texto": "Al cierre te llega el reporte del día con lo que se pesó."
-      }
-    ],
-    "necesitas": [
-      "Una báscula o un medidor que funcione y tenga salida de datos; si no la tiene, lo vemos en la visita",
-      "Red o Wi-Fi cerca de la báscula",
-      "Saber a qué sistema o planilla deben llegar los datos"
-    ],
-    "no_incluye": [
-      "La báscula ni su calibración",
-      "Leer la placa del camión de forma automática: es el servicio de lectura de placas",
-      "Cambiar el sistema que ya usas"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Sirve con mi báscula vieja?",
-        "r": "Depende de si tiene salida de datos. Lo revisamos en la visita antes de proponerte nada."
-      },
-      {
-        "p": "¿Cambia el peso o la calibración?",
-        "r": "No. Lee lo que la báscula marca. La calibración sigue siendo cosa de tu proveedor de la báscula."
-      },
-      {
-        "p": "¿Funciona con el sistema que ya uso?",
-        "r": "Depende de si tu sistema acepta datos que vienen de afuera. Lo revisamos contigo y va en la propuesta."
-      }
-    ],
-    "ejemplo": "Ejemplo: un patio de chatarra en Colón donde las pesadas de los camiones se anotaban en un cuaderno. Ahora el peso entra solo, el pesador marca el camión y el turno, y al cierre el dueño compara lo pesado contra lo pagado."
-  },
-  I09: {
-    "como": [
-      {
-        "titulo": "Visita al tablero",
-        "texto": "Revisamos tu tablero eléctrico, los circuitos que quieres ver por separado y el inversor de los paneles, si tienes."
-      },
-      {
-        "titulo": "Medidores con pinza",
-        "texto": "Instalamos medidores con pinza en cada circuito y conectamos la lectura del inversor."
-      },
-      {
-        "titulo": "Cargamos tu tarifa",
-        "texto": "Con tus facturas de luz recientes cargamos lo que pagas por kWh, para calcular el ahorro en dinero."
-      },
-      {
-        "titulo": "Pantalla y reporte",
-        "texto": "En una pantalla ves cuánto producen los paneles y cuánto gasta cada área. Cada mes te llega el reporte de ahorro."
-      }
-    ],
-    "necesitas": [
-      "Acceso al tablero eléctrico",
-      "Tus facturas de luz recientes",
-      "Acceso a la cuenta o la app del inversor, si tienes paneles",
-      "Wi-Fi que llegue al tablero"
-    ],
-    "no_incluye": [
-      "Vender o instalar paneles solares",
-      "La limpieza o el mantenimiento de los paneles",
-      "Trámites con la empresa de distribución eléctrica"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Me sirve si todavía no tengo paneles?",
-        "r": "Sí. Ves cuánto gasta cada área, y si un día pones paneles ya tienes con qué comparar."
-      },
-      {
-        "p": "¿Funciona con cualquier inversor?",
-        "r": "Depende de si el inversor entrega sus datos. Lo revisamos en la visita con la marca y el modelo."
-      },
-      {
-        "p": "¿Cuánto voy a ahorrar?",
-        "r": "No te lo prometemos: medir no ahorra por sí solo. Una revisión de estudios en hogares (ACEEE, 2010) midió entre 4 % y 12 % menos consumo cuando la gente ve su gasto; para negocios no encontramos una cifra independiente."
-      }
-    ],
-    "ejemplo": "Ejemplo: un hotel de 12 habitaciones en Pedasí con paneles en el techo. La dueña ve en una pantalla cuánto producen los paneles y cuánto gastan los aires de las habitaciones frente a la cocina, y cada mes recibe el reporte de ahorro."
-  },
-  I10: {
-    "como": [
-      {
-        "titulo": "Qué hay que revisar",
-        "texto": "Nos dices qué quieres ver: filtraciones en un techo, el avance de una obra o el estado de un terreno. Revisamos si la zona tiene restricciones de vuelo."
-      },
-      {
-        "titulo": "Vuelo",
-        "texto": "Volamos el área y tomamos fotos de alta resolución, sin andamios y sin subir a nadie al techo."
-      },
-      {
-        "titulo": "Mapa del área",
-        "texto": "Unimos las fotos en un mapa del área completa para ubicar cada punto."
-      },
-      {
-        "titulo": "Informe",
-        "texto": "Recibes el informe con las fotos de lo encontrado y su ubicación en el mapa. Con eso decides la reparación o reportas el avance."
-      }
-    ],
-    "necesitas": [
-      "Permiso para volar sobre la propiedad o la obra",
-      "Decirnos qué buscar: goteras, avance de obra o el estado del terreno",
-      "Los planos de la obra, si quieres comparar el avance"
-    ],
-    "no_incluye": [
-      "La reparación del techo o de lo que se encuentre",
-      "Un dictamen firmado por un ingeniero",
-      "La medición oficial de linderos, que hace un agrimensor"
-    ],
-    "preguntas": [
-      {
-        "p": "¿El informe sirve para un trámite o para el seguro?",
-        "r": "Es un informe con fotos y su ubicación. No reemplaza el dictamen firmado de un ingeniero, pero le dice a ese ingeniero dónde mirar."
-      },
-      {
-        "p": "¿Se puede volar cada mes para ver el avance de la obra?",
-        "r": "Sí. Repetir el vuelo permite comparar un mapa con otro; la frecuencia y el costo van en la propuesta."
-      },
-      {
-        "p": "¿Qué pasa si llueve?",
-        "r": "Con lluvia o viento fuerte no se vuela. Se mueve la fecha."
-      }
-    ],
-    "ejemplo": "Ejemplo: una bodega en Tocumen con techo de zinc que gotea en dos pasillos. El vuelo muestra las láminas levantadas y el informe marca en el mapa dónde está cada una, para que el techero vaya directo."
-  },
   R01: {
     "como": [
       {
@@ -1596,7 +495,7 @@ export const FICHAS = {
       },
       {
         "titulo": "Te entregamos el QR",
-        "texto": "Te damos el QR impreso, que apunta a una dirección a nombre tuyo. Lo pones junto a la carta de papel, en la mesa o en la entrada."
+        "texto": "Te damos el QR listo para imprimir, que apunta a una dirección a nombre tuyo. Lo imprimes y lo pones junto a la carta de papel, en la mesa o en la entrada."
       },
       {
         "titulo": "Cambios desde el celular",
@@ -1613,7 +512,8 @@ export const FICHAS = {
       "Que el cliente pida y pague desde la mesa: eso es el servicio de pedir y pagar desde la mesa",
       "La sesión de fotos de los platos: la carta usa las fotos que nos des",
       "Imprimir o rediseñar la carta de papel",
-      "Placas con un QR distinto por mesa: esas van con el servicio de pedir desde la mesa"
+      "Un QR distinto por mesa: ese va con el servicio de pedir desde la mesa",
+      "Imprimir el QR o hacer placas para las mesas"
     ],
     "preguntas": [
       {
@@ -1634,16 +534,16 @@ export const FICHAS = {
   R02: {
     "como": [
       {
-        "titulo": "Visita al local",
-        "texto": "Vamos a ver cuántas mesas tienes, dónde se prepara cada pedido y dónde conviene poner la tableta, en la caja o en la cocina."
+        "titulo": "Nos cuentas tu salón",
+        "texto": "Nos dices cuántas mesas tienes, dónde se prepara cada pedido y en qué tableta o computadora quieres verlo, en la caja o en la cocina."
       },
       {
         "titulo": "Carta y cobro listos",
         "texto": "Montamos tu carta, le damos a cada mesa su propio QR y conectamos el cobro con tu cuenta de Yappy Comercial o de una pasarela de tarjeta."
       },
       {
-        "titulo": "Placas en cada mesa",
-        "texto": "Instalamos las placas con el QR de cada mesa y la tableta, y hacemos pedidos de prueba desde varias mesas antes de dejarlo andando."
+        "titulo": "El QR de cada mesa",
+        "texto": "Te entregamos el QR de cada mesa listo para imprimir, dejamos el sistema abierto en tu tableta o computadora y hacemos pedidos de prueba desde varias mesas antes de dejarlo andando."
       },
       {
         "titulo": "El servicio de cada día",
@@ -1652,13 +552,15 @@ export const FICHAS = {
     ],
     "necesitas": [
       "Internet estable en el local para la tableta",
+      "Una tableta o computadora en la caja o en la cocina: la que ya tengas",
       "Una cuenta para cobrar en línea: Yappy Comercial o una pasarela de tarjeta",
       "Tu carta con precios y fotos"
     ],
     "no_incluye": [
       "Las comisiones de cada pago: las cobra Yappy, el banco o la pasarela",
       "La factura electrónica: lo que el cliente ve al pedir la cuenta es una precuenta, y la factura sale de tu punto de venta",
-      "La conexión a internet del local"
+      "La conexión a internet del local",
+      "Imprimir los QR o hacer las placas de las mesas"
     ],
     "preguntas": [
       {
@@ -1675,48 +577,6 @@ export const FICHAS = {
       }
     ],
     "ejemplo": "Ejemplo: en una cevichería de Vacamonte con 14 mesas, un grupo de seis pide desde la mesa 9, llama al mesero para otra ronda y al final divide la cuenta por plato. En la tableta de la caja se ve qué pidió cada mesa y cuál pidió la cuenta."
-  },
-  R03: {
-    "como": [
-      {
-        "titulo": "Contamos las mesas",
-        "texto": "Vemos cuántas mesas hay y eliges la placa, de acrílico o de madera, que lleva el QR y la etiqueta NFC juntos."
-      },
-      {
-        "titulo": "Grabamos cada etiqueta",
-        "texto": "En cada etiqueta grabamos la dirección de su mesa y la bloqueamos para que nadie la pueda cambiar con su teléfono."
-      },
-      {
-        "titulo": "Prueba mesa por mesa",
-        "texto": "Colocamos las placas y probamos cada una con un iPhone y un Android para confirmar que abre la mesa correcta."
-      },
-      {
-        "titulo": "El cliente acerca el teléfono",
-        "texto": "Acerca el teléfono a la placa y se le abre la carta de su mesa. Quien no tenga NFC escanea el QR de la misma placa."
-      }
-    ],
-    "necesitas": [
-      "Tener con nosotros la carta QR o el servicio de pedir desde la mesa: la etiqueta abre esa carta"
-    ],
-    "no_incluye": [
-      "La carta y el sistema de pedidos: van en sus propios servicios",
-      "Pagar acercando el teléfono, como en la terminal de tarjeta: la etiqueta solo abre la carta, y el pago se hace dentro de ella"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Funciona en todos los teléfonos?",
-        "r": "Funciona sin instalar nada en iPhone XS o más nuevos y en los Android que tienen NFC. En algunos aparece un aviso que hay que tocar para abrir la carta. Para los demás está el QR en la misma placa."
-      },
-      {
-        "p": "¿Qué pasa si cambio la carta o los precios?",
-        "r": "La etiqueta no se toca. Guarda la dirección de la mesa, y los cambios se hacen en la carta."
-      },
-      {
-        "p": "¿Alguien puede cambiar lo que tiene grabado?",
-        "r": "No. La etiqueta queda bloqueada contra escritura al grabarla, y ese bloqueo no se puede deshacer. Por eso graba una dirección de mesa que no cambia."
-      }
-    ],
-    "ejemplo": "Ejemplo: en un bar de Casco Antiguo con poca luz, leer un QR con la cámara cuesta. El cliente acerca el teléfono a la placa de su mesa y la carta se abre con el número de mesa ya puesto."
   },
   R04: {
     "como": [
@@ -1749,7 +609,7 @@ export const FICHAS = {
     "preguntas": [
       {
         "p": "¿Tengo que instalar algo en el local?",
-        "r": "Nada físico. Funciona en una tableta o computadora de la caja con internet. Si no tienes una, va en la propuesta."
+        "r": "Nada físico. Funciona en una tableta o computadora de la caja con internet. Si no tienes una, te decimos qué te sirve y la compras tú."
       },
       {
         "p": "¿Sirve si cambio las mesas los fines de semana?",
@@ -1765,16 +625,16 @@ export const FICHAS = {
   R05: {
     "como": [
       {
-        "titulo": "Visita a la cocina",
-        "texto": "Vemos cómo se reparte el trabajo entre parrilla, fríos y bar, y dónde va la pantalla para que el cocinero la vea sin moverse de su puesto."
+        "titulo": "Nos cuentas tu cocina",
+        "texto": "Vemos contigo cómo se reparte el trabajo entre parrilla, fríos y bar, y en qué tableta o pantalla lo va a ver el cocinero sin moverse de su puesto."
       },
       {
         "titulo": "Platos por estación",
         "texto": "Definimos qué platos van a cada estación, para que la parrilla vea solo lo suyo y el bar solo las bebidas."
       },
       {
-        "titulo": "Pantalla en la pared",
-        "texto": "Instalamos la pantalla o tableta con su soporte de pared y mandamos comandas de prueba hasta que cada una salga donde debe."
+        "titulo": "En tu tableta o pantalla",
+        "texto": "Dejamos las comandas abiertas en la tableta o la pantalla que ya tienes en la cocina y mandamos comandas de prueba hasta que cada una salga donde debe."
       },
       {
         "titulo": "Marcar listo",
@@ -1783,10 +643,11 @@ export const FICHAS = {
     ],
     "necesitas": [
       "Wi-Fi que llegue bien a la cocina",
-      "Un enchufe donde va la pantalla",
-      "Que los pedidos entren por el sistema: QR en la mesa, pantalla de autopedido, pedidos para llevar o punto de venta"
+      "Una tableta o una pantalla con navegador en la cocina, con su enchufe: la que ya tengas",
+      "Que los pedidos entren por el sistema: QR en la mesa, pedidos para llevar, WhatsApp o punto de venta"
     ],
     "no_incluye": [
+      "La tableta o la pantalla, su soporte y su instalación en la pared",
       "Un enchufe nuevo o cableado eléctrico en la cocina",
       "La toma de pedidos: la pantalla muestra lo que entra por otro servicio"
     ],
@@ -1801,52 +662,6 @@ export const FICHAS = {
       }
     ],
     "ejemplo": "Ejemplo: en una parrillada de David, el viernes en la noche la parrilla y el bar tienen cada uno su pantalla. El parrillero ve que la comanda de la mesa 7 lleva 18 minutos y la saca primero; al marcarla lista, el mesero recibe el aviso."
-  },
-  R06: {
-    "como": [
-      {
-        "titulo": "Visita al local",
-        "texto": "Vemos por dónde entra la gente, dónde se forma la fila y si hay enchufe e internet donde iría el kiosco."
-      },
-      {
-        "titulo": "Carta con fotos grandes",
-        "texto": "Armamos la carta táctil con tus fotos y decidimos qué sugerir para completar el pedido, como la bebida o el acompañante."
-      },
-      {
-        "titulo": "Pantalla y cobro",
-        "texto": "Instalamos la pantalla con su pedestal y dejamos el cobro en una terminal de pago junto al kiosco o en la caja, como prefieras."
-      },
-      {
-        "titulo": "Pedido con número",
-        "texto": "El cliente arma su pedido, recibe un número de orden y espera el aviso de que está listo."
-      }
-    ],
-    "necesitas": [
-      "Espacio en la entrada con un enchufe cerca",
-      "Internet en el local",
-      "Fotos de tus productos",
-      "Si quieres cobrar en el kiosco, una cuenta con tu banco o con una pasarela"
-    ],
-    "no_incluye": [
-      "Las comisiones del pago con tarjeta: las cobra el banco o la pasarela",
-      "Cableado eléctrico o de red hasta el kiosco",
-      "La pantalla de cocina para ver los pedidos: es otro servicio"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Me conviene más que el QR en la mesa?",
-        "r": "Si atiendes en mesas, casi siempre basta el QR en cada mesa. El kiosco tiene sentido en mostrador o comida rápida, donde la gente hace fila para pedir."
-      },
-      {
-        "p": "¿De qué tamaño es la pantalla?",
-        "r": "Entre 22 y 32 pulgadas, con pedestal. El tamaño se escoge en la visita según el espacio."
-      },
-      {
-        "p": "¿El cliente puede pagar en efectivo?",
-        "r": "Sí, si el cobro queda en la caja: pide en el kiosco y paga allá."
-      }
-    ],
-    "ejemplo": "Ejemplo: en un local de hamburguesas en una plaza de La Chorrera, a la hora del almuerzo la fila llega a la puerta. Con un kiosco en la entrada, parte de los clientes arma su pedido ahí y espera su número, y la caja atiende al resto."
   },
   R07: {
     "como": [
@@ -1931,96 +746,11 @@ export const FICHAS = {
     ],
     "ejemplo": "Ejemplo: en un restaurante de El Valle que se llena los sábados al mediodía, la gente reserva desde el enlace de su Instagram y le llega el recordatorio por WhatsApp antes de subir. Cuando el turno de la 1:00 se llena, los siguientes quedan en lista de espera."
   },
-  R09: {
-    "como": [
-      {
-        "titulo": "Visita al mostrador",
-        "texto": "Vemos dónde van las pantallas, cuántas hacen falta y si hay enchufe e internet cerca de cada una."
-      },
-      {
-        "titulo": "Diseño de las pantallas",
-        "texto": "Diseñamos la carta, el plato del día y los precios para que se lean bien desde la fila."
-      },
-      {
-        "titulo": "Horarios e instalación",
-        "texto": "Dejamos programado qué se ve en el desayuno y qué en el almuerzo, y conectamos cada televisor a su reproductor o a su navegador."
-      },
-      {
-        "titulo": "Cambios desde el celular",
-        "texto": "Cambias el plato del día o un precio desde tu celular. Cuando marcas un plato agotado, sale solo de la pantalla."
-      }
-    ],
-    "necesitas": [
-      "Un enchufe junto a cada pantalla",
-      "Internet en el local",
-      "Tu carta con precios y, si tienes, fotos de los platos"
-    ],
-    "no_incluye": [
-      "Instalación eléctrica nueva: si no hay enchufe donde va la pantalla, la hace tu electricista",
-      "La carta QR para el teléfono del cliente: es otro servicio"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Puedo usar los televisores que ya tengo?",
-        "r": "Puede ser. Si el televisor tiene navegador, o una entrada HDMI para un reproductor pequeño, lo revisamos en la visita."
-      },
-      {
-        "p": "¿Cómo sabe la pantalla que un plato se acabó?",
-        "r": "Lo marcas agotado desde el celular y deja de salir en la pantalla."
-      }
-    ],
-    "ejemplo": "Ejemplo: en una cafetería de Santiago con dos pantallas sobre el mostrador, a las 11:00 el desayuno se cambia solo por el menú del almuerzo. Cuando se acaba el sancocho, la cocinera lo marca agotado y sale de la pantalla."
-  },
-  R10: {
-    "como": [
-      {
-        "titulo": "Visita a la cocina",
-        "texto": "Contamos neveras, congeladores y cuartos fríos, y revisamos que el Wi-Fi llegue hasta ellos."
-      },
-      {
-        "titulo": "Sensores en cada equipo",
-        "texto": "Ponemos un sensor de temperatura dentro de cada nevera o congelador y uno en su puerta, y un receptor pequeño, la puerta de enlace, en un enchufe donde llegue el Wi-Fi."
-      },
-      {
-        "titulo": "Límites y avisos",
-        "texto": "Defines el límite de cada equipo, por ejemplo 5 °C en la nevera, y a qué WhatsApp o correo llega el aviso."
-      },
-      {
-        "titulo": "Aviso y registro",
-        "texto": "Si la temperatura pasa del límite o una puerta queda abierta, te llega el aviso. El historial queda guardado y lo descargas cuando lo pida un inspector."
-      }
-    ],
-    "necesitas": [
-      "Wi-Fi que llegue a la cocina y al cuarto frío",
-      "Un enchufe para el receptor (la puerta de enlace)",
-      "Los números de WhatsApp o correos que van a recibir los avisos"
-    ],
-    "no_incluye": [
-      "El costo de los avisos por WhatsApp: Meta lo cobra por mensaje",
-      "La reparación de la nevera: el sistema avisa, el técnico de refrigeración la arregla",
-      "La conexión a internet del local"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Tengo que cambiar mis neveras?",
-        "r": "No. Los sensores van dentro de las neveras y congeladores que ya tienes."
-      },
-      {
-        "p": "¿Me sirve para las inspecciones del MINSA?",
-        "r": "El historial se descarga para mostrarlo. El Decreto Ejecutivo 352 de 2001 pide registrar la temperatura de las cámaras de enfriamiento y congelación y guardar ese registro dos años; no hemos confirmado si sigue vigente ni si aplica a tu negocio."
-      },
-      {
-        "p": "¿Qué pasa si se va la luz?",
-        "r": "Sin luz ni internet el aviso no puede salir. Si eso te preocupa, cómo cubrirlo depende de tu local y va en la propuesta."
-      }
-    ],
-    "ejemplo": "Ejemplo: en una marisquería de Colón con dos congeladores y un cuarto frío, la puerta del cuarto queda mal cerrada al final del turno de la noche. El encargado recibe el aviso en su WhatsApp y regresa a cerrarla."
-  },
   R11: {
     "como": [
       {
-        "titulo": "Visita al negocio",
-        "texto": "Vemos cómo vendes hoy, en mesa, en mostrador o para llevar, cuántas cajas y cajeros hay y qué productos manejas."
+        "titulo": "Nos cuentas cómo vendes",
+        "texto": "Vemos contigo cómo vendes hoy, en mesa, en mostrador o para llevar, cuántas cajas y cajeros hay y qué productos manejas."
       },
       {
         "titulo": "Productos e inventario",
@@ -2028,7 +758,7 @@ export const FICHAS = {
       },
       {
         "titulo": "Caja y factura",
-        "texto": "Instalamos la computadora o tableta, la impresora de tickets, el cajón y el lector de código de barras, y conectamos la factura electrónica con tu proveedor autorizado (PAC)."
+        "texto": "Dejamos la caja funcionando en tu computadora o tableta, con tu impresora de tickets y tu lector de código de barras si los tienes, y conectamos la factura electrónica con tu proveedor autorizado (PAC)."
       },
       {
         "titulo": "Cierre de cada turno",
@@ -2039,9 +769,11 @@ export const FICHAS = {
       "Tu lista de productos con precios",
       "Tu RUC y los datos para la factura electrónica",
       "Internet en el local",
+      "Una computadora o tableta en cada caja: la que ya tengas",
       "Un conteo inicial del inventario"
     ],
     "no_incluye": [
+      "La computadora, la impresora de tickets, el cajón y el lector de código de barras",
       "La mensualidad del proveedor de factura electrónica (PAC): la cobra él",
       "Las comisiones de tarjeta o de Yappy",
       "La terminal de tarjeta del banco",
@@ -2054,7 +786,7 @@ export const FICHAS = {
       },
       {
         "p": "¿Puedo usar la computadora que ya tengo?",
-        "r": "Depende del equipo. Lo revisamos en la visita, y lo que haya que comprar va en la propuesta."
+        "r": "Depende del equipo. Lo revisamos antes de la propuesta y, si hace falta comprar algo, te decimos qué y lo compras tú."
       },
       {
         "p": "¿Funciona también para una tienda?",
@@ -2129,13 +861,15 @@ export const FICHAS = {
     ],
     "necesitas": [
       "Un número de WhatsApp Business para el local",
+      "Una impresora de comandas o una tableta en la cocina: la que ya tengas",
       "Internet estable en la cocina para la impresora o la pantalla",
       "Tu carta con precios"
     ],
     "no_incluye": [
       "El costo de los mensajes de WhatsApp Business, que cobra Meta por mensaje",
       "Las comisiones de cada pago en línea",
-      "Los motorizados"
+      "Los motorizados",
+      "La impresora o la pantalla de la cocina"
     ],
     "preguntas": [
       {
@@ -2201,12 +935,12 @@ export const FICHAS = {
   S02: {
     "como": [
       {
-        "titulo": "Visita a la sala",
-        "texto": "Vamos a la clínica a ver la sala de espera, la pared donde mejor se ve la pantalla y cuántos consultorios llaman pacientes."
+        "titulo": "Nos cuentas tu sala",
+        "texto": "Nos dices cuántos consultorios llaman pacientes y qué televisor o pantalla tienes en la sala de espera."
       },
       {
-        "titulo": "Instalación de la pantalla",
-        "texto": "Montamos el televisor en la pared y lo dejamos mostrando los turnos de cada consultorio."
+        "titulo": "Los turnos en tu televisor",
+        "texto": "Dejamos tu televisor mostrando los turnos de cada consultorio, desde su navegador o desde una computadora conectada a él."
       },
       {
         "titulo": "Turno al llegar",
@@ -2218,19 +952,19 @@ export const FICHAS = {
       }
     ],
     "necesitas": [
-      "Un tomacorriente cerca de donde va el televisor",
+      "Un televisor en la sala de espera con navegador, o una computadora conectada a él",
       "Internet o Wi-Fi en la clínica, para que recepción, consultorios y pantalla estén conectados",
       "Una computadora o un celular en cada consultorio para llamar al siguiente"
     ],
     "no_incluye": [
-      "Cableado eléctrico nuevo si no hay tomacorriente en esa pared",
+      "El televisor, su soporte y su instalación en la pared",
       "La conexión a internet de la clínica",
       "El sistema de citas con recordatorios, que es otro servicio"
     ],
     "preguntas": [
       {
         "p": "¿Puedo usar el televisor que ya tengo?",
-        "r": "Depende del modelo y de sus entradas; lo revisamos en la visita. Si no sirve, el televisor nuevo va en la propuesta."
+        "r": "Sí, si tiene navegador o le puedes conectar una computadora. Lo revisamos antes de la propuesta; si no sirve, te decimos qué necesitas y lo compras tú."
       },
       {
         "p": "¿Sale el nombre del paciente en la pantalla?",
@@ -2769,98 +1503,6 @@ export const FICHAS = {
     ],
     "ejemplo": "Ejemplo: una pastelería de encargos en Betania que pide un adelanto por transferencia y después revisa en WhatsApp las capturas que le mandan. Ahora manda el enlace de pago con el monto del adelanto, y el pedido queda confirmado cuando entra el pago."
   },
-  T10: {
-    "como": [
-      {
-        "titulo": "Recorrido midiendo el depósitol",
-        "texto": "Vamos al local y medimos el depósitol en cada área: el salón, la caja, la bodega, la terraza. Vemos dónde está el módem del proveedor y por dónde puede pasar el cable."
-      },
-      {
-        "titulo": "Propuesta con ubicaciones",
-        "texto": "Te decimos cuántos puntos de acceso hacen falta, dónde va cada uno y por dónde pasa el cable, con el equipo detallado."
-      },
-      {
-        "titulo": "Instalación con dos redes",
-        "texto": "Instalamos los puntos de acceso, el enrutador y el cableado. La caja y las cámaras quedan en una red y los clientes en otra, con su propia clave."
-      },
-      {
-        "titulo": "Respaldo cuando se cae",
-        "texto": "Si se cae el internet principal, la caja pasa sola a la conexión de respaldo y sigue cobrando."
-      }
-    ],
-    "necesitas": [
-      "Internet contratado con un proveedor",
-      "Una segunda conexión para el respaldo, como otra línea o un chip de datos, a nombre del negocio",
-      "Tomacorrientes donde van el enrutador y los equipos",
-      "Permiso del dueño del local para pasar cable, si alquilas"
-    ],
-    "no_incluye": [
-      "La mensualidad de los proveedores de internet",
-      "Trabajos eléctricos, como tomacorrientes o circuitos nuevos",
-      "El registro de clientes al entrar al Wi-Fi: es otro servicio"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Hay que romper paredes?",
-        "r": "Lo normal es pasar el cable por canaletas o por el cielo raso. Lo vemos en la visita y queda escrito en la propuesta."
-      },
-      {
-        "p": "Con el respaldo, ¿ya no me quedo sin internet?",
-        "r": "La caja sigue en línea si se cae un proveedor. Si se caen los dos, o se va la luz, se cae igual."
-      },
-      {
-        "p": "¿Sigo usando el módem que me dio el proveedor?",
-        "r": "Sí, por ahí sigue entrando el internet. Lo que se agrega es lo que reparte el depósitol y separa las redes."
-      }
-    ],
-    "ejemplo": "Ejemplo: un restaurante de dos pisos en El Cangrejo donde el Wi-Fi no llega a la terraza y los clientes usan la misma red que la caja. Queda un punto de acceso por piso, una red para clientes con su clave, y la caja pasa al chip de datos cuando se cae el internet."
-  },
-  T11: {
-    "como": [
-      {
-        "titulo": "Visita al local",
-        "texto": "Recorremos el local contigo y vemos qué quieres cubrir: la caja, la puerta, la bodega o el estacionamiento."
-      },
-      {
-        "titulo": "Dónde va cada cámara",
-        "texto": "Te proponemos dónde va cada cámara y qué ve, con el equipo detallado: cámaras, grabador y disco."
-      },
-      {
-        "titulo": "Instalación y usuarios",
-        "texto": "Instalamos y dejamos el acceso en el teléfono de cada persona con su propio usuario. El encargado ve las cámaras sin tener la clave del dueño."
-      },
-      {
-        "titulo": "Ver y buscar grabaciones",
-        "texto": "Miras en vivo desde donde estés y, si pasa algo, buscas la grabación por día y hora."
-      }
-    ],
-    "necesitas": [
-      "Internet en el local para verlas desde el teléfono",
-      "Un lugar seguro y con corriente para el grabador",
-      "La lista de personas que van a tener acceso"
-    ],
-    "no_incluye": [
-      "Una central de monitoreo o un guardia mirando las cámaras",
-      "Batería de respaldo para los apagones; si la quieres, va en la propuesta",
-      "Avisos con IA de personas, filas o placas: son otros servicios",
-      "Trabajos eléctricos nuevos"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Cuántos días guarda la grabación?",
-        "r": "Depende de cuántas cámaras tengas, de la calidad de imagen y del tamaño del disco. Con esos datos te lo decimos en la propuesta."
-      },
-      {
-        "p": "¿Sirven las cámaras que ya tengo?",
-        "r": "Si son cámaras IP y funcionan, se revisan en la visita y se usan."
-      },
-      {
-        "p": "¿Tengo que poner un letrero?",
-        "r": "Te lo recomendamos. La imagen de una persona es un dato personal, y la Ley 81 de 2019 pide informar a la gente cuando se recogen sus datos."
-      }
-    ],
-    "ejemplo": "Ejemplo: un minisúper en San Miguelito con una caja, una bodega atrás y la puerta a la calle. Quedan cámaras en la caja, en la bodega y en la entrada, y el dueño revisa desde su casa la grabación de la hora del cierre."
-  },
   T12: {
     "como": [
       {
@@ -2955,16 +1597,16 @@ export const FICHAS = {
   T14: {
     "como": [
       {
-        "titulo": "Visita a la bodega",
-        "texto": "Vemos cómo entra y sale hoy la mercancía, cuántas bodegas tienes y cómo anotas las compras."
+        "titulo": "Cómo trabajas hoy",
+        "texto": "Vemos contigo cómo entra y sale hoy la mercancía, cuántas bodegas tienes y cómo anotas las compras."
       },
       {
         "titulo": "Cargamos tus productos",
         "texto": "Pasamos cada producto al sistema con su código, costo, mínimo y existencia, desde tu Excel o tu sistema actual."
       },
       {
-        "titulo": "Entradas y salidas con lector",
-        "texto": "Cada entrada y cada salida se registra pasando el código de barras, en la bodega que corresponde."
+        "titulo": "Entradas y salidas",
+        "texto": "Cada entrada y cada salida se registra en la bodega que corresponde, con el código de barras si tienes lector o con la cámara del teléfono."
       },
       {
         "titulo": "Aviso y orden de compra",
@@ -2985,11 +1627,11 @@ export const FICHAS = {
     "preguntas": [
       {
         "p": "¿Tengo que comprar lectores?",
-        "r": "El sistema lee el código de barras con un lector o con la cámara del teléfono. Si ya tienes lectores, se usan; si hacen falta más, van en la propuesta."
+        "r": "No. El lector es opcional: si ya tienes uno, se usa, y si no, el código se lee con la cámara del teléfono o se anota a mano."
       },
       {
         "p": "¿Se descuenta solo lo que vendo en caja?",
-        "r": "Si tu punto de venta deja sacar los datos, sí. Lo revisamos en la visita."
+        "r": "Si tu punto de venta deja sacar los datos, sí. Lo revisamos antes de la propuesta."
       },
       {
         "p": "¿Sirve si tengo varias bodegas?",
@@ -3136,7 +1778,7 @@ export const FICHAS = {
       },
       {
         "titulo": "Copias automáticas",
-        "texto": "Instalamos el disco o el servicio de respaldo y programamos copias diarias de lo importante, con una copia fuera de la oficina."
+        "texto": "Configuramos el respaldo en la nube y programamos copias diarias de lo importante, fuera de la oficina."
       },
       {
         "titulo": "Probamos que se recupera",
@@ -3155,64 +1797,20 @@ export const FICHAS = {
     "no_incluye": [
       "Recuperar archivos de un disco que se dañó antes de empezar",
       "Computadoras nuevas, si las actuales ya no reciben actualizaciones",
-      "La mensualidad del servicio de respaldo en la nube, si se usa uno: se le paga a ese proveedor"
+      "La mensualidad del servicio de respaldo en la nube: se le paga a ese proveedor",
+      "Discos, servidores u otros equipos de respaldo"
     ],
     "preguntas": [
       {
         "p": "Ya copio todo a un disco externo. ¿No basta?",
-        "r": "Si ese disco está en la misma oficina, un robo, un incendio o un virus que bloquea los archivos se pueden llevar las dos cosas. Por eso una copia va afuera."
+        "r": "Si ese disco está en la misma oficina, un robo, un incendio o un virus que bloquea los archivos se pueden llevar las dos cosas. Por eso la copia va en la nube, fuera de la oficina."
       },
       {
         "p": "¿Cada cuánto se prueba el respaldo?",
-        "r": "La primera prueba se hace al instalarlo. Cada cuánto se repite va en la propuesta."
+        "r": "La primera prueba se hace al configurarlo. Cada cuánto se repite va en la propuesta."
       }
     ],
-    "ejemplo": "Ejemplo: una oficina de contabilidad en Bella Vista con seis computadoras, donde los archivos de los clientes viven en la computadora de la contadora principal. Cada noche se copian solos, con una copia fuera de la oficina, y las claves de los portales de la DGI y la CSS pasan de una libreta a un gestor de contraseñas."
-  },
-  T19: {
-    "como": [
-      {
-        "titulo": "Inventario de tus equipos",
-        "texto": "Anotamos cada computadora, impresora y licencia de la oficina, quién la usa y cuándo se compró."
-      },
-      {
-        "titulo": "Acceso remoto con permiso",
-        "texto": "Instalamos el acceso remoto, con tu permiso, para resolver sin visita lo que no la necesita."
-      },
-      {
-        "titulo": "Escribes por WhatsApp",
-        "texto": "Cuando la impresora no imprime o el correo no sale, nos escribes por WhatsApp y lo vemos de forma remota."
-      },
-      {
-        "titulo": "Visita cuando hace falta",
-        "texto": "Si el problema es físico, vamos a la oficina. Lo que haya que comprar o cambiar te lo decimos antes y lo apruebas."
-      }
-    ],
-    "necesitas": [
-      "Una persona de contacto en la oficina",
-      "Permiso para instalar el acceso remoto en las computadoras",
-      "Las facturas o claves de las licencias que ya tienes, si las encuentras"
-    ],
-    "no_incluye": [
-      "Las piezas y los equipos nuevos: se aprueban antes y se cobran aparte",
-      "Las licencias de los programas que usas",
-      "El soporte interno de programas de otro proveedor, como tu sistema de contabilidad: ese lo da quien te lo vende"
-    ],
-    "preguntas": [
-      {
-        "p": "¿Cuánto tardan en responder?",
-        "r": "Depende del acuerdo. El tiempo de respuesta queda escrito en la propuesta."
-      },
-      {
-        "p": "¿Se paga por mes o por visita?",
-        "r": "Depende del tamaño de tu oficina y de cuánto soporte necesitas. La forma de pago va en la propuesta."
-      },
-      {
-        "p": "¿Pueden entrar a mi computadora sin que yo sepa?",
-        "r": "No. Entramos cuando tú lo pides, y ves en tu pantalla lo que hacemos."
-      }
-    ],
-    "ejemplo": "Ejemplo: una agencia de viajes en Paitilla con ocho computadoras y una impresora compartida, sin nadie de sistemas. Cuando a una agente no le sale el correo, escribe por WhatsApp y se resuelve en remoto; cuando la impresora se daña, se agenda la visita."
+    "ejemplo": "Ejemplo: una oficina de contabilidad en Bella Vista con seis computadoras, donde los archivos de los clientes viven en la computadora de la contadora principal. Cada noche se copian solos a la nube, fuera de la oficina, y las claves de los portales de la DGI y la CSS pasan de una libreta a un gestor de contraseñas."
   },
   T20: {
     "como": [

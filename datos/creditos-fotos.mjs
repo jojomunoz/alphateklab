@@ -50,15 +50,6 @@ export const CREDITOS_FOTOS = {
     imagen: 'https://images.unsplash.com/photo-1603072845032-7b5bd641a82a',
     alt: 'Sala de un apartamento moderno en un piso alto, con ventanales de piso a techo que dan a un balcón y a la vegetación de la ciudad',
   },
-  'sector-operacion': {
-    titulo: 'Pasillo de bodega',
-    autor: '@carmendis',
-    licencia: 'Licencia de Unsplash',
-    urlLicencia: 'https://unsplash.com/license',
-    fuente: 'https://unsplash.com/@carmendis',
-    imagen: 'https://images.unsplash.com/photo-1644079446600-219068676743',
-    alt: 'Pasillo de una bodega con estanterías metálicas altas llenas de cajas de cartón a ambos lados',
-  },
   'sector-todos': {
     titulo: 'Dueña de negocio trabajando en su local',
     autor: '@omarlopez1',
@@ -87,15 +78,6 @@ export const CREDITOS_FOTOS = {
     nota: 'Matrícula del auto difuminada.',
     alt: 'Persona lavando un auto azul con una pistola de agua a presión en un autolavado de noche',
   },
-  'instalacion': {
-    titulo: 'Instalación de una cámara de seguridad',
-    autor: '@bermixstudio',
-    licencia: 'Licencia de Unsplash',
-    urlLicencia: 'https://unsplash.com/license',
-    fuente: 'https://unsplash.com/@bermixstudio',
-    imagen: 'https://images.unsplash.com/photo-1676630656246-3047520adfdf',
-    alt: 'Técnico de perfil fijando una cámara de seguridad con su cable en la parte alta de una pared',
-  },
   'tipo-software': {
     titulo: 'Código en pantalla',
     autor: '@cdr6934',
@@ -122,41 +104,6 @@ export const CREDITOS_FOTOS = {
     fuente: 'https://unsplash.com/@zulfugarkarimov',
     imagen: 'https://images.unsplash.com/photo-1762330465857-07e4c81c0dfa',
     alt: 'Mano escribiendo en un teléfono con un asistente de chat abierto que pregunta «What can I help with?», con la misma interfaz desenfocada en una pantalla al fondo',
-  },
-  'tipo-vision': {
-    titulo: 'Cámara de seguridad en pared',
-    autor: '@imedianamibia',
-    licencia: 'Licencia de Unsplash',
-    urlLicencia: 'https://unsplash.com/license',
-    fuente: 'https://unsplash.com/@imedianamibia',
-    imagen: 'https://images.unsplash.com/photo-1549109926-58f039549485',
-    alt: 'Cámara de seguridad blanca con dos antenas Wi-Fi montada en una pared texturizada color crema',
-  },
-  'tipo-iot': {
-    titulo: 'Sensor de calidad del aire',
-    autor: '@timwitzdam',
-    licencia: 'Licencia de Unsplash',
-    urlLicencia: 'https://unsplash.com/license',
-    fuente: 'https://unsplash.com/@timwitzdam',
-    imagen: 'https://images.unsplash.com/photo-1747224317348-887f7ed01d34',
-    alt: 'Sensor de calidad del aire con pantalla que marca CO2, ruido, temperatura y humedad, junto a una planta en una repisa blanca',
-  },
-  'tipo-pantallas': {
-    titulo: 'Self-ordering kiosks',
-    autor: 'sarahstierch',
-    licencia: 'CC0 1.0',
-    urlLicencia: 'https://creativecommons.org/publicdomain/zero/1.0/',
-    fuente: 'https://www.flickr.com/photos/7633518@N08/54740433548',
-    alt: 'Clientes de espaldas pidiendo en pantallas táctiles de autoservicio sobre una barra de madera, en un restaurante con los menús en la pared',
-  },
-  'tipo-tresd': {
-    titulo: 'Cámara 360',
-    autor: '@maikkleinert',
-    licencia: 'Licencia de Unsplash',
-    urlLicencia: 'https://unsplash.com/license',
-    fuente: 'https://unsplash.com/@maikkleinert',
-    imagen: 'https://images.unsplash.com/photo-1612638466977-b5a8f0f34aa1',
-    alt: 'Mano sosteniendo una cámara 360 de dos lentes frente a un fondo desenfocado de árboles y vegetación tropical',
   },
   'tipo-pagos': {
     titulo: 'Pago sin contacto con el teléfono',
@@ -207,33 +154,24 @@ Object.assign(CREDITOS_FOTOS, {
   'sector-hospedaje': MARCA('Cabaña en las tierras altas de Chiriquí', 'Cabaña de madera entre la vegetación de montaña, con una cerradura de teclado en la puerta.'),
   'mesa-qr': MARCA('Placa con código QR en la mesa', 'Mesa de restaurante con una placa de código QR y un cliente usando su teléfono.'),
   'sector-inmuebles': MARCA('Apartamento con vista a la bahía de Panamá', 'Sala de un apartamento con ventanales hacia la bahía de Panamá y una cámara 360 sobre un trípode.'),
-  'sector-operacion': MARCA('Bodega con control de condiciones', 'Trabajadora revisando en una tableta las condiciones de almacenamiento de una bodega.'),
   'sector-servicios': MARCA('Taller mecánico en Panamá', 'Clienta revisando el estado de su carro en el teléfono mientras un mecánico trabaja en el taller.'),
   'sector-educacion': MARCA('Entrada de colegio con lector QR', 'Entrada de un colegio con un lector de QR para marcar la asistencia.'),
   'sector-todos': MARCA('Dueña de negocio revisando su sistema', 'Dueña de una tienda revisando su sistema en una tableta detrás del mostrador.'),
-  'instalacion': MARCA('Instalación de cámara de seguridad en un local', 'Técnico instalando una cámara de seguridad en un local mientras su compañero configura una tableta.'),
 });
 
 Object.assign(CREDITOS_FOTOS, {
   'tipo-software': MARCA('Revisión de un sistema de inventario en una oficina', 'Un desarrollador y la dueña de un negocio revisan juntos un sistema de inventario en una pantalla.'),
   'tipo-web': MARCA('Página de un café en teléfono y laptop', 'Teléfono y laptop sobre una mesa de madera mostrando la misma página de un café.'),
   'tipo-ia': MARCA('Dueño de tienda revisando un chat automático', 'Dueño de una tienda revisando en su teléfono las respuestas automáticas a sus clientes.'),
-  'tipo-iot': MARCA('Sensor en la nevera de un restaurante', 'Sensor pequeño en la puerta de una nevera de cocina de restaurante.'),
-  'tipo-vision': MARCA('Cámara compacta en la entrada de una tienda', 'Entrada de una tienda con una cámara pequeña sobre la puerta y clientes entrando.'),
-  'tipo-tresd': MARCA('Cámara 360 en una sala con vista a la ciudad', 'Cámara 360 sobre un trípode en una sala vacía con ventanales hacia la ciudad de Panamá.'),
   'clientes-entrando': MARCA('Clientes entrando a una tienda', 'Clientes entrando a una tienda iluminada por el sol.'),
-  'tipo-pantallas': MARCA('Pedido en la pantalla táctil de un café', 'Clienta eligiendo su almuerzo en la pantalla táctil de un café.'),
   'tipo-pagos': MARCA('Pago sin contacto en un restaurante', 'Clienta pagando con el teléfono en la terminal que le acerca el mesero.'),
   'cocina': MARCA('Cocina con pantalla de comandas', 'Cocinero preparando platos frente a una pantalla con las comandas del día.'),
-  'equipo-instalando': MARCA('Instalación de una tableta en una recepción', 'Dos técnicos instalan una tableta en la pared de una recepción.'),
 });
 
-// Equipo ya instalado (3-oct-2026): generadas con IA (ChatGPT) para alphateklab a partir de los prompts de
+// Escenas (3-oct-2026): generadas con IA (ChatGPT) para alphateklab a partir de los prompts de
 // ~/Desktop/alphateklab-imagenes-para-gpt-v2.md; productos genéricos, sin marcas. En el sitio dicen «Imagen ilustrativa».
+// Con solo software (oct-2026) se fueron las del equipo que ya no hacemos: la placa de la mesa, el lector del colegio,
+// la cámara del minisúper y el sensor de la nevera (y sus fotos de tipo, de instalación y de bodega).
 Object.assign(CREDITOS_FOTOS, {
-  'en-cocina': MARCA('Pantalla de comandas instalada en una cocina', 'Pantalla de comandas e impresora instaladas en la cocina de un restaurante'),
-  'en-mesa': MARCA('Placa con QR en la mesa de una fonda', 'Placa con QR sobre la mesa de una fonda'),
-  'en-colegio': MARCA('Lector de acceso en la entrada de un colegio', 'Lector de QR y tarjetas en la entrada de un colegio'),
-  'en-tienda': MARCA('Cámara sobre la puerta de un minisúper', 'Cámara en el techo, sobre la puerta de un minisúper'),
-  'en-nevera': MARCA('Sensor dentro de una nevera comercial', 'Sensor de temperatura dentro de una nevera comercial'),
+  'en-cocina': MARCA('Pantalla de comandas en la cocina de un restaurante', 'La pantalla de cocina de la demo en una tableta, junto a la impresora de comandas de un restaurante'),
 });

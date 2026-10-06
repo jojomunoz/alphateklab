@@ -10,7 +10,7 @@ const preguntar = document.getElementById('vacio-preguntar');
 const tarjetas = [...document.querySelectorAll('.tarjeta-servicio')];
 const grupos = [...document.querySelectorAll('.grupo')];
 const total = tarjetas.length;
-const datos = new Map(tarjetas.map((t) => [t.dataset.id, { sectores: t.dataset.sectores.split(' '), tipos: t.dataset.tipos.split(' '), demo: t.dataset.demo === '1', instala: t.dataset.instala === '1' }]));
+const datos = new Map(tarjetas.map((t) => [t.dataset.id, { sectores: t.dataset.sectores.split(' '), tipos: t.dataset.tipos.split(' '), demo: t.dataset.demo === '1' }]));
 let indice = null;
 const h1 = document.querySelector('.catalogo__cabeza h1');
 const h1Base = h1?.textContent || '';
@@ -33,7 +33,7 @@ async function cargarIndice() {
 
 function leerForm() {
   const fd = new FormData(form);
-  return { q: (fd.get('q') || '').trim(), sector: fd.get('sector') || '', tipo: fd.get('tipo') || '', demo: fd.get('demo') === '1', instala: fd.get('instala') === '1' };
+  return { q: (fd.get('q') || '').trim(), sector: fd.get('sector') || '', tipo: fd.get('tipo') || '', demo: fd.get('demo') === '1' };
 }
 
 function ponerEnForm(f) {
@@ -41,7 +41,6 @@ function ponerEnForm(f) {
   for (const r of form.querySelectorAll('input[name="sector"]')) r.checked = r.value === (f.sector || '');
   form.elements.tipo.value = f.tipo || '';
   form.elements.demo.checked = Boolean(f.demo);
-  form.elements.instala.checked = Boolean(f.instala);
 }
 
 async function aplicar({ url = true } = {}) {
@@ -95,7 +94,7 @@ async function aplicar({ url = true } = {}) {
 }
 
 let espera;
-let escribiendo = false; // mientras la persona escribe en el campo, «cam» ya trae las cámaras
+let escribiendo = false; // mientras la persona escribe en el campo, «fact» ya trae la factura electrónica
 form.addEventListener('input', (e) => {
   clearTimeout(espera);
   escribiendo = e.target.name === 'q';

@@ -57,52 +57,6 @@ export const GUIAS = [
   },
 
   {
-    slug: 'camaras-y-ley-81',
-    titulo: 'Cámaras y datos de clientes: lo que pide la Ley 81',
-    bajada: 'Qué piden la Ley 81 y su reglamento si tienes cámaras o datos de clientes: aviso, consentimiento, seguridad y reclamos ante la ANTAI.',
-    actualizada: '2026-10-03',
-    secciones: [
-      {
-        titulo: 'La ley y la autoridad',
-        parrafos: [
-          'La Ley 81 de 2019 rige desde el 29 de marzo de 2021 y la reglamenta el Decreto Ejecutivo 285 de 2021. Se aplica a toda persona natural o jurídica que trate datos personales, que la ley define como cualquier información que identifica a una persona o la hace identificable. La hace cumplir la Autoridad Nacional de Transparencia y Acceso a la Información (ANTAI).',
-        ],
-      },
-      {
-        titulo: 'Las cámaras',
-        parrafos: [
-          'En un comunicado del 2 de febrero de 2023, la ANTAI dijo que las cámaras instaladas en residencias o comercios «tienen la única finalidad de preservar la seguridad del lugar y de sus ocupantes», y que esos datos, «tratándose de datos biométricos», son datos sensibles con protección especial. Divulgar un video sin el consentimiento de quien aparece es una violación denunciable ante la ANTAI.',
-          'La norma no obliga de forma expresa a poner letreros, pero la ANTAI los recomienda: un aviso visible en cada acceso a la zona grabada que diga quién es el responsable y cómo contactarlo, para qué es el sistema, qué derechos tienen las personas y dónde leer la política de datos, más un documento con las reglas de acceso, conservación y custodia de las grabaciones. Lo respondió para edificios, pero cita los principios de la ley.',
-          'Si una cámara con IA marca eventos, la decisión sobre una persona no puede basarse solo en ese tratamiento automático cuando le causa un efecto jurídico negativo o le perjudica un derecho, salvo que lo haya consentido, que sea necesario para un contrato o que lo autorice una ley especial (Ley 81, artículo 19).',
-        ],
-      },
-      {
-        titulo: 'Los datos de tus clientes',
-        parrafos: [
-          'Al pedir un dato le dices a la persona quién eres y cómo contactarte, para qué lo usarás, con qué base legal, a quién se lo pasarás, si saldrá del país, cuánto tiempo lo guardarás y cómo ejercer sus derechos (Decreto Ejecutivo 285, artículo 14).',
-          'Por regla general necesitas el consentimiento de la persona, salvo las excepciones del artículo 8 de la Ley 81 (ANTAI). Debe ser previo, informado e inequívoco, y tienes que poder probarlo, por ejemplo con una casilla marcada y fechada (Decreto Ejecutivo 285, artículo 18). Retirarlo debe ser tan fácil como darlo, y quien recibe promociones puede oponerse en todo momento (artículos 19 y 29).',
-          'Nadie puede ser obligado a entregar la cédula para fotografiarla o escanearla a cambio de un servicio o de la entrada, y tiene que haber otro medio de registro para quien no acepte (ANTAI, opinión 02-2022). Nombrar un oficial de protección de datos es opcional para una empresa privada (Decreto Ejecutivo 285, artículo 42).',
-        ],
-      },
-      {
-        titulo: 'Si algo falla o alguien reclama',
-        parrafos: [
-          'Si se filtran o se pierden datos, avisas de inmediato a la ANTAI y a las personas afectadas, dentro de las 72 horas desde que lo sabes (Decreto Ejecutivo 285, artículo 37). Si alguien pide ver sus datos, tienes hasta 10 días hábiles para entregárselos; si pide corregirlos, 5 días hábiles; si no respondes a tiempo, puede acudir a la ANTAI (Ley 81, artículos 16 a 18).',
-          'Se denuncia en el sitio de la ANTAI (ANTAI Smart CID), por correo o en persona, sin abogado. Las multas van de B/.1,000 a B/.10,000; tratar datos sin consentimiento es falta grave, y una falta muy grave puede acabar en el cierre de los registros de la base de datos (Ley 81, artículos 36, 40 y 43).',
-        ],
-      },
-    ],
-    fuentes: [
-      { nombre: 'Ley 81 de 26 de marzo de 2019 sobre protección de datos personales (Gaceta Oficial 28743-A)', url: 'https://www.gacetaoficial.gob.pa/storage/gacetas/2019/03/28743_A/GacetaNo_28743a_20190329.pdf' }, // curl -sI: 200
-      { nombre: 'Decreto Ejecutivo 285 de 28 de mayo de 2021, reglamento de la Ley 81 (Gaceta Oficial 29296-A)', url: 'https://www.gacetaoficial.gob.pa/storage/gacetas/2021/05/29296_A/GacetaNo_29296a_20210528.pdf' }, // curl -sI: 200
-      { nombre: 'ANTAI: la Ley 81 entra en vigencia (29 de marzo de 2021)', url: 'https://antai.gob.pa/ley-81-de-proteccion-de-datos-personales-entra-en-vigencia-en-panama/' }, // curl -sI: 200
-      { nombre: 'ANTAI: comunicado sobre videovigilancia y datos personales (2 de febrero de 2023)', url: 'https://antai.gob.pa/antai-se-pronuncia-sobre-proteccion-de-datos-personales-y-violencia-de-genero-en-internet/' }, // curl -sI: 200
-      { nombre: 'ANTAI: preguntas frecuentes de protección de datos personales (videovigilancia, cédula, denuncias)', url: 'https://antai.gob.pa/preguntas-frecuentes-de-proteccion-de-datos-personales/' }, // curl -sI: 200
-    ],
-    servicios: ['T11', 'C05', 'C01'],
-  },
-
-  {
     slug: 'itbms-y-propina-en-restaurantes',
     titulo: 'ITBMS y propina en un restaurante',
     bajada: 'La tasa de la comida y la del alcohol, cuándo una fonda no cobra ITBMS, el precio con impuestos incluidos de la Ley 473 y lo que dice la ley de la propina.',
@@ -210,5 +164,4 @@ export const GUIAS = [
 // NO CONFIRMADO: numeral exacto de la exención de las fondas. La DGI la ubica en el artículo 1057-V, parágrafo 8, literal b; contando su lista sería el numeral 17, pero no se leyó el texto del Código Fiscal.
 // NO CONFIRMADO: si la propina causa ITBMS.
 // NO CONFIRMADO: si mandar promociones a quien ya es cliente cabe en la excepción del artículo 8, numeral 5 de la Ley 81 («relación comercial establecida... comercialización»). No se encontró criterio de la ANTAI; las guías dicen «por regla general, consentimiento», como la ANTAI.
-// NO CONFIRMADO: una respuesta de la ANTAI sobre letreros de videovigilancia específica para comercios; la que existe es para propiedad horizontal y así se dice en la guía.
 // CONFIRMADO en la sesión principal (3-oct-2026, versión en inglés de la página de Meta, actualizada el 30-sep-2026 con vigencia 1-oct-2026): «Meta provides 1,000 free service messages per month… Meta only charges as of the 1,001st service message». La versión en español no lo traía.

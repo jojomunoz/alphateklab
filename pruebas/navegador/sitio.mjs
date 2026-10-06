@@ -36,13 +36,14 @@ try {
     const html = await (await fetch(BASE)).text();
     assert.match(html, /¿Qué tipo de negocio tienes\?/);
     assert.match(html, /Lo que hacemos/);
-    assert.ok((html.match(/class="negocio"/g) || []).length >= 9);
+    // 8 negocios desde oct-2026 (bodegas y oficinas se juntó con «Cualquier negocio»)
+    assert.ok((html.match(/class="negocio"/g) || []).length >= 8);
   });
 
   await paso('el menú «Soluciones» abre con clic y lleva a cada negocio', async () => {
     await p.click('button[aria-controls="mega-soluciones"]');
     assert.equal(await p.isVisible('#mega-soluciones'), true);
-    assert.ok((await p.$$('#mega-soluciones .mega__item')).length >= 9);
+    assert.ok((await p.$$('#mega-soluciones .mega__item')).length >= 8);
     await p.keyboard.press('Escape');
     await p.waitForSelector('#mega-soluciones', { state: 'hidden', timeout: 1000 }); // sale en 120 ms
   });
@@ -85,14 +86,23 @@ try {
 
   await paso('la búsqueda de la portada muestra resultados debajo del campo', async () => {
     await p.click('#heroe-campo');
-    await p.keyboard.type('contar clientes');
+    await p.keyboard.type('cobrar con yappy');
     await p.waitForSelector('#heroe-resultados [role=option]');
-    assert.match(await p.textContent('#heroe-resultados [role=option] strong'), /Contador de personas/);
+    assert.match(await p.textContent('#heroe-resultados [role=option] strong'), /Cobros en línea/);
   });
 
   await paso('los resultados resaltan lo que coincide con la búsqueda', async () => {
     const marcas = await p.$$eval('#heroe-resultados [role=option] mark', (xs) => xs.map((x) => x.textContent.toLowerCase()));
-    assert.ok(marcas.some((t) => /client|cont/.test(t)), marcas.join(' | '));
+    assert.ok(marcas.some((t) => /yappy|cobr/.test(t)), marcas.join(' | '));
+  });
+
+  await paso('lo que es de equipos (cámaras, sensores) dice que no lo tenemos y que hacemos solo software', async () => {
+    await p.goto(BASE, { waitUntil: 'networkidle' });
+    await p.keyboard.press('/');
+    await p.keyboard.type('cámaras de seguridad');
+    await p.waitForSelector('[data-buscador-vacio] .sin-resultados');
+    assert.match(await p.textContent('[data-buscador-vacio] .sin-resultados'), /solo software/);
+    await p.keyboard.press('Escape');
   });
 
   await paso('el catálogo filtra por búsqueda y por negocio, y lo guarda en la URL', async () => {
@@ -108,7 +118,7 @@ try {
   });
 
   await paso('lo que el filtro oculta no se ve: tarjetas visibles = la cuenta', async () => {
-    for (const q of ['tipo=vision', 'sector=salud', 'q=camaras']) {
+    for (const q of ['tipo=ia', 'sector=salud', 'q=whatsapp']) {
       await p.goto(`${BASE}servicios/?${q}`, { waitUntil: 'networkidle' });
       const dice = Number((await p.textContent('#filtros-cuenta')).match(/(\d+)/)[1]);
       const visibles = await p.$$eval('.tarjeta-servicio', (xs) => xs.filter((x) => x.getBoundingClientRect().height > 0).length);
@@ -152,7 +162,8 @@ try {
 
   await paso('las guías: índice, una guía con fuentes, y la ficha relacionada que la enlaza', async () => {
     await p.goto(`${BASE}guias/`, { waitUntil: 'networkidle' });
-    assert.ok((await p.$$('.guia-fila')).length >= 4);
+    // 3 guías desde oct-2026 (la de cámaras y la Ley 81 se fue con las cámaras)
+    assert.ok((await p.$$('.guia-fila')).length >= 3);
     await p.goto(`${BASE}servicios/factura-electronica/`, { waitUntil: 'networkidle' }).catch(() => {});
     const enlace = await p.$('a.guia-fila[href*="guias/factura-electronica/"]');
     assert.ok(enlace, 'la ficha de factura electrónica no enlaza su guía');
@@ -163,7 +174,7 @@ try {
   await paso('el catálogo con «Filtrar» abierto no se sale de la pantalla a 320 px', async () => {
     const c = await b.newContext({ viewport: { width: 320, height: 700 }, isMobile: true, hasTouch: true });
     const q = await c.newPage();
-    await q.goto(`${BASE}servicios/?q=camaras`, { waitUntil: 'load' });
+    await q.goto(`${BASE}servicios/?q=whatsapp`, { waitUntil: 'load' });
     await q.waitForTimeout(1000);
     const filtrar = await q.$('button:has-text("Filtrar")');
     if (filtrar) await filtrar.click();
