@@ -219,22 +219,7 @@ def ver(base, quads, ruta):
 def trabajos(orig, pant):
     v3, v6 = orig / 'equipo-v3', orig / 'v6'
     return [
-        dict(salida='equipo-1-placa-mesa', base=v3 / 'equipo-1-placa-mesa.png', capas=[
-            dict(contenido=pant / 'placa.png', modo='papel', recorte=0.012, region=dict(semilla=(1000, 900), lo=215, hi=256, sat=18))]),
-        dict(salida='equipo-2-tableta-cocina', base=v3 / 'equipo-2-tableta-cocina.png', capas=[
-            dict(contenido=pant / 'cocina.png', modo='pantalla', rayos=dict(centro=(820, 940)))]),
-        dict(salida='equipo-3-kiosco', base=v3 / 'equipo-3-kiosco.png', capas=[
-            dict(contenido=pant / 'kiosco.png', modo='pantalla', rayos=dict(centro=(960, 440)))]),
-        # el panel de la cerradura tiene un reflejo fuerte: el teclado va adentro, con margen, en vez de llenarlo
-        dict(salida='equipo-6-cerradura', base=v3 / 'equipo-6-cerradura.png', capas=[
-            dict(contenido=pant / 'teclado.png', modo='luz', brillo=0.92, quad=[(640, 420), (985, 440), (978, 1080), (640, 1060)])]),
-        dict(salida='heroe-portada', base=v6 / 'heroe-portada.png', capas=[
-            # la tableta va atrás: el canto del acrílico la toca, de ahí la apertura
-            # varios negocios y no solo restaurantes: la agenda del consultorio, los avisos de distintos negocios y una
-            # placa cuyo QR abre las demos
-            dict(contenido=pant / 'recepcion.png', modo='pantalla', region=dict(semilla=(1083, 717), lo=150, hi=250, sat=22, apertura=4, tapada=True)),
-            dict(contenido=pant / 'avisos-telefono.png', modo='pantalla', region=dict(semilla=(1322, 1200), lo=150, hi=250, sat=22)),
-            dict(contenido=pant / 'placa-demos.png', modo='papel', region=dict(semilla=(696, 1214), lo=190, hi=256, sat=22))]),
+        # (las piezas de equipo y la foto del héroe de la portada se fueron con los equipos: solo software, oct-2026)
         dict(salida='en-recepcion', base=v6 / 'en-recepcion.png', capas=[
             dict(contenido=pant / 'recepcion.png', modo='pantalla', region=dict(semilla=(1620, 720), lo=150, hi=250, sat=22))]),
         dict(salida='en-barberia', base=v6 / 'en-barberia.png', capas=[

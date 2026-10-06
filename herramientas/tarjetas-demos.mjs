@@ -23,14 +23,9 @@ const ZONA = {
   // la carta (864 px de ancho, centrada) desde el nombre del restaurante
   mesa: () => { const r = document.querySelector('.carta').getBoundingClientRect(); return { x: r.left - 16, y: 12, w: r.width + 32 }; },
   reservas: () => { const r = (document.querySelector('.agenda, [data-agenda], main') ?? document.body).getBoundingClientRect(); return { x: Math.max(0, r.left), y: Math.max(0, r.top - 8), w: 1040 }; },
-  // la escena sin la barra de botones de abajo (cortada a la mitad se veía rota)
-  'recorrido-3d': () => { const r = document.querySelector('#visor .visor__escena').getBoundingClientRect(); return { centrar: r.toJSON() }; },
-  'recorrido-360': () => { const r = document.querySelector('[data-captura]').getBoundingClientRect(); return { centrar: r.toJSON() }; },
-  // el aviso activo, las lecturas con la curva fuera de rango y los botones de «Provoca una falla», sin la columna de texto
-  sensores: () => { const r = document.querySelector('.registro').getBoundingClientRect(); const f = document.querySelector('.fallas').getBoundingClientRect(); return { x: r.left - 16, y: r.top - 134, w: f.right - r.left + 32 }; },
 };
-// la del contador ya es una captura real de la demo encendida con el video de muestra (960×540)
-const ARCHIVO = { camara: 'laboratorio/camara/media/vista-previa.webp' };
+// las que ya son una captura real guardada en el repositorio (era la del contador con cámara, que se fue en oct-2026)
+const ARCHIVO = {};
 
 const tmp = mkdtempSync(join(tmpdir(), 'atk-tarjetas-'));
 const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });

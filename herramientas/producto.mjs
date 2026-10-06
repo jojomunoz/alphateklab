@@ -15,46 +15,7 @@ const aWebp = (png, nombre, ancho) => execFileSync('magick', [png, '-resize', `$
 
 const b = await chromium.launch();
 try {
-  // Sensores: el tablero con la puerta de la nevera abierta y, en el teléfono, el aviso que llega.
-  const c = await b.newContext({ deviceScaleFactor: 2 });
-  const tel = await c.newPage();
-  await tel.setViewportSize({ width: 390, height: 844 });
-  await tel.goto(`${BASE}/alphateklab/laboratorio/sensores/telefono.html`, { waitUntil: 'networkidle' });
-  const tab = await c.newPage();
-  await tab.setViewportSize({ width: 1040, height: 650 }); // más chico: la interfaz se lee dentro del portátil
-  await tab.goto(`${BASE}/alphateklab/laboratorio/sensores/`, { waitUntil: 'networkidle' });
-  await tab.waitForSelector('[data-falla="puerta"]:not([disabled])', { timeout: 30000 });
-  await tab.click('[data-falla="puerta"]');
-  await tab.waitForTimeout(6000);
-  await tab.evaluate(() => document.getElementById('notificacion-cerrar')?.click());
-  // el ciclo completo en el teléfono: el aviso y, al cerrar la puerta, el «Resuelto»
-  await tab.click('[data-falla="puerta"]');
-  await tab.waitForTimeout(5000);
-  await tab.evaluate(() => document.getElementById('notificacion-cerrar')?.click());
-  await tab.click('[data-falla="puerta"]');
-  await tab.waitForTimeout(6000);
-  await tab.evaluate(() => document.getElementById('notificacion-cerrar')?.click());
-  await tab.evaluate(() => {
-    const y = document.getElementById('registro-titulo').getBoundingClientRect().top + scrollY;
-    window.scrollTo(0, Math.max(0, y - 210));
-  });
-  await tab.waitForTimeout(500);
-  await tab.screenshot({ path: join(tmp, 'tablero.png') });
-  aWebp(join(tmp, 'tablero.png'), 'sensores-tablero', 1600);
-  await tel.bringToFront();
-  await tel.waitForTimeout(1000);
-  // En el teléfono se ve la conversación con el aviso (el elemento .chat--tel tal cual), no la configuración de la sala.
-  await tel.evaluate(() => {
-    const chat = document.querySelector('.chat--tel');
-    chat.style.minHeight = '720px';
-    chat.style.margin = '0';
-  });
-  await tel.waitForTimeout(300);
-  await tel.locator('.chat--tel').screenshot({ path: join(tmp, 'aviso.png') });
-  aWebp(join(tmp, 'aviso.png'), 'sensores-aviso', 780);
-  console.log('ok sensores-tablero, sensores-aviso');
-  await c.close();
-
+  // (las tomas de los sensores, del recorrido 3D y de la cámara se fueron con esas demos: solo software, oct-2026)
   // Mesa: la carta de la mesa 7 en el teléfono del comensal (el enlace con la sala lo da la página de inicio de la demo).
   const m = await b.newContext({ deviceScaleFactor: 2, locale: 'es-PA' });
   const ini = await m.newPage();
@@ -107,25 +68,6 @@ try {
   console.log('ok reservas-agenda, reservas-barberia, reservas-alojamiento');
   await r.close();
 
-  // Recorrido 3D por dentro y la cámara contando
-  const t = await b.newContext({ deviceScaleFactor: 2, locale: 'es-PA', viewport: { width: 1040, height: 650 } });
-  const d3 = await t.newPage();
-  await d3.goto(`${BASE}/alphateklab/laboratorio/recorrido-3d/`, { waitUntil: 'load' });
-  await d3.click('#entrar');
-  await d3.waitForFunction(() => document.getElementById('visor')?.dataset.estado === 'listo', null, { timeout: 60000 });
-  await d3.waitForTimeout(2500);
-  await d3.locator('#visor').screenshot({ path: join(tmp, '3d.png') });
-  aWebp(join(tmp, '3d.png'), 'recorrido-3d', 1600);
-  const cam = await t.newPage();
-  await cam.goto(`${BASE}/alphateklab/laboratorio/camara/`, { waitUntil: 'load' });
-  await cam.waitForTimeout(1500);
-  const zona = await cam.$('[data-captura]') || await cam.$('.escenario');
-  if (zona) {
-    await zona.screenshot({ path: join(tmp, 'camara.png') });
-    aWebp(join(tmp, 'camara.png'), 'camara', 1600);
-  }
-  console.log('ok recorrido-3d, camara');
-  await t.close();
 } finally {
   await b.close();
   rmSync(tmp, { recursive: true, force: true });
