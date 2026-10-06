@@ -7,7 +7,7 @@ repositorio está en su `CLAUDE.md` y su `README.md`. Aquí va cómo entran los 
 
 | Repositorio | Publicado en | Qué es |
 |---|---|---|
-| `jojomunoz/alphateklab` | https://jojomunoz.github.io/alphateklab/ | El sitio: catálogo de 79 servicios, 9 páginas por negocio, buscador, diagnóstico, «Pregúntanos» y el laboratorio (recorrido 3D, recorrido 360, contador con cámara y tablero de sensores) |
+| `jojomunoz/alphateklab` | https://jojomunoz.github.io/alphateklab/ (rama `solo-software`: https://alphateklab.com/) | El sitio: catálogo de 47 servicios (solo software), 8 páginas por negocio, buscador, diagnóstico, «Pregúntanos» y el índice de las demos |
 | `jojomunoz/alphateklab-mesa` | https://jojomunoz.github.io/alphateklab-mesa/ | Demo de pedir y pagar desde la mesa: carta QR, salón, cocina, kiosco y administración |
 | `jojomunoz/alphateklab-reservas` | https://jojomunoz.github.io/alphateklab-reservas/ | Demo de citas con recordatorios y de reservas de cabañas por canal |
 

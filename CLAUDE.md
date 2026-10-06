@@ -1,6 +1,6 @@
 # alphateklab · sitio de la agencia
 
-Sitio estático en GitHub Pages (https://jojomunoz.github.io/alphateklab/). Sin build en el navegador: HTML, CSS y
+Sitio estático (https://alphateklab.com/, en la raíz del dominio; antes en GitHub Pages, https://jojomunoz.github.io/alphateklab/). Sin build en el navegador: HTML, CSS y
 módulos ES. Las páginas del catálogo se generan con `node herramientas/generar.mjs` a partir de `datos/catalogo.mjs`
 y el resultado se versiona (así el HTML trae el contenido sin esperar al JavaScript): no se editan a mano los HTML
 generados, se cambia `datos/` o `herramientas/generar.mjs` y se regenera. Pruebas: ver «Cerrojos» abajo, y las de cada
@@ -8,6 +8,18 @@ demo en `laboratorio/<demo>/pruebas/`. Para trabajar desde otra máquina o como 
 
 Reglas del proyecto: `~/alphateklab/BRIEF.md` (fuera del repo; los colaboradores la reciben en su paquete). Guía de
 diseño de la casa: `~/Documents/NovahWEB/conocimiento/GUIA-DISENO-SIN-SLOP.md` (solo en la máquina de Jonathan).
+
+## Solo software (rama solo-software, 6-oct-2026)
+
+- alphateklab hace solo software: páginas y apps, software a medida, IA y WhatsApp, cobros y facturación. No vende ni
+  instala equipos ni va a tomar fotos, escanear o volar un dron. Lo que funciona en un equipo (la tableta de la cocina,
+  el televisor de la sala) usa el que el negocio ya tiene, y eso va en «Qué necesitas tener» de la ficha.
+- Se quitaron 32 servicios de equipos y de visita, los tipos `vision`, `iot`, `pantallas` y `tresd`, la página de
+  «Bodegas, oficinas e industria» (el sector se juntó con «Cualquier negocio»), la guía de cámaras y la Ley 81, y las
+  demos del recorrido 3D, el 360, la cámara y los sensores. `js/catalogo-reglas.mjs` no deja generar con
+  `instala: true`, `visita` ni `equipo`.
+- El héroe de la portada es la caja de avisos (la foto con la placa, el teléfono y la tableta se fue).
+- `URL_BASE` es `https://alphateklab.com/` y el 404 enlaza desde la raíz del dominio; lo demás usa rutas relativas.
 
 ## Dirección visual (marca entregada por Jonathan el 3-oct-2026; manda sobre cualquier versión anterior)
 
@@ -28,17 +40,19 @@ diseño de la casa: `~/Documents/NovahWEB/conocimiento/GUIA-DISENO-SIN-SLOP.md` 
 - **Lo que ve el visitante no lleva códigos internos** (R01, C05…): siguen en `data-id` y en el mensaje de WhatsApp.
 - **Verbos:** «Preguntar» (manda un mensaje) y «Agregar a mi lista» (arma la cotización). No inventar otros.
 - **Movimiento:** solo responder y estado. Hover solo con puntero fino. Nada en `opacity:0` esperando al JS.
-- **Contenido:** precios solo los decididos por los socios (menú QR $10/mes; fotos del recorrido 3D +$300); el resto
-  «A cotizar». Nada de testimonios, logos de clientes ni cifras sin fuente. Las demos usan negocios ficticios rotulados.
+- **Contenido:** precios solo los decididos por los socios (menú QR $10/mes; el de las fotos del recorrido 3D, +$300, se
+  fue con el servicio); el resto «A cotizar». Nada de testimonios, logos de clientes ni cifras sin fuente. Las demos usan
+  negocios ficticios rotulados.
 
 ## Cómo se trabaja (3-oct-2026)
 
-- Generar: `node herramientas/generar.mjs` (las seis demos ya pasaron su verificación; el modo `PUBLICAR_PARCIAL` queda para
+- Generar: `node herramientas/generar.mjs` (las dos demos ya pasaron su verificación; el modo `PUBLICAR_PARCIAL` queda para
   una demo nueva que todavía no esté lista).
 - Capturas: `node herramientas/capturas.mjs http://localhost:4900 <demo>` (cartel de cada demo) y
   `node herramientas/producto.mjs http://localhost:4900` (las pantallas reales que van en los héroes de la portada y de
   las páginas de negocio). Las tarjetas de las seis demos salen de `node herramientas/tarjetas-demos.mjs
-  http://localhost:4900` (la pantalla clave de cada una en una ventana sobre el petróleo, siempre igual).
+  http://localhost:4900` (la pantalla clave de cada una en una ventana sobre el petróleo, siempre igual). Las tarjetas de
+  las seis demos de antes quedan en la mesa y las reservas (oct-2026).
 - Imágenes: capturas reales de las demos y fotos generadas con GPT (autorizado mientras el sitio sea interno), rotuladas
   «Imagen ilustrativa» y listadas en /creditos/. Las fotos generadas nunca llevan una pantalla o un QR inventado: encima
   van las pantallas reales (abajo). Dos platos o dos cabañas nunca comparten foto.
@@ -57,7 +71,7 @@ diseño de la casa: `~/Documents/NovahWEB/conocimiento/GUIA-DISENO-SIN-SLOP.md` 
   de la foto (deja `<nombre>-contorno.png` para revisar las esquinas). Todo eso vive en `~/alphateklab/originales`
   (fuera del repo, y no en /tmp: el apagón del 3-oct se llevó las compuestas que estaban ahí). Después de componer,
   comprobar que los QR se leen (jsQR sobre cada tamaño publicado).
-- El héroe de la portada es esa foto compuesta con pantallas de varios negocios a propósito: con solo la mesa, los
+- (Hasta oct-2026; con solo software se fue y volvió la caja de avisos.) El héroe de la portada era esa foto compuesta con pantallas de varios negocios a propósito: con solo la mesa, los
   dueños leían «hacen menús QR para restaurantes». Se recorta a 1250 px alrededor de los objetos (424, 392, 1674,
   1642 de la de 2048), se lleva su fondo (12, 47, 43) al petróleo de la banda (15, 44, 41) sumando (3, -3, -2) para que
   no se vea el borde, y se exporta a `assets/heroe/heroe-portada-{640,960,1250}.webp`. En la computadora mide hasta
@@ -80,7 +94,9 @@ diseño de la casa: `~/Documents/NovahWEB/conocimiento/GUIA-DISENO-SIN-SLOP.md` 
   dueños de negocios sin ver cómo está afinado (70 con respuesta, 17 de cosas que no hacemos), partidas en dos mitades.
   La de «desarrollo» se puede mirar (`--fallas`); la de «control» solo da cifras: no se leen sus fallas una por una ni se
   agregan sus palabras a `datos/`. Los arreglos son reglas generales del motor o datos escritos sin ver la batería.
-  Al 3-oct-2026, en control: primero correcto 18/33 (era 11), a la vista 26/33, «no lo tenemos» 6/7.
+  Al 3-oct-2026, en control: primero correcto 18/33 (era 11), a la vista 26/33, «no lo tenemos» 6/7. Con solo software
+  (6-oct-2026): 11/33, 19/33 y 5/7 (11 de las 33 frases solo aceptan servicios de equipos; ver
+  `pruebas/control/control.test.mjs`). `pruebas/buscador-solo-software.test.mjs` exige que lo de equipos dé «no lo tenemos».
   `pruebas/control/control.test.mjs` es el piso (sube, no baja); corre con `node --test pruebas/*.test.mjs pruebas/control/*.test.mjs`.
   `pruebas/buscador-personas.test.mjs` (40 frases de la revisión, 95 %) queda como cerrojo, pero ya se afinó con ellas.
 - Datos del buscador: `datos/busqueda.mjs` (palabras por servicio y por negocio, equivalencias de Panamá y del chat,

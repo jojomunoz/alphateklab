@@ -1,9 +1,10 @@
 # alphateklab
 
-Sitio de **alphateklab**, soluciones tecnológicas para negocios en Panamá: software a medida, páginas web, apps,
-automatizaciones, y la instalación en el local de pantallas, cámaras con IA, sensores, y QR y NFC por mesa.
+Sitio de **alphateklab**, software para negocios en Panamá: software a medida, páginas web y apps, asistentes de
+WhatsApp con inteligencia artificial, automatizaciones, cobros y factura electrónica. Solo software: no vende ni instala
+equipos (desde oct-2026).
 
-En vivo: https://jojomunoz.github.io/alphateklab/
+Dominio: https://alphateklab.com/ (el sitio va en la raíz del dominio; antes estaba en https://jojomunoz.github.io/alphateklab/).
 
 ## Qué hay
 
@@ -11,10 +12,7 @@ En vivo: https://jojomunoz.github.io/alphateklab/
 |---|---|
 | `index.html` | Portada: índice de servicios, catálogo con filtros, laboratorio de demos, preguntas y cotizador |
 | `servicios/<slug>/` | Una página por servicio, para mandar el enlace de uno solo |
-| `laboratorio/recorrido-3d/` | Demo: recorrido 3D de un apartamento de ejemplo, como videojuego |
-| `laboratorio/recorrido-360/` | Demo: recorrido 360 con fotos esféricas (CC0, Poly Haven) |
-| `laboratorio/camara/` | Demo: contador de personas con la cámara del equipo, procesado en el navegador |
-| `laboratorio/sensores/` | Demo: tablero de sensores de un restaurante de ejemplo, con datos simulados |
+| `laboratorio/` | Índice de las demos (la de la mesa y la de citas y reservas) |
 | `privacidad/` | Qué datos trata el sitio (ninguno) y las demos |
 
 Las demos de restaurante y de citas viven en sus propios repos:
@@ -33,7 +31,7 @@ node pruebas/navegador/portada.mjs http://localhost:4900/alphateklab/
 ```
 
 El generador se niega a escribir si el catálogo tiene un precio que no decidieron los socios, una demo que no
-existe, un código repetido o una muletilla de las que la guía de la casa prohíbe. Los únicos precios publicados son
-el menú QR ($10 al mes) y las fotos profesionales como extra del recorrido 3D (+$300); el resto dice «A cotizar».
+existe, un código repetido, un servicio que se instala o lista equipo, o una muletilla de las que la guía de la casa
+prohíbe. El único precio publicado es el del menú QR ($10 al mes); el resto dice «A cotizar».
 
 Sin paso de build en el navegador: HTML, CSS y módulos ES. La fuente (Archivo) va autoalojada en `assets/fuentes/`.
