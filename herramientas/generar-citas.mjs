@@ -66,8 +66,11 @@ const ENLACES = [
 ];
 const hayContacto = Boolean(CONTACTO.whatsapp || CONTACTO.correo);
 // Con el registro en línea, «Probar gratis» lleva a crear la cuenta; sin él, a la sección de la prueba.
-const destinoPrueba = (prefijo) => REGISTRO || `${prefijo}#prueba`;
-const registroCon = (params) => (REGISTRO ? `${REGISTRO}?${new URLSearchParams(params)}` : '#prueba');
+// Los botones van a alphateklab.com/registro/, que pasa al registro del servicio de cuentas en cuanto responde (y
+// mientras no, lo dice en vez de dar un error): así el sitio no depende de cuándo quede en línea el servidor.
+const destinoPrueba = (prefijo) => (REGISTRO ? `${prefijo === '/' ? '/' : prefijo || './'}registro/` : `${prefijo}#prueba`);
+const registroCon = (params) => (REGISTRO ? `registro/?${new URLSearchParams(params)}` : '#prueba');
+const enlaceRegistro = REGISTRO ? ' data-registro' : '';
 const PREGUNTAS = REGISTRO
   ? [...P.PREGUNTAS.map(([q, a]) => (q.startsWith('¿Cómo es la prueba') ? [q, 'Creas tu cuenta y tu sistema queda listo al momento; lo usas una semana con todo incluido. No pedimos tarjeta.'] : [q, a])), ...P.PREGUNTAS_REGISTRO]
   : P.PREGUNTAS;
@@ -320,7 +323,7 @@ function precios() {
         <p class="plan__precio"><span class="plan__cifra plan__cifra--fija"><strong class="num">${dolares(P.PRECIOS.expediente)}</strong></span><span class="plan__unidad">${esc(exp.unidad)}</span></p>
         ${destacado(exp)}
         <ul class="lista-check" role="list">${exp.incluye.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
-        <a class="boton boton--linea plan__boton" href="${registroCon({ expediente: 1, profesionales: 1, agenda: 0 })}" data-elegir="expediente">Probar el expediente</a>
+        <a class="boton boton--linea plan__boton" href="${registroCon({ expediente: 1, profesionales: 1, agenda: 0 })}" data-elegir="expediente"${enlaceRegistro}>Probar el expediente</a>
       </article>
       <article class="plan plan--agenda revelar" data-plan="agenda">
         <div class="plan__cabeza"><span class="plan__icono">${icono(agenda.icono)}</span><h3>${esc(agenda.nombre)}</h3></div>
@@ -332,7 +335,7 @@ function precios() {
         <p class="plan__precio">${ag.map((t) => `<span class="plan__cifra" data-mensajes="${t.mensajes}"><strong class="num">${dolares(t.precio)}</strong><span class="sr"> con ${t.mensajes} mensajes</span></span>`).join('')}<span class="plan__unidad">${esc(agenda.unidad)}</span></p>
         ${destacado(agenda)}
         <ul class="lista-check" role="list">${agenda.incluye.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
-        <a class="boton boton--linea plan__boton" href="${registroCon({ expediente: 0, agenda: 1, mensajes: ag[0].mensajes })}" data-elegir="agenda">Probar la agenda</a>
+        <a class="boton boton--linea plan__boton" href="${registroCon({ expediente: 0, agenda: 1, mensajes: ag[0].mensajes })}" data-elegir="agenda"${enlaceRegistro}>Probar la agenda</a>
       </article>
     </div>
     <div class="calculadora revelar" data-calculadora hidden>
@@ -348,7 +351,7 @@ function precios() {
         <output class="calculadora__sub num" data-sub="agenda"></output>
       </div>
       <div class="calculadora__total"><span>Total al mes</span><output class="num" data-total aria-live="polite"></output></div>
-      <a class="boton boton--senal calculadora__boton" href="${registroCon({ expediente: 1, profesionales: 2, agenda: 1, mensajes: ag[0].mensajes })}" data-elegir="calculadora">Probar este plan ${P.PRUEBA_DIAS} días gratis${icono('arrow-right')}</a>
+      <a class="boton boton--senal calculadora__boton" href="${registroCon({ expediente: 1, profesionales: 2, agenda: 1, mensajes: ag[0].mensajes })}" data-elegir="calculadora"${enlaceRegistro}>Probar este plan ${P.PRUEBA_DIAS} días gratis${icono('arrow-right')}</a>
     </div>
     <script type="application/json" id="datos-precios">${jsonEnScript({ agenda: ag, expediente: P.PRECIOS.expediente })}</script>
   </div>
@@ -380,7 +383,7 @@ function pruebaConRegistro() {
       <h2 id="prueba-titulo" class="seccion__titulo">${esc(t.titulo)}</h2>
       <p class="seccion__bajada">${esc(t.bajada)}</p>
       <ul class="lista-check lista-check--clara" role="list">${t.puntos.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
-      <p><a class="boton boton--senal boton--grande" href="${esc(REGISTRO)}">${esc(t.boton)}${icono('arrow-right')}</a></p>
+      <p><a class="boton boton--senal boton--grande" href="${destinoPrueba('')}">${esc(t.boton)}${icono('arrow-right')}</a></p>
     </div>
   </div>
 </section>`;
@@ -495,6 +498,45 @@ function paginaPrivacidad() {
   });
 }
 
+// alphateklab.com/registro/: lleva al registro del servicio de cuentas con el plan elegido (los parámetros de la
+// dirección), en cuanto ese servicio responde. Si todavía no está en línea, lo dice y vuelve a probar sola.
+function paginaPuenteRegistro() {
+  const prefijo = '../';
+  return documento({
+    titulo: 'Crear mi cuenta · Citas Médicas de alphateklab',
+    descripcion: 'Crea tu cuenta de Citas Médicas: 7 días gratis, sin tarjeta.',
+    prefijo,
+    canonica: `${URL_BASE}registro/`,
+    robots: 'noindex',
+    cuerpo: () => `<main id="contenido" class="envoltura texto-largo texto-largo--centro">
+  <p class="antetitulo">${icono('sparkle')}${P.PRUEBA_DIAS} días gratis</p>
+  <h1 class="texto-largo__titulo" data-puente-titulo>Abriendo el registro…</h1>
+  <p data-puente-texto>Un momento: te llevamos a crear tu cuenta.</p>
+  <p><a class="boton boton--senal" href="${esc(REGISTRO)}" data-puente-enlace>Crear mi cuenta</a></p>
+  <script>
+  (function () {
+    var destino = ${JSON.stringify(REGISTRO)} + location.search;
+    var enlace = document.querySelector('[data-puente-enlace]');
+    enlace.href = destino;
+    var intentos = 0;
+    function probar() {
+      fetch(${JSON.stringify(new URL('/salud', REGISTRO).href)}, { mode: 'no-cors', cache: 'no-store' })
+        .then(function () { location.replace(destino); })
+        .catch(function () {
+          intentos++;
+          document.querySelector('[data-puente-titulo]').textContent = 'El registro abre en unas horas';
+          document.querySelector('[data-puente-texto]').textContent = 'Estamos terminando de ponerlo en línea. Esta página vuelve a intentarlo sola; si prefieres, regresa más tarde.';
+          enlace.hidden = true;
+          if (intentos < 40) setTimeout(probar, 30000);
+        });
+    }
+    probar();
+  })();
+  </script>
+</main>`,
+  });
+}
+
 function paginaTerminos() {
   const prefijo = '../';
   return documento({
@@ -562,6 +604,7 @@ escribir('index.html', paginaInicio());
 escribir('privacidad/index.html', paginaPrivacidad());
 escribir('404.html', pagina404());
 escribir('terminos/index.html', paginaTerminos());
+if (REGISTRO) escribir('registro/index.html', paginaPuenteRegistro());
 escribir('citasmed/index.html', paginaCitasmed());
 escribir('sitemap.xml', sitemap());
 escribir('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${URL_BASE}sitemap.xml\n`);

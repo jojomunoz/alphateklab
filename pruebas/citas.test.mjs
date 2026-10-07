@@ -22,7 +22,7 @@ test('lo publicado está al día: generar otra vez da lo mismo', () => {
     delete env.WHATSAPP;
     delete env.CORREO;
     execFileSync(process.execPath, [join(RAIZ, 'herramientas/generar-citas.mjs')], { env, stdio: 'pipe' });
-    for (const r of [...PAGINAS, 'terminos/index.html', 'citasmed/index.html', 'sitemap.xml', 'robots.txt']) assert.equal(readFileSync(join(dir, r), 'utf8'), leer(r), `${r}: corre node herramientas/generar-citas.mjs`);
+    for (const r of [...PAGINAS, 'terminos/index.html', ...(REGISTRO ? ['registro/index.html'] : []), 'citasmed/index.html', 'sitemap.xml', 'robots.txt']) assert.equal(readFileSync(join(dir, r), 'utf8'), leer(r), `${r}: corre node herramientas/generar-citas.mjs`);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -98,7 +98,8 @@ test('«Probar gratis» lleva al registro si está en línea; si no, al formular
   const html = leer('index.html');
   if (REGISTRO) {
     assert.equal(/data-prueba/.test(html), false);
-    assert.ok((html.match(new RegExp(REGISTRO.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&'), 'g')) || []).length >= 4, 'cabecera, héroe, precios y la prueba');
+    assert.ok((html.match(/href="(\.\/)?registro\//g) || []).length >= 4, 'cabecera, héroe, precios y la prueba van a registro/');
+    assert.ok(leer('registro/index.html').includes(REGISTRO), 'registro/ pasa al servicio de cuentas');
     assert.match(leer('terminos/index.html'), /Términos del servicio/);
     return;
   }

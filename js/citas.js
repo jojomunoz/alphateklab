@@ -216,7 +216,7 @@ if (calc && datosPrecios) {
     const b = e.target.closest('[data-elegir]');
     if (!b) return;
     const v = leer();
-    if (/^https?:/.test(b.getAttribute('href') || '')) {
+    if (b.hasAttribute('data-registro')) {
       const elegido = radios.find((r) => r.checked)?.value || v.paquete.mensajes;
       const params = b.dataset.elegir === 'calculadora'
         ? { expediente: v.expediente ? 1 : 0, profesionales: v.n, agenda: v.agenda ? 1 : 0, mensajes: v.paquete.mensajes }

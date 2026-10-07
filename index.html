@@ -36,12 +36,12 @@
     <nav class="cab__menu" aria-label="Principal"><ul><li><a href="#expediente">Expediente</a></li><li><a href="#agenda">Agenda</a></li><li><a href="#precios">Precios</a></li><li><a href="#preguntas">Preguntas</a></li></ul></nav>
     <div class="cab__acciones">
       <button class="cab__tema" type="button" aria-pressed="false" aria-label="Usar el tema oscuro" data-tema><svg class="ico ico--luna" aria-hidden="true" focusable="false"><use href="#i-moon"></use></svg><svg class="ico ico--sol" aria-hidden="true" focusable="false"><use href="#i-sun"></use></svg></button>
-      <a class="boton boton--senal cab__cta" href="https://cuentas.alphateklab.com/registro">Probar gratis</a>
+      <a class="boton boton--senal cab__cta" href="./registro/">Probar gratis</a>
       <button class="cab__abrir" type="button" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir el menú" data-abrir-menu><svg class="ico ico--abrir" aria-hidden="true" focusable="false"><use href="#i-list"></use></svg><svg class="ico ico--cerrar" aria-hidden="true" focusable="false"><use href="#i-x"></use></svg></button>
     </div>
   </div>
   <nav class="cab__movil" id="menu-movil" aria-label="Menú" hidden>
-    <ul class="envoltura"><li><a href="#expediente">Expediente</a></li><li><a href="#agenda">Agenda</a></li><li><a href="#precios">Precios</a></li><li><a href="#preguntas">Preguntas</a></li><li><a class="boton boton--senal" href="https://cuentas.alphateklab.com/registro">Probar 7 días gratis</a></li></ul>
+    <ul class="envoltura"><li><a href="#expediente">Expediente</a></li><li><a href="#agenda">Agenda</a></li><li><a href="#precios">Precios</a></li><li><a href="#preguntas">Preguntas</a></li><li><a class="boton boton--senal" href="./registro/">Probar 7 días gratis</a></li></ul>
   </nav>
 </header>
 <main id="contenido">
@@ -53,7 +53,7 @@
       <h1 id="heroe-titulo" class="heroe__titulo">El expediente de tu paciente, <span class="resalte">sin escribir a mano ni teclear</span></h1>
       <p class="heroe__bajada">Durante la consulta hablas y el sistema escribe la nota con IA, sección por sección. Tú la revisas y queda guardada; si trabajas con folder, la recepción la imprime. Y si quieres, también la agenda, con recordatorios automáticos por WhatsApp.</p>
       <div class="heroe__acciones">
-        <a class="boton boton--senal boton--grande" href="https://cuentas.alphateklab.com/registro">Probar 7 días gratis<svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow-right"></use></svg></a>
+        <a class="boton boton--senal boton--grande" href="./registro/">Probar 7 días gratis<svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow-right"></use></svg></a>
         <a class="boton boton--linea boton--grande" href="#precios">Ver precios</a>
       </div>
       <ul class="heroe__puntos" role="list"><li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg>7 días gratis, sin tarjeta</li><li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg>Sin instalar nada</li><li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg>Desde $25 al mes</li></ul>
@@ -233,7 +233,7 @@
         <p class="plan__precio"><span class="plan__cifra plan__cifra--fija"><strong class="num">$30</strong></span><span class="plan__unidad">al mes por profesional</span></p>
         <div class="destacado destacado--expediente"><span class="destacado__icono"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-microphone"></use></svg></span><p><strong>Nota por secciones, con dictado por voz con IA</strong><span>Hablas y queda escrita: sin escribir a mano ni teclear.</span></p></div>
         <ul class="lista-check" role="list"><li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg>Antecedentes: alergias, enfermedades, medicamentos y seguro</li></ul>
-        <a class="boton boton--linea plan__boton" href="https://cuentas.alphateklab.com/registro?expediente=1&profesionales=1&agenda=0" data-elegir="expediente">Probar el expediente</a>
+        <a class="boton boton--linea plan__boton" href="registro/?expediente=1&profesionales=1&agenda=0" data-elegir="expediente" data-registro>Probar el expediente</a>
       </article>
       <article class="plan plan--agenda revelar" data-plan="agenda">
         <div class="plan__cabeza"><span class="plan__icono"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-calendar-check"></use></svg></span><h3>Agenda de citas</h3></div>
@@ -245,7 +245,7 @@
         <p class="plan__precio"><span class="plan__cifra" data-mensajes="200"><strong class="num">$25</strong><span class="sr"> con 200 mensajes</span></span><span class="plan__cifra" data-mensajes="500"><strong class="num">$35</strong><span class="sr"> con 500 mensajes</span></span><span class="plan__cifra" data-mensajes="1000"><strong class="num">$45</strong><span class="sr"> con 1000 mensajes</span></span><span class="plan__unidad">al mes por clínica</span></p>
         <div class="destacado destacado--agenda"><span class="destacado__icono"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-whatsapp-logo"></use></svg></span><p><strong>Recordatorios automáticos por WhatsApp</strong><span>Tu secretaria ya no llama paciente por paciente para confirmar.</span></p></div>
         <ul class="lista-check" role="list"><li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg>Agenda por médico y por consultorio, por día o por semana</li><li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg>Quién no ha confirmado hoy y mañana</li><li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg>Registro del paciente por QR desde su teléfono</li><li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg>Lista de espera y sala de espera</li></ul>
-        <a class="boton boton--linea plan__boton" href="https://cuentas.alphateklab.com/registro?expediente=0&agenda=1&mensajes=200" data-elegir="agenda">Probar la agenda</a>
+        <a class="boton boton--linea plan__boton" href="registro/?expediente=0&agenda=1&mensajes=200" data-elegir="agenda" data-registro>Probar la agenda</a>
       </article>
     </div>
     <div class="calculadora revelar" data-calculadora hidden>
@@ -261,7 +261,7 @@
         <output class="calculadora__sub num" data-sub="agenda"></output>
       </div>
       <div class="calculadora__total"><span>Total al mes</span><output class="num" data-total aria-live="polite"></output></div>
-      <a class="boton boton--senal calculadora__boton" href="https://cuentas.alphateklab.com/registro?expediente=1&profesionales=2&agenda=1&mensajes=200" data-elegir="calculadora">Probar este plan 7 días gratis<svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow-right"></use></svg></a>
+      <a class="boton boton--senal calculadora__boton" href="registro/?expediente=1&profesionales=2&agenda=1&mensajes=200" data-elegir="calculadora" data-registro>Probar este plan 7 días gratis<svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow-right"></use></svg></a>
     </div>
     <script type="application/json" id="datos-precios">{"agenda":[{"mensajes":200,"precio":25},{"mensajes":500,"precio":35},{"mensajes":1000,"precio":45}],"expediente":30}</script>
   </div>
@@ -287,7 +287,7 @@
       <h2 id="prueba-titulo" class="seccion__titulo">Pruébalo en tu consultorio</h2>
       <p class="seccion__bajada">Crea tu cuenta y dicta tus primeros expedientes hoy mismo. Sin tarjeta y sin plan anual.</p>
       <ul class="lista-check lista-check--clara" role="list"><li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg>Tu sistema queda listo al momento, en tu propia dirección</li><li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg>El dictado con IA, incluido en la prueba</li><li><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg>Al terminar, pagas con tarjeta solo si te sirve</li></ul>
-      <p><a class="boton boton--senal boton--grande" href="https://cuentas.alphateklab.com/registro">Crear mi cuenta<svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow-right"></use></svg></a></p>
+      <p><a class="boton boton--senal boton--grande" href="./registro/">Crear mi cuenta<svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow-right"></use></svg></a></p>
     </div>
   </div>
 </section>
@@ -299,6 +299,6 @@
   </div>
   <p class="envoltura pie__nota">Las pantallas muestran un consultorio de ejemplo con pacientes ficticios. Precios en dólares, al mes. Actualizado el 7 de octubre de 2026.</p>
 </footer>
-<script type="module" src="js/citas.js?v=5896def5c9"></script>
+<script type="module" src="js/citas.js?v=30737ba268"></script>
 </body>
 </html>
