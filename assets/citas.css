@@ -1201,6 +1201,12 @@ body.citas {
   margin: 0;
   font-weight: 600;
 }
+.hoja__antecedentes {
+  margin-bottom: 6px;
+}
+.hoja__antecedentes strong {
+  margin-right: 4px;
+}
 .hoja__signos {
   margin-bottom: 10px;
   padding: 7px 10px;

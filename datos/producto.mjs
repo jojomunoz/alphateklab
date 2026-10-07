@@ -159,6 +159,7 @@ export const HOJA = {
   edad: '47 años',
   fecha: 'Miércoles 7 de octubre, 10:00 a. m.',
   medico: 'Dra. Ana Ríos',
+  antecedentes: 'Alergias: ninguna conocida · Enfermedades: diabetes',
   signos: 'PA 118/76 mmHg · Pulso 72 lpm · T 36.6 °C · SpO₂ 98 %',
   notas: [
     ['Motivo de consulta', 'Lesiones rojas con descamación en codos y rodillas desde hace dos meses.'],

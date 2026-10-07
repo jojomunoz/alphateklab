@@ -229,6 +229,7 @@ function hoja() {
       <div><dt>Consulta</dt><dd>${esc(h.fecha)}</dd></div>
       <div><dt>Médico</dt><dd>${esc(h.medico)}</dd></div>
     </dl>
+    <p class="hoja__antecedentes"><strong>Antecedentes</strong> ${esc(h.antecedentes)}</p>
     <p class="hoja__signos"><strong>Signos</strong> ${esc(h.signos)}</p>
     ${h.notas.map(([t, x]) => `<div class="hoja__nota"><p class="hoja__titulo">${esc(t)}</p><p>${esc(x)}</p></div>`).join('')}
     <footer class="hoja__firma"><span>Firma y sello del médico</span></footer>
