@@ -25,8 +25,10 @@ en la rama **`sitio-agencia`**; para volver a él: `git checkout sitio-agencia -
   tarjetas, secciones, precios, calculadora); la agenda después, explicada por lo que ahorra: la secretaria ya no llama
   paciente por paciente. En las tarjetas de los planes, poco (lo destacado y lo esencial); el detalle, en las secciones.
 - **Iniciar sesión (Edwin, 7-oct):** arriba, «Iniciar sesión» (en el teléfono, «Entrar») lleva a `entrar/`: se escribe el
-  usuario (o se pega la dirección) y pasa a `<usuario>.alphateklab.com/entrar.html?usuario=…`. Los usuarios del equipo
-  llevan la clínica delante (`luisprueba.secretaria`). Con el correo no se puede: el sitio no consulta a nadie.
+  usuario (o se pega la dirección) y pasa a `<clínica>.alphateklab.com/entrar.html?usuario=…`. La clínica la dice el
+  servicio de cuentas (`cuentas.alphateklab.com/api/clinica?usuario=…`): en las cuentas del registro viejo el usuario
+  no es la dirección (`edwincutire` en `clinica-alpha`). Si no contesta, va por lo de antes del primer punto. Con el
+  correo no se puede.
 - **Cabecera y tema:** arriba solo el logo de alphateklab, como antes. La página sale en claro aunque el equipo esté en
   oscuro, y el botón de la luna pasa al oscuro (se recuerda en `localStorage`, `atk-tema`); las capturas oscuras las
   pone `js/citas.js` desde `data-oscuro`.

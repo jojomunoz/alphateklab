@@ -59,15 +59,19 @@
   <script>
   (function () {
     var DOMINIO = "alphateklab.com";
+    var CUENTAS = "https://cuentas.alphateklab.com";
     var form = document.querySelector('[data-entrar]');
     var campo = form.elements.usuario;
+    var boton = form.querySelector('[type=submit]');
     var destino = document.querySelector('[data-destino]');
     var error = document.querySelector('[data-error]');
-    // «luisprueba», «luisprueba.secretaria» o la dirección pegada: la clínica es lo de antes del primer punto.
+    function avisar(texto) { error.textContent = texto; error.hidden = false; destino.textContent = ''; campo.focus(); }
+    // «luisprueba», «luisprueba.secretaria» o la dirección pegada. La clínica, si el servicio de cuentas no contesta:
+    // lo de antes del primer punto.
     function leer(texto) {
       var t = String(texto || '').trim().toLowerCase().replace(/\s+/g, '');
       if (!t) return { error: 'Escribe tu usuario.' };
-      if (t.indexOf('@') > 0) return { error: 'Con el correo no sabemos cuál es tu sistema. Escribe tu usuario: lo que va antes de .' + DOMINIO + ' en su dirección.' };
+      if (t.indexOf('@') > 0) return { error: 'Con el correo no sabemos cuál es tu sistema. Escribe tu usuario: el que elegiste al registrarte.' };
       t = t.replace(/^[a-z]+:\/\//, '').split('/')[0];
       var sufijo = '.' + DOMINIO;
       var usuario = t.slice(-sufijo.length) === sufijo ? t.slice(0, -sufijo.length) : t;
@@ -75,22 +79,41 @@
       if (!/^[a-z0-9][a-z0-9-]{1,38}[a-z0-9]$/.test(clinica) || clinica.indexOf('--') >= 0 || clinica === 'cuentas' || clinica === 'www') {
         return { error: 'Revisa el usuario: lleva letras, números y guiones, como el que elegiste al registrarte.' };
       }
-      return { usuario: usuario, clinica: clinica, url: 'https://' + clinica + sufijo + '/entrar.html?usuario=' + encodeURIComponent(usuario) };
+      return { usuario: usuario, clinica: clinica };
     }
-    function mostrar() {
-      var r = leer(campo.value);
-      destino.textContent = r.url ? 'Vas a entrar a ' + r.clinica + '.' + DOMINIO : '';
+    function ir(r, clinica) {
+      destino.textContent = 'Entrando a ' + clinica + '.' + DOMINIO + '…';
+      try { localStorage.setItem('atk-ultimo-usuario', r.usuario); } catch (e) {}
+      location.assign('https://' + clinica + '.' + DOMINIO + '/entrar.html?usuario=' + encodeURIComponent(r.usuario));
     }
     // El último usuario con el que se entró desde este equipo.
     try { var ultimo = localStorage.getItem('atk-ultimo-usuario'); if (ultimo && !campo.value) campo.value = ultimo; } catch (e) {}
-    mostrar();
-    campo.addEventListener('input', function () { error.hidden = true; mostrar(); });
+    campo.addEventListener('input', function () { error.hidden = true; });
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
       var r = leer(campo.value);
-      if (r.error) { error.textContent = r.error; error.hidden = false; campo.focus(); return; }
-      try { localStorage.setItem('atk-ultimo-usuario', r.usuario); } catch (e) {}
-      location.assign(r.url);
+      if (r.error) { avisar(r.error); return; }
+      error.hidden = true;
+      boton.disabled = true;
+      // El servicio de cuentas dice de qué clínica es (en las cuentas viejas el usuario no es la dirección). Si no
+      // contesta a tiempo, se va por la dirección.
+      var hecho = false;
+      function terminar(clinica) {
+        if (hecho) return;
+        hecho = true;
+        clearTimeout(reloj);
+        if (clinica) { ir(r, clinica); return; }
+        boton.disabled = false;
+        avisar('No encontramos ese usuario. Revisa cómo lo escribiste: es el que elegiste al registrarte.');
+      }
+      var reloj = setTimeout(function () { terminar(r.clinica); }, 6000);
+      fetch(CUENTAS + '/api/clinica?usuario=' + encodeURIComponent(r.usuario), { cache: 'no-store' })
+        .then(function (resp) {
+          if (resp.status === 404) { terminar(null); return null; }
+          return resp.ok ? resp.json() : { slug: r.clinica };
+        })
+        .then(function (j) { if (j) terminar(j.slug || r.clinica); })
+        .catch(function () { terminar(r.clinica); });
     });
   })();
   </script>

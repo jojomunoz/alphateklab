@@ -166,22 +166,40 @@ try {
     const enlace = p.locator('[data-entrar-cab]');
     if (!(await enlace.count())) { await c.close(); return; } // sin el registro en línea no hay «Iniciar sesión»
     assert.equal((await enlace.innerText()).trim(), 'Iniciar sesión');
+    // El servicio de cuentas (simulado): de qué clínica es cada usuario. «edwincutire» es de una cuenta del registro
+    // viejo, donde el usuario no es la dirección.
+    let caido = false;
+    await c.route(/^https:\/\/cuentas\.alphateklab\.com\/api\/clinica/, (r) => {
+      if (caido) return r.abort();
+      const u = new URL(r.request().url()).searchParams.get('usuario');
+      const slug = { 'luisprueba.secretaria': 'luisprueba', edwincutire: 'clinica-alpha' }[u];
+      return r.fulfill({ status: slug ? 200 : 404, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(slug ? { ok: true, slug } : { ok: false }) });
+    });
     // El sistema de cada clínica está en otro dominio: aquí se ataja y se mira a dónde iba.
-    await c.route(/^https:\/\/[a-z0-9-]+\.alphateklab\.com\//, (r) => r.fulfill({ status: 200, contentType: 'text/html', body: '<p>sistema de la clínica</p>' }));
+    await c.route(/^https:\/\/(?!cuentas\.)[a-z0-9-]+\.alphateklab\.com\//, (r) => r.fulfill({ status: 200, contentType: 'text/html', body: '<p>sistema de la clínica</p>' }));
     await enlace.click();
     await p.waitForURL(/\/entrar\/$/);
     await p.fill('[name=usuario]', 'ana@ejemplo.com');
     await p.click('[data-entrar] [type=submit]');
     assert.match(await p.textContent('[data-error]'), /Con el correo no sabemos cuál es tu sistema/);
+    await p.fill('[name=usuario]', 'nadie');
+    await p.click('[data-entrar] [type=submit]');
+    await p.locator('[data-error]', { hasText: 'No encontramos ese usuario' }).waitFor();
     await p.fill('[name=usuario]', ' LuisPrueba.Secretaria ');
-    assert.equal(await p.textContent('[data-destino]'), 'Vas a entrar a luisprueba.alphateklab.com');
     await p.click('[data-entrar] [type=submit]');
     await p.waitForURL(/^https:\/\/luisprueba\.alphateklab\.com\/entrar\.html\?usuario=luisprueba\.secretaria$/);
-    // Al volver, recuerda el usuario; y pegar la dirección también sirve.
+    // Al volver, recuerda el usuario. El del registro viejo va a su clínica, aunque no sea la dirección.
     await p.goto(BASE + 'entrar/');
     assert.equal(await p.inputValue('[name=usuario]'), 'luisprueba.secretaria');
+    await p.fill('[name=usuario]', 'edwincutire');
+    await p.click('[data-entrar] [type=submit]');
+    await p.waitForURL(/^https:\/\/clinica-alpha\.alphateklab\.com\/entrar\.html\?usuario=edwincutire$/);
+    // Si el servicio de cuentas no contesta, se va por la dirección (pegarla también sirve).
+    caido = true;
+    await p.goto(BASE + 'entrar/');
     await p.fill('[name=usuario]', 'https://clinica-alpha.alphateklab.com/citas.html');
-    assert.equal(await p.textContent('[data-destino]'), 'Vas a entrar a clinica-alpha.alphateklab.com');
+    await p.click('[data-entrar] [type=submit]');
+    await p.waitForURL(/^https:\/\/clinica-alpha\.alphateklab\.com\/entrar\.html\?usuario=clinica-alpha$/);
     await c.close();
     // En el teléfono dice «Entrar» y cabe.
     const tel = await abrir({ viewport: { width: 320, height: 700 } });
