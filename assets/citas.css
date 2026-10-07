@@ -73,13 +73,17 @@ body.citas {
   fill: currentColor;
   vertical-align: -0.22em;
 }
-.simbolo {
-  width: 34px;
-  height: 34px;
-  flex: none;
+.logo {
+  display: block;
+  width: auto;
+  height: 30px;
 }
-.simbolo__modulo {
-  fill: var(--senal);
+.logo--oscuro,
+[data-theme="dark"] .logo--claro {
+  display: none;
+}
+[data-theme="dark"] .logo--oscuro {
+  display: block;
 }
 .num {
   font-variant-numeric: tabular-nums;
@@ -163,26 +167,8 @@ body.citas {
 .cab__marca {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  color: var(--tinta);
-  text-decoration: none;
   margin-right: auto;
-}
-.cab__nombre {
-  display: grid;
-  font-family: var(--f-titulo);
-  font-weight: 700;
-  font-size: 1.15rem;
-  line-height: 1;
-  letter-spacing: -0.01em;
-}
-.cab__nombre small {
-  margin-top: 4px;
-  font-family: var(--f-texto);
-  font-weight: 500;
-  font-size: 0.72rem;
-  color: var(--tinta-3);
-  letter-spacing: 0.01em;
+  padding-block: 6px;
 }
 .cab__menu {
   display: none;
@@ -220,6 +206,33 @@ body.citas {
 .cab__cta {
   min-height: 42px;
   padding: 0.6em 1em;
+}
+.cab__tema {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--r-1);
+  background: transparent;
+  color: var(--tinta);
+  cursor: pointer;
+}
+.cab__tema .ico {
+  width: 21px;
+  height: 21px;
+}
+.cab__tema .ico--sol,
+[data-theme="dark"] .cab__tema .ico--luna {
+  display: none;
+}
+[data-theme="dark"] .cab__tema .ico--sol {
+  display: block;
+}
+@media (hover: hover) and (pointer: fine) {
+  .cab__tema:hover {
+    background: var(--papel-2);
+  }
 }
 .cab__abrir {
   display: grid;
@@ -321,10 +334,10 @@ body.citas {
   gap: 18px;
 }
 .heroe__titulo {
-  font-size: clamp(2.3rem, 1.3rem + 3.3vw, 3.6rem);
-  line-height: 1.05;
+  font-size: clamp(2.2rem, 1.25rem + 3.1vw, 3.45rem);
+  line-height: 1.06;
   letter-spacing: -0.032em;
-  max-width: 19ch;
+  max-width: 21ch;
 }
 .resalte {
   background: linear-gradient(100deg, var(--resalte-1), var(--resalte-2));
@@ -450,6 +463,58 @@ body.citas {
   margin-inline: auto;
 }
 
+/* el dictado sobre la pantalla del héroe: lo primero que se ve es que el médico habla y la nota se escribe */
+.heroe__dictado {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  width: min(310px, 54%);
+}
+.dictado--mini {
+  gap: 10px;
+  padding: 16px;
+  border-radius: var(--r-2);
+  box-shadow: var(--sombra-3);
+}
+.dictado--mini .dictado__cabeza {
+  padding-bottom: 8px;
+}
+.dictado--mini .dictado__cabeza strong {
+  font-size: 0.95rem;
+}
+.dictado--mini .dictado__titulo {
+  font-size: 12.5px;
+}
+.dictado--mini .dictado__texto {
+  min-height: 2.9em;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+/* en el teléfono el dictado va debajo de la pantalla, montado sobre su borde, sin tapar el texto de arriba; las
+   tarjetas que flotan se quitan (no caben sin taparlo) */
+@media (max-width: 759px) {
+  .heroe__dispositivos {
+    padding: 0 0 0 12%;
+  }
+  .heroe__dictado {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    width: 88%;
+    margin-top: -22%;
+  }
+  .dictado--mini {
+    padding: 12px;
+  }
+  .heroe .avisos {
+    display: none;
+  }
+  .heroe__visual figcaption {
+    padding-left: 0;
+  }
+}
+
 /* las tarjetas que entran y flotan sobre las pantallas del héroe */
 .avisos {
   list-style: none;
@@ -573,33 +638,6 @@ body.citas {
   }
 }
 
-/* ── franja de lo esencial ── */
-.confianza {
-  border-block: 1px solid var(--linea);
-  background: var(--superficie);
-}
-.confianza__lista {
-  list-style: none;
-  margin-block: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 14px 28px;
-  padding-block: 22px;
-}
-.confianza__lista li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 600;
-  font-size: var(--t-s);
-  color: var(--tinta-2);
-}
-.confianza__lista .ico {
-  width: 24px;
-  height: 24px;
-  color: var(--acento);
-}
-
 /* ── secciones ── */
 .seccion {
   padding-block: var(--e-seccion);
@@ -677,9 +715,9 @@ body.citas {
 }
 .parte {
   position: relative;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 14px;
-  align-content: start;
   padding: 32px;
   border-radius: var(--r-3);
   background: var(--superficie);
@@ -762,11 +800,12 @@ body.citas {
   font-size: var(--t-s);
 }
 .parte__enlace {
-  justify-self: start;
+  align-self: flex-start;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 4px;
+  margin-top: auto;
+  padding-top: 4px;
   font-weight: 650;
   text-decoration: none;
 }
@@ -794,6 +833,66 @@ body.citas {
   color: var(--acento);
   width: 22px;
   height: 22px;
+}
+
+/* lo que más importa de cada parte, en grande (el dictado del expediente y los recordatorios automáticos) */
+.destacado {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border-radius: var(--r-2);
+  background: var(--senal-suave);
+  border: 1px solid color-mix(in srgb, var(--senal) 30%, transparent);
+}
+.destacado--expediente {
+  background: var(--apoyo);
+  border-color: color-mix(in srgb, var(--acento) 38%, transparent);
+}
+.destacado__icono {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--r-2);
+  background: var(--senal);
+  color: var(--sobre-senal);
+}
+.destacado--expediente .destacado__icono {
+  background: var(--acento);
+  color: var(--superficie);
+}
+.destacado__icono .ico {
+  width: 24px;
+  height: 24px;
+  --ico-opacidad: 0.35;
+}
+.destacado strong {
+  display: block;
+  font-family: var(--f-titulo);
+  font-size: 1.08rem;
+  line-height: 1.25;
+  color: var(--tinta);
+}
+.destacado p > span {
+  display: block;
+  margin-top: 3px;
+  color: var(--tinta-2);
+  font-size: var(--t-s);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .destacado--expediente .destacado__icono {
+    animation: latido-acento 1.8s ease-out infinite;
+  }
+}
+@keyframes latido-acento {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--acento) 50%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 12px transparent;
+  }
 }
 
 /* ── filas: texto de un lado, pantalla del otro ── */
@@ -841,6 +940,10 @@ body.citas {
   .fila + .fila {
     margin-top: 120px;
   }
+}
+.fila__nota {
+  color: var(--tinta-3);
+  font-size: var(--t-s);
 }
 .pasitos {
   list-style: none;
@@ -1308,9 +1411,9 @@ body.citas {
   }
 }
 .plan {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 16px;
-  align-content: start;
   padding: 30px;
   border-radius: var(--r-3);
   background: var(--papel);
@@ -1407,8 +1510,8 @@ body.citas {
   font-size: var(--t-s);
 }
 .plan__boton {
-  justify-self: start;
-  margin-top: 4px;
+  align-self: flex-start;
+  margin-top: auto;
 }
 
 /* la calculadora */
@@ -1713,6 +1816,22 @@ body.citas {
   gap: 10px;
   margin-top: 8px;
 }
+.prueba__sin-contacto {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 14px 16px;
+  border-radius: var(--r-2);
+  background: rgb(255 255 255 / 0.08);
+  color: #e6e8f2;
+  font-weight: 600;
+}
+.prueba__sin-contacto .ico {
+  width: 22px;
+  height: 22px;
+  color: #8ce0d4;
+}
 .prueba__directo {
   display: inline-flex;
   align-items: center;
@@ -1834,15 +1953,10 @@ body.citas {
   gap: 18px 28px;
 }
 .pie__marca {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--tinta-2);
+  display: inline-flex;
 }
-.pie__marca .simbolo {
-  width: 30px;
-  height: 30px;
-  color: var(--tinta);
+.pie__marca .logo {
+  height: 28px;
 }
 .pie__enlaces {
   list-style: none;
@@ -1914,6 +2028,7 @@ body.citas {
   .aviso,
   .heroe__fondo,
   .dictado__mic .ico,
+  .destacado__icono,
   .chat__escribiendo span,
   [data-paso].llega,
   .dictado__texto.escribiendo::after {

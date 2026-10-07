@@ -13,6 +13,7 @@ const COMPU = [[1600, 1000], [800, 500]];
 const PIEZAS = [
   ['agenda', 'citas-agenda', COMPU],
   ['expediente', 'citas-expediente', COMPU],
+  ['nota', 'citas-nota', COMPU],
   ['accesos', 'citas-accesos', COMPU],
   ['registro', 'citas-registro', [[780, 1688], [390, 844]]],
 ];

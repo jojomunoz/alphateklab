@@ -147,8 +147,11 @@ try {
     const { c, p } = await abrir({ reducedMotion: 'no-preference' });
     await p.locator('[data-chat]').scrollIntoViewIfNeeded();
     await p.waitForFunction(() => document.querySelector('[data-chat] .esperando, [data-chat] .chat__escribiendo'), null, { timeout: 4000 });
-    await p.locator('[data-dictado]').scrollIntoViewIfNeeded();
-    await p.waitForFunction(() => document.querySelector('[data-dictado] .escribiendo'), null, { timeout: 4000 });
+    // los dos dictados (el del héroe y el de su sección) se escriben solos al verse
+    for (const i of [0, 1]) {
+      await p.locator('[data-dictado]').nth(i).scrollIntoViewIfNeeded();
+      await p.waitForFunction((i) => document.querySelectorAll('[data-dictado]')[i].querySelector('.escribiendo'), i, { timeout: 4000 });
+    }
     await c.close();
     const q = await abrir({ reducedMotion: 'reduce' });
     await q.p.locator('[data-chat]').scrollIntoViewIfNeeded();
@@ -159,11 +162,23 @@ try {
     await q.c.close();
   });
 
-  await paso('en oscuro, las capturas son las oscuras', async () => {
+  await paso('sale en claro aunque el equipo esté en oscuro; el botón pasa al oscuro con sus capturas y se recuerda', async () => {
     const { c, p } = await abrir({ colorScheme: 'dark' });
+    assert.equal(await p.evaluate(() => document.documentElement.dataset.theme), 'light');
     await recorrer(p);
-    const fuentes = await p.evaluate(() => [...document.querySelectorAll('picture img')].map((i) => i.currentSrc));
-    assert.ok(fuentes.length >= 4 && fuentes.every((s) => s.includes('-oscuro')), fuentes.join('\n'));
+    const claras = await p.evaluate(() => [...document.querySelectorAll('img[data-oscuro]')].map((i) => i.currentSrc));
+    assert.ok(claras.length >= 4 && claras.every((s) => s && !s.includes('-oscuro')), claras.join('\n'));
+    await p.click('[data-tema]');
+    assert.equal(await p.evaluate(() => document.documentElement.dataset.theme), 'dark');
+    assert.equal(await p.getAttribute('[data-tema]', 'aria-pressed'), 'true');
+    await recorrer(p);
+    await p.waitForTimeout(300);
+    const oscuras = await p.evaluate(() => [...document.querySelectorAll('img[data-oscuro]')].map((i) => i.currentSrc));
+    assert.ok(oscuras.every((s) => s.includes('-oscuro')), oscuras.join('\n'));
+    const fondo = await p.evaluate(() => getComputedStyle(document.body).backgroundColor);
+    assert.equal(fondo, 'rgb(15, 18, 24)', 'el fondo oscuro');
+    await p.reload();
+    assert.equal(await p.evaluate(() => document.documentElement.dataset.theme), 'dark', 'se recuerda al volver');
     await c.close();
   });
 

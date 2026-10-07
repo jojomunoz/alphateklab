@@ -36,27 +36,30 @@ function icono(nombre, clase = 'ico') {
 }
 const sprite = () => `<svg xmlns="http://www.w3.org/2000/svg" style="display:none">${[...usados].map((n) => SIMBOLOS.get(n)).join('')}</svg>`;
 
-// El símbolo de alphateklab en línea: toma el color del texto y el módulo el de la acción, en claro y en oscuro.
-const SIMBOLO = '<svg class="simbolo" viewBox="0 0 128 128" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M64 20a44 44 0 1 0 0 88a44 44 0 1 0 0-88Zm0 21a23 23 0 1 1 0 46a23 23 0 1 1 0-46Z"/><path fill="currentColor" d="M87 20h21v63H87z"/><rect class="simbolo__modulo" x="87" y="87" width="21" height="21" rx="3"/></svg>';
+// El logo de alphateklab, como estaba antes del cambio (Edwin): el claro y el de fondo oscuro; la hoja de estilos
+// muestra el que va con el tema.
+const logo = (prefijo, alt) => `<img class="logo logo--claro" src="${prefijo}assets/marca/logo-claro.svg" alt="${esc(alt)}" width="142" height="32" /><img class="logo logo--oscuro" src="${prefijo}assets/marca/logo-oscuro.svg" alt="${esc(alt)}" width="142" height="32" />`;
 
 // Versión por contenido de la hoja de estilos y del script: GitHub Pages guarda 10 minutos sin preguntar.
 const huella = (ruta) => createHash('sha1').update(readFileSync(join(RAIZ, ruta))).digest('hex').slice(0, 10);
 const conVersion = (prefijo, ruta) => `${prefijo}${ruta}?v=${huella(ruta)}`;
 
 // ── imágenes: cada captura en claro y en oscuro, en dos tamaños ──
+// La página sale en claro (pedido de Edwin) y tiene botón de tema: la captura oscura la pone js/citas.js al elegir
+// el oscuro (data-oscuro), y la clara vuelve con data-claro.
 function imagen(prefijo, nombre, { alt = '', ancho, alto, chico, sizes, prioridad = false, perezosa = !prioridad }) {
   const base = `assets/producto/${nombre}`;
   for (const s of ['', '-oscuro']) for (const t of [`${s}`, `${s}-${chico}`]) if (!existe(`${base}${t}.webp`)) throw new Error(`Falta ${base}${t}.webp (herramientas/capturas-citas.mjs y imagenes-citas.mjs)`);
   const juego = (s) => `${prefijo}${base}${s}-${chico}.webp ${chico}w, ${prefijo}${base}${s}.webp ${ancho}w`;
-  return `<picture><source media="(prefers-color-scheme: dark)" srcset="${juego('-oscuro')}" sizes="${sizes}" /><img src="${prefijo}${base}.webp" srcset="${juego('')}" sizes="${sizes}" alt="${esc(alt)}" width="${ancho}" height="${alto}"${prioridad ? ' fetchpriority="high"' : ''}${perezosa ? ' loading="lazy"' : ''} decoding="async" /></picture>`;
+  return `<img src="${prefijo}${base}.webp" srcset="${juego('')}" data-claro="${juego('')}" data-oscuro="${juego('-oscuro')}" sizes="${sizes}" alt="${esc(alt)}" width="${ancho}" height="${alto}"${prioridad ? ' fetchpriority="high"' : ''}${perezosa ? ' loading="lazy"' : ''} decoding="async" />`;
 }
 const portatil = (prefijo, nombre, alt, opciones = {}) => `<div class="portatil"><div class="portatil__pantalla">${imagen(prefijo, nombre, { alt, ancho: 1600, alto: 1000, chico: 800, sizes: '(min-width: 1040px) 600px, 92vw', ...opciones })}</div></div>`;
 const telefono = (prefijo, nombre, alt, opciones = {}) => `<div class="telefono"><div class="telefono__pantalla">${imagen(prefijo, nombre, { alt, ancho: 780, alto: 1688, chico: 390, sizes: '(min-width: 1040px) 260px, 60vw', ...opciones })}</div></div>`;
 
 // ── piezas comunes ──
 const ENLACES = [
-  ['agenda', 'Agenda'],
   ['expediente', 'Expediente'],
+  ['agenda', 'Agenda'],
   ['precios', 'Precios'],
   ['preguntas', 'Preguntas'],
 ];
@@ -67,9 +70,10 @@ function cabecera(prefijo) {
   const lista = ENLACES.map(([id, t]) => `<li><a href="${prefijo}#${id}">${t}</a></li>`).join('');
   return `<header class="cab" data-cab>
   <div class="envoltura cab__fila">
-    <a class="cab__marca" href="${prefijo || './'}" aria-label="Citas Médicas, de alphateklab: inicio">${SIMBOLO}<span class="cab__nombre">${esc(P.PRODUCTO)}<small>por alphateklab</small></span></a>
+    <a class="cab__marca" href="${prefijo || './'}">${logo(prefijo, 'alphateklab, inicio')}</a>
     <nav class="cab__menu" aria-label="Principal"><ul>${lista}</ul></nav>
     <div class="cab__acciones">
+      <button class="cab__tema" type="button" aria-pressed="false" aria-label="Usar el tema oscuro" data-tema>${icono('moon', 'ico ico--luna')}${icono('sun', 'ico ico--sol')}</button>
       <a class="boton boton--senal cab__cta" href="${destinoPrueba(prefijo)}">Probar gratis</a>
       <button class="cab__abrir" type="button" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir el menú" data-abrir-menu>${icono('list', 'ico ico--abrir')}${icono('x', 'ico ico--cerrar')}</button>
     </div>
@@ -87,7 +91,7 @@ function pie(prefijo) {
   ].join('');
   return `<footer class="pie">
   <div class="envoltura pie__fila">
-    <div class="pie__marca">${SIMBOLO}<p><strong>${esc(P.PRODUCTO)}</strong> es un producto de alphateklab, en Panamá.</p></div>
+    <a class="pie__marca" href="${prefijo || './'}">${logo(prefijo, 'alphateklab')}</a>
     <nav aria-label="Al pie"><ul class="pie__enlaces"><li><a href="${prefijo}#precios">Precios</a></li><li><a href="${prefijo}#preguntas">Preguntas</a></li><li><a href="${prefijo || './'}privacidad/">Privacidad</a></li>${contacto}</ul></nav>
   </div>
   <p class="envoltura pie__nota">Las pantallas muestran un consultorio de ejemplo con pacientes inventados. Precios en dólares, al mes. Actualizado el ${esc(ACTUALIZADO.texto)}.</p>
@@ -95,14 +99,15 @@ function pie(prefijo) {
 }
 
 function documento({ titulo, descripcion, prefijo, cuerpo, canonica, robots = '', datos = null, imagenOg = 'assets/og-citas.jpg' }) {
-  usados = new Set(['list', 'x']);
+  usados = new Set();
   const cab = cabecera(prefijo);
   const pieHtml = pie(prefijo);
   const html = typeof cuerpo === 'function' ? cuerpo() : cuerpo;
   return `<!doctype html>
-<html lang="es-PA">
+<html lang="es-PA" data-theme="light">
 <head>
 <meta charset="utf-8" />
+<script>try{if(localStorage.getItem('atk-tema')==='oscuro')document.documentElement.dataset.theme='dark'}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>${esc(titulo)}</title>
 <meta name="description" content="${esc(descripcion)}" />
@@ -117,8 +122,7 @@ function documento({ titulo, descripcion, prefijo, cuerpo, canonica, robots = ''
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#0f1218" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#f6f7f9" />
 <link rel="icon" href="${prefijo}assets/marca/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="${prefijo}assets/marca/favicon-32.png" sizes="32x32" type="image/png" />
 <link rel="apple-touch-icon" href="${prefijo}assets/marca/favicon-180.png" />
@@ -157,19 +161,18 @@ function heroe() {
     </div>
     <figure class="heroe__visual">
       <div class="heroe__dispositivos">
-        ${portatil('', 'citas-agenda', 'La agenda del día en un consultorio de ejemplo, con las citas de dos médicos.', { prioridad: true })}
-        ${telefono('', 'citas-registro', 'Una paciente de ejemplo llena sus datos en su teléfono.', { perezosa: false })}
+        ${portatil('', 'citas-nota', 'La nota del médico en el expediente de un paciente de ejemplo, con un botón «Dictar» en cada sección.', { prioridad: true })}
+        <div class="heroe__dictado">${dictado({ mini: true })}</div>
         <ul class="avisos" role="list" aria-hidden="true">${h.avisos.map((a, i) => `<li class="aviso aviso--${i + 1}"><span class="aviso__icono">${icono(a.icono)}</span><span><strong>${esc(a.titulo)}</strong><small>${esc(a.texto)}</small></span></li>`).join('')}</ul>
       </div>
-      <figcaption>Pantallas reales del sistema, con un consultorio de ejemplo y pacientes inventados.</figcaption>
+      <figcaption>Pantalla real del sistema, con un consultorio de ejemplo y pacientes inventados.</figcaption>
     </figure>
   </div>
 </section>`;
 }
 
-const confianza = () => `<section class="confianza" aria-label="Lo esencial">
-  <ul class="envoltura confianza__lista" role="list">${P.CONFIANZA.map((c) => `<li>${icono(c.icono)}${esc(c.texto)}</li>`).join('')}</ul>
-</section>`;
+// Lo que más importa de cada parte, en grande: el dictado del expediente y los recordatorios automáticos.
+const destacado = (p) => `<div class="destacado destacado--${p.id}"><span class="destacado__icono">${icono(p.destacado.icono)}</span><p><strong>${esc(p.destacado.titulo)}</strong><span>${esc(p.destacado.texto)}</span></p></div>`;
 
 function precioDeParte(id) {
   return id === 'agenda' ? `<span class="parte__desde">desde</span> <strong class="num">${dolares(P.PRECIOS.agenda[0].precio)}</strong>` : `<strong class="num">${dolares(P.PRECIOS.expediente)}</strong>`;
@@ -178,8 +181,8 @@ function precioDeParte(id) {
 const partes = () => `<section class="seccion envoltura" id="productos" aria-labelledby="productos-titulo">
   <div class="seccion__cabeza seccion__cabeza--centro">
     <p class="antetitulo">${icono('sparkle')}Dos partes: contratas lo que usas</p>
-    <h2 id="productos-titulo" class="seccion__titulo">Agenda y expediente, juntos o por separado</h2>
-    <p class="seccion__bajada">La agenda es para la recepción; el expediente, para el médico. Úsalos juntos o cada uno por su lado.</p>
+    <h2 id="productos-titulo" class="seccion__titulo">Expediente y agenda, juntos o por separado</h2>
+    <p class="seccion__bajada">El expediente es para el médico; la agenda, para la recepción. Úsalos juntos o cada uno por su lado.</p>
   </div>
   <div class="partes">
     ${P.PARTES.map(
@@ -188,6 +191,7 @@ const partes = () => `<section class="seccion envoltura" id="productos" aria-lab
       <h3 class="parte__nombre">${esc(p.nombre)}</h3>
       <p class="parte__resumen">${esc(p.resumen)}</p>
       <p class="parte__precio">${precioDeParte(p.id)} <span class="parte__unidad">${esc(p.unidad)}</span></p>
+      ${destacado(p)}
       <ul class="lista-check" role="list">${p.incluye.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
       <a class="parte__enlace" href="#${p.id}">Ver cómo funciona${icono('arrow-right')}</a>
     </article>`,
@@ -209,10 +213,11 @@ function chat() {
 </div>`;
 }
 
-function dictado() {
-  return `<div class="dictado" data-dictado role="img" aria-label="Ejemplo: la nota del médico se llena por secciones mientras dicta.">
+function dictado({ mini = false } = {}) {
+  const secciones = mini ? P.DICTADO.slice(0, 2) : P.DICTADO;
+  return `<div class="dictado${mini ? ' dictado--mini' : ''}" data-dictado role="img" aria-label="Ejemplo: el médico habla y la nota se va escribiendo por secciones, sin teclear.">
   <div class="dictado__cabeza"><strong>Nota del médico</strong><span class="dictado__mic">${icono('microphone')}<span>Dictando…</span></span></div>
-  ${P.DICTADO.map((d) => `<div class="dictado__seccion"><p class="dictado__titulo">${esc(d.seccion)}</p><p class="dictado__texto" data-texto="${esc(d.texto)}">${esc(d.texto)}</p></div>`).join('\n  ')}
+  ${secciones.map((d) => `<div class="dictado__seccion"><p class="dictado__titulo">${esc(d.seccion)}</p><p class="dictado__texto" data-texto="${esc(d.texto)}">${esc(d.texto)}</p></div>`).join('\n  ')}
 </div>`;
 }
 
@@ -265,6 +270,7 @@ function seccionParte(id) {
         <p>${esc(f.texto)}</p>
         ${f.puntos ? `<ul class="lista-check" role="list">${f.puntos.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>` : ''}
         ${f.pasos ? `<ol class="pasitos">${f.pasos.map((x) => `<li>${esc(x)}</li>`).join('')}</ol>` : ''}
+        ${f.nota ? `<p class="fila__nota">${esc(f.nota)}</p>` : ''}
       </div>
       <div class="fila__visual revelar">${visual(f.visual)}</div>
     </div>`,
@@ -302,36 +308,38 @@ function precios() {
     </div>
     <style>@supports selector(:has(*)) { .plan--agenda .plan__cifra:first-child { display: none; } ${ag.map((t) => `.plan--agenda:has(input[value="${t.mensajes}"]:checked) .plan__cifra[data-mensajes="${t.mensajes}"] { display: inline; }`).join(' ')} }</style>
     <div class="planes">
+      <article class="plan plan--expediente revelar" data-plan="expediente">
+        <div class="plan__cabeza"><span class="plan__icono">${icono(exp.icono)}</span><h3>${esc(exp.nombre)}</h3></div>
+        <p class="plan__para">Por cada médico que hace expedientes. La recepción, enfermería y administración no pagan.</p>
+        <p class="plan__precio"><span class="plan__cifra plan__cifra--fija"><strong class="num">${dolares(P.PRECIOS.expediente)}</strong></span><span class="plan__unidad">${esc(exp.unidad)}</span></p>
+        ${destacado(exp)}
+        <ul class="lista-check" role="list">${exp.incluye.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
+        <a class="boton boton--linea plan__boton" href="#prueba" data-elegir="expediente">Probar el expediente</a>
+      </article>
       <article class="plan plan--agenda revelar" data-plan="agenda">
-        <div class="plan__cabeza"><span class="plan__icono">${icono('calendar-check')}</span><h3>${esc(agenda.nombre)}</h3></div>
+        <div class="plan__cabeza"><span class="plan__icono">${icono(agenda.icono)}</span><h3>${esc(agenda.nombre)}</h3></div>
         <p class="plan__para">Para toda la clínica, con todos sus médicos.</p>
         <fieldset class="plan__mensajes">
           <legend>Mensajes de WhatsApp al mes</legend>
           <div class="segmentos">${ag.map((t, i) => `<label><input type="radio" name="plan-mensajes" value="${t.mensajes}"${i === 0 ? ' checked' : ''} /><span>${t.mensajes}</span></label>`).join('')}</div>
         </fieldset>
         <p class="plan__precio">${ag.map((t) => `<span class="plan__cifra" data-mensajes="${t.mensajes}"><strong class="num">${dolares(t.precio)}</strong><span class="sr"> con ${t.mensajes} mensajes</span></span>`).join('')}<span class="plan__unidad">${esc(agenda.unidad)}</span></p>
+        ${destacado(agenda)}
         <ul class="lista-check" role="list">${agenda.incluye.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
         <a class="boton boton--linea plan__boton" href="#prueba" data-elegir="agenda">Probar la agenda</a>
-      </article>
-      <article class="plan plan--expediente revelar" data-plan="expediente">
-        <div class="plan__cabeza"><span class="plan__icono">${icono('stethoscope')}</span><h3>${esc(exp.nombre)}</h3></div>
-        <p class="plan__para">Por cada médico que hace expedientes. La recepción, enfermería y administración no pagan.</p>
-        <p class="plan__precio"><span class="plan__cifra plan__cifra--fija"><strong class="num">${dolares(P.PRECIOS.expediente)}</strong></span><span class="plan__unidad">${esc(exp.unidad)}</span></p>
-        <ul class="lista-check" role="list">${exp.incluye.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
-        <a class="boton boton--linea plan__boton" href="#prueba" data-elegir="expediente">Probar el expediente</a>
       </article>
     </div>
     <div class="calculadora revelar" data-calculadora hidden>
       <h3 class="calculadora__titulo">${icono('currency-circle-dollar')}¿Cuánto pagaría tu clínica?</h3>
       <div class="calculadora__fila">
-        <label class="interruptor"><input type="checkbox" name="calc-agenda" checked /><span>Agenda de citas</span></label>
-        <label class="calculadora__dato"><span class="sr">Mensajes de WhatsApp al mes</span><select name="calc-mensajes">${ag.map((t) => `<option value="${t.mensajes}">${t.mensajes} mensajes al mes</option>`).join('')}</select></label>
-        <output class="calculadora__sub num" data-sub="agenda"></output>
-      </div>
-      <div class="calculadora__fila">
-        <label class="interruptor"><input type="checkbox" name="calc-expediente" checked /><span>Expediente clínico</span></label>
+        <label class="interruptor"><input type="checkbox" name="calc-expediente" checked /><span>${esc(exp.nombre)}</span></label>
         <div class="contador calculadora__dato"><button type="button" data-sumar="-1" aria-label="Un profesional menos">−</button><label><span class="sr">Profesionales</span><input type="number" name="calc-profesionales" min="1" max="50" value="2" inputmode="numeric" /></label><span class="contador__unidad">profesionales</span><button type="button" data-sumar="1" aria-label="Un profesional más">+</button></div>
         <output class="calculadora__sub num" data-sub="expediente"></output>
+      </div>
+      <div class="calculadora__fila">
+        <label class="interruptor"><input type="checkbox" name="calc-agenda" checked /><span>${esc(agenda.nombre)}</span></label>
+        <label class="calculadora__dato"><span class="sr">Mensajes de WhatsApp al mes</span><select name="calc-mensajes">${ag.map((t) => `<option value="${t.mensajes}">${t.mensajes} mensajes al mes</option>`).join('')}</select></label>
+        <output class="calculadora__sub num" data-sub="agenda"></output>
       </div>
       <div class="calculadora__total"><span>Total al mes</span><output class="num" data-total aria-live="polite"></output></div>
       <a class="boton boton--senal calculadora__boton" href="#prueba" data-elegir="calculadora">Probar este plan ${P.PRUEBA_DIAS} días gratis${icono('arrow-right')}</a>
@@ -370,10 +378,10 @@ function prueba() {
   <div class="envoltura prueba__fila">
     <div class="prueba__texto">
       <p class="antetitulo antetitulo--oscuro">${icono('sparkle')}${P.PRUEBA_DIAS} días gratis</p>
-      <h2 id="prueba-titulo" class="seccion__titulo">Pruébalo en tu consultorio</h2>
-      <p class="seccion__bajada">Te lo dejamos listo con tus médicos y tus pacientes. Sin tarjeta y sin plan anual.</p>
-      <ul class="lista-check lista-check--clara" role="list"><li>${icono('check')}Pasamos tus pacientes desde tu Excel</li><li>${icono('check')}Creamos el usuario de cada persona</li><li>${icono('check')}Te mostramos cómo se usa</li></ul>
-      ${directo ? `<p class="prueba__contacto">${directo}</p>` : ''}
+      <h2 id="prueba-titulo" class="seccion__titulo">${esc(P.PRUEBA.titulo)}</h2>
+      <p class="seccion__bajada">${esc(P.PRUEBA.bajada)}</p>
+      <ul class="lista-check lista-check--clara" role="list">${P.PRUEBA.puntos.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
+      ${directo ? `<p class="prueba__contacto">${directo}</p>` : `<p class="prueba__sin-contacto">${icono('envelope-simple')}${esc(P.PRUEBA.sinContacto)}</p>`}
     </div>
     ${
       hayContacto
@@ -386,8 +394,8 @@ function prueba() {
         <legend>¿Qué quieres probar?</legend>
         <div class="opciones">
           <label><input type="radio" name="interes" value="los dos" checked /><span>Los dos</span></label>
-          <label><input type="radio" name="interes" value="la agenda" /><span>La agenda</span></label>
           <label><input type="radio" name="interes" value="el expediente" /><span>El expediente</span></label>
+          <label><input type="radio" name="interes" value="la agenda" /><span>La agenda</span></label>
         </div>
       </fieldset>
       <label class="campo"><span>Algo más <small>(opcional)</small></span><textarea name="nota" rows="2" maxlength="400"></textarea></label>
@@ -414,8 +422,8 @@ function datosEstructurados() {
     description: sinMarcas(P.HEROE.bajada),
     provider: { '@id': `${URL_BASE}#organizacion` },
     offers: [
-      ...P.PRECIOS.agenda.map((t) => ({ '@type': 'Offer', name: `Agenda de citas, ${t.mensajes} mensajes de WhatsApp al mes`, price: t.precio, priceCurrency: 'USD', priceSpecification: mensual(t.precio, 'clínica') })),
-      { '@type': 'Offer', name: 'Expediente clínico', price: P.PRECIOS.expediente, priceCurrency: 'USD', priceSpecification: mensual(P.PRECIOS.expediente, 'profesional') },
+      { '@type': 'Offer', name: P.PARTES.find((p) => p.id === 'expediente').nombre, price: P.PRECIOS.expediente, priceCurrency: 'USD', priceSpecification: mensual(P.PRECIOS.expediente, 'profesional') },
+      ...P.PRECIOS.agenda.map((t) => ({ '@type': 'Offer', name: `${P.PARTES.find((p) => p.id === 'agenda').nombre}, ${t.mensajes} mensajes de WhatsApp al mes`, price: t.precio, priceCurrency: 'USD', priceSpecification: mensual(t.precio, 'clínica') })),
     ],
   };
   const faq = { '@type': 'FAQPage', mainEntity: P.PREGUNTAS.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };
@@ -424,17 +432,16 @@ function datosEstructurados() {
 
 function paginaInicio() {
   return documento({
-    titulo: `${P.PRODUCTO}: agenda y expediente clínico para consultorios en Panamá · alphateklab`,
-    descripcion: `Agenda con recordatorios por WhatsApp para que el paciente confirme, y el expediente de cada consulta con dictado e impresión para el folder. Desde ${dolares(P.DESDE)} al mes. Prueba ${P.PRUEBA_DIAS} días gratis.`,
+    titulo: `${P.PRODUCTO}: el expediente de tu paciente dictado con IA, sin escribir ni teclear · alphateklab`,
+    descripcion: `Dicta la nota de cada consulta y el sistema la escribe con IA, sin escribir a mano ni teclear. Y si quieres, la agenda con recordatorios automáticos por WhatsApp. Desde ${dolares(P.DESDE)} al mes. Prueba ${P.PRUEBA_DIAS} días gratis.`,
     prefijo: '',
     canonica: URL_BASE,
     datos: datosEstructurados(),
     cuerpo: () => `<main id="contenido">
 ${heroe()}
-${confianza()}
 ${partes()}
-${seccionParte('agenda')}
 ${seccionParte('expediente')}
+${seccionParte('agenda')}
 ${accesos()}
 ${precios()}
 ${pasos()}
@@ -477,7 +484,7 @@ function pagina404() {
     cuerpo: () => `<main id="contenido" class="envoltura texto-largo texto-largo--centro">
   <p class="antetitulo">${icono('question')}Error 404</p>
   <h1 class="texto-largo__titulo">Esta página no existe</h1>
-  <p>alphateklab ahora se dedica a ${esc(P.PRODUCTO)}: la agenda con recordatorios por WhatsApp y el expediente clínico para consultorios.</p>
+  <p>alphateklab ahora se dedica a ${esc(P.PRODUCTO)}: el expediente clínico que el médico dicta con IA, sin escribir ni teclear, y la agenda con recordatorios por WhatsApp.</p>
   <p><a class="boton boton--senal" href="${prefijo}">Ver ${esc(P.PRODUCTO)}</a></p>
 </main>`,
   });
@@ -485,9 +492,10 @@ function pagina404() {
 
 // /citasmed/: la dirección que se pensó primero para el producto; ahora el producto es todo el sitio.
 const paginaCitasmed = () => `<!doctype html>
-<html lang="es-PA">
+<html lang="es-PA" data-theme="light">
 <head>
 <meta charset="utf-8" />
+<script>try{if(localStorage.getItem('atk-tema')==='oscuro')document.documentElement.dataset.theme='dark'}catch(e){}</script>
 <title>${esc(P.PRODUCTO)} · alphateklab</title>
 <link rel="canonical" href="${URL_BASE}" />
 <meta name="robots" content="noindex" />

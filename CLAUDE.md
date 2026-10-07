@@ -11,15 +11,23 @@ en la rama **`sitio-agencia`**; para volver a él: `git checkout sitio-agencia -
   - Todo sale de `datos/producto.mjs`: los precios, las dos partes (Agenda y Expediente), las filas de funciones, la
     conversación del recordatorio, el dictado, la hoja impresa, los accesos, los pasos y las preguntas.
   - El contacto (WhatsApp y correo) sale de `datos/sitio.mjs`. Sin contacto, la portada sale sin el formulario de la
-    prueba. Para verlo en local: `WHATSAPP=507… CORREO=… node herramientas/generar-citas.mjs`, y antes de publicar,
+    prueba y dice que respondan el correo con el que les llegó la página (`PRUEBA.sinContacto`). Para verlo en local: `WHATSAPP=507… CORREO=… node herramientas/generar-citas.mjs`, y antes de publicar,
     generar otra vez sin esas variables.
 - **Precios (Edwin, 7-oct):** son netos, sin sumar ITBMS.
   - Expediente: $30 al mes por profesional (cada médico que hace expedientes; la recepción, enfermería y administración
     no pagan).
   - Agenda: $25, $35 o $45 al mes por clínica, con 200, 500 o 1000 mensajes de WhatsApp.
   - Prueba gratis de 7 días, sin tarjeta, y después mes a mes, sin plan anual.
-- **Estilo:** `assets/citas.css` sobre los tokens de `assets/atk.css`; el script es `js/citas.js` (menú, animaciones,
-  calculadora y formulario). Edwin pidió una portada con más vida, como las de los programas médicos grandes.
+- **Propuesta de valor (Edwin, 7-oct):** el expediente que el médico dicta con IA, sin escribir a mano ni teclear,
+  explicado para el médico joven y para el que no se lleva con la tecnología. El expediente va primero en todo (héroe,
+  tarjetas, secciones, precios, calculadora); la agenda después, explicada por lo que ahorra: la secretaria ya no llama
+  paciente por paciente. En las tarjetas de los planes, poco (lo destacado y lo esencial); el detalle, en las secciones.
+- **Cabecera y tema:** arriba solo el logo de alphateklab, como antes. La página sale en claro aunque el equipo esté en
+  oscuro, y el botón de la luna pasa al oscuro (se recuerda en `localStorage`, `atk-tema`); las capturas oscuras las
+  pone `js/citas.js` desde `data-oscuro`.
+- **Estilo:** `assets/citas.css` sobre los tokens de `assets/atk.css`; el script es `js/citas.js` (tema, menú,
+  animaciones, calculadora y formulario). Edwin pidió una portada con más vida, como las de los programas médicos
+  grandes.
   - **Movimiento:**
     - Las tarjetas del héroe entran con CSS.
     - Lo demás aparece al bajar con `animation-timeline: view()`.

@@ -1,5 +1,6 @@
 // Capturas para alphateklab.com (Citas Médicas): un día de un consultorio inventado («Dermatología Ríos», dos médicos),
-// en un servidor temporal del piloto. Salen, en claro y en oscuro: la agenda del día, el expediente de una cita,
+// en un servidor temporal del piloto. Salen, en claro y en oscuro: la agenda del día, el expediente de una cita (los
+// signos y la nota del médico),
 // Mensajes, Personal y accesos, y el registro por QR en el teléfono. Todo con datos inventados.
 // Uso: node herramientas/capturas-citas.mjs <carpeta-de-salida>
 //      (PILOTO=<carpeta> para usar otra copia del código del piloto; por defecto ~/alphateklab/piloto-citas)
@@ -162,17 +163,22 @@ try {
     await q.locator('dialog.dialogo').last().locator('[data-accion="expediente"]').click();
     const ex = q.locator('dialog.expediente');
     await ex.locator('[data-tomas] .entrada').first().waitFor();
-    await ex.evaluate((dlg) => {
-      const titulo = [...dlg.querySelectorAll('h2, h3, h4, legend, strong, span')].find((e) => e.textContent.trim() === 'Signos');
+    // Sube el diálogo hasta que el título quede arriba, debajo de la cabecera del diálogo (que queda pegada).
+    const subirA = (texto) => ex.evaluate((dlg, texto) => {
+      const titulo = [...dlg.querySelectorAll('h2, h3, h4, legend, strong, span')].find((e) => e.textContent.trim() === texto);
       let s = titulo;
       while (s && s !== document.body && !(s.scrollHeight > s.clientHeight + 2 && /(auto|scroll)/.test(getComputedStyle(s).overflowY))) s = s.parentElement;
-      // la cabecera del diálogo queda pegada arriba (sticky) y taparía el título: se deja su alto de aire
       const pegada = s && [...s.querySelectorAll('*')].find((e) => getComputedStyle(e).position === 'sticky' && e.getBoundingClientRect().top <= s.getBoundingClientRect().top + 4);
       const tapa = pegada ? pegada.getBoundingClientRect().bottom - s.getBoundingClientRect().top : 0;
       if (s && titulo) s.scrollTop += titulo.getBoundingClientRect().top - s.getBoundingClientRect().top - tapa - 20;
-    });
+    }, texto);
+    await subirA('Signos');
     await q.waitForTimeout(400);
     await q.screenshot({ path: join(SALIDA, `expediente${sufijo}.png`) });
+    // La nota del médico, con sus secciones y el botón «Dictar» de cada una (la de la portada).
+    await subirA('Nota del médico');
+    await q.waitForTimeout(400);
+    await q.screenshot({ path: join(SALIDA, `nota${sufijo}.png`) });
     for (let i = 0; i < 4 && await q.locator('dialog[open]').count(); i++) { await q.keyboard.press('Escape'); await q.waitForTimeout(150); }
     // Mensajes.
     await q.goto(`${BASE}bandeja.html`);

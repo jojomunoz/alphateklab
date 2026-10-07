@@ -3,6 +3,23 @@
 
 const reducir = matchMedia('(prefers-reduced-motion: reduce)');
 
+// ── tema: sale en claro (pedido de Edwin) y el botón pasa al oscuro; se recuerda en este navegador. El <head> ya lo
+// puso antes de pintar; aquí van las capturas oscuras, el botón y el color de la barra del navegador. ──
+const raiz = document.documentElement;
+const botonTema = document.querySelector('[data-tema]');
+function ponerTema(oscuro, guardar = true) {
+  raiz.dataset.theme = oscuro ? 'dark' : 'light';
+  for (const img of document.querySelectorAll('img[data-oscuro]')) img.srcset = oscuro ? img.dataset.oscuro : img.dataset.claro;
+  botonTema?.setAttribute('aria-pressed', String(oscuro));
+  botonTema?.setAttribute('aria-label', oscuro ? 'Usar el tema claro' : 'Usar el tema oscuro');
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', oscuro ? '#0f1218' : '#f6f7f9');
+  if (guardar) {
+    try { localStorage.setItem('atk-tema', oscuro ? 'oscuro' : 'claro'); } catch { /* sin almacenamiento: solo esta vez */ }
+  }
+}
+if (raiz.dataset.theme === 'dark') ponerTema(true, false);
+botonTema?.addEventListener('click', () => ponerTema(raiz.dataset.theme !== 'dark'));
+
 // ── cabecera: el filete al bajar y el menú del teléfono ──
 const cab = document.querySelector('[data-cab]');
 if (cab) {
@@ -94,9 +111,9 @@ if (chat && !reducir.matches) {
   );
 }
 
-// El dictado: las secciones de la nota se llenan palabra por palabra, como las va entendiendo el navegador.
-const dictado = document.querySelector('[data-dictado]');
-if (dictado && !reducir.matches) {
+// El dictado (el del héroe y el de su sección): las secciones de la nota se llenan palabra por palabra, como las va
+// entendiendo el navegador.
+for (const dictado of reducir.matches ? [] : document.querySelectorAll('[data-dictado]')) {
   const textos = [...dictado.querySelectorAll('[data-texto]')];
   mientrasSeVe(
     dictado,

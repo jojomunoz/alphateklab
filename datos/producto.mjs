@@ -2,9 +2,14 @@
 // aquí: los precios, lo que hace cada parte, las pantallas y las preguntas. Cambiar un precio es cambiar un número.
 //
 // Decisiones de Edwin (7-oct-2026):
-// - Dos productos que se contratan por separado: la Agenda (por clínica, con un paquete de mensajes de WhatsApp) y el
-//   Expediente (por profesional). Sin la agenda, el expediente funciona solo: el médico abre la consulta del paciente
-//   que llega y la recepción la imprime para el folder.
+// - La propuesta de valor es el expediente: que el médico sepa que puede dictar la nota de la consulta y no tiene que
+//   escribirla a mano ni teclearla. Se explica para el médico joven que sabe de tecnología y para el señor que no:
+//   con IA, y con palabras simples. El expediente va primero en toda la página; la agenda, después.
+// - Dos productos que se contratan por separado: el Expediente (por profesional) y la Agenda (por clínica, con un
+//   paquete de mensajes de WhatsApp). Sin la agenda, el expediente funciona solo: el médico abre la consulta del
+//   paciente que llega y la recepción la imprime para el folder.
+// - Los recordatorios por WhatsApp se explican por lo que ahorran: la secretaria ya no llama paciente por paciente.
+// - En las tarjetas de los planes, poco: lo esencial de cada parte. El detalle va en las secciones.
 // - Precios netos: van tal cual, sin sumar ITBMS. Prueba gratis de 7 días. Pago mes a mes, sin plan anual.
 // - «Profesional» es cada médico que hace expedientes; la recepción, enfermería y administración no pagan.
 
@@ -24,69 +29,76 @@ export const PRECIOS = {
 export const DESDE = Math.min(PRECIOS.expediente, ...PRECIOS.agenda.map((a) => a.precio));
 
 export const HEROE = {
-  antetitulo: 'Para clínicas y consultorios en Panamá',
+  antetitulo: `${PRODUCTO}, para clínicas y consultorios en Panamá`,
   // la parte entre [] va resaltada
-  titulo: 'Citas [confirmadas por WhatsApp] y expedientes en orden',
+  titulo: 'El expediente de tu paciente, [sin escribir a mano ni teclear]',
   bajada:
-    'La recepción agenda sin choques y el paciente confirma su cita por WhatsApp. El médico llena el expediente de cada consulta, dictando si quiere, y la recepción lo imprime para el folder. Contrata la agenda, el expediente o los dos.',
-  puntos: [`${PRUEBA_DIAS} días gratis, sin tarjeta`, 'Te lo dejamos listo con tus pacientes', `Desde $${DESDE} al mes`],
+    'Durante la consulta hablas y el sistema escribe la nota con IA, sección por sección. Tú la revisas y queda guardada; si trabajas con folder, la recepción la imprime. Y si quieres, también la agenda, con recordatorios automáticos por WhatsApp.',
+  puntos: [`${PRUEBA_DIAS} días gratis, sin tarjeta`, 'Sin instalar nada', `Desde $${DESDE} al mes`],
   // Las tarjetas que flotan sobre las pantallas del héroe (nombres inventados).
   avisos: [
-    { icono: 'whatsapp-logo', titulo: 'Recordatorio enviado', texto: 'Mañana 9:00 a. m., Dra. Ríos' },
-    { icono: 'check-circle', titulo: 'Confirmó su cita', texto: 'Carlos Méndez' },
-    { icono: 'heartbeat', titulo: 'Signos tomados', texto: 'PA 118/76, pulso 72' },
+    { icono: 'microphone', titulo: 'Dictando con IA', texto: 'Sin escribir ni teclear' },
+    { icono: 'check-circle', titulo: 'Nota guardada', texto: '10:04 a. m., Dra. Ríos' },
+    { icono: 'whatsapp-logo', titulo: 'Cita confirmada', texto: 'Por WhatsApp, sin llamar' },
   ],
 };
 
-export const CONFIANZA = [
-  { icono: 'map-pin', texto: 'Hecho en Panamá, en español' },
-  { icono: 'device-mobile', texto: 'En la computadora, la tableta o el celular' },
-  { icono: 'users-three', texto: 'Un usuario y sus permisos por persona' },
-  { icono: 'shield-check', texto: 'Consentimiento según la Ley 81 de 2019' },
-];
-
-// Las dos partes, como se contratan.
+// Las dos partes, como se contratan, en el orden de la página: primero el expediente.
 export const PARTES = [
+  {
+    id: 'expediente',
+    icono: 'stethoscope',
+    nombre: 'Expediente clínico con IA',
+    para: 'Para el médico',
+    resumen: 'Dictas la nota de cada consulta y queda escrita. Con o sin la agenda.',
+    destacado: { icono: 'microphone', titulo: 'Nota por secciones, con dictado por voz con IA', texto: 'Hablas y queda escrita: sin escribir a mano ni teclear.' },
+    incluye: ['Antecedentes: alergias, enfermedades, medicamentos y seguro'],
+    unidad: 'al mes por profesional',
+  },
   {
     id: 'agenda',
     icono: 'calendar-check',
     nombre: 'Agenda de citas',
     para: 'Para la recepción',
-    resumen: 'Citas sin choques, recordatorios por WhatsApp y la lista de a quién hay que llamar.',
-    incluye: [
-      'Agenda por médico y por consultorio, por día o por semana',
-      'Recordatorio por WhatsApp para que el paciente confirme',
-      'Quién no ha confirmado hoy y mañana',
-      'Registro del paciente por QR desde su teléfono',
-      'Lista de espera y sala de espera',
-      'Usuarios para todo el equipo',
-    ],
+    resumen: 'Citas sin choques y recordatorios automáticos por WhatsApp.',
+    destacado: { icono: 'whatsapp-logo', titulo: 'Recordatorios automáticos por WhatsApp', texto: 'Tu secretaria ya no llama paciente por paciente para confirmar.' },
+    incluye: ['Agenda por médico y por consultorio, por día o por semana', 'Quién no ha confirmado hoy y mañana', 'Registro del paciente por QR desde su teléfono', 'Lista de espera y sala de espera'],
     unidad: 'al mes por clínica',
-  },
-  {
-    id: 'expediente',
-    icono: 'stethoscope',
-    nombre: 'Expediente clínico',
-    para: 'Para el médico',
-    resumen: 'El expediente de cada consulta, con o sin la agenda, y la hoja lista para el folder.',
-    incluye: [
-      'Antecedentes: alergias, enfermedades, medicamentos y seguro',
-      'Signos vitales, con el IMC calculado',
-      'Nota por secciones, con dictado por voz',
-      'Resultados en PDF o foto, desde la computadora o el celular',
-      'La consulta impresa en tamaño carta para el folder',
-      'Historial del paciente con todas sus consultas',
-    ],
-    unidad: 'al mes por profesional',
   },
 ];
 
 // Las filas de cada parte: texto de un lado y su pantalla del otro. `visual`: la captura (assets/producto/<nombre>.webp,
 // con su versión -oscuro) o una de las animaciones de la página («chat», «dictado», «hoja»).
 export const FILAS = {
+  expediente: {
+    titulo: 'Dicta el expediente en vez de escribirlo',
+    bajada: 'Para el médico, con o sin la agenda: lo que antes escribías a mano o tecleabas, ahora lo dices y queda escrito, ordenado y legible.',
+    filas: [
+      {
+        titulo: 'Hablas y la nota queda escrita',
+        texto: 'Toca «Dictar» en la sección de la nota y habla como si se lo dictaras a tu asistente. La IA convierte tu voz en texto; tú lo revisas y lo guardas. Sin escribir a mano y sin teclear.',
+        pasos: ['Toca «Dictar» en la sección', 'Habla con calma, como le hablas a tu asistente', 'Revisa el texto y toca «Agregar»'],
+        nota: 'Funciona en Chrome, Edge y Safari, en la computadora, la tableta o el celular.',
+        visual: { tipo: 'dictado' },
+      },
+      {
+        titulo: 'Todo el expediente de la consulta, en orden',
+        texto: 'Los antecedentes, los signos que anota enfermería, la nota del médico por secciones y los resultados, en un solo lugar y legibles en la próxima consulta.',
+        puntos: ['Alergias y enfermedades a la vista en cada consulta', 'Resultados en PDF o foto, también con la cámara del celular', 'El historial con todas las consultas del paciente'],
+        visual: { tipo: 'portatil', imagen: 'citas-expediente', alt: 'El expediente de un paciente de ejemplo: los signos que tomó enfermería, los resultados y la nota del médico.' },
+      },
+      {
+        id: 'imprimir',
+        titulo: '¿Trabajas con folder? Imprime la consulta',
+        texto: 'Si tu clínica prefiere seguir con su secretaria y sus folders, no hay que cambiar eso: el médico dicta el expediente y, al terminar la consulta, la recepción lo imprime para el folder del paciente.',
+        pasos: ['El médico toca «Terminar consulta»', 'A la recepción le aparece en «Por imprimir»', 'Imprime la hoja tamaño carta y la guarda en el folder'],
+        visual: { tipo: 'hoja' },
+      },
+    ],
+  },
   agenda: {
     titulo: 'Que tus pacientes lleguen a su cita',
-    bajada: 'Para la recepción: citas sin choques, recordatorios por WhatsApp y la lista de a quién llamar.',
+    bajada: 'Para la recepción: citas sin choques y confirmaciones automáticas por WhatsApp, sin llamar paciente por paciente.',
     filas: [
       {
         titulo: 'La agenda del día, de un vistazo',
@@ -95,41 +107,16 @@ export const FILAS = {
         visual: { tipo: 'portatil', imagen: 'citas-agenda', alt: 'La agenda de un consultorio de ejemplo: las citas del día de la Dra. Ríos y del Dr. Herrera, con las confirmadas, las atendidas y quién está en la sala.' },
       },
       {
-        titulo: 'Recordatorios por WhatsApp que el paciente confirma',
-        texto: 'Uno o dos días antes, al paciente le llega su recordatorio con la fecha, la hora y el médico. Responde, y la recepción ve quién confirmó y a quién hay que llamar.',
-        puntos: ['200, 500 o 1000 mensajes al mes, según tu paquete', 'La lista de quién no ha confirmado hoy y mañana', 'Si no responde, se le vuelve a escribir'],
+        titulo: 'Recordatorios automáticos por WhatsApp',
+        texto: 'Tu secretaria ya no tiene que pasar la mañana llamando paciente por paciente para confirmar. Uno o dos días antes, el sistema le escribe a cada paciente por WhatsApp con la fecha, la hora y el médico, y el paciente confirma respondiendo.',
+        puntos: ['200, 500 o 1000 mensajes al mes, según tu paquete', 'Quién ya confirmó y quién no, de un vistazo', 'Si no responde, el sistema le vuelve a escribir'],
         visual: { tipo: 'chat' },
       },
       {
         titulo: 'El paciente se registra desde su teléfono',
         texto: 'Escanea un código QR en la recepción y llena sus datos: nombre, cédula o pasaporte, celular, alergias y seguro. Acepta ahí mismo el uso de sus datos.',
-        puntos: ['Sin hojas que pasar en limpio', 'La recepción lo ve llegar al momento', 'Tus pacientes de Excel también se pueden importar'],
+        puntos: ['Sin hojas que pasar en limpio', 'La recepción lo ve llegar al momento', 'Desde cualquier celular, sin instalar nada'],
         visual: { tipo: 'telefono', imagen: 'citas-registro', alt: 'El formulario «Tus datos» en el teléfono de una paciente de ejemplo, con su nombre, cédula y celular.' },
-      },
-    ],
-  },
-  expediente: {
-    titulo: 'El expediente de cada consulta, con o sin agenda',
-    bajada: 'Para el médico: lo que antes escribía a mano, ahora ordenado, legible y a la mano en la próxima consulta.',
-    filas: [
-      {
-        titulo: 'Signos, antecedentes y la nota del médico',
-        texto: 'Enfermería anota los signos y el médico escribe su nota por secciones: motivo, lo que refiere el paciente, examen, diagnóstico e indicaciones.',
-        puntos: ['Alergias y enfermedades a la vista en cada consulta', 'Resultados en PDF o foto, también con la cámara del celular', 'El historial con todas las consultas del paciente'],
-        visual: { tipo: 'portatil', imagen: 'citas-expediente', alt: 'El expediente de un paciente de ejemplo: los signos que tomó enfermería, los resultados y la nota del médico.' },
-      },
-      {
-        titulo: 'Dicta la nota mientras atiendes',
-        texto: 'Toca «Dictar» en la sección y habla. El texto aparece en la casilla para que lo revises antes de guardarlo.',
-        puntos: ['Por secciones, como ya escribes', 'Revisas y corriges antes de agregar', 'Funciona en Chrome, Edge y Safari'],
-        visual: { tipo: 'dictado' },
-      },
-      {
-        id: 'imprimir',
-        titulo: '¿Trabajas con folder? Imprime la consulta',
-        texto: 'Si tu clínica prefiere seguir con su secretaria y sus folders, no hay que cambiar eso: el médico llena el expediente y, al terminar la consulta, la recepción lo imprime para el folder del paciente.',
-        pasos: ['El médico toca «Terminar consulta»', 'A la recepción le aparece en «Por imprimir»', 'Imprime la hoja tamaño carta y la guarda en el folder'],
-        visual: { tipo: 'hoja' },
       },
     ],
   },
@@ -144,7 +131,7 @@ export const CHAT = {
   estado: 'Cita confirmada',
 };
 
-// La animación del dictado: el caso del expediente de las capturas.
+// La animación del dictado: el caso del expediente de las capturas. El héroe muestra las dos primeras secciones.
 export const DICTADO = [
   { seccion: 'Motivo de consulta', texto: 'Lesiones rojas con descamación en codos y rodillas desde hace dos meses.' },
   { seccion: 'Examen físico', texto: 'Placas bien delimitadas con escama plateada en ambos codos.' },
@@ -183,20 +170,29 @@ export const ACCESOS = {
 };
 
 export const PASOS = [
-  { titulo: 'Pides tu prueba', texto: 'Por WhatsApp o por correo. Nos dices cuántos médicos son y si quieres la agenda, el expediente o los dos.' },
-  { titulo: 'Te lo dejamos listo', texto: 'Ponemos a tus médicos, horarios y servicios, pasamos tus pacientes desde tu Excel y creamos el usuario de cada persona.' },
+  { titulo: 'Pides tu prueba', texto: 'Nos escribes y nos dices cuántos médicos son y si quieres el expediente, la agenda o los dos.' },
+  { titulo: 'Te lo dejamos listo', texto: 'Configuramos a tus médicos, sus horarios y las secciones de su nota, y creamos el usuario de cada persona.' },
   { titulo: `Lo usas ${PRUEBA_DIAS} días gratis`, texto: 'Con todo incluido. Si te sirve, sigues mes a mes; si no, no pagas nada.' },
 ];
 
+export const PRUEBA = {
+  titulo: 'Pruébalo en tu consultorio',
+  bajada: 'Dicta tus primeros expedientes esta semana. Sin tarjeta y sin plan anual.',
+  puntos: ['El dictado con IA, incluido en la prueba', 'Creamos el usuario de cada persona', 'Te mostramos cómo se usa'],
+  // Mientras no haya WhatsApp ni correo en datos/sitio.mjs: los doctores llegan desde el correo que les mandamos.
+  sinContacto: 'Para pedirla, responde el correo con el que te llegó esta página y te escribimos.',
+};
+
 export const PREGUNTAS = [
+  ['¿Cómo funciona el dictado con IA?', 'Tocas «Dictar» en la sección de la nota y hablas. La IA convierte tu voz en texto en la casilla; lo revisas, corriges si hace falta y tocas «Agregar». No hace falta escribir a mano ni teclear. Funciona en Chrome, Edge y Safari.'],
+  ['¿Y si no me llevo bien con la tecnología?', 'Es un botón: tocas «Dictar», hablas y revisas lo que quedó escrito. En la prueba te mostramos cómo se usa, paso a paso.'],
   ['¿Tengo que instalar algo?', 'No. Se usa en el navegador de la computadora, la tableta o el celular que ya tienes. Solo necesitas internet.'],
-  ['¿Puedo contratar solo el expediente?', 'Sí. El expediente funciona sin la agenda: el médico abre la consulta del paciente que llega, la llena y, si trabajan con folder, la recepción la imprime al terminar.'],
-  ['¿Puedo contratar solo la agenda?', 'Sí. Tienes las citas, los recordatorios por WhatsApp, el registro de pacientes y la lista de espera, sin el expediente.'],
+  ['¿Puedo contratar solo el expediente?', 'Sí. El expediente funciona sin la agenda: el médico abre la consulta del paciente que llega, la dicta y, si trabajan con folder, la recepción la imprime al terminar.'],
+  ['¿Puedo contratar solo la agenda?', 'Sí. Tienes las citas, los recordatorios automáticos por WhatsApp, el registro de pacientes y la lista de espera, sin el expediente.'],
   ['¿Qué cuenta como profesional?', 'Cada médico que hace expedientes. La recepción, enfermería y administración tienen su propio usuario sin costo.'],
   ['¿Qué pasa si se me acaban los mensajes del mes?', 'Te avisamos para pasar al paquete siguiente. Mientras tanto, los recordatorios que falten se mandan con un toque desde el WhatsApp del consultorio.'],
-  ['¿Puedo pasar mis pacientes desde Excel?', 'Sí. Los importamos desde un Excel o un CSV: nombre, cédula o pasaporte, celular, correo, fecha de nacimiento, alergias, enfermedades, medicamentos y seguro.'],
+  ['¿Puedo pasar mis pacientes desde Excel?', 'Sí. El sistema importa tus pacientes desde un Excel o un CSV: nombre, cédula o pasaporte, celular, correo, fecha de nacimiento, alergias, enfermedades, medicamentos y seguro.'],
   ['¿Quién puede ver los expedientes?', 'Solo las personas a las que les das ese acceso. La recepción puede agendar sin ver el expediente; si le das «Imprimir expedientes», lo puede ver e imprimir, pero no cambiar.'],
-  ['¿Cómo dicta el médico?', 'Toca «Dictar» en la sección de la nota y habla; el texto aparece en la casilla para revisarlo antes de guardarlo. Funciona en Chrome, Edge y Safari.'],
-  [`¿Cómo es la prueba de ${PRUEBA_DIAS} días?`, 'Te dejamos el sistema listo con tus datos y lo usas una semana con todo incluido. No pedimos tarjeta.'],
+  [`¿Cómo es la prueba de ${PRUEBA_DIAS} días?`, 'Te dejamos el sistema listo y lo usas una semana con todo incluido. No pedimos tarjeta.'],
   ['¿Hay contrato o plan anual?', 'No. Después de la prueba pagas mes a mes.'],
 ];
