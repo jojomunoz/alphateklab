@@ -1,4 +1,51 @@
-# alphateklab · sitio de la agencia
+# alphateklab · sitio de Citas Médicas (desde el 7-oct-2026)
+
+Desde el 7-oct-2026 alphateklab.com vende solo **Citas Médicas**, el sistema de agenda y expediente para clínicas y
+consultorios (decisión de Edwin). La portada es una sola página larga, con privacidad, 404 y /citasmed/ (lleva a la
+portada). El sitio de la agencia (catálogo de servicios, soluciones por negocio, guías, demos, cotizador) quedó entero
+en la rama **`sitio-agencia`**; para volver a él: `git checkout sitio-agencia -- .` sobre `main` (o publicar esa rama).
+
+- **Generar:** `node herramientas/generar-citas.mjs`. Escribe `index.html`, `privacidad/`, `404.html`,
+  `citasmed/`, `sitemap.xml` y `robots.txt`. No se editan a mano los HTML generados.
+- **Contenido:**
+  - Todo sale de `datos/producto.mjs`: los precios, las dos partes (Agenda y Expediente), las filas de funciones, la
+    conversación del recordatorio, el dictado, la hoja impresa, los accesos, los pasos y las preguntas.
+  - El contacto (WhatsApp y correo) sale de `datos/sitio.mjs`. Sin contacto, la portada sale sin el formulario de la
+    prueba. Para verlo en local: `WHATSAPP=507… CORREO=… node herramientas/generar-citas.mjs`, y antes de publicar,
+    generar otra vez sin esas variables.
+- **Precios (Edwin, 7-oct):** son netos, sin sumar ITBMS.
+  - Expediente: $30 al mes por profesional (cada médico que hace expedientes; la recepción, enfermería y administración
+    no pagan).
+  - Agenda: $25, $35 o $45 al mes por clínica, con 200, 500 o 1000 mensajes de WhatsApp.
+  - Prueba gratis de 7 días, sin tarjeta, y después mes a mes, sin plan anual.
+- **Estilo:** `assets/citas.css` sobre los tokens de `assets/atk.css`; el script es `js/citas.js` (menú, animaciones,
+  calculadora y formulario). Edwin pidió una portada con más vida, como las de los programas médicos grandes.
+  - **Movimiento:**
+    - Las tarjetas del héroe entran con CSS.
+    - Lo demás aparece al bajar con `animation-timeline: view()`.
+    - La conversación y el dictado se animan solo mientras se ven.
+    - Con «reducir movimiento», o sin soporte, todo queda quieto y visible: nada espera al JavaScript para verse.
+  - **Lo que no lleva:** testimonios, logos de clientes ni cifras sin fuente.
+- **Pantallas:**
+  - Son capturas reales del piloto (`~/alphateklab/piloto-citas`) con un consultorio y pacientes inventados.
+  - `node herramientas/capturas-citas.mjs <carpeta>` las saca en claro y oscuro, levantando un servidor temporal del
+    piloto (`PILOTO=<carpeta>` para otra copia del código).
+  - `node herramientas/imagenes-citas.mjs <carpeta>` las pasa a WebP en `assets/producto/citas-*.webp`.
+  - `node herramientas/og-citas.mjs` rehace `assets/og-citas.jpg`, la imagen al compartir.
+- **Pruebas (cerrojos):**
+  - `node --test pruebas/citas.test.mjs pruebas/sintaxis.test.mjs` revisa que lo publicado esté al día con `datos/`,
+    los precios, los enlaces, las imágenes y los datos estructurados.
+  - `node pruebas/navegador/citas.mjs <url>` (también con `MOTOR=webkit`) revisa de 320 a 1440 px, la consola, el
+    menú, los paquetes, la calculadora, el formulario, las animaciones, el modo oscuro y los títulos.
+  - Correr las dos contra local y contra el sitio en vivo después de cada push.
+- **Pendiente (7-oct):** quitar del repositorio las páginas y fuentes del sitio de la agencia que siguen en `main`
+  (`servicios/`, `soluciones/`, `guias/`, `laboratorio/`, `cotizar/`, `diagnostico/`, `creditos/`, sus `datos/`, `js/`,
+  pruebas y herramientas). La portada ya no las enlaza, pero se abren por su dirección. Están a salvo en
+  `sitio-agencia`.
+
+Lo de abajo describe el sitio de la agencia (rama `sitio-agencia`).
+
+# Sitio de la agencia (hasta el 6-oct-2026)
 
 Sitio estático (https://alphateklab.com/, en la raíz del dominio; antes en GitHub Pages, https://jojomunoz.github.io/alphateklab/). Sin build en el navegador: HTML, CSS y
 módulos ES. Las páginas del catálogo se generan con `node herramientas/generar.mjs` a partir de `datos/catalogo.mjs`

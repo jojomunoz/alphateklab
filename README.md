@@ -1,12 +1,43 @@
-# alphateklab
+# alphateklab · Citas Médicas
 
-Sitio de **alphateklab**, software para negocios en Panamá: software a medida, páginas web y apps, asistentes de
-WhatsApp con inteligencia artificial, automatizaciones, cobros y factura electrónica. Solo software: no vende ni instala
-equipos (desde oct-2026).
+Desde el 7-oct-2026, **alphateklab.com** presenta un solo producto: **Citas Médicas**, la agenda con recordatorios por
+WhatsApp y el expediente clínico para clínicas y consultorios de Panamá. Se contratan por separado:
 
-Dominio: https://alphateklab.com/ (el sitio va en la raíz del dominio; antes estaba en https://jojomunoz.github.io/alphateklab/).
+- **Expediente:** $30 al mes por profesional.
+- **Agenda:** $25, $35 o $45 al mes por clínica, con 200, 500 o 1000 mensajes.
+- **Prueba:** 7 días gratis.
+
+Dominio: https://alphateklab.com/ (GitHub Pages de este repositorio, rama `main`).
 
 ## Qué hay
+
+| Ruta | Qué es |
+|---|---|
+| `index.html` | La portada: las dos partes, cómo funciona cada una (con capturas reales y animaciones), accesos, precios con calculadora, cómo empezar, preguntas y el formulario de la prueba |
+| `privacidad/` | Qué datos trata el sitio (ninguno) |
+| `citasmed/` | Lleva a la portada |
+| `404.html` | Página que no existe |
+
+## Cómo se cambia
+
+Todo el contenido está en `datos/producto.mjs` (precios, textos, preguntas) y `datos/sitio.mjs` (contacto):
+
+```sh
+node herramientas/generar-citas.mjs                        # escribe las páginas
+node --test pruebas/citas.test.mjs pruebas/sintaxis.test.mjs
+node herramientas/servir.mjs                               # y abrir http://localhost:4900/alphateklab/
+node pruebas/navegador/citas.mjs http://localhost:4900/alphateklab/
+```
+
+Las capturas salen del piloto del sistema con datos inventados: `node herramientas/capturas-citas.mjs <carpeta>`,
+`node herramientas/imagenes-citas.mjs <carpeta>` y `node herramientas/og-citas.mjs`.
+
+## El sitio de la agencia
+
+El sitio de la agencia (catálogo de servicios, soluciones por negocio, guías y demos) está en la rama
+`sitio-agencia`. Lo que sigue lo describe.
+
+## Qué había (sitio de la agencia)
 
 | Ruta | Qué es |
 |---|---|

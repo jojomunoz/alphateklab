@@ -1,13 +1,13 @@
 {
   "name": "alphateklab-sitio",
   "private": true,
-  "description": "Sitio de alphateklab: se genera con node herramientas/generar.mjs y se publica en GitHub Pages desde main. Ver CLAUDE.md.",
+  "description": "Sitio de Citas Médicas de alphateklab: se genera con node herramientas/generar-citas.mjs y se publica en GitHub Pages desde main. Ver CLAUDE.md.",
   "scripts": {
-    "generar": "node herramientas/generar.mjs",
-    "prueba": "node --test pruebas/*.test.mjs pruebas/control/*.test.mjs",
-    "prueba:sitio": "node pruebas/navegador/sitio.mjs http://localhost:4900/alphateklab/",
-    "prueba:interaccion": "node pruebas/navegador/interaccion.mjs http://localhost:4900/alphateklab/",
-    "bateria": "node pruebas/control/medir.mjs"
+    "generar": "node herramientas/generar-citas.mjs",
+    "prueba": "node --test pruebas/citas.test.mjs pruebas/sintaxis.test.mjs",
+    "prueba:navegador": "node pruebas/navegador/citas.mjs http://localhost:4900/alphateklab/",
+    "capturas": "node herramientas/capturas-citas.mjs",
+    "og": "node herramientas/og-citas.mjs"
   },
   "devDependencies": {
     "playwright": "1.61.1"

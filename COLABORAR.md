@@ -7,7 +7,7 @@ repositorio está en su `CLAUDE.md` y su `README.md`. Aquí va cómo entran los 
 
 | Repositorio | Publicado en | Qué es |
 |---|---|---|
-| `jojomunoz/alphateklab` | https://jojomunoz.github.io/alphateklab/ (rama `solo-software`: https://alphateklab.com/) | El sitio: catálogo de 47 servicios (solo software), 8 páginas por negocio, buscador, diagnóstico, «Pregúntanos» y el índice de las demos |
+| `jojomunoz/alphateklab` | https://alphateklab.com/ | Desde el 7-oct-2026, la portada de Citas Médicas (agenda y expediente para consultorios). El sitio de la agencia quedó en la rama `sitio-agencia` |
 | `jojomunoz/alphateklab-mesa` | https://jojomunoz.github.io/alphateklab-mesa/ | Demo de pedir y pagar desde la mesa: carta QR, salón, cocina, kiosco y administración |
 | `jojomunoz/alphateklab-reservas` | https://jojomunoz.github.io/alphateklab-reservas/ | Demo de citas con recordatorios y de reservas de cabañas por canal |
 
@@ -37,11 +37,10 @@ junto con un `preparar.sh` que clona los tres por SSH con ellas. Jonathan las re
 1. **Nada directo a `main`** salvo que Jonathan lo autorice (Jonathan y Edwin sí empujan a `main`). Los demás trabajan
    en una rama o en un fork y abren un pull request contra `main`.
 2. **Antes de empujar o de abrir el pull request**, en el sitio:
-   - `node herramientas/generar.mjs`. Las páginas se generan desde `datos/` y el resultado se versiona. Los HTML no se
-     editan a mano.
-   - `node --test pruebas/*.test.mjs pruebas/control/*.test.mjs`
-   - `node pruebas/navegador/sitio.mjs http://localhost:4900/alphateklab/` y
-     `node pruebas/navegador/interaccion.mjs http://localhost:4900/alphateklab/`
+   - `node herramientas/generar-citas.mjs`. Las páginas se generan desde `datos/` y el resultado se versiona. Los HTML
+     no se editan a mano. (En la rama `sitio-agencia`, el generador de antes: `node herramientas/generar.mjs`.)
+   - `node --test pruebas/citas.test.mjs pruebas/sintaxis.test.mjs`
+   - `node pruebas/navegador/citas.mjs http://localhost:4900/alphateklab/` (y con `MOTOR=webkit`)
    - Mirarlo en el navegador a 1440 px y a 390 px, en claro y en oscuro.
 
    En las demos: `node --test pruebas/` y su recorrido (`herramientas/recorrido.mjs`; ver el README de cada una).
@@ -52,12 +51,12 @@ junto con un `preparar.sh` que clona los tres por SSH con ellas. Jonathan las re
    - cómo se comprobó, con las cifras;
    - lo que no se hizo o quedó a medias.
 5. **Una cosa por commit**, chico. Antes de empezar, `git pull --rebase` y avisar qué parte se toma, para no tocar a la
-   vez los mismos archivos que otra persona. Los más compartidos son `herramientas/generar.mjs` y `assets/sitio.css`.
+   vez los mismos archivos que otra persona. Los más compartidos son `datos/producto.mjs`, `herramientas/generar-citas.mjs` y `assets/citas.css`.
    Antes de empujar, otra vez `git pull --rebase`. Si chocan los archivos generados (los `.html`, `assets/indice.json`),
    se resuelven primero las fuentes (`datos/`, `herramientas/`, `js/`, `assets/*.css`), se vuelve a correr
-   `node herramientas/generar.mjs` y se agrega lo generado. Nunca `git push --force` a `main`.
+   `node herramientas/generar-citas.mjs` y se agrega lo generado. Nunca `git push --force` a `main`.
 6. **Después de empujar**, mirar que GitHub Pages haya publicado (uno o dos minutos) y correr las dos pruebas de
-   navegador contra el sitio publicado (cambiando `http://localhost:4900` por `https://jojomunoz.github.io`).
+   navegador contra el sitio publicado (`https://alphateklab.com/`).
 7. **Verificar contra el artefacto** (el código, la página en el navegador, el sitio publicado) y no contra la memoria
    ni contra una nota.
 
