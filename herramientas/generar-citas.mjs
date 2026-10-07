@@ -492,10 +492,9 @@ function pagina404() {
 
 // /citasmed/: la dirección que se pensó primero para el producto; ahora el producto es todo el sitio.
 const paginaCitasmed = () => `<!doctype html>
-<html lang="es-PA" data-theme="light">
+<html lang="es-PA">
 <head>
 <meta charset="utf-8" />
-<script>try{if(localStorage.getItem('atk-tema')==='oscuro')document.documentElement.dataset.theme='dark'}catch(e){}</script>
 <title>${esc(P.PRODUCTO)} · alphateklab</title>
 <link rel="canonical" href="${URL_BASE}" />
 <meta name="robots" content="noindex" />
