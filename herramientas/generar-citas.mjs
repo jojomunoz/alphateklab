@@ -94,7 +94,7 @@ function pie(prefijo) {
     <a class="pie__marca" href="${prefijo || './'}">${logo(prefijo, 'alphateklab')}</a>
     <nav aria-label="Al pie"><ul class="pie__enlaces"><li><a href="${prefijo}#precios">Precios</a></li><li><a href="${prefijo}#preguntas">Preguntas</a></li><li><a href="${prefijo || './'}privacidad/">Privacidad</a></li>${contacto}</ul></nav>
   </div>
-  <p class="envoltura pie__nota">Las pantallas muestran un consultorio de ejemplo con pacientes inventados. Precios en dólares, al mes. Actualizado el ${esc(ACTUALIZADO.texto)}.</p>
+  <p class="envoltura pie__nota">Las pantallas muestran un consultorio de ejemplo con pacientes ficticios. Precios en dólares, al mes. Actualizado el ${esc(ACTUALIZADO.texto)}.</p>
 </footer>`;
 }
 
@@ -165,7 +165,7 @@ function heroe() {
         <div class="heroe__dictado">${dictado({ mini: true })}</div>
         <ul class="avisos" role="list" aria-hidden="true">${h.avisos.map((a, i) => `<li class="aviso aviso--${i + 1}"><span class="aviso__icono">${icono(a.icono)}</span><span><strong>${esc(a.titulo)}</strong><small>${esc(a.texto)}</small></span></li>`).join('')}</ul>
       </div>
-      <figcaption>Pantalla real del sistema, con un consultorio de ejemplo y pacientes inventados.</figcaption>
+      <figcaption>Pantalla real del sistema, con un consultorio de ejemplo y pacientes ficticios.</figcaption>
     </figure>
   </div>
 </section>`;
@@ -467,7 +467,7 @@ function paginaPrivacidad() {
   <p>El formulario para pedir la prueba arma el mensaje en tu navegador. Solo sale de tu equipo si tú lo mandas por WhatsApp o por correo, y desde ahí rigen las políticas de esos servicios. Las fuentes y las imágenes se sirven desde este mismo sitio.</p>
   <h2>El sistema Citas Médicas</h2>
   <p>Los datos de los pacientes que un consultorio guarda en el sistema son de ese consultorio. Antes de guardarlos, el paciente acepta su uso según la Ley 81 de 2019, en la recepción o desde su teléfono, y queda la fecha y la forma en que lo aceptó.</p>
-  <p>Las pantallas de este sitio muestran un consultorio de ejemplo con pacientes inventados.</p>
+  <p>Las pantallas de este sitio muestran un consultorio de ejemplo con pacientes ficticios.</p>
   <p><a href="${prefijo}">Volver al inicio</a></p>
 </main>`,
   });
