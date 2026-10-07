@@ -50,9 +50,9 @@ try {
     assert.deepEqual(malos, []);
   });
 
-  await paso('sin errores en la consola ni recursos rotos (portada, privacidad, /citasmed/)', async () => {
+  await paso('sin errores en la consola ni recursos rotos (portada, privacidad, /citasmed/, entrar/)', async () => {
     const errores = [];
-    for (const ruta of ['', 'privacidad/', 'citasmed/']) {
+    for (const ruta of ['', 'privacidad/', 'citasmed/', 'entrar/']) {
       const c = await b.newContext({ viewport: { width: 1280, height: 860 } });
       const p = await c.newPage();
       p.on('console', (m) => m.type() === 'error' && errores.push(`${ruta}: ${m.text()}`));
@@ -159,6 +159,35 @@ try {
     const q = new URL(pedida).searchParams;
     assert.deepEqual([q.get('expediente'), q.get('profesionales'), q.get('agenda'), q.get('mensajes')], ['1', '3', '1', String(PRECIOS.agenda[2].mensajes)]);
     await c.close();
+  });
+
+  await paso('«Iniciar sesión» arriba lleva a entrar/, y con el usuario se pasa al sistema de la clínica', async () => {
+    const { c, p } = await abrir();
+    const enlace = p.locator('[data-entrar-cab]');
+    if (!(await enlace.count())) { await c.close(); return; } // sin el registro en línea no hay «Iniciar sesión»
+    assert.equal((await enlace.innerText()).trim(), 'Iniciar sesión');
+    // El sistema de cada clínica está en otro dominio: aquí se ataja y se mira a dónde iba.
+    await c.route(/^https:\/\/[a-z0-9-]+\.alphateklab\.com\//, (r) => r.fulfill({ status: 200, contentType: 'text/html', body: '<p>sistema de la clínica</p>' }));
+    await enlace.click();
+    await p.waitForURL(/\/entrar\/$/);
+    await p.fill('[name=usuario]', 'ana@ejemplo.com');
+    await p.click('[data-entrar] [type=submit]');
+    assert.match(await p.textContent('[data-error]'), /Con el correo no sabemos cuál es tu sistema/);
+    await p.fill('[name=usuario]', ' LuisPrueba.Secretaria ');
+    assert.equal(await p.textContent('[data-destino]'), 'Vas a entrar a luisprueba.alphateklab.com');
+    await p.click('[data-entrar] [type=submit]');
+    await p.waitForURL(/^https:\/\/luisprueba\.alphateklab\.com\/entrar\.html\?usuario=luisprueba\.secretaria$/);
+    // Al volver, recuerda el usuario; y pegar la dirección también sirve.
+    await p.goto(BASE + 'entrar/');
+    assert.equal(await p.inputValue('[name=usuario]'), 'luisprueba.secretaria');
+    await p.fill('[name=usuario]', 'https://clinica-alpha.alphateklab.com/citas.html');
+    assert.equal(await p.textContent('[data-destino]'), 'Vas a entrar a clinica-alpha.alphateklab.com');
+    await c.close();
+    // En el teléfono dice «Entrar» y cabe.
+    const tel = await abrir({ viewport: { width: 320, height: 700 } });
+    assert.equal((await tel.p.locator('[data-entrar-cab]').innerText()).trim(), 'Entrar');
+    assert.ok(await tel.p.locator('[data-entrar-cab]').isVisible());
+    await tel.c.close();
   });
 
   await paso('la conversación y el dictado se animan al verse, y quedan quietos con «reducir movimiento»', async () => {

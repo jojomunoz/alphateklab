@@ -22,7 +22,7 @@ test('lo publicado está al día: generar otra vez da lo mismo', () => {
     delete env.WHATSAPP;
     delete env.CORREO;
     execFileSync(process.execPath, [join(RAIZ, 'herramientas/generar-citas.mjs')], { env, stdio: 'pipe' });
-    for (const r of [...PAGINAS, 'terminos/index.html', ...(REGISTRO ? ['registro/index.html'] : []), 'citasmed/index.html', 'sitemap.xml', 'robots.txt']) assert.equal(readFileSync(join(dir, r), 'utf8'), leer(r), `${r}: corre node herramientas/generar-citas.mjs`);
+    for (const r of [...PAGINAS, 'terminos/index.html', ...(REGISTRO ? ['registro/index.html', 'entrar/index.html'] : []), 'citasmed/index.html', 'sitemap.xml', 'robots.txt']) assert.equal(readFileSync(join(dir, r), 'utf8'), leer(r), `${r}: corre node herramientas/generar-citas.mjs`);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -106,6 +106,19 @@ test('«Probar gratis» lleva al registro si está en línea; si no, al formular
   const hay = Boolean(CONTACTO.whatsapp || CONTACTO.correo);
   assert.equal(/data-prueba/.test(html), hay);
   if (CONTACTO.whatsapp) assert.ok(html.includes(`https://wa.me/${CONTACTO.whatsapp}`));
+});
+
+test('«Iniciar sesión» arriba (con el registro en línea) lleva a entrar/, que pasa al sistema de la clínica', () => {
+  if (!REGISTRO) return;
+  for (const r of ['index.html', 'privacidad/index.html', 'terminos/index.html']) {
+    const html = leer(r);
+    assert.match(html, /<a class="boton boton--linea cab__entrar" href="[^"]*entrar\/" data-entrar-cab><span class="cab__entrar-largo">Iniciar sesión<\/span>/, `${r}: el botón arriba`);
+    assert.match(html, /<li><a href="[^"]*entrar\/">Iniciar sesión<\/a><\/li>/, `${r}: y en el menú del teléfono`);
+  }
+  const e = leer('entrar/index.html');
+  assert.match(e, /<meta name="robots" content="noindex" \/>/);
+  assert.ok(e.includes('var DOMINIO = "alphateklab.com"') && e.includes("'/entrar.html?usuario='"), 'pasa a <usuario>.alphateklab.com/entrar.html');
+  assert.equal(leer('sitemap.xml').includes('entrar/'), false, 'no va en el sitemap');
 });
 
 test('/citasmed/ lleva a la portada y el sitemap tiene las páginas', () => {

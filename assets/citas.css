@@ -207,6 +207,22 @@ body.citas {
   min-height: 42px;
   padding: 0.6em 1em;
 }
+/* «Iniciar sesión» (en el teléfono, «Entrar»: no cabe más). */
+.cab__entrar {
+  min-height: 42px;
+  padding: 0.6em 0.9em;
+}
+.cab__entrar-corto {
+  display: none;
+}
+@media (max-width: 599px) {
+  .cab__entrar-largo {
+    display: none;
+  }
+  .cab__entrar-corto {
+    display: inline;
+  }
+}
 .cab__tema {
   display: grid;
   place-items: center;
@@ -2037,4 +2053,35 @@ body.citas {
   .dictado__texto.escribiendo::after {
     animation: none !important;
   }
+}
+
+/* ── alphateklab.com/entrar/: «Iniciar sesión» ── */
+.entrar__form {
+  display: grid;
+  gap: 12px;
+  max-width: 24rem;
+  margin: 24px auto 8px;
+  text-align: left;
+}
+.entrar__form .boton {
+  width: 100%;
+}
+.entrar__destino {
+  min-height: 1.4em;
+  margin: 0;
+  color: var(--tinta-2);
+  font-size: var(--t-s);
+}
+.entrar__error {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: var(--r-1);
+  background: var(--peligro-fondo);
+  color: var(--peligro);
+  font-size: var(--t-s);
+  font-weight: 600;
+}
+.entrar__nota {
+  margin-top: 16px;
+  color: var(--tinta-2);
 }

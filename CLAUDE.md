@@ -5,8 +5,10 @@ consultorios (decisión de Edwin). La portada es una sola página larga, con pri
 portada). El sitio de la agencia (catálogo de servicios, soluciones por negocio, guías, demos, cotizador) quedó entero
 en la rama **`sitio-agencia`**; para volver a él: `git checkout sitio-agencia -- .` sobre `main` (o publicar esa rama).
 
-- **Generar:** `node herramientas/generar-citas.mjs`. Escribe `index.html`, `privacidad/`, `404.html`,
-  `citasmed/`, `sitemap.xml` y `robots.txt`. No se editan a mano los HTML generados.
+- **Generar:** `node herramientas/generar-citas.mjs`. Escribe `index.html`, `privacidad/`, `terminos/`, `404.html`,
+  `citasmed/`, `sitemap.xml` y `robots.txt`; con el registro en línea (`REGISTRO` en `datos/sitio.mjs`), también
+  `registro/` y `entrar/`. No se editan a mano los HTML generados. Ojo: en los scripts que van dentro de una plantilla
+  del generador, las barras invertidas van dobles (`\\s`, `\\/`); si no, se pierden y el script no corre.
 - **Contenido:**
   - Todo sale de `datos/producto.mjs`: los precios, las dos partes (Agenda y Expediente), las filas de funciones, la
     conversación del recordatorio, el dictado, la hoja impresa, los accesos, los pasos y las preguntas.
@@ -22,6 +24,9 @@ en la rama **`sitio-agencia`**; para volver a él: `git checkout sitio-agencia -
   explicado para el médico joven y para el que no se lleva con la tecnología. El expediente va primero en todo (héroe,
   tarjetas, secciones, precios, calculadora); la agenda después, explicada por lo que ahorra: la secretaria ya no llama
   paciente por paciente. En las tarjetas de los planes, poco (lo destacado y lo esencial); el detalle, en las secciones.
+- **Iniciar sesión (Edwin, 7-oct):** arriba, «Iniciar sesión» (en el teléfono, «Entrar») lleva a `entrar/`: se escribe el
+  usuario (o se pega la dirección) y pasa a `<usuario>.alphateklab.com/entrar.html?usuario=…`. Los usuarios del equipo
+  llevan la clínica delante (`luisprueba.secretaria`). Con el correo no se puede: el sitio no consulta a nadie.
 - **Cabecera y tema:** arriba solo el logo de alphateklab, como antes. La página sale en claro aunque el equipo esté en
   oscuro, y el botón de la luna pasa al oscuro (se recuerda en `localStorage`, `atk-tema`); las capturas oscuras las
   pone `js/citas.js` desde `data-oscuro`.

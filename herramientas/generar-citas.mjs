@@ -70,6 +70,10 @@ const hayContacto = Boolean(CONTACTO.whatsapp || CONTACTO.correo);
 // mientras no, lo dice en vez de dar un error): así el sitio no depende de cuándo quede en línea el servidor.
 const destinoPrueba = (prefijo) => (REGISTRO ? `${prefijo === '/' ? '/' : prefijo || './'}registro/` : `${prefijo}#prueba`);
 const registroCon = (params) => (REGISTRO ? `registro/?${new URLSearchParams(params)}` : '#prueba');
+// «Iniciar sesión» (con el registro en línea): alphateklab.com/entrar/, donde se escribe el usuario y se pasa al
+// sistema de la clínica, en <usuario>.alphateklab.com.
+const destinoEntrar = (prefijo) => `${prefijo === '/' ? '/' : prefijo || './'}entrar/`;
+const DOMINIO_CLINICAS = REGISTRO ? new URL(REGISTRO).hostname.replace(/^cuentas\./, '') : '';
 const enlaceRegistro = REGISTRO ? ' data-registro' : '';
 const PREGUNTAS = REGISTRO
   ? [...P.PREGUNTAS.map(([q, a]) => (q.startsWith('¿Cómo es la prueba') ? [q, 'Creas tu cuenta y tu sistema queda listo al momento; lo usas una semana con todo incluido. No pedimos tarjeta.'] : [q, a])), ...P.PREGUNTAS_REGISTRO]
@@ -83,12 +87,13 @@ function cabecera(prefijo) {
     <nav class="cab__menu" aria-label="Principal"><ul>${lista}</ul></nav>
     <div class="cab__acciones">
       <button class="cab__tema" type="button" aria-pressed="false" aria-label="Usar el tema oscuro" data-tema>${icono('moon', 'ico ico--luna')}${icono('sun', 'ico ico--sol')}</button>
+      ${REGISTRO ? `<a class="boton boton--linea cab__entrar" href="${destinoEntrar(prefijo)}" data-entrar-cab><span class="cab__entrar-largo">Iniciar sesión</span><span class="cab__entrar-corto">Entrar</span></a>` : ''}
       <a class="boton boton--senal cab__cta" href="${destinoPrueba(prefijo)}">Probar gratis</a>
       <button class="cab__abrir" type="button" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir el menú" data-abrir-menu>${icono('list', 'ico ico--abrir')}${icono('x', 'ico ico--cerrar')}</button>
     </div>
   </div>
   <nav class="cab__movil" id="menu-movil" aria-label="Menú" hidden>
-    <ul class="envoltura">${lista}<li><a class="boton boton--senal" href="${destinoPrueba(prefijo)}">Probar ${P.PRUEBA_DIAS} días gratis</a></li></ul>
+    <ul class="envoltura">${lista}${REGISTRO ? `<li><a href="${destinoEntrar(prefijo)}">Iniciar sesión</a></li>` : ''}<li><a class="boton boton--senal" href="${destinoPrueba(prefijo)}">Probar ${P.PRUEBA_DIAS} días gratis</a></li></ul>
   </nav>
 </header>`;
 }
@@ -537,6 +542,71 @@ function paginaPuenteRegistro() {
   });
 }
 
+// alphateklab.com/entrar/: «Iniciar sesión». Cada clínica tiene su sistema en <usuario>.alphateklab.com: aquí se
+// escribe el usuario y se pasa a la entrada de ese sistema, con el usuario ya escrito. El de quien registró la clínica
+// es la dirección; los de su equipo la llevan delante (luisprueba.secretaria). Si pega la dirección, también sirve.
+// Con el correo no se sabe cuál es la clínica (el sitio no consulta a nadie): se le pide el usuario.
+function paginaEntrar() {
+  const prefijo = '../';
+  return documento({
+    titulo: 'Iniciar sesión · Citas Médicas de alphateklab',
+    descripcion: 'Entra a tu sistema de Citas Médicas con tu usuario.',
+    prefijo,
+    canonica: `${URL_BASE}entrar/`,
+    robots: 'noindex',
+    cuerpo: () => `<main id="contenido" class="envoltura texto-largo texto-largo--centro entrar">
+  <p class="antetitulo">${icono('lock-key')}Iniciar sesión</p>
+  <h1 class="texto-largo__titulo">Entra a tu sistema</h1>
+  <p>Escribe tu usuario, el que elegiste al registrarte. También es la primera parte de la dirección de tu sistema: <strong>tuusuario.${esc(DOMINIO_CLINICAS)}</strong></p>
+  <form class="entrar__form" data-entrar novalidate>
+    <label class="campo"><span>Usuario</span><input name="usuario" type="text" maxlength="80" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="tuusuario" /></label>
+    <p class="entrar__destino" data-destino aria-live="polite"></p>
+    <p class="entrar__error" data-error role="alert" hidden></p>
+    <button class="boton boton--senal boton--grande" type="submit">Continuar</button>
+  </form>
+  <p class="entrar__nota">¿Todavía no tienes cuenta? <a href="${destinoPrueba(prefijo)}">Pruébalo ${P.PRUEBA_DIAS} días gratis</a>.</p>
+  <script>
+  (function () {
+    var DOMINIO = ${JSON.stringify(DOMINIO_CLINICAS)};
+    var form = document.querySelector('[data-entrar]');
+    var campo = form.elements.usuario;
+    var destino = document.querySelector('[data-destino]');
+    var error = document.querySelector('[data-error]');
+    // «luisprueba», «luisprueba.secretaria» o la dirección pegada: la clínica es lo de antes del primer punto.
+    function leer(texto) {
+      var t = String(texto || '').trim().toLowerCase().replace(/\\s+/g, '');
+      if (!t) return { error: 'Escribe tu usuario.' };
+      if (t.indexOf('@') > 0) return { error: 'Con el correo no sabemos cuál es tu sistema. Escribe tu usuario: lo que va antes de .' + DOMINIO + ' en su dirección.' };
+      t = t.replace(/^[a-z]+:\\/\\//, '').split('/')[0];
+      var sufijo = '.' + DOMINIO;
+      var usuario = t.slice(-sufijo.length) === sufijo ? t.slice(0, -sufijo.length) : t;
+      var clinica = usuario.split('.')[0];
+      if (!/^[a-z0-9][a-z0-9-]{1,38}[a-z0-9]$/.test(clinica) || clinica.indexOf('--') >= 0 || clinica === 'cuentas' || clinica === 'www') {
+        return { error: 'Revisa el usuario: lleva letras, números y guiones, como el que elegiste al registrarte.' };
+      }
+      return { usuario: usuario, clinica: clinica, url: 'https://' + clinica + sufijo + '/entrar.html?usuario=' + encodeURIComponent(usuario) };
+    }
+    function mostrar() {
+      var r = leer(campo.value);
+      destino.textContent = r.url ? 'Vas a entrar a ' + r.clinica + '.' + DOMINIO : '';
+    }
+    // El último usuario con el que se entró desde este equipo.
+    try { var ultimo = localStorage.getItem('atk-ultimo-usuario'); if (ultimo && !campo.value) campo.value = ultimo; } catch (e) {}
+    mostrar();
+    campo.addEventListener('input', function () { error.hidden = true; mostrar(); });
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var r = leer(campo.value);
+      if (r.error) { error.textContent = r.error; error.hidden = false; campo.focus(); return; }
+      try { localStorage.setItem('atk-ultimo-usuario', r.usuario); } catch (e) {}
+      location.assign(r.url);
+    });
+  })();
+  </script>
+</main>`,
+  });
+}
+
 function paginaTerminos() {
   const prefijo = '../';
   return documento({
@@ -605,6 +675,7 @@ escribir('privacidad/index.html', paginaPrivacidad());
 escribir('404.html', pagina404());
 escribir('terminos/index.html', paginaTerminos());
 if (REGISTRO) escribir('registro/index.html', paginaPuenteRegistro());
+if (REGISTRO) escribir('entrar/index.html', paginaEntrar());
 escribir('citasmed/index.html', paginaCitasmed());
 escribir('sitemap.xml', sitemap());
 escribir('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${URL_BASE}sitemap.xml\n`);
