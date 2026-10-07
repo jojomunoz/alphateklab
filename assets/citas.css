@@ -1798,6 +1798,9 @@ body.citas {
     grid-template-columns: minmax(0, 1fr) minmax(0, 470px);
     gap: 64px;
   }
+  .prueba__fila--sola {
+    grid-template-columns: minmax(0, 46rem);
+  }
 }
 .prueba__texto {
   display: grid;

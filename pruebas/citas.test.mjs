@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PRECIOS, PRUEBA_DIAS, PREGUNTAS, PARTES, PRODUCTO } from '../datos/producto.mjs';
-import { CONTACTO } from '../datos/sitio.mjs';
+import { CONTACTO, REGISTRO } from '../datos/sitio.mjs';
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 const leer = (r) => readFileSync(join(RAIZ, r), 'utf8');
@@ -22,7 +22,7 @@ test('lo publicado está al día: generar otra vez da lo mismo', () => {
     delete env.WHATSAPP;
     delete env.CORREO;
     execFileSync(process.execPath, [join(RAIZ, 'herramientas/generar-citas.mjs')], { env, stdio: 'pipe' });
-    for (const r of [...PAGINAS, 'citasmed/index.html', 'sitemap.xml', 'robots.txt']) assert.equal(readFileSync(join(dir, r), 'utf8'), leer(r), `${r}: corre node herramientas/generar-citas.mjs`);
+    for (const r of [...PAGINAS, 'terminos/index.html', 'citasmed/index.html', 'sitemap.xml', 'robots.txt']) assert.equal(readFileSync(join(dir, r), 'utf8'), leer(r), `${r}: corre node herramientas/generar-citas.mjs`);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -94,8 +94,14 @@ test('los datos estructurados se leen y llevan los precios', () => {
   assert.ok(ld['@graph'].some((n) => n['@type'] === 'FAQPage'));
 });
 
-test('el formulario de la prueba sale solo si hay a dónde mandarlo', () => {
+test('«Probar gratis» lleva al registro si está en línea; si no, al formulario si hay a dónde mandarlo', () => {
   const html = leer('index.html');
+  if (REGISTRO) {
+    assert.equal(/data-prueba/.test(html), false);
+    assert.ok((html.match(new RegExp(REGISTRO.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&'), 'g')) || []).length >= 4, 'cabecera, héroe, precios y la prueba');
+    assert.match(leer('terminos/index.html'), /Términos del servicio/);
+    return;
+  }
   const hay = Boolean(CONTACTO.whatsapp || CONTACTO.correo);
   assert.equal(/data-prueba/.test(html), hay);
   if (CONTACTO.whatsapp) assert.ok(html.includes(`https://wa.me/${CONTACTO.whatsapp}`));

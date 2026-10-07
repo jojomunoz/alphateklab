@@ -183,6 +183,24 @@ export const PRUEBA = {
   sinContacto: 'Para pedirla, responde el correo con el que te llegó esta página y te escribimos.',
 };
 
+// Con el registro en línea (REGISTRO en datos/sitio.mjs): los pasos, la sección de la prueba y las preguntas de pago.
+export const PASOS_REGISTRO = [
+  { titulo: 'Creas tu cuenta', texto: 'En unos minutos: el nombre de tu clínica, la dirección de tu sistema y tu plan. Sin tarjeta.' },
+  { titulo: 'Tu sistema queda listo', texto: 'Al momento, en tu propia dirección (tuclinica.alphateklab.com). Agregas a tu equipo y le das a cada quien sus accesos.' },
+  { titulo: `Lo usas ${PRUEBA_DIAS} días gratis`, texto: 'Con todo incluido. Si te sirve, pagas con tarjeta y sigues mes a mes; si no, no pagas nada.' },
+];
+export const PRUEBA_REGISTRO = {
+  titulo: 'Pruébalo en tu consultorio',
+  bajada: 'Crea tu cuenta y dicta tus primeros expedientes hoy mismo. Sin tarjeta y sin plan anual.',
+  puntos: ['Tu sistema queda listo al momento, en tu propia dirección', 'El dictado con IA, incluido en la prueba', 'Al terminar, pagas con tarjeta solo si te sirve'],
+  boton: 'Crear mi cuenta',
+};
+export const PREGUNTAS_REGISTRO = [
+  ['¿Cómo pago?', 'Con tarjeta de crédito o débito, mes a mes. Al terminar la prueba pagas desde tu sistema, en «Tu plan»; después el cobro es automático y te llega el recibo por correo.'],
+  ['¿Puedo agregar profesionales después?', 'Sí, cuando quieras, desde «Tu plan» en tu sistema: agregas profesionales o la agenda y pagas solo la diferencia por los días que quedan del mes.'],
+  ['¿Puedo cancelar?', 'Sí, cuando quieras, desde «Tu plan». No se te vuelve a cobrar y tu sistema sigue hasta el final del mes pagado.'],
+];
+
 export const PREGUNTAS = [
   ['¿Cómo funciona el dictado con IA?', 'Tocas «Dictar» en la sección de la nota y hablas. La IA convierte tu voz en texto en la casilla; lo revisas, corriges si hace falta y tocas «Agregar». No hace falta escribir a mano ni teclear. Funciona en Chrome, Edge y Safari.'],
   ['¿Y si no me llevo bien con la tecnología?', 'Es un botón: tocas «Dictar», hablas y revisas lo que quedó escrito. En la prueba te mostramos cómo se usa, paso a paso.'],

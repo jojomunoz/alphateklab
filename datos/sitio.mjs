@@ -5,5 +5,9 @@ export const ACTUALIZADO = { iso: '2026-10-07', texto: '7 de octubre de 2026' };
 // Sin ninguno de los dos, la portada no muestra el formulario de la prueba (no tendría a dónde mandarlo).
 export const CONTACTO = { whatsapp: null, correo: null };
 
+// El registro de las clínicas (servicio de cuentas, ~/alphateklab/citas-servidor). Con él, «Probar gratis» lleva a
+// crear la cuenta (con el plan que la persona eligió en la calculadora); sin él (null), a la sección de la prueba.
+export const REGISTRO = 'https://cuentas.alphateklab.com/registro';
+
 // El sitio vive en la raíz de su dominio (oct-2026; antes en https://jojomunoz.github.io/alphateklab/).
 export const URL_BASE = 'https://alphateklab.com/';

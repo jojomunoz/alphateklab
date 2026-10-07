@@ -10,7 +10,8 @@ import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as P from '../datos/producto.mjs';
-import { ACTUALIZADO, CONTACTO as CONTACTO_DATOS, URL_BASE } from '../datos/sitio.mjs';
+import { ACTUALIZADO, CONTACTO as CONTACTO_DATOS, REGISTRO, URL_BASE } from '../datos/sitio.mjs';
+import * as TERMINOS from '../datos/terminos.mjs';
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 // Para ver el formulario de la prueba en local antes de tener el contacto: WHATSAPP=507… CORREO=… node …
@@ -64,7 +65,12 @@ const ENLACES = [
   ['preguntas', 'Preguntas'],
 ];
 const hayContacto = Boolean(CONTACTO.whatsapp || CONTACTO.correo);
-const destinoPrueba = (prefijo) => `${prefijo}#prueba`;
+// Con el registro en línea, «Probar gratis» lleva a crear la cuenta; sin él, a la sección de la prueba.
+const destinoPrueba = (prefijo) => REGISTRO || `${prefijo}#prueba`;
+const registroCon = (params) => (REGISTRO ? `${REGISTRO}?${new URLSearchParams(params)}` : '#prueba');
+const PREGUNTAS = REGISTRO
+  ? [...P.PREGUNTAS.map(([q, a]) => (q.startsWith('¿Cómo es la prueba') ? [q, 'Creas tu cuenta y tu sistema queda listo al momento; lo usas una semana con todo incluido. No pedimos tarjeta.'] : [q, a])), ...P.PREGUNTAS_REGISTRO]
+  : P.PREGUNTAS;
 
 function cabecera(prefijo) {
   const lista = ENLACES.map(([id, t]) => `<li><a href="${prefijo}#${id}">${t}</a></li>`).join('');
@@ -92,7 +98,7 @@ function pie(prefijo) {
   return `<footer class="pie">
   <div class="envoltura pie__fila">
     <a class="pie__marca" href="${prefijo || './'}">${logo(prefijo, 'alphateklab')}</a>
-    <nav aria-label="Al pie"><ul class="pie__enlaces"><li><a href="${prefijo}#precios">Precios</a></li><li><a href="${prefijo}#preguntas">Preguntas</a></li><li><a href="${prefijo || './'}privacidad/">Privacidad</a></li>${contacto}</ul></nav>
+    <nav aria-label="Al pie"><ul class="pie__enlaces"><li><a href="${prefijo}#precios">Precios</a></li><li><a href="${prefijo}#preguntas">Preguntas</a></li><li><a href="${prefijo || './'}terminos/">Términos</a></li><li><a href="${prefijo || './'}privacidad/">Privacidad</a></li>${contacto}</ul></nav>
   </div>
   <p class="envoltura pie__nota">Las pantallas muestran un consultorio de ejemplo con pacientes ficticios. Precios en dólares, al mes. Actualizado el ${esc(ACTUALIZADO.texto)}.</p>
 </footer>`;
@@ -154,7 +160,7 @@ function heroe() {
       <h1 id="heroe-titulo" class="heroe__titulo">${resaltar(h.titulo)}</h1>
       <p class="heroe__bajada">${esc(h.bajada)}</p>
       <div class="heroe__acciones">
-        <a class="boton boton--senal boton--grande" href="#prueba">Probar ${P.PRUEBA_DIAS} días gratis${icono('arrow-right')}</a>
+        <a class="boton boton--senal boton--grande" href="${destinoPrueba('')}">Probar ${P.PRUEBA_DIAS} días gratis${icono('arrow-right')}</a>
         <a class="boton boton--linea boton--grande" href="#precios">Ver precios</a>
       </div>
       <ul class="heroe__puntos" role="list">${h.puntos.map((p) => `<li>${icono('check')}${esc(p)}</li>`).join('')}</ul>
@@ -314,7 +320,7 @@ function precios() {
         <p class="plan__precio"><span class="plan__cifra plan__cifra--fija"><strong class="num">${dolares(P.PRECIOS.expediente)}</strong></span><span class="plan__unidad">${esc(exp.unidad)}</span></p>
         ${destacado(exp)}
         <ul class="lista-check" role="list">${exp.incluye.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
-        <a class="boton boton--linea plan__boton" href="#prueba" data-elegir="expediente">Probar el expediente</a>
+        <a class="boton boton--linea plan__boton" href="${registroCon({ expediente: 1, profesionales: 1, agenda: 0 })}" data-elegir="expediente">Probar el expediente</a>
       </article>
       <article class="plan plan--agenda revelar" data-plan="agenda">
         <div class="plan__cabeza"><span class="plan__icono">${icono(agenda.icono)}</span><h3>${esc(agenda.nombre)}</h3></div>
@@ -326,7 +332,7 @@ function precios() {
         <p class="plan__precio">${ag.map((t) => `<span class="plan__cifra" data-mensajes="${t.mensajes}"><strong class="num">${dolares(t.precio)}</strong><span class="sr"> con ${t.mensajes} mensajes</span></span>`).join('')}<span class="plan__unidad">${esc(agenda.unidad)}</span></p>
         ${destacado(agenda)}
         <ul class="lista-check" role="list">${agenda.incluye.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
-        <a class="boton boton--linea plan__boton" href="#prueba" data-elegir="agenda">Probar la agenda</a>
+        <a class="boton boton--linea plan__boton" href="${registroCon({ expediente: 0, agenda: 1, mensajes: ag[0].mensajes })}" data-elegir="agenda">Probar la agenda</a>
       </article>
     </div>
     <div class="calculadora revelar" data-calculadora hidden>
@@ -342,7 +348,7 @@ function precios() {
         <output class="calculadora__sub num" data-sub="agenda"></output>
       </div>
       <div class="calculadora__total"><span>Total al mes</span><output class="num" data-total aria-live="polite"></output></div>
-      <a class="boton boton--senal calculadora__boton" href="#prueba" data-elegir="calculadora">Probar este plan ${P.PRUEBA_DIAS} días gratis${icono('arrow-right')}</a>
+      <a class="boton boton--senal calculadora__boton" href="${registroCon({ expediente: 1, profesionales: 2, agenda: 1, mensajes: ag[0].mensajes })}" data-elegir="calculadora">Probar este plan ${P.PRUEBA_DIAS} días gratis${icono('arrow-right')}</a>
     </div>
     <script type="application/json" id="datos-precios">${jsonEnScript({ agenda: ag, expediente: P.PRECIOS.expediente })}</script>
   </div>
@@ -354,7 +360,7 @@ const pasos = () => `<section class="seccion envoltura" id="empezar" aria-labell
     <p class="antetitulo">${icono('hand-tap')}Cómo empiezas</p>
     <h2 id="empezar-titulo" class="seccion__titulo">Listo para usar en tu consultorio</h2>
   </div>
-  <ol class="pasos">${P.PASOS.map((p) => `<li class="paso revelar"><h3>${esc(p.titulo)}</h3><p>${esc(p.texto)}</p></li>`).join('')}</ol>
+  <ol class="pasos">${(REGISTRO ? P.PASOS_REGISTRO : P.PASOS).map((p) => `<li class="paso revelar"><h3>${esc(p.titulo)}</h3><p>${esc(p.texto)}</p></li>`).join('')}</ol>
 </section>`;
 
 const preguntas = () => `<section class="seccion envoltura" id="preguntas" aria-labelledby="preguntas-titulo">
@@ -362,10 +368,26 @@ const preguntas = () => `<section class="seccion envoltura" id="preguntas" aria-
     <p class="antetitulo">${icono('question')}Preguntas frecuentes</p>
     <h2 id="preguntas-titulo" class="seccion__titulo">Lo que nos preguntan los médicos</h2>
   </div>
-  <div class="preguntas">${P.PREGUNTAS.map(([q, a]) => `<details class="pregunta"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div>
+  <div class="preguntas">${PREGUNTAS.map(([q, a]) => `<details class="pregunta"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div>
 </section>`;
 
+function pruebaConRegistro() {
+  const t = P.PRUEBA_REGISTRO;
+  return `<section class="prueba" id="prueba" aria-labelledby="prueba-titulo">
+  <div class="envoltura prueba__fila prueba__fila--sola">
+    <div class="prueba__texto">
+      <p class="antetitulo antetitulo--oscuro">${icono('sparkle')}${P.PRUEBA_DIAS} días gratis</p>
+      <h2 id="prueba-titulo" class="seccion__titulo">${esc(t.titulo)}</h2>
+      <p class="seccion__bajada">${esc(t.bajada)}</p>
+      <ul class="lista-check lista-check--clara" role="list">${t.puntos.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
+      <p><a class="boton boton--senal boton--grande" href="${esc(REGISTRO)}">${esc(t.boton)}${icono('arrow-right')}</a></p>
+    </div>
+  </div>
+</section>`;
+}
+
 function prueba() {
+  if (REGISTRO) return pruebaConRegistro();
   const directo = [
     CONTACTO.whatsapp ? `<a class="prueba__directo" href="https://wa.me/${CONTACTO.whatsapp}">${icono('whatsapp-logo')}WhatsApp: +${CONTACTO.whatsapp.replace(/^507(\d{4})(\d{4})$/, '507 $1-$2')}</a>` : '',
     CONTACTO.correo ? `<a class="prueba__directo" href="mailto:${esc(CONTACTO.correo)}">${icono('envelope-simple')}${esc(CONTACTO.correo)}</a>` : '',
@@ -426,7 +448,7 @@ function datosEstructurados() {
       ...P.PRECIOS.agenda.map((t) => ({ '@type': 'Offer', name: `${P.PARTES.find((p) => p.id === 'agenda').nombre}, ${t.mensajes} mensajes de WhatsApp al mes`, price: t.precio, priceCurrency: 'USD', priceSpecification: mensual(t.precio, 'clínica') })),
     ],
   };
-  const faq = { '@type': 'FAQPage', mainEntity: P.PREGUNTAS.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };
+  const faq = { '@type': 'FAQPage', mainEntity: PREGUNTAS.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };
   return { '@context': 'https://schema.org', '@graph': [org, app, faq] };
 }
 
@@ -473,6 +495,23 @@ function paginaPrivacidad() {
   });
 }
 
+function paginaTerminos() {
+  const prefijo = '../';
+  return documento({
+    titulo: 'Términos del servicio · Citas Médicas de alphateklab',
+    descripcion: 'Las condiciones de Citas Médicas: la prueba, los pagos, la cancelación y los datos de tus pacientes.',
+    prefijo,
+    canonica: `${URL_BASE}terminos/`,
+    cuerpo: () => `<main id="contenido" class="envoltura texto-largo">
+  <p class="antetitulo">${icono('clipboard-text')}Términos</p>
+  <h1 class="texto-largo__titulo">Términos del servicio</h1>
+  <p class="texto-largo__fecha">Vigentes desde el ${esc(TERMINOS.VIGENTE)}.</p>
+  ${TERMINOS.SECCIONES.map(([t, ps]) => `<h2>${esc(t)}</h2>\n  ${ps.map((x) => `<p>${esc(x)}</p>`).join('\n  ')}`).join('\n  ')}
+  <p><a href="${prefijo}">Volver al inicio</a></p>
+</main>`,
+  });
+}
+
 function pagina404() {
   const prefijo = '/';
   return documento({
@@ -508,7 +547,7 @@ const paginaCitasmed = () => `<!doctype html>
 
 const sitemap = () => `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${['', 'privacidad/'].map((u) => `  <url><loc>${URL_BASE}${u}</loc><lastmod>${ACTUALIZADO.iso}</lastmod></url>`).join('\n')}
+${['', 'terminos/', 'privacidad/'].map((u) => `  <url><loc>${URL_BASE}${u}</loc><lastmod>${ACTUALIZADO.iso}</lastmod></url>`).join('\n')}
 </urlset>
 `;
 
@@ -522,7 +561,8 @@ const escribir = (ruta, contenido) => {
 escribir('index.html', paginaInicio());
 escribir('privacidad/index.html', paginaPrivacidad());
 escribir('404.html', pagina404());
+escribir('terminos/index.html', paginaTerminos());
 escribir('citasmed/index.html', paginaCitasmed());
 escribir('sitemap.xml', sitemap());
 escribir('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${URL_BASE}sitemap.xml\n`);
-console.log(`Generado: portada de ${P.PRODUCTO}, privacidad, 404, /citasmed/, sitemap y robots.txt.${hayContacto ? '' : ' Sin contacto en datos/sitio.mjs: la portada sale sin el formulario de la prueba.'}`);
+console.log(`Generado: portada de ${P.PRODUCTO}, términos, privacidad, 404, /citasmed/, sitemap y robots.txt.${REGISTRO ? ` «Probar gratis» lleva al registro (${REGISTRO}).` : hayContacto ? '' : ' Sin registro ni contacto en datos/sitio.mjs: la portada sale sin el formulario de la prueba.'}`);

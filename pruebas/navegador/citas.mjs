@@ -143,6 +143,25 @@ try {
     await c.close();
   });
 
+  await paso('«Probar este plan» lleva al registro con lo elegido (si el registro está en línea)', async () => {
+    const { c, p } = await abrir();
+    const href = await p.getAttribute('[data-elegir="calculadora"]', 'href');
+    if (!/^https?:/.test(href || '')) {
+      console.log('     (sin registro en línea: va al formulario de la prueba)');
+      await c.close();
+      return;
+    }
+    let pedida = null;
+    await p.route(/\/registro(\?|$)/, (r) => { pedida = r.request().url(); r.fulfill({ status: 200, contentType: 'text/html', body: 'registro' }); });
+    await p.selectOption('[name="calc-mensajes"]', String(PRECIOS.agenda[2].mensajes));
+    await p.click('[data-sumar="1"]');
+    await p.click('[data-elegir="calculadora"]');
+    await p.waitForURL(/\/registro\?/);
+    const q = new URL(pedida).searchParams;
+    assert.deepEqual([q.get('expediente'), q.get('profesionales'), q.get('agenda'), q.get('mensajes')], ['1', '3', '1', String(PRECIOS.agenda[2].mensajes)]);
+    await c.close();
+  });
+
   await paso('la conversación y el dictado se animan al verse, y quedan quietos con «reducir movimiento»', async () => {
     const { c, p } = await abrir({ reducedMotion: 'no-preference' });
     await p.locator('[data-chat]').scrollIntoViewIfNeeded();

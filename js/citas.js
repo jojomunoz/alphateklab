@@ -211,11 +211,21 @@ if (calc && datosPrecios) {
   }
   calcular();
 
-  // «Probar…»: lo elegido viaja al formulario de la prueba.
+  // «Probar…»: lo elegido viaja al registro (con el registro en línea) o al formulario de la prueba.
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-elegir]');
     if (!b) return;
     const v = leer();
+    if (/^https?:/.test(b.getAttribute('href') || '')) {
+      const elegido = radios.find((r) => r.checked)?.value || v.paquete.mensajes;
+      const params = b.dataset.elegir === 'calculadora'
+        ? { expediente: v.expediente ? 1 : 0, profesionales: v.n, agenda: v.agenda ? 1 : 0, mensajes: v.paquete.mensajes }
+        : b.dataset.elegir === 'agenda' ? { expediente: 0, agenda: 1, mensajes: elegido } : { expediente: 1, profesionales: 1, agenda: 0 };
+      const u = new URL(b.href);
+      u.search = new URLSearchParams(params).toString();
+      b.href = u.toString();
+      return;
+    }
     if (b.dataset.elegir === 'calculadora') {
       const interes = v.agenda && v.expediente ? 'los dos' : v.agenda ? 'la agenda' : v.expediente ? 'el expediente' : null;
       llevarAlFormulario({ interes, medicos: v.n, plan: resumen(v) });
