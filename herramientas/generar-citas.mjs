@@ -11,6 +11,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as P from '../datos/producto.mjs';
 import { FUNCIONES } from '../datos/paginas.mjs';
+import { GUIAS } from '../datos/guias-citas.mjs';
 import { ACTUALIZADO, CONTACTO as CONTACTO_DATOS, INDEXNOW, REGISTRO, URL_BASE } from '../datos/sitio.mjs';
 import * as TERMINOS from '../datos/terminos.mjs';
 
@@ -107,7 +108,7 @@ function pie(prefijo) {
   return `<footer class="pie">
   <div class="envoltura pie__fila">
     <a class="pie__marca" href="${prefijo || './'}">${logo(prefijo, 'alphateklab')}</a>
-    <nav aria-label="Al pie"><ul class="pie__enlaces">${FUNCIONES.map((f) => `<li><a href="${prefijo || './'}${f.ruta}">${esc(f.miga)}</a></li>`).join('')}<li><a href="${prefijo}#precios">Precios</a></li><li><a href="${prefijo}#preguntas">Preguntas</a></li><li><a href="${prefijo || './'}terminos/">Términos</a></li><li><a href="${prefijo || './'}privacidad/">Privacidad</a></li>${contacto}</ul></nav>
+    <nav aria-label="Al pie"><ul class="pie__enlaces">${[...FUNCIONES, ...GUIAS].map((f) => `<li><a href="${prefijo || './'}${f.ruta}">${esc(f.pie || f.miga)}</a></li>`).join('')}<li><a href="${prefijo}#precios">Precios</a></li><li><a href="${prefijo}#preguntas">Preguntas</a></li><li><a href="${prefijo || './'}terminos/">Términos</a></li><li><a href="${prefijo || './'}privacidad/">Privacidad</a></li>${contacto}</ul></nav>
   </div>
   <p class="envoltura pie__nota">Las pantallas muestran un consultorio de ejemplo con pacientes ficticios. Precios en dólares, al mes. Actualizado el ${esc(ACTUALIZADO.texto)}.</p>
 </footer>`;
@@ -562,7 +563,7 @@ ${seccionPuntos('audio', f.audio)}
     <h2 id="accesos-titulo" class="seccion__titulo">${esc(f.accesos.titulo)}</h2>
     <p class="seccion__bajada">${esc(f.accesos.bajada)}</p>
   </div>
-  ${garantias(f.accesos.puntos)}
+  ${garantias(f.accesos.puntos)}${f.guia ? `\n  <p class="seccion__nota"><a href="${prefijo}${f.guia.ruta}">${esc(f.guia.texto)}${icono('arrow-right')}</a></p>` : ''}
 </section>
 <section class="seccion envoltura" id="precio" aria-labelledby="precio-titulo">
   <div class="plan plan--suelto revelar">
@@ -574,6 +575,46 @@ ${seccionPuntos('audio', f.audio)}
 </section>
 ${preguntas(f.preguntas)}
 ${pruebaConRegistro(prefijo)}
+</main>`,
+  });
+}
+
+// Un texto de las guías: escapado y con los enlaces [texto](dirección).
+const enLinea = (t) => esc(t).replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, x, u) => `<a href="${u}">${x}</a>`);
+const bloque = (b) => {
+  if (typeof b === 'string') return `<p>${enLinea(b)}</p>`;
+  if (b.lista) return `<ul class="guia__lista">${b.lista.map((x) => `<li>${enLinea(x)}</li>`).join('')}</ul>`;
+  if (b.cita) return `<figure class="guia__cita"><blockquote><p>«${esc(b.cita)}»</p></blockquote><figcaption>${esc(b.fuente)}</figcaption></figure>`;
+  throw new Error(`Bloque de guía desconocido: ${JSON.stringify(b).slice(0, 80)}`);
+};
+
+// alphateklab.com/<ruta>: una guía (datos/guias-citas.mjs), con su índice, sus fuentes y la llamada al producto.
+function paginaGuia(g) {
+  const prefijo = '../';
+  const url = `${URL_BASE}${g.ruta}`;
+  const datos = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'Article', '@id': `${url}#guia`, headline: g.h1, description: g.descripcion, inLanguage: 'es-PA', datePublished: g.publicada, dateModified: g.revisada.iso, mainEntityOfPage: url, author: { '@id': `${URL_BASE}#organizacion` }, publisher: { '@id': `${URL_BASE}#organizacion` }, isPartOf: { '@id': `${URL_BASE}#sitio` }, about: { '@id': `${URL_BASE}#producto` }, citation: g.fuentes.map(([, u]) => u) },
+      { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: P.PRODUCTO, item: URL_BASE }, { '@type': 'ListItem', position: 2, name: g.miga, item: url }] },
+    ],
+  };
+  return documento({
+    titulo: g.titulo,
+    descripcion: g.descripcion,
+    prefijo,
+    canonica: url,
+    datos,
+    cuerpo: () => `<main id="contenido" class="envoltura texto-largo guia">
+  <nav class="migas" aria-label="Estás en"><ol><li><a href="${prefijo}">${esc(P.PRODUCTO)}</a></li><li aria-current="page">${esc(g.miga)}</li></ol></nav>
+  <p class="antetitulo">${icono('book-open-text')}Guía</p>
+  <h1 class="texto-largo__titulo">${esc(g.h1)}</h1>
+  <p class="guia__bajada">${esc(g.bajada)}</p>
+  <p class="texto-largo__fecha">Revisada el <time datetime="${g.revisada.iso}">${esc(g.revisada.texto)}</time>. Las fuentes van al final.</p>
+  <nav class="guia__indice" aria-labelledby="indice-titulo"><h2 id="indice-titulo">En esta guía</h2><ol>${g.secciones.map((x) => `<li><a href="#${x.id}">${esc(x.titulo)}</a></li>`).join('')}<li><a href="#fuentes">Fuentes</a></li></ol></nav>
+  ${g.secciones.map((x) => `<section class="guia__seccion" id="${x.id}" aria-labelledby="${x.id}-titulo"><h2 id="${x.id}-titulo">${esc(x.titulo)}</h2>${x.bloques.map(bloque).join('')}</section>`).join('\n  ')}
+  <section class="guia__seccion" id="fuentes" aria-labelledby="fuentes-titulo"><h2 id="fuentes-titulo">Fuentes</h2><ol class="guia__fuentes">${g.fuentes.map(([t, u]) => `<li><a href="${u}">${esc(t)}</a></li>`).join('')}</ol><p>Leídas en la Gaceta Oficial o en copias oficiales el ${esc(g.revisada.texto)}. Esta guía resume normas publicadas y no es asesoría legal.</p></section>
+  <aside class="guia__producto"><p class="antetitulo">${icono('stethoscope')}${esc(P.PRODUCTO)}</p><p><strong>El expediente clínico que dictas en vez de escribir.</strong> Cada nota con el nombre de quien la escribió y la hora, accesos por persona y el consentimiento del paciente guardado. ${esc(dolares(P.PRECIOS.expediente))} al mes por profesional, ${P.PRUEBA_DIAS} días gratis.</p><p class="plan__acciones"><a class="boton boton--senal" href="${prefijo}${FUNCIONES[0].ruta}">Ver el expediente${icono('arrow-right')}</a> <a class="boton boton--linea" href="${destinoPrueba(prefijo)}">Probar ${P.PRUEBA_DIAS} días gratis</a></p></aside>
 </main>`,
   });
 }
@@ -781,7 +822,7 @@ const paginaCitasmed = () => `<!doctype html>
 `;
 
 // Lo que va al sitemap y a IndexNow: lo que se quiere ver en los buscadores (registro, entrar y el 404 llevan noindex).
-const INDEXABLES = ['', ...FUNCIONES.map((f) => f.ruta), 'terminos/', 'privacidad/'];
+const INDEXABLES = ['', ...FUNCIONES.map((f) => f.ruta), ...GUIAS.map((g) => g.ruta), 'terminos/', 'privacidad/'];
 
 const sitemap = () => `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -804,6 +845,7 @@ function llms() {
 
 - [${P.PRODUCTO}](${URL_BASE}): el producto completo, con pantallas reales, precios, calculadora y preguntas frecuentes.
 ${FUNCIONES.map((f) => `- [${f.titulo.replace(/ · .*$/, '')}](${URL_BASE}${f.ruta}): ${f.descripcion}`).join('\n')}
+${GUIAS.map((g) => `- [${g.h1}](${URL_BASE}${g.ruta}): guía con la norma y el artículo de cada punto. ${g.descripcion}`).join('\n')}
 - [Términos del servicio](${URL_BASE}terminos/): la prueba, los pagos, la cancelación y los datos de los pacientes.
 - [Privacidad](${URL_BASE}privacidad/): qué datos trata el sitio, qué pasa con los de los pacientes y con el audio del dictado.
 
@@ -835,6 +877,7 @@ const escribir = (ruta, contenido) => {
 escribir('index.html', paginaInicio());
 escribir('privacidad/index.html', paginaPrivacidad());
 for (const f of FUNCIONES) escribir(`${f.ruta}index.html`, paginaFuncion(f));
+for (const g of GUIAS) escribir(`${g.ruta}index.html`, paginaGuia(g));
 escribir('404.html', pagina404());
 escribir('terminos/index.html', paginaTerminos());
 if (REGISTRO) escribir('registro/index.html', paginaPuenteRegistro());

@@ -60,6 +60,13 @@ en la rama **`sitio-agencia`**; para volver a él: `git checkout sitio-agencia -
     - Cada una lleva el título y la descripción a la medida de Google (≤70 y ≤160), su canónica, las migas y sus preguntas en JSON-LD.
     - Va en el sitemap, en `llms.txt` y en el pie de todas las páginas, y su sección de la portada la enlaza («Todo sobre…»).
     - Lo que dicen está comprobado en el código del sistema: si el sistema cambia, se cambian.
+  - **Guías:** van en `datos/guias-citas.mjs`; `datos/guias.mjs` es de la agencia.
+    - Hoy hay una: `expediente-clinico-electronico-panama/`, sobre lo que pide la ley.
+    - Cada dato legal lleva su norma, su artículo y el enlace a la Gaceta Oficial. La prueba exige que cada enlace de afuera esté en las fuentes y sea un `.gob.pa`.
+    - Lo que el texto de la ley no resuelve va a «preguntarle a un abogado».
+  - **Investigación del 8-oct:** en Panamá se busca «expediente clínico electrónico en Panamá» y «ley 68 expediente clínico».
+    - «Citas Médicas» solo trae pacientes que buscan cita en la CSS: los títulos dicen la función.
+    - Nada de páginas por especialidad o por ciudad con el mismo texto (serían páginas puerta).
   - **La de la agenda espera:** la portada vende paquetes de mensajes que «salen solos» y el sistema todavía no manda nada solo (ver el comentario en `datos/paginas.mjs`).
   - **`llms.txt`** (para ChatGPT y compañía, que es por donde más llega la gente a alphatend) sale de los mismos datos.
   - **IndexNow:** la clave está en `datos/sitio.mjs` y se sirve en `/<clave>.txt`. Después de publicar y de que Pages termine: `node herramientas/indexnow.mjs`.

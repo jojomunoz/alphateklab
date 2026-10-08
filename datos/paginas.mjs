@@ -19,10 +19,11 @@ export const EXPEDIENTE = {
   id: 'expediente',
   ruta: 'expediente-clinico/',
   // En la pestaña y en Google (hasta ~60 caracteres a la vista) y en la descripción (hasta ~155).
-  titulo: 'Expediente clínico electrónico con dictado por IA · Citas Médicas',
+  // «expediente clínico electrónico en Panamá» es lo primero que sugiere Google en Panamá (investigación del 8-oct).
+  titulo: 'Expediente clínico electrónico con dictado por IA en Panamá',
   descripcion: `El médico dicta la nota de la consulta y queda escrita por secciones. Antecedentes, signos y resultados en un solo lugar. ${dolares(PRECIOS.expediente)} al mes por profesional.`,
   miga: 'Expediente clínico',
-  antetitulo: 'Expediente clínico con IA, para el médico',
+  antetitulo: 'Expediente clínico con IA, para consultorios en Panamá',
   h1: 'Expediente clínico electrónico que dictas en vez de escribir',
   bajada:
     'Durante la consulta hablas y la nota queda escrita con IA, en sus secciones: motivo, lo que refiere el paciente, examen físico, diagnóstico e indicaciones. La revisas y la guardas. Funciona con o sin la agenda, en el navegador que ya usas.',
@@ -66,6 +67,7 @@ export const EXPEDIENTE = {
     nota: 'Qué servicio es y el detalle, en la política de privacidad',
   },
   accesos: ACCESOS,
+  guia: { ruta: 'expediente-clinico-electronico-panama/', texto: 'Lo que pide la ley del expediente clínico electrónico en Panamá' },
   precio: {
     titulo: `${dolares(PRECIOS.expediente)} al mes por profesional`,
     textos: [
@@ -76,6 +78,8 @@ export const EXPEDIENTE = {
   },
   preguntas: [
     pregunta('¿Cómo funciona el dictado con IA?'),
+    ['¿La IA escribe cosas que no dije?', 'No inventa ni resume: convierte en texto lo que dictas, en la sección donde lo dictas, con un modelo de transcripción médica en español. Puede equivocarse con una palabra; por eso lo revisas antes de agregarlo.'],
+    ['¿Graba toda la consulta?', 'No. Graba solo mientras dictas: desde que tocas «Dictar» hasta que lo detienes, hasta 10 minutos por fragmento.'],
     ['¿Se guarda el audio de lo que dicto?', 'No. El audio va de tu navegador al servicio de transcripción y se borra allá apenas vuelve el texto. En el expediente queda solo el texto que revisaste.'],
     pregunta('¿Y si no me llevo bien con la tecnología?'),
     pregunta('¿Tengo que instalar algo?'),

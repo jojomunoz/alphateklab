@@ -5,7 +5,8 @@
 ## Páginas
 
 - [Citas Médicas](https://alphateklab.com/): el producto completo, con pantallas reales, precios, calculadora y preguntas frecuentes.
-- [Expediente clínico electrónico con dictado por IA](https://alphateklab.com/expediente-clinico/): El médico dicta la nota de la consulta y queda escrita por secciones. Antecedentes, signos y resultados en un solo lugar. $29.99 al mes por profesional.
+- [Expediente clínico electrónico con dictado por IA en Panamá](https://alphateklab.com/expediente-clinico/): El médico dicta la nota de la consulta y queda escrita por secciones. Antecedentes, signos y resultados en un solo lugar. $29.99 al mes por profesional.
+- [El expediente clínico electrónico en Panamá: lo que pide la ley](https://alphateklab.com/expediente-clinico-electronico-panama/): guía con la norma y el artículo de cada punto. Lo que dicen la Ley 68 de 2003, el Decreto 1458 de 2012 y la Ley 81 de 2019: qué lleva el expediente, la firma, cuánto se guarda y los datos.
 - [Términos del servicio](https://alphateklab.com/terminos/): la prueba, los pagos, la cancelación y los datos de los pacientes.
 - [Privacidad](https://alphateklab.com/privacidad/): qué datos trata el sitio, qué pasa con los de los pacientes y con el audio del dictado.
 

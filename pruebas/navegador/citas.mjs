@@ -8,6 +8,8 @@ import assert from 'node:assert/strict';
 import pw from '../../herramientas/navegador.mjs';
 import { PRECIOS, dolares, sumar } from '../../datos/producto.mjs';
 import { FUNCIONES } from '../../datos/paginas.mjs';
+import { GUIAS } from '../../datos/guias-citas.mjs';
+const SUBPAGINAS = [...FUNCIONES, ...GUIAS].map((f) => f.ruta);
 
 const BASE = (process.argv[2] || 'http://localhost:4900/alphateklab/').replace(/\/?$/, '/');
 const motor = pw[process.env.MOTOR || 'chromium'];
@@ -40,9 +42,9 @@ const recorrer = (p) => p.evaluate(async () => {
 });
 
 try {
-  await paso('nada se sale por la derecha, de 320 a 1440 px (portada y páginas de función)', async () => {
+  await paso('nada se sale por la derecha, de 320 a 1440 px (portada, páginas de función y guías)', async () => {
     const malos = [];
-    for (const ruta of ['', ...FUNCIONES.map((f) => f.ruta)]) {
+    for (const ruta of ['', ...SUBPAGINAS]) {
       for (const ancho of [320, 360, 375, 390, 414, 768, 1024, 1280, 1440]) {
         const { c, p } = await abrir({ viewport: { width: ancho, height: 800 } }, ruta);
         const sobra = await p.evaluate(() => document.documentElement.scrollWidth - innerWidth);
@@ -53,9 +55,9 @@ try {
     assert.deepEqual(malos, []);
   });
 
-  await paso('sin errores en la consola ni recursos rotos (portada, páginas de función, privacidad, /citasmed/, entrar/)', async () => {
+  await paso('sin errores en la consola ni recursos rotos (portada, páginas de función, guías, privacidad, /citasmed/, entrar/)', async () => {
     const errores = [];
-    for (const ruta of ['', ...FUNCIONES.map((f) => f.ruta), 'privacidad/', 'citasmed/', 'entrar/']) {
+    for (const ruta of ['', ...SUBPAGINAS, 'privacidad/', 'citasmed/', 'entrar/']) {
       const c = await b.newContext({ viewport: { width: 1280, height: 860 } });
       const p = await c.newPage();
       p.on('console', (m) => m.type() === 'error' && errores.push(`${ruta}: ${m.text()}`));

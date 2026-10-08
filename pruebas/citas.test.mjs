@@ -9,12 +9,13 @@ import { dirname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PRECIOS, PRUEBA_DIAS, PREGUNTAS, PARTES, PRODUCTO, dolares, sumar } from '../datos/producto.mjs';
 import { FUNCIONES } from '../datos/paginas.mjs';
+import { GUIAS } from '../datos/guias-citas.mjs';
 import * as SITIO from '../datos/sitio.mjs';
 const { CONTACTO, REGISTRO } = SITIO;
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 const leer = (r) => readFileSync(join(RAIZ, r), 'utf8');
-const PAGINAS = ['index.html', 'privacidad/index.html', '404.html', ...FUNCIONES.map((f) => `${f.ruta}index.html`)];
+const PAGINAS = ['index.html', 'privacidad/index.html', '404.html', ...[...FUNCIONES, ...GUIAS].map((f) => `${f.ruta}index.html`)];
 const textoVisible = (html) => html.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<svg[\s\S]*?<\/svg>/g, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;| /g, ' ').replace(/&[a-z#0-9]+;/g, (e) => ({ '&amp;': '&', '&quot;': '"', '&#39;': "'", '&lt;': '<', '&gt;': '>' })[e] || ' ').replace(/\s+/g, ' ');
 
 test('lo publicado está al día: generar otra vez da lo mismo', () => {
@@ -66,7 +67,7 @@ test('un solo H1 por página y el título de la portada nombra el producto', () 
 });
 
 test('nada roto: cada archivo enlazado existe y cada ancla tiene a dónde ir', () => {
-  for (const r of ['index.html', 'privacidad/index.html', ...FUNCIONES.map((f) => `${f.ruta}index.html`)]) {
+  for (const r of ['index.html', 'privacidad/index.html', ...[...FUNCIONES, ...GUIAS].map((f) => `${f.ruta}index.html`)]) {
     const html = leer(r);
     const base = dirname(join(RAIZ, r));
     const rutas = [...html.matchAll(/(?:src|href)="([^"]+)"/g), ...html.matchAll(/srcset="([^"]+)"/g)].flatMap((m) => m[1].split(',').map((x) => x.trim().split(' ')[0]));
@@ -189,4 +190,21 @@ test('llms.txt, la clave de IndexNow y robots.txt', () => {
   assert.match(INDEXNOW, /^[a-f0-9]{32}$/);
   assert.equal(leer(`${INDEXNOW}.txt`), INDEXNOW);
   assert.match(leer('robots.txt'), /Sitemap: https:\/\/alphateklab\.com\/sitemap\.xml/);
+});
+
+test('las guías: índice completo, cada enlace de afuera en sus fuentes, el artículo en JSON-LD y en el pie', () => {
+  for (const g of GUIAS) {
+    const html = leer(`${g.ruta}index.html`);
+    const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
+    for (const x of g.secciones) assert.ok(ids.has(x.id) && html.includes(`href="#${x.id}"`), `${g.ruta}: la sección ${x.id} y su entrada en el índice`);
+    const fuentes = new Set(g.fuentes.map(([, u]) => u));
+    const main = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
+    for (const [, u] of main.matchAll(/href="(https?:[^"]+)"/g)) assert.ok(fuentes.has(u), `${g.ruta}: ${u} no está en las fuentes`);
+    for (const u of fuentes) assert.match(u, /^https:\/\/[a-z.-]+\.gob\.pa\//, `${g.ruta}: ${u} no es una fuente oficial`);
+    const ld = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+    const art = ld['@graph'].find((n) => n['@type'] === 'Article');
+    assert.ok(art && art.datePublished && art.dateModified && art.citation.length === g.fuentes.length, `${g.ruta}: el artículo`);
+    for (const r of PAGINAS) assert.match(leer(r), new RegExp(`<footer[\\s\\S]*href="[^"]*${g.ruta}"`), `${r}: el pie enlaza ${g.ruta}`);
+    assert.ok(leer(`${FUNCIONES[0].ruta}index.html`).includes(`href="../${g.ruta}"`), 'la página del expediente enlaza la guía');
+  }
 });

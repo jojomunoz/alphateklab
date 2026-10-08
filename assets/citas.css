@@ -2189,3 +2189,79 @@ body.citas {
 .plan--suelto .antetitulo {
   align-self: flex-start;
 }
+
+/* las guías: texto largo con índice, citas de la norma y fuentes */
+.guia__bajada {
+  font-size: clamp(1.05rem, 1rem + 0.3vw, 1.2rem);
+  line-height: 1.55;
+}
+.guia__indice {
+  width: 100%;
+  padding: 20px 24px;
+  border: 1px solid var(--linea);
+  border-radius: var(--r-2);
+  background: var(--papel);
+}
+.guia__indice h2 {
+  margin: 0 0 8px;
+  font-size: var(--t-s);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--tinta-3);
+}
+.guia__indice ol {
+  margin: 0;
+  padding-left: 1.3em;
+  display: grid;
+  gap: 4px;
+}
+.guia__seccion {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  scroll-margin-top: 88px;
+}
+.guia__lista {
+  margin: 0;
+  padding-left: 1.2em;
+  display: grid;
+  gap: 8px;
+  color: var(--tinta-2);
+}
+.guia__cita {
+  margin: 0;
+  padding: 4px 0 4px 18px;
+  border-left: 3px solid var(--linea-fuerte);
+}
+.guia__cita blockquote {
+  margin: 0;
+}
+.guia__cita p {
+  color: var(--tinta);
+  font-size: 1.05rem;
+}
+.guia__cita figcaption {
+  margin-top: 6px;
+  font-size: var(--t-s);
+  color: var(--tinta-3);
+}
+.guia__fuentes {
+  margin: 0;
+  padding-left: 1.3em;
+  display: grid;
+  gap: 6px;
+  overflow-wrap: anywhere;
+}
+.guia__producto {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  margin-top: 24px;
+  padding: 28px;
+  border-radius: var(--r-3);
+  border: 1px solid var(--linea);
+  background: var(--papel);
+}
+.guia__producto .antetitulo {
+  justify-self: start;
+}
