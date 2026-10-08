@@ -1,0 +1,38 @@
+# Citas Médicas, de alphateklab
+
+> Sistema web para clínicas y consultorios en Panamá: el expediente clínico, que el médico dicta con IA en vez de escribirlo a mano o teclearlo, y la agenda de citas con recordatorios por WhatsApp. Se usa en el navegador de la computadora, la tableta o el celular, sin instalar nada. Cada clínica tiene su propio sistema en <clínica>.alphateklab.com.
+
+## Páginas
+
+- [Citas Médicas](https://alphateklab.com/): el producto completo, con pantallas reales, precios, calculadora y preguntas frecuentes.
+- [Expediente clínico electrónico con dictado por IA](https://alphateklab.com/expediente-clinico/): El médico dicta la nota de la consulta y queda escrita por secciones. Antecedentes, signos y resultados en un solo lugar. $29.99 al mes por profesional.
+- [Términos del servicio](https://alphateklab.com/terminos/): la prueba, los pagos, la cancelación y los datos de los pacientes.
+- [Privacidad](https://alphateklab.com/privacidad/): qué datos trata el sitio, qué pasa con los de los pacientes y con el audio del dictado.
+
+## Precios
+
+En dólares, al mes y netos (sin sumar ITBMS):
+
+- Expediente clínico con IA: $29.99 al mes por profesional. Profesional es cada médico que hace expedientes; la recepción, enfermería y administración tienen su usuario sin costo. El dictado con IA va incluido.
+- Agenda de citas: $14.99 al mes por clínica. Los mensajes de WhatsApp van aparte, por paquete: 200 por $15, 500 por $25 o 1000 por $35 al mes.
+- Prueba gratis de 7 días, sin tarjeta. Después, mes a mes, sin plan anual. Se paga con tarjeta de crédito o débito.
+
+## Preguntas frecuentes
+
+- ¿Cómo funciona el dictado con IA? Tocas «Dictar» en la sección de la nota y hablas. La IA convierte tu voz en texto en la casilla; lo revisas, corriges si hace falta y tocas «Agregar». No hace falta escribir a mano ni teclear. Funciona en Chrome, Edge y Safari.
+- ¿Y si no me llevo bien con la tecnología? Es un botón: tocas «Dictar», hablas y revisas lo que quedó escrito. En la prueba te mostramos cómo se usa, paso a paso.
+- ¿Tengo que instalar algo? No. Se usa en el navegador de la computadora, la tableta o el celular que ya tienes. Solo necesitas internet.
+- ¿Puedo contratar solo el expediente? Sí. El expediente funciona sin la agenda: el médico abre la consulta del paciente que llega, la dicta y, si trabajan con folder, la recepción la imprime al terminar.
+- ¿Puedo contratar solo la agenda? Sí. Tienes las citas, los recordatorios por WhatsApp, el registro de pacientes y la lista de espera, sin el expediente.
+- ¿Qué cuenta como profesional? Cada médico que hace expedientes. La recepción, enfermería y administración tienen su propio usuario sin costo.
+- ¿Puedo pasar mis pacientes desde Excel? Sí. El sistema importa tus pacientes desde un Excel o un CSV: nombre, cédula o pasaporte, celular, correo, fecha de nacimiento, alergias, enfermedades, medicamentos y seguro.
+- ¿Quién puede ver los expedientes? Solo las personas a las que les das ese acceso. La recepción puede agendar sin ver el expediente; si le das «Imprimir expedientes», lo puede ver e imprimir, pero no cambiar.
+- ¿Cómo es la prueba de 7 días? Creas tu cuenta y tu sistema queda listo al momento; lo usas una semana con todo incluido. No pedimos tarjeta.
+- ¿Hay contrato o plan anual? No. Después de la prueba pagas mes a mes.
+- ¿Cómo pago? Con tarjeta de crédito o débito, mes a mes. Al terminar la prueba pagas desde tu sistema, en «Tu plan»; después el cobro es automático y te llega el recibo por correo.
+- ¿Puedo agregar profesionales después? Sí, cuando quieras, desde «Tu plan» en tu sistema: agregas profesionales o la agenda y pagas solo la diferencia por los días que quedan del mes.
+- ¿Puedo cancelar? Sí, cuando quieras, desde «Tu plan». No se te vuelve a cobrar y tu sistema sigue hasta el final del mes pagado.
+
+## Probarlo
+
+Una clínica crea su cuenta sola en https://alphateklab.com/registro/ y su sistema queda listo al momento.

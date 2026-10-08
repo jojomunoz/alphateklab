@@ -55,6 +55,16 @@ en la rama **`sitio-agencia`**; para volver a él: `git checkout sitio-agencia -
   - `node pruebas/navegador/citas.mjs <url>` (también con `MOTOR=webkit`) revisa de 320 a 1440 px, la consola, el
     menú, los paquetes, la calculadora, el formulario, las animaciones, el modo oscuro y los títulos.
   - Correr las dos contra local y contra el sitio en vivo después de cada push.
+- **Buscadores (8-oct):**
+  - **Páginas de función:** la portada resume y `datos/paginas.mjs` da el detalle de cada parte en su propia página: hoy `expediente-clinico/`.
+    - Cada una lleva el título y la descripción a la medida de Google (≤70 y ≤160), su canónica, las migas y sus preguntas en JSON-LD.
+    - Va en el sitemap, en `llms.txt` y en el pie de todas las páginas, y su sección de la portada la enlaza («Todo sobre…»).
+    - Lo que dicen está comprobado en el código del sistema: si el sistema cambia, se cambian.
+  - **La de la agenda espera:** la portada vende paquetes de mensajes que «salen solos» y el sistema todavía no manda nada solo (ver el comentario en `datos/paginas.mjs`).
+  - **`llms.txt`** (para ChatGPT y compañía, que es por donde más llega la gente a alphatend) sale de los mismos datos.
+  - **IndexNow:** la clave está en `datos/sitio.mjs` y se sirve en `/<clave>.txt`. Después de publicar y de que Pages termine: `node herramientas/indexnow.mjs`.
+  - **HTTPS obligatorio** en GitHub Pages (`https_enforced`, 8-oct): http y www van a `https://alphateklab.com/`.
+  - **Cerrojos de `pruebas/citas.test.mjs`:** las pruebas «para los buscadores».
 - **Pendiente (7-oct):** quitar del repositorio las páginas y fuentes del sitio de la agencia que siguen en `main`
   (`servicios/`, `soluciones/`, `guias/`, `laboratorio/`, `cotizar/`, `diagnostico/`, `creditos/`, sus `datos/`, `js/`,
   pruebas y herramientas). La portada ya no las enlaza, pero se abren por su dirección. Están a salvo en

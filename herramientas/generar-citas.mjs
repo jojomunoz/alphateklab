@@ -10,7 +10,8 @@ import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as P from '../datos/producto.mjs';
-import { ACTUALIZADO, CONTACTO as CONTACTO_DATOS, REGISTRO, URL_BASE } from '../datos/sitio.mjs';
+import { FUNCIONES } from '../datos/paginas.mjs';
+import { ACTUALIZADO, CONTACTO as CONTACTO_DATOS, INDEXNOW, REGISTRO, URL_BASE } from '../datos/sitio.mjs';
 import * as TERMINOS from '../datos/terminos.mjs';
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -69,7 +70,7 @@ const hayContacto = Boolean(CONTACTO.whatsapp || CONTACTO.correo);
 // Los botones van a alphateklab.com/registro/, que pasa al registro del servicio de cuentas en cuanto responde (y
 // mientras no, lo dice en vez de dar un error): así el sitio no depende de cuándo quede en línea el servidor.
 const destinoPrueba = (prefijo) => (REGISTRO ? `${prefijo === '/' ? '/' : prefijo || './'}registro/` : `${prefijo}#prueba`);
-const registroCon = (params) => (REGISTRO ? `registro/?${new URLSearchParams(params)}` : '#prueba');
+const registroCon = (params, prefijo = '') => (REGISTRO ? `${prefijo}registro/?${new URLSearchParams(params)}` : '#prueba');
 // «Iniciar sesión» (con el registro en línea): alphateklab.com/entrar/, donde se escribe el usuario y se pasa al
 // sistema de la clínica, en <usuario>.alphateklab.com.
 const destinoEntrar = (prefijo) => `${prefijo === '/' ? '/' : prefijo || './'}entrar/`;
@@ -106,7 +107,7 @@ function pie(prefijo) {
   return `<footer class="pie">
   <div class="envoltura pie__fila">
     <a class="pie__marca" href="${prefijo || './'}">${logo(prefijo, 'alphateklab')}</a>
-    <nav aria-label="Al pie"><ul class="pie__enlaces"><li><a href="${prefijo}#precios">Precios</a></li><li><a href="${prefijo}#preguntas">Preguntas</a></li><li><a href="${prefijo || './'}terminos/">Términos</a></li><li><a href="${prefijo || './'}privacidad/">Privacidad</a></li>${contacto}</ul></nav>
+    <nav aria-label="Al pie"><ul class="pie__enlaces">${FUNCIONES.map((f) => `<li><a href="${prefijo || './'}${f.ruta}">${esc(f.miga)}</a></li>`).join('')}<li><a href="${prefijo}#precios">Precios</a></li><li><a href="${prefijo}#preguntas">Preguntas</a></li><li><a href="${prefijo || './'}terminos/">Términos</a></li><li><a href="${prefijo || './'}privacidad/">Privacidad</a></li>${contacto}</ul></nav>
   </div>
   <p class="envoltura pie__nota">Las pantallas muestran un consultorio de ejemplo con pacientes ficticios. Precios en dólares, al mes. Actualizado el ${esc(ACTUALIZADO.texto)}.</p>
 </footer>`;
@@ -256,9 +257,9 @@ function hoja() {
 </div>`;
 }
 
-function visual(v) {
-  if (v.tipo === 'portatil') return portatil('', v.imagen, v.alt);
-  if (v.tipo === 'telefono') return `<div class="telefono-solo">${telefono('', v.imagen, v.alt)}</div>`;
+function visual(v, prefijo = '') {
+  if (v.tipo === 'portatil') return portatil(prefijo, v.imagen, v.alt);
+  if (v.tipo === 'telefono') return `<div class="telefono-solo">${telefono(prefijo, v.imagen, v.alt)}</div>`;
   if (v.tipo === 'chat') return chat();
   if (v.tipo === 'dictado') return dictado();
   if (v.tipo === 'hoja') return hoja();
@@ -268,6 +269,7 @@ function visual(v) {
 function seccionParte(id) {
   const s = P.FILAS[id];
   const parte = P.PARTES.find((p) => p.id === id);
+  const funcion = FUNCIONES.find((f) => f.id === id);
   const precio = `${dolares(P.PRECIOS[id])} ${parte.unidad}`;
   return `<section class="seccion producto producto--${id}" id="${id}" aria-labelledby="${id}-titulo">
   <div class="envoltura">
@@ -276,9 +278,17 @@ function seccionParte(id) {
       <h2 id="${id}-titulo" class="seccion__titulo">${esc(s.titulo)}</h2>
       <p class="seccion__bajada">${esc(s.bajada)}</p>
     </div>
-    ${s.filas
-      .map(
-        (f, i) => `<div class="fila${i % 2 ? ' fila--invertida' : ''}"${f.id ? ` id="${f.id}"` : ''}>
+    ${filasHtml(s.filas)}
+    ${funcion ? `<p class="producto__mas"><a href="${funcion.ruta}">Todo sobre el ${esc(funcion.miga.toLowerCase())}${icono('arrow-right')}</a></p>` : ''}
+  </div>
+</section>`;
+}
+
+// Texto de un lado y su pantalla (o animación) del otro, alternando.
+const filasHtml = (filas, prefijo = '') =>
+  filas
+    .map(
+      (f, i) => `<div class="fila${i % 2 ? ' fila--invertida' : ''}"${f.id ? ` id="${f.id}"` : ''}>
       <div class="fila__texto revelar">
         <h3 class="fila__titulo">${esc(f.titulo)}</h3>
         <p>${esc(f.texto)}</p>
@@ -286,13 +296,13 @@ function seccionParte(id) {
         ${f.pasos ? `<ol class="pasitos">${f.pasos.map((x) => `<li>${esc(x)}</li>`).join('')}</ol>` : ''}
         ${f.nota ? `<p class="fila__nota">${esc(f.nota)}</p>` : ''}
       </div>
-      <div class="fila__visual revelar">${visual(f.visual)}</div>
+      <div class="fila__visual revelar">${visual(f.visual, prefijo)}</div>
     </div>`,
-      )
-      .join('\n    ')}
-  </div>
-</section>`;
-}
+    )
+    .join('\n    ');
+
+// Una rejilla de puntos con ícono, título y texto (los accesos de la portada, lo que guarda el expediente…).
+const garantias = (puntos) => `<ul class="garantias${puntos.length === 6 ? ' garantias--seis' : ''}" role="list">${puntos.map((p) => `<li class="revelar"><span class="garantias__icono">${icono(p.icono)}</span><div><h3>${esc(p.titulo)}</h3><p>${esc(p.texto)}</p></div></li>`).join('')}</ul>`;
 
 const accesos = () => {
   const a = P.ACCESOS;
@@ -305,7 +315,7 @@ const accesos = () => {
     </div>
     <div class="fila__visual revelar">${portatil('', a.imagen, a.alt)}</div>
   </div>
-  <ul class="garantias" role="list">${a.puntos.map((p) => `<li class="revelar"><span class="garantias__icono">${icono(p.icono)}</span><div><h3>${esc(p.titulo)}</h3><p>${esc(p.texto)}</p></div></li>`).join('')}</ul>
+  ${garantias(a.puntos)}
 </section>`;
 };
 
@@ -373,15 +383,15 @@ const pasos = () => `<section class="seccion envoltura" id="empezar" aria-labell
   <ol class="pasos">${(REGISTRO ? P.PASOS_REGISTRO : P.PASOS).map((p) => `<li class="paso revelar"><h3>${esc(p.titulo)}</h3><p>${esc(p.texto)}</p></li>`).join('')}</ol>
 </section>`;
 
-const preguntas = () => `<section class="seccion envoltura" id="preguntas" aria-labelledby="preguntas-titulo">
+const preguntas = (lista = PREGUNTAS) => `<section class="seccion envoltura" id="preguntas" aria-labelledby="preguntas-titulo">
   <div class="seccion__cabeza seccion__cabeza--centro">
     <p class="antetitulo">${icono('question')}Preguntas frecuentes</p>
     <h2 id="preguntas-titulo" class="seccion__titulo">Lo que nos preguntan los médicos</h2>
   </div>
-  <div class="preguntas">${PREGUNTAS.map(([q, a]) => `<details class="pregunta"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div>
+  <div class="preguntas">${lista.map(([q, a]) => `<details class="pregunta"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div>
 </section>`;
 
-function pruebaConRegistro() {
+function pruebaConRegistro(prefijo = '') {
   const t = P.PRUEBA_REGISTRO;
   return `<section class="prueba" id="prueba" aria-labelledby="prueba-titulo">
   <div class="envoltura prueba__fila prueba__fila--sola">
@@ -390,7 +400,7 @@ function pruebaConRegistro() {
       <h2 id="prueba-titulo" class="seccion__titulo">${esc(t.titulo)}</h2>
       <p class="seccion__bajada">${esc(t.bajada)}</p>
       <ul class="lista-check lista-check--clara" role="list">${t.puntos.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
-      <p><a class="boton boton--senal boton--grande" href="${destinoPrueba('')}">${esc(t.boton)}${icono('arrow-right')}</a></p>
+      <p><a class="boton boton--senal boton--grande" href="${destinoPrueba(prefijo)}">${esc(t.boton)}${icono('arrow-right')}</a></p>
     </div>
   </div>
 </section>`;
@@ -446,6 +456,7 @@ function datosEstructurados() {
   const mensual = (precio, unidad) => ({ '@type': 'UnitPriceSpecification', price: precio, priceCurrency: 'USD', unitText: unidad, billingDuration: 'P1M' });
   const app = {
     '@type': 'SoftwareApplication',
+    '@id': `${URL_BASE}#producto`,
     name: P.PRODUCTO,
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
@@ -463,10 +474,14 @@ function datosEstructurados() {
   return { '@context': 'https://schema.org', '@graph': [org, app, faq] };
 }
 
+// En Google se ven ~60 caracteres del título y ~155 de la descripción: lo que se busca va primero.
+const TITULO_INICIO = `${P.PRODUCTO}: expediente clínico con IA y agenda médica en Panamá`;
+const DESCRIPCION_INICIO = `El médico dicta la nota de cada consulta y el sistema la escribe con IA. Agenda de citas con recordatorios por WhatsApp. Desde ${dolares(P.DESDE)} al mes, ${P.PRUEBA_DIAS} días gratis.`;
+
 function paginaInicio() {
   return documento({
-    titulo: `${P.PRODUCTO}: el expediente de tu paciente dictado con IA, sin escribir ni teclear · alphateklab`,
-    descripcion: `Dicta la nota de cada consulta y el sistema la escribe con IA, sin escribir a mano ni teclear. Y si quieres, la agenda con recordatorios automáticos por WhatsApp. Desde ${dolares(P.DESDE)} al mes. Prueba ${P.PRUEBA_DIAS} días gratis.`,
+    titulo: TITULO_INICIO,
+    descripcion: DESCRIPCION_INICIO,
     prefijo: '',
     canonica: URL_BASE,
     datos: datosEstructurados(),
@@ -484,11 +499,87 @@ ${prueba()}
   });
 }
 
+// alphateklab.com/<ruta>: una parte del producto con detalle (datos/paginas.mjs), para quien llega buscándola.
+function paginaFuncion(f) {
+  const prefijo = '../';
+  const url = `${URL_BASE}${f.ruta}`;
+  const datos = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'WebPage', '@id': url, url, name: f.titulo, description: f.descripcion, inLanguage: 'es-PA', about: { '@id': `${URL_BASE}#producto` }, isPartOf: { '@type': 'WebSite', '@id': `${URL_BASE}#sitio`, url: URL_BASE, name: P.PRODUCTO }, breadcrumb: { '@id': `${url}#migas` } },
+      { '@type': 'BreadcrumbList', '@id': `${url}#migas`, itemListElement: [{ '@type': 'ListItem', position: 1, name: P.PRODUCTO, item: URL_BASE }, { '@type': 'ListItem', position: 2, name: f.miga, item: url }] },
+      { '@type': 'FAQPage', mainEntity: f.preguntas.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
+    ],
+  };
+  const seccionPuntos = (id, b) => `<section class="seccion envoltura" id="${id}" aria-labelledby="${id}-titulo">
+  <div class="seccion__cabeza">
+    <p class="antetitulo">${icono('sparkle')}${esc(b.antetitulo)}</p>
+    <h2 id="${id}-titulo" class="seccion__titulo">${esc(b.titulo)}</h2>
+    <p class="seccion__bajada">${esc(b.bajada)}</p>
+  </div>
+  ${garantias(b.puntos)}${b.nota ? `\n  <p class="seccion__nota"><a href="${prefijo}privacidad/#dictado">${esc(b.nota)}${icono('arrow-right')}</a></p>` : ''}
+</section>`;
+  return documento({
+    titulo: f.titulo,
+    descripcion: f.descripcion,
+    prefijo,
+    canonica: url,
+    datos,
+    cuerpo: () => `<main id="contenido">
+<section class="heroe heroe--funcion" aria-labelledby="heroe-titulo">
+  <div class="heroe__fondo" aria-hidden="true"></div>
+  <div class="envoltura heroe__fila">
+    <div class="heroe__texto">
+      <nav class="migas" aria-label="Estás en"><ol><li><a href="${prefijo}">${esc(P.PRODUCTO)}</a></li><li aria-current="page">${esc(f.miga)}</li></ol></nav>
+      <p class="antetitulo">${icono('stethoscope')}${esc(f.antetitulo)}</p>
+      <h1 id="heroe-titulo" class="heroe__titulo">${esc(f.h1)}</h1>
+      <p class="heroe__bajada">${esc(f.bajada)}</p>
+      <div class="heroe__acciones">
+        <a class="boton boton--senal boton--grande" href="${registroCon(f.registro, prefijo)}">${esc(f.boton)}${icono('arrow-right')}</a>
+        <a class="boton boton--linea boton--grande" href="${prefijo}#precios">Ver precios</a>
+      </div>
+      <ul class="heroe__puntos" role="list">${f.puntos.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
+    </div>
+    <figure class="heroe__visual">
+      <div class="heroe__dispositivos">${portatil(prefijo, f.visual.imagen, f.visual.alt, { prioridad: true })}</div>
+      <figcaption>Pantalla real del sistema, con un consultorio de ejemplo y pacientes ficticios.</figcaption>
+    </figure>
+  </div>
+</section>
+${seccionPuntos('guarda', f.guarda)}
+<section class="seccion producto" aria-label="Cómo se usa">
+  <div class="envoltura">
+    ${filasHtml(f.filas, prefijo)}
+  </div>
+</section>
+${seccionPuntos('audio', f.audio)}
+<section class="seccion envoltura" id="accesos" aria-labelledby="accesos-titulo">
+  <div class="seccion__cabeza">
+    <p class="antetitulo">${icono('lock-key')}Privacidad</p>
+    <h2 id="accesos-titulo" class="seccion__titulo">${esc(f.accesos.titulo)}</h2>
+    <p class="seccion__bajada">${esc(f.accesos.bajada)}</p>
+  </div>
+  ${garantias(f.accesos.puntos)}
+</section>
+<section class="seccion envoltura" id="precio" aria-labelledby="precio-titulo">
+  <div class="plan plan--suelto revelar">
+    <p class="antetitulo">${icono('currency-circle-dollar')}Precio</p>
+    <h2 id="precio-titulo" class="seccion__titulo">${esc(f.precio.titulo)}</h2>
+    ${f.precio.textos.map((x) => `<p>${esc(x)}</p>`).join('\n    ')}
+    <p class="plan__acciones"><a class="boton boton--senal" href="${registroCon(f.registro, prefijo)}">${esc(f.boton)} ${P.PRUEBA_DIAS} días gratis</a> <a class="boton boton--linea" href="${prefijo}#precios">Ver todos los precios</a></p>
+  </div>
+</section>
+${preguntas(f.preguntas)}
+${pruebaConRegistro(prefijo)}
+</main>`,
+  });
+}
+
 function paginaPrivacidad() {
   const prefijo = '../';
   return documento({
     titulo: 'Privacidad · Citas Médicas de alphateklab',
-    descripcion: 'Qué datos trata este sitio y cuáles no.',
+    descripcion: 'Qué datos trata alphateklab.com, qué pasa con los datos de los pacientes en Citas Médicas y con el audio del dictado con IA.',
     prefijo,
     canonica: `${URL_BASE}privacidad/`,
     cuerpo: () => `<main id="contenido" class="envoltura texto-largo">
@@ -500,6 +591,9 @@ function paginaPrivacidad() {
   <p>El formulario para pedir la prueba arma el mensaje en tu navegador. Solo sale de tu equipo si tú lo mandas por WhatsApp o por correo, y desde ahí rigen las políticas de esos servicios. Las fuentes y las imágenes se sirven desde este mismo sitio.</p>
   <h2>El sistema Citas Médicas</h2>
   <p>Los datos de los pacientes que un consultorio guarda en el sistema son de ese consultorio. Antes de guardarlos, el paciente acepta su uso según la Ley 81 de 2019, en la recepción o desde su teléfono, y queda la fecha y la forma en que lo aceptó.</p>
+  <h2 id="dictado">El dictado con IA</h2>
+  <p>Cuando un médico dicta en el expediente, el audio de ese fragmento pasa por nuestro servidor, sin guardarse, hasta AssemblyAI, un servicio de transcripción de voz médica con servidores en Estados Unidos. AssemblyAI devuelve el texto y, apenas llega, le pedimos que borre la transcripción y el audio. Lo que queda es el texto que el médico revisa y guarda en el expediente de su consultorio.</p>
+  <p>Con AssemblyAI tenemos firmado un acuerdo para el tratamiento de datos de salud (Business Associate Agreement), y el audio no se usa para entrenar sus modelos. Solo pueden dictar las personas a las que el consultorio les dio el acceso «Notas».</p>
   <p>Las pantallas de este sitio muestran un consultorio de ejemplo con pacientes ficticios.</p>
   <p><a href="${prefijo}">Volver al inicio</a></p>
 </main>`,
@@ -683,11 +777,50 @@ const paginaCitasmed = () => `<!doctype html>
 </html>
 `;
 
+// Lo que va al sitemap y a IndexNow: lo que se quiere ver en los buscadores (registro, entrar y el 404 llevan noindex).
+const INDEXABLES = ['', ...FUNCIONES.map((f) => f.ruta), 'terminos/', 'privacidad/'];
+
 const sitemap = () => `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${['', 'terminos/', 'privacidad/'].map((u) => `  <url><loc>${URL_BASE}${u}</loc><lastmod>${ACTUALIZADO.iso}</lastmod></url>`).join('\n')}
+${INDEXABLES.map((u) => `  <url><loc>${URL_BASE}${u}</loc><lastmod>${ACTUALIZADO.iso}</lastmod></url>`).join('\n')}
 </urlset>
 `;
+
+// /llms.txt: el resumen del producto para los asistentes (ChatGPT, Perplexity…), que es por donde más llega la gente a
+// alphatend. Sale de los mismos datos que la portada. Las preguntas de los paquetes de mensajes quedan fuera mientras
+// los socios deciden qué se promete de ellos (ver datos/paginas.mjs).
+function llms() {
+  const exp = P.PARTES.find((p) => p.id === 'expediente');
+  const agenda = P.PARTES.find((p) => p.id === 'agenda');
+  const paquetes = P.PRECIOS.mensajes.filter((m) => m.mensajes).map((m) => `${m.mensajes} por ${dolares(m.precio)}`).join(', ').replace(/, ([^,]+)$/, ' o $1');
+  return `# ${P.PRODUCTO}, de alphateklab
+
+> Sistema web para clínicas y consultorios en Panamá: el expediente clínico, que el médico dicta con IA en vez de escribirlo a mano o teclearlo, y la agenda de citas con recordatorios por WhatsApp. Se usa en el navegador de la computadora, la tableta o el celular, sin instalar nada. Cada clínica tiene su propio sistema en <clínica>.alphateklab.com.
+
+## Páginas
+
+- [${P.PRODUCTO}](${URL_BASE}): el producto completo, con pantallas reales, precios, calculadora y preguntas frecuentes.
+${FUNCIONES.map((f) => `- [${f.titulo.replace(/ · .*$/, '')}](${URL_BASE}${f.ruta}): ${f.descripcion}`).join('\n')}
+- [Términos del servicio](${URL_BASE}terminos/): la prueba, los pagos, la cancelación y los datos de los pacientes.
+- [Privacidad](${URL_BASE}privacidad/): qué datos trata el sitio, qué pasa con los de los pacientes y con el audio del dictado.
+
+## Precios
+
+En dólares, al mes y netos (sin sumar ITBMS):
+
+- ${exp.nombre}: ${dolares(P.PRECIOS.expediente)} ${exp.unidad}. Profesional es cada médico que hace expedientes; la recepción, enfermería y administración tienen su usuario sin costo. El dictado con IA va incluido.
+- ${agenda.nombre}: ${dolares(P.PRECIOS.agenda)} ${agenda.unidad}. Los mensajes de WhatsApp van aparte, por paquete: ${paquetes} al mes.
+- Prueba gratis de ${P.PRUEBA_DIAS} días, sin tarjeta. Después, mes a mes, sin plan anual. Se paga con tarjeta de crédito o débito.
+
+## Preguntas frecuentes
+
+${PREGUNTAS.filter(([q]) => !/mensajes/i.test(q)).map(([q, a]) => `- ${q} ${a}`).join('\n')}
+
+## Probarlo
+
+Una clínica crea su cuenta sola en ${URL_BASE}registro/ y su sistema queda listo al momento.
+`;
+}
 
 // SALIDA=<carpeta> escribe en otra parte (la prueba lo usa para ver que lo publicado está al día).
 const SALIDA = process.env.SALIDA || RAIZ;
@@ -698,6 +831,7 @@ const escribir = (ruta, contenido) => {
 
 escribir('index.html', paginaInicio());
 escribir('privacidad/index.html', paginaPrivacidad());
+for (const f of FUNCIONES) escribir(`${f.ruta}index.html`, paginaFuncion(f));
 escribir('404.html', pagina404());
 escribir('terminos/index.html', paginaTerminos());
 if (REGISTRO) escribir('registro/index.html', paginaPuenteRegistro());
@@ -705,4 +839,6 @@ if (REGISTRO) escribir('entrar/index.html', paginaEntrar());
 escribir('citasmed/index.html', paginaCitasmed());
 escribir('sitemap.xml', sitemap());
 escribir('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${URL_BASE}sitemap.xml\n`);
+escribir(`${INDEXNOW}.txt`, INDEXNOW);
+escribir('llms.txt', llms());
 console.log(`Generado: portada de ${P.PRODUCTO}, términos, privacidad, 404, /citasmed/, sitemap y robots.txt.${REGISTRO ? ` «Probar gratis» lleva al registro (${REGISTRO}).` : hayContacto ? '' : ' Sin registro ni contacto en datos/sitio.mjs: la portada sale sin el formulario de la prueba.'}`);

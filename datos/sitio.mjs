@@ -11,3 +11,7 @@ export const REGISTRO = 'https://cuentas.alphateklab.com/registro';
 
 // El sitio vive en la raíz de su dominio (oct-2026; antes en https://jojomunoz.github.io/alphateklab/).
 export const URL_BASE = 'https://alphateklab.com/';
+
+// IndexNow (Bing, Yandex, Seznam, Naver): la clave es pública a propósito; el sitio la sirve en /<clave>.txt para
+// probar que el dominio es nuestro. `node herramientas/indexnow.mjs` avisa de las páginas del sitemap después de publicar.
+export const INDEXNOW = '3c55b7b9ed6485b6e164f1eafb1e0581';

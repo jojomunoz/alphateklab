@@ -2122,3 +2122,70 @@ body.citas {
   margin-top: 16px;
   color: var(--tinta-2);
 }
+
+/* las páginas de cada parte (expediente-clinico/…): migas, el enlace desde la portada y el precio suelto */
+.migas ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+  font-size: var(--t-xs);
+  color: var(--tinta-3);
+}
+.migas li + li::before {
+  content: '›';
+  margin-right: 6px;
+}
+.migas a {
+  color: var(--tinta-2);
+}
+.heroe--funcion .heroe__titulo {
+  font-size: clamp(2rem, 1.2rem + 2.6vw, 3.1rem);
+  max-width: 22ch;
+}
+.producto__mas {
+  margin-top: 32px;
+  text-align: center;
+}
+.producto__mas a,
+.seccion__nota a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 650;
+}
+.producto__mas .ico,
+.seccion__nota .ico {
+  width: 18px;
+  height: 18px;
+}
+.seccion__nota {
+  margin-top: 24px;
+  color: var(--tinta-2);
+  font-size: var(--t-s);
+}
+.plan--suelto {
+  max-width: 760px;
+  margin-inline: auto;
+}
+.plan--suelto > p:not(.antetitulo):not(.plan__acciones) {
+  color: var(--tinta-2);
+  max-width: 65ch;
+}
+.plan__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+/* seis puntos: de tres en tres, para que no quede una fila de dos */
+@media (min-width: 1040px) {
+  .garantias--seis {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.plan--suelto .antetitulo {
+  align-self: flex-start;
+}

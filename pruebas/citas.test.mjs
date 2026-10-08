@@ -8,11 +8,13 @@ import { tmpdir } from 'node:os';
 import { dirname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PRECIOS, PRUEBA_DIAS, PREGUNTAS, PARTES, PRODUCTO, dolares, sumar } from '../datos/producto.mjs';
-import { CONTACTO, REGISTRO } from '../datos/sitio.mjs';
+import { FUNCIONES } from '../datos/paginas.mjs';
+import * as SITIO from '../datos/sitio.mjs';
+const { CONTACTO, REGISTRO } = SITIO;
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 const leer = (r) => readFileSync(join(RAIZ, r), 'utf8');
-const PAGINAS = ['index.html', 'privacidad/index.html', '404.html'];
+const PAGINAS = ['index.html', 'privacidad/index.html', '404.html', ...FUNCIONES.map((f) => `${f.ruta}index.html`)];
 const textoVisible = (html) => html.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<svg[\s\S]*?<\/svg>/g, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;| /g, ' ').replace(/&[a-z#0-9]+;/g, (e) => ({ '&amp;': '&', '&quot;': '"', '&#39;': "'", '&lt;': '<', '&gt;': '>' })[e] || ' ').replace(/\s+/g, ' ');
 
 test('lo publicado está al día: generar otra vez da lo mismo', () => {
@@ -64,7 +66,7 @@ test('un solo H1 por página y el título de la portada nombra el producto', () 
 });
 
 test('nada roto: cada archivo enlazado existe y cada ancla tiene a dónde ir', () => {
-  for (const r of ['index.html', 'privacidad/index.html']) {
+  for (const r of ['index.html', 'privacidad/index.html', ...FUNCIONES.map((f) => `${f.ruta}index.html`)]) {
     const html = leer(r);
     const base = dirname(join(RAIZ, r));
     const rutas = [...html.matchAll(/(?:src|href)="([^"]+)"/g), ...html.matchAll(/srcset="([^"]+)"/g)].flatMap((m) => m[1].split(',').map((x) => x.trim().split(' ')[0]));
@@ -131,4 +133,60 @@ test('/citasmed/ lleva a la portada y el sitemap tiene las páginas', () => {
   assert.match(leer('citasmed/index.html'), /http-equiv="refresh" content="0; url=\.\.\/"/);
   const s = leer('sitemap.xml');
   assert.ok(s.includes('<loc>https://alphateklab.com/</loc>') && s.includes('<loc>https://alphateklab.com/privacidad/</loc>'));
+});
+
+// ── para los buscadores ──
+const cabeza = (html) => html.slice(0, html.indexOf('</head>'));
+const meta = (html, re) => cabeza(html).match(re)?.[1];
+const enSitemap = () => [...leer('sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+
+test('cada página del sitemap: título y descripción únicos y a la medida de Google, canónica propia y sin noindex', () => {
+  const urls = enSitemap();
+  assert.ok(urls.length >= 4, 'el sitemap trae la portada, las páginas de función, términos y privacidad');
+  const titulos = new Set();
+  const descripciones = new Set();
+  for (const u of urls) {
+    const r = `${u.replace('https://alphateklab.com/', '')}index.html`;
+    const html = leer(r);
+    const titulo = meta(html, /<title>([^<]+)<\/title>/);
+    const desc = meta(html, /<meta name="description" content="([^"]+)"/);
+    assert.ok(titulo && titulo.length <= 70, `${r}: título de ${titulo?.length} caracteres`);
+    assert.ok(desc && desc.length >= 50 && desc.length <= 160, `${r}: descripción de ${desc?.length} caracteres`);
+    assert.ok(!titulos.has(titulo) && !descripciones.has(desc), `${r}: título o descripción repetidos`);
+    titulos.add(titulo);
+    descripciones.add(desc);
+    assert.equal(meta(html, /<link rel="canonical" href="([^"]+)"/), u, `${r}: la canónica es ella misma`);
+    assert.doesNotMatch(cabeza(html), /noindex/, `${r}: está en el sitemap y dice noindex`);
+    for (const [, j] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) JSON.parse(j);
+  }
+  for (const r of ['registro/index.html', 'entrar/index.html', '404.html', 'citasmed/index.html']) {
+    if (existsSync(join(RAIZ, r))) assert.match(cabeza(leer(r)), /<meta name="robots" content="noindex"/, `${r}: fuera de los buscadores`);
+  }
+});
+
+test('las páginas de función: en el sitemap, en el pie de todas las páginas y enlazadas desde su sección de la portada', () => {
+  const urls = enSitemap();
+  for (const f of FUNCIONES) {
+    assert.ok(urls.includes(`https://alphateklab.com/${f.ruta}`), `${f.ruta} en el sitemap`);
+    for (const r of PAGINAS) assert.match(leer(r), new RegExp(`<footer[\\s\\S]*href="[^"]*${f.ruta}"`), `${r}: el pie enlaza ${f.ruta}`);
+    assert.match(leer('index.html'), new RegExp(`class="producto__mas"><a href="${f.ruta}"`), `la portada enlaza ${f.ruta} desde su sección`);
+    const html = leer(`${f.ruta}index.html`);
+    const ld = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+    assert.ok(ld['@graph'].some((n) => n['@type'] === 'BreadcrumbList'), `${f.ruta}: migas`);
+    const faq = ld['@graph'].find((n) => n['@type'] === 'FAQPage');
+    assert.equal(faq.mainEntity.length, f.preguntas.length, `${f.ruta}: las preguntas a la vista son las del JSON-LD`);
+    for (const [q] of f.preguntas) assert.ok(textoVisible(html).includes(q), `${f.ruta}: ${q}`);
+  }
+});
+
+test('llms.txt, la clave de IndexNow y robots.txt', () => {
+  const llms = leer('llms.txt');
+  assert.match(llms, /^# /);
+  for (const u of enSitemap()) assert.ok(llms.includes(`(${u})`), `llms.txt nombra ${u}`);
+  assert.ok(llms.includes(dolares(PRECIOS.expediente)) && llms.includes(dolares(PRECIOS.agenda)), 'llms.txt con los precios');
+  assert.doesNotMatch(llms, /salen solos|(mensajes|recordatorios|confirmaciones) automátic/i, 'llms.txt no promete mensajes que salen solos');
+  const { INDEXNOW } = SITIO;
+  assert.match(INDEXNOW, /^[a-f0-9]{32}$/);
+  assert.equal(leer(`${INDEXNOW}.txt`), INDEXNOW);
+  assert.match(leer('robots.txt'), /Sitemap: https:\/\/alphateklab\.com\/sitemap\.xml/);
 });

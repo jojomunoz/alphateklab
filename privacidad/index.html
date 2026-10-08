@@ -5,12 +5,12 @@
 <script>try{if(localStorage.getItem('atk-tema')==='oscuro')document.documentElement.dataset.theme='dark'}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Privacidad · Citas Médicas de alphateklab</title>
-<meta name="description" content="Qué datos trata este sitio y cuáles no." />
+<meta name="description" content="Qué datos trata alphateklab.com, qué pasa con los datos de los pacientes en Citas Médicas y con el audio del dictado con IA." />
 <link rel="canonical" href="https://alphateklab.com/privacidad/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="alphateklab" />
 <meta property="og:title" content="Privacidad · Citas Médicas de alphateklab" />
-<meta property="og:description" content="Qué datos trata este sitio y cuáles no." />
+<meta property="og:description" content="Qué datos trata alphateklab.com, qué pasa con los datos de los pacientes en Citas Médicas y con el audio del dictado con IA." />
 <meta property="og:url" content="https://alphateklab.com/privacidad/" />
 <meta property="og:locale" content="es_PA" />
 <meta property="og:image" content="https://alphateklab.com/assets/og-citas.jpg" />
@@ -24,7 +24,7 @@
 <link rel="preload" href="../assets/fuentes/manrope-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="../assets/fuentes/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="../assets/atk.css?v=0b00706fc0" />
-<link rel="stylesheet" href="../assets/citas.css?v=73fefae87d" />
+<link rel="stylesheet" href="../assets/citas.css?v=34c30423b3" />
 </head>
 <body class="citas">
 <a class="saltar" href="#contenido">Saltar al contenido</a>
@@ -53,13 +53,16 @@
   <p>El formulario para pedir la prueba arma el mensaje en tu navegador. Solo sale de tu equipo si tú lo mandas por WhatsApp o por correo, y desde ahí rigen las políticas de esos servicios. Las fuentes y las imágenes se sirven desde este mismo sitio.</p>
   <h2>El sistema Citas Médicas</h2>
   <p>Los datos de los pacientes que un consultorio guarda en el sistema son de ese consultorio. Antes de guardarlos, el paciente acepta su uso según la Ley 81 de 2019, en la recepción o desde su teléfono, y queda la fecha y la forma en que lo aceptó.</p>
+  <h2 id="dictado">El dictado con IA</h2>
+  <p>Cuando un médico dicta en el expediente, el audio de ese fragmento pasa por nuestro servidor, sin guardarse, hasta AssemblyAI, un servicio de transcripción de voz médica con servidores en Estados Unidos. AssemblyAI devuelve el texto y, apenas llega, le pedimos que borre la transcripción y el audio. Lo que queda es el texto que el médico revisa y guarda en el expediente de su consultorio.</p>
+  <p>Con AssemblyAI tenemos firmado un acuerdo para el tratamiento de datos de salud (Business Associate Agreement), y el audio no se usa para entrenar sus modelos. Solo pueden dictar las personas a las que el consultorio les dio el acceso «Notas».</p>
   <p>Las pantallas de este sitio muestran un consultorio de ejemplo con pacientes ficticios.</p>
   <p><a href="../">Volver al inicio</a></p>
 </main>
 <footer class="pie">
   <div class="envoltura pie__fila">
     <a class="pie__marca" href="../"><img class="logo logo--claro" src="../assets/marca/logo-claro.svg" alt="alphateklab" width="142" height="32" /><img class="logo logo--oscuro" src="../assets/marca/logo-oscuro.svg" alt="alphateklab" width="142" height="32" /></a>
-    <nav aria-label="Al pie"><ul class="pie__enlaces"><li><a href="../#precios">Precios</a></li><li><a href="../#preguntas">Preguntas</a></li><li><a href="../terminos/">Términos</a></li><li><a href="../privacidad/">Privacidad</a></li></ul></nav>
+    <nav aria-label="Al pie"><ul class="pie__enlaces"><li><a href="../expediente-clinico/">Expediente clínico</a></li><li><a href="../#precios">Precios</a></li><li><a href="../#preguntas">Preguntas</a></li><li><a href="../terminos/">Términos</a></li><li><a href="../privacidad/">Privacidad</a></li></ul></nav>
   </div>
   <p class="envoltura pie__nota">Las pantallas muestran un consultorio de ejemplo con pacientes ficticios. Precios en dólares, al mes. Actualizado el 8 de octubre de 2026.</p>
 </footer>
