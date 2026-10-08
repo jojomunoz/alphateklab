@@ -15,10 +15,12 @@ en la rama **`sitio-agencia`**; para volver a él: `git checkout sitio-agencia -
   - El contacto (WhatsApp y correo) sale de `datos/sitio.mjs`. Sin contacto, la portada sale sin el formulario de la
     prueba y dice que respondan el correo con el que les llegó la página (`PRUEBA.sinContacto`). Para verlo en local: `WHATSAPP=507… CORREO=… node herramientas/generar-citas.mjs`, y antes de publicar,
     generar otra vez sin esas variables.
-- **Precios (Edwin, 7-oct):** son netos, sin sumar ITBMS.
-  - Expediente: $30 al mes por profesional (cada médico que hace expedientes; la recepción, enfermería y administración
-    no pagan).
-  - Agenda: $25, $35 o $45 al mes por clínica, con 200, 500 o 1000 mensajes de WhatsApp.
+- **Precios (Edwin, 7-oct; los mismos de la app, `web/js/nucleo/plan.mjs` de citas-piloto):** son netos, sin sumar ITBMS.
+  - Expediente: $29.99 al mes por profesional (cada médico que hace expedientes; la recepción, enfermería y
+    administración no pagan).
+  - Agenda: $14.99 al mes por clínica. Los mensajes de WhatsApp van APARTE: sin paquete (la recepción manda cada
+    recordatorio con un toque desde el WhatsApp de la clínica), o 200, 500 o 1000 al mes por $15, $25 o $35, que salen
+    solos. «Sin paquete» es lo que viene marcado (Edwin, 8-oct): que los $14.99 no parezcan incluir los mensajes.
   - Prueba gratis de 7 días, sin tarjeta, y después mes a mes, sin plan anual.
 - **Propuesta de valor (Edwin, 7-oct):** el expediente que el médico dicta con IA, sin escribir a mano ni teclear,
   explicado para el médico joven y para el que no se lleva con la tecnología. El expediente va primero en todo (héroe,

@@ -810,7 +810,6 @@ body.citas {
   line-height: 1;
   letter-spacing: -0.03em;
 }
-.parte__desde,
 .parte__unidad {
   color: var(--tinta-3);
   font-size: var(--t-s);
@@ -1492,6 +1491,30 @@ body.citas {
   color: var(--tinta-2);
   transition: background-color var(--mov), color var(--mov), box-shadow var(--mov);
 }
+/* los paquetes de mensajes: cuatro, con su precio debajo; en un teléfono angosto, de dos en dos */
+.segmentos--paquetes {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (min-width: 420px) {
+  .segmentos--paquetes {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.segmentos--paquetes label {
+  display: grid;
+}
+.segmentos--paquetes span {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  line-height: 1.2;
+}
+.segmentos--paquetes small {
+  font-size: var(--t-xs);
+  font-weight: 500;
+  color: var(--tinta-3);
+}
 .segmentos input:checked + span {
   background: var(--superficie);
   color: var(--tinta);
@@ -1501,6 +1524,20 @@ body.citas {
 .opciones input:focus-visible + span {
   outline: 2px solid var(--foco);
   outline-offset: 2px;
+}
+.plan__suma {
+  display: none;
+  margin-top: 10px;
+  color: var(--tinta-2);
+  font-size: var(--t-s);
+}
+.plan__suma:first-of-type {
+  display: block;
+}
+.plan__suma strong {
+  display: block;
+  margin-top: 2px;
+  color: var(--tinta);
 }
 .plan__precio {
   display: flex;

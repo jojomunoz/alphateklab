@@ -22,7 +22,7 @@ const existe = (ruta) => existsSync(join(RAIZ, ruta));
 const sinCorte = (t) => String(t).replace(/(\d) (a\. m\.|p\. m\.|%|°C|mmHg|lpm)/g, '$1 $2').replace(/a\. m\./g, 'a. m.').replace(/p\. m\./g, 'p. m.');
 export const esc = (s) => sinCorte(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const jsonEnScript = (v) => JSON.stringify(v).replace(/</g, '\\u003c');
-const dolares = (n) => `$${n}`;
+const { dolares } = P;
 const resaltar = (t) => esc(t).replace(/\[([^\]]+)\]/, '<span class="resalte">$1</span>');
 const sinMarcas = (t) => t.replace(/[[\]]/g, '');
 
@@ -189,7 +189,7 @@ function heroe() {
 const destacado = (p) => `<div class="destacado destacado--${p.id}"><span class="destacado__icono">${icono(p.destacado.icono)}</span><p><strong>${esc(p.destacado.titulo)}</strong><span>${esc(p.destacado.texto)}</span></p></div>`;
 
 function precioDeParte(id) {
-  return id === 'agenda' ? `<span class="parte__desde">desde</span> <strong class="num">${dolares(P.PRECIOS.agenda[0].precio)}</strong>` : `<strong class="num">${dolares(P.PRECIOS.expediente)}</strong>`;
+  return `<strong class="num">${dolares(P.PRECIOS[id])}</strong>`;
 }
 
 const partes = () => `<section class="seccion envoltura" id="productos" aria-labelledby="productos-titulo">
@@ -268,7 +268,7 @@ function visual(v) {
 function seccionParte(id) {
   const s = P.FILAS[id];
   const parte = P.PARTES.find((p) => p.id === id);
-  const precio = id === 'agenda' ? `desde ${dolares(P.PRECIOS.agenda[0].precio)} ${parte.unidad}` : `${dolares(P.PRECIOS.expediente)} ${parte.unidad}`;
+  const precio = `${dolares(P.PRECIOS[id])} ${parte.unidad}`;
   return `<section class="seccion producto producto--${id}" id="${id}" aria-labelledby="${id}-titulo">
   <div class="envoltura">
     <div class="seccion__cabeza">
@@ -310,7 +310,8 @@ const accesos = () => {
 };
 
 function precios() {
-  const ag = P.PRECIOS.agenda;
+  const paquetes = P.PRECIOS.mensajes;
+  const conAgenda = (t) => P.sumar(P.PRECIOS.agenda, t.precio);
   const agenda = P.PARTES.find((p) => p.id === 'agenda');
   const exp = P.PARTES.find((p) => p.id === 'expediente');
   return `<section class="seccion precios" id="precios" aria-labelledby="precios-titulo">
@@ -320,7 +321,7 @@ function precios() {
       <h2 id="precios-titulo" class="seccion__titulo">Precios claros, mes a mes</h2>
       <p class="seccion__bajada">Contrata solo lo que usas. Los primeros ${P.PRUEBA_DIAS} días son gratis y no hay plan anual.</p>
     </div>
-    <style>@supports selector(:has(*)) { .plan--agenda .plan__cifra:first-child { display: none; } ${ag.map((t) => `.plan--agenda:has(input[value="${t.mensajes}"]:checked) .plan__cifra[data-mensajes="${t.mensajes}"] { display: inline; }`).join(' ')} }</style>
+    <style>@supports selector(:has(*)) { .plan--agenda .plan__suma:first-of-type { display: none; } ${paquetes.map((t) => `.plan--agenda:has(input[value="${t.mensajes}"]:checked) .plan__suma[data-mensajes="${t.mensajes}"] { display: block; }`).join(' ')} }</style>
     <div class="planes">
       <article class="plan plan--expediente revelar" data-plan="expediente">
         <div class="plan__cabeza"><span class="plan__icono">${icono(exp.icono)}</span><h3>${esc(exp.nombre)}</h3></div>
@@ -333,14 +334,15 @@ function precios() {
       <article class="plan plan--agenda revelar" data-plan="agenda">
         <div class="plan__cabeza"><span class="plan__icono">${icono(agenda.icono)}</span><h3>${esc(agenda.nombre)}</h3></div>
         <p class="plan__para">Para toda la clínica, con todos sus médicos.</p>
-        <fieldset class="plan__mensajes">
-          <legend>Mensajes de WhatsApp al mes</legend>
-          <div class="segmentos">${ag.map((t, i) => `<label><input type="radio" name="plan-mensajes" value="${t.mensajes}"${i === 0 ? ' checked' : ''} /><span>${t.mensajes}</span></label>`).join('')}</div>
-        </fieldset>
-        <p class="plan__precio">${ag.map((t) => `<span class="plan__cifra" data-mensajes="${t.mensajes}"><strong class="num">${dolares(t.precio)}</strong><span class="sr"> con ${t.mensajes} mensajes</span></span>`).join('')}<span class="plan__unidad">${esc(agenda.unidad)}</span></p>
+        <p class="plan__precio"><span class="plan__cifra plan__cifra--fija"><strong class="num">${dolares(P.PRECIOS.agenda)}</strong></span><span class="plan__unidad">${esc(agenda.unidad)}</span></p>
         ${destacado(agenda)}
         <ul class="lista-check" role="list">${agenda.incluye.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
-        <a class="boton boton--linea plan__boton" href="${registroCon({ expediente: 0, agenda: 1, mensajes: ag[0].mensajes })}" data-elegir="agenda"${enlaceRegistro}>Probar la agenda</a>
+        <fieldset class="plan__mensajes">
+          <legend>Mensajes automáticos de WhatsApp, aparte</legend>
+          <div class="segmentos segmentos--paquetes">${paquetes.map((t, i) => `<label><input type="radio" name="plan-mensajes" value="${t.mensajes}"${i === 0 ? ' checked' : ''} /><span>${t.mensajes ? `${t.mensajes}<small class="num">+${dolares(t.precio)}</small>` : `Sin paquete<small class="num">${dolares(0)}</small>`}</span></label>`).join('')}</div>
+          ${paquetes.map((t) => `<p class="plan__suma" data-mensajes="${t.mensajes}">${t.mensajes ? `Hasta ${t.mensajes} mensajes al mes salen solos.` : 'La recepción manda cada recordatorio con un toque desde el WhatsApp de la clínica.'} <strong>Total: <span class="num">${dolares(conAgenda(t))}</span> al mes</strong></p>`).join('\n          ')}
+        </fieldset>
+        <a class="boton boton--linea plan__boton" href="${registroCon({ expediente: 0, agenda: 1, mensajes: paquetes[0].mensajes })}" data-elegir="agenda"${enlaceRegistro}>Probar la agenda</a>
       </article>
     </div>
     <div class="calculadora revelar" data-calculadora hidden>
@@ -352,13 +354,13 @@ function precios() {
       </div>
       <div class="calculadora__fila">
         <label class="interruptor"><input type="checkbox" name="calc-agenda" checked /><span>${esc(agenda.nombre)}</span></label>
-        <label class="calculadora__dato"><span class="sr">Mensajes de WhatsApp al mes</span><select name="calc-mensajes">${ag.map((t) => `<option value="${t.mensajes}">${t.mensajes} mensajes al mes</option>`).join('')}</select></label>
+        <label class="calculadora__dato"><span class="sr">Mensajes automáticos de WhatsApp al mes</span><select name="calc-mensajes">${paquetes.map((t) => `<option value="${t.mensajes}">${t.mensajes ? `+ ${t.mensajes} mensajes (${dolares(t.precio)})` : 'Sin paquete de mensajes'}</option>`).join('')}</select></label>
         <output class="calculadora__sub num" data-sub="agenda"></output>
       </div>
       <div class="calculadora__total"><span>Total al mes</span><output class="num" data-total aria-live="polite"></output></div>
-      <a class="boton boton--senal calculadora__boton" href="${registroCon({ expediente: 1, profesionales: 2, agenda: 1, mensajes: ag[0].mensajes })}" data-elegir="calculadora"${enlaceRegistro}>Probar este plan ${P.PRUEBA_DIAS} días gratis${icono('arrow-right')}</a>
+      <a class="boton boton--senal calculadora__boton" href="${registroCon({ expediente: 1, profesionales: 2, agenda: 1, mensajes: paquetes[0].mensajes })}" data-elegir="calculadora"${enlaceRegistro}>Probar este plan ${P.PRUEBA_DIAS} días gratis${icono('arrow-right')}</a>
     </div>
-    <script type="application/json" id="datos-precios">${jsonEnScript({ agenda: ag, expediente: P.PRECIOS.expediente })}</script>
+    <script type="application/json" id="datos-precios">${jsonEnScript(P.PRECIOS)}</script>
   </div>
 </section>`;
 }
@@ -453,7 +455,8 @@ function datosEstructurados() {
     provider: { '@id': `${URL_BASE}#organizacion` },
     offers: [
       { '@type': 'Offer', name: P.PARTES.find((p) => p.id === 'expediente').nombre, price: P.PRECIOS.expediente, priceCurrency: 'USD', priceSpecification: mensual(P.PRECIOS.expediente, 'profesional') },
-      ...P.PRECIOS.agenda.map((t) => ({ '@type': 'Offer', name: `${P.PARTES.find((p) => p.id === 'agenda').nombre}, ${t.mensajes} mensajes de WhatsApp al mes`, price: t.precio, priceCurrency: 'USD', priceSpecification: mensual(t.precio, 'clínica') })),
+      { '@type': 'Offer', name: P.PARTES.find((p) => p.id === 'agenda').nombre, price: P.PRECIOS.agenda, priceCurrency: 'USD', priceSpecification: mensual(P.PRECIOS.agenda, 'clínica') },
+      ...P.PRECIOS.mensajes.filter((t) => t.mensajes > 0).map((t) => ({ '@type': 'Offer', name: `${t.mensajes} mensajes automáticos de WhatsApp al mes, aparte de la agenda`, price: t.precio, priceCurrency: 'USD', priceSpecification: mensual(t.precio, 'clínica') })),
     ],
   };
   const faq = { '@type': 'FAQPage', mainEntity: PREGUNTAS.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };

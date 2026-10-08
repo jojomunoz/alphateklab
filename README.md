@@ -3,8 +3,9 @@
 Desde el 7-oct-2026, **alphateklab.com** presenta un solo producto: **Citas Médicas**, la agenda con recordatorios por
 WhatsApp y el expediente clínico para clínicas y consultorios de Panamá. Se contratan por separado:
 
-- **Expediente:** $30 al mes por profesional.
-- **Agenda:** $25, $35 o $45 al mes por clínica, con 200, 500 o 1000 mensajes.
+- **Expediente:** $29.99 al mes por profesional.
+- **Agenda:** $14.99 al mes por clínica. Los mensajes automáticos de WhatsApp, aparte: 200, 500 o 1000 al mes por $15,
+  $25 o $35 (sin paquete, la recepción manda cada recordatorio con un toque).
 - **Prueba:** 7 días gratis.
 
 Dominio: https://alphateklab.com/ (GitHub Pages de este repositorio, rama `main`).

@@ -145,7 +145,9 @@ for (const dictado of reducir.matches ? [] : document.querySelectorAll('[data-di
 const datosPrecios = (() => {
   try { return JSON.parse(document.getElementById('datos-precios')?.textContent || 'null'); } catch { return null; }
 })();
-const dinero = (n) => `$${n}`;
+// Las cuentas, en centavos: $14.99 + $15 da $29.99 y no 29.990000000000002. Los centavos se muestran solo si los hay.
+const centavos = (n) => Math.round(Number(n) * 100);
+const dinero = (c) => `$${c % 100 === 0 ? c / 100 : (c / 100).toFixed(2)}`;
 const form = document.querySelector('[data-prueba]');
 
 function llevarAlFormulario({ interes, medicos, plan }) {
@@ -167,20 +169,25 @@ if (calc && datosPrecios) {
 
   const leer = () => {
     const n = Math.min(50, Math.max(1, Math.round(Number(profesionales.value) || 1)));
-    const paquete = datosPrecios.agenda.find((t) => String(t.mensajes) === mensajes.value) || datosPrecios.agenda[0];
+    const paquete = datosPrecios.mensajes.find((t) => String(t.mensajes) === mensajes.value) || datosPrecios.mensajes[0];
     return { n, paquete, agenda: agendaSi.checked, expediente: expedienteSi.checked };
   };
-  const resumen = ({ n, paquete, agenda, expediente }) => {
+  // La agenda, con el paquete de mensajes (aparte) si lo hay; el expediente, por profesional. En centavos.
+  const subtotales = ({ n, paquete, agenda, expediente }) => ({
+    a: agenda ? centavos(datosPrecios.agenda) + centavos(paquete.precio) : 0,
+    x: expediente ? n * centavos(datosPrecios.expediente) : 0,
+  });
+  const resumen = (v) => {
+    const { n, paquete, agenda, expediente } = v;
+    const { a, x } = subtotales(v);
     const partes = [];
-    if (agenda) partes.push(`Agenda con ${paquete.mensajes} mensajes (${dinero(paquete.precio)})`);
-    if (expediente) partes.push(`Expediente para ${n} ${n === 1 ? 'profesional' : 'profesionales'} (${dinero(n * datosPrecios.expediente)})`);
-    const total = (agenda ? paquete.precio : 0) + (expediente ? n * datosPrecios.expediente : 0);
-    return partes.length ? `${partes.join(' + ')} = ${dinero(total)} al mes` : '';
+    if (agenda) partes.push(`Agenda (${dinero(centavos(datosPrecios.agenda))})${paquete.mensajes ? ` con ${paquete.mensajes} mensajes de WhatsApp (${dinero(centavos(paquete.precio))})` : ', sin paquete de mensajes'}`);
+    if (expediente) partes.push(`Expediente para ${n} ${n === 1 ? 'profesional' : 'profesionales'} (${dinero(x)})`);
+    return partes.length ? `${partes.join(' + ')} = ${dinero(a + x)} al mes` : '';
   };
   const calcular = () => {
     const v = leer();
-    const a = v.agenda ? v.paquete.precio : 0;
-    const x = v.expediente ? v.n * datosPrecios.expediente : 0;
+    const { a, x } = subtotales(v);
     calc.querySelector('[data-sub="agenda"]').textContent = v.agenda ? dinero(a) : '—';
     calc.querySelector('[data-sub="expediente"]').textContent = v.expediente ? dinero(x) : '—';
     calc.querySelector('[data-total]').textContent = dinero(a + x);

@@ -16,17 +16,32 @@
 export const PRODUCTO = 'Citas Médicas';
 export const PRUEBA_DIAS = 7;
 
-// Al mes, en dólares.
+// Al mes, en dólares, desde el 7-oct-2026 (Edwin; los mismos de la app, citas-piloto web/js/nucleo/plan.mjs).
 export const PRECIOS = {
-  expediente: 30, // por profesional
-  agenda: [
-    // por clínica, según los mensajes de WhatsApp de confirmación al mes
-    { mensajes: 200, precio: 25 },
-    { mensajes: 500, precio: 35 },
-    { mensajes: 1000, precio: 45 },
+  expediente: 29.99, // por profesional
+  agenda: 14.99, // por clínica, sin los mensajes
+  // Los mensajes de WhatsApp van aparte de la agenda, por paquete al mes. Sin paquete (0) los recordatorios salen igual
+  // a su hora, y la recepción manda cada uno con un toque desde el WhatsApp de la clínica; con paquete salen solos.
+  mensajes: [
+    { mensajes: 0, precio: 0 },
+    { mensajes: 200, precio: 15 },
+    { mensajes: 500, precio: 25 },
+    { mensajes: 1000, precio: 35 },
   ],
 };
-export const DESDE = Math.min(PRECIOS.expediente, ...PRECIOS.agenda.map((a) => a.precio));
+export const DESDE = Math.min(PRECIOS.expediente, PRECIOS.agenda);
+/** El paquete más barato con mensajes automáticos. */
+export const MENSAJES_DESDE = Math.min(...PRECIOS.mensajes.filter((m) => m.mensajes > 0).map((m) => m.precio));
+
+/** Un monto en dólares, con centavos solo si los tiene: «$15», «$14.99», «$89.97». Las sumas, en centavos. */
+export function dolares(n) {
+  const c = Math.round(Number(n) * 100);
+  return `$${c % 100 === 0 ? c / 100 : (c / 100).toFixed(2)}`;
+}
+/** Suma montos en dólares sin el error de los decimales (14.99 + 15 = 29.99, no 29.990000000000002). */
+export const sumar = (...montos) => montos.reduce((t, n) => t + Math.round(Number(n) * 100), 0) / 100;
+/** Los paquetes de mensajes en palabras: «200 por $15, 500 por $25 o 1000 por $35». */
+const PAQUETES = PRECIOS.mensajes.filter((m) => m.mensajes > 0).map((m) => `${m.mensajes} por ${dolares(m.precio)}`).join(', ').replace(/, ([^,]+)$/, ' o $1');
 
 export const HEROE = {
   antetitulo: `${PRODUCTO}, para clínicas y consultorios en Panamá`,
@@ -34,7 +49,7 @@ export const HEROE = {
   titulo: 'El expediente de tu paciente, [sin escribir a mano ni teclear]',
   bajada:
     'Durante la consulta hablas y el sistema escribe la nota con IA, sección por sección. Tú la revisas y queda guardada; si trabajas con folder, la recepción la imprime. Y si quieres, también la agenda, con recordatorios automáticos por WhatsApp.',
-  puntos: [`${PRUEBA_DIAS} días gratis, sin tarjeta`, 'Sin instalar nada', `Desde $${DESDE} al mes`],
+  puntos: [`${PRUEBA_DIAS} días gratis, sin tarjeta`, 'Sin instalar nada', `Desde ${dolares(DESDE)} al mes`],
   // Las tarjetas que flotan sobre las pantallas del héroe (nombres inventados).
   avisos: [
     { icono: 'microphone', titulo: 'Dictando con IA', texto: 'Sin escribir ni teclear' },
@@ -60,9 +75,15 @@ export const PARTES = [
     icono: 'calendar-check',
     nombre: 'Agenda de citas',
     para: 'Para la recepción',
-    resumen: 'Citas sin choques y recordatorios automáticos por WhatsApp.',
-    destacado: { icono: 'whatsapp-logo', titulo: 'Recordatorios automáticos por WhatsApp', texto: 'Tu secretaria ya no llama paciente por paciente para confirmar.' },
-    incluye: ['Agenda por médico y por consultorio, por día o por semana', 'Quién no ha confirmado hoy y mañana', 'Registro del paciente por QR desde su teléfono', 'Lista de espera y sala de espera'],
+    resumen: 'Citas sin choques y recordatorios por WhatsApp.',
+    destacado: { icono: 'whatsapp-logo', titulo: 'Recordatorios por WhatsApp', texto: 'Tu secretaria ya no llama paciente por paciente para confirmar.' },
+    incluye: [
+      'Agenda por médico y por consultorio, por día o por semana',
+      'Quién no ha confirmado hoy y mañana',
+      'Registro del paciente por QR desde su teléfono',
+      'Lista de espera y sala de espera',
+      `Confirmaciones automáticas por WhatsApp, desde ${dolares(MENSAJES_DESDE)} al mes aparte`,
+    ],
     unidad: 'al mes por clínica',
   },
 ];
@@ -109,7 +130,12 @@ export const FILAS = {
       {
         titulo: 'Recordatorios automáticos por WhatsApp',
         texto: 'Tu secretaria ya no tiene que pasar la mañana llamando paciente por paciente para confirmar. Uno o dos días antes, el sistema le escribe a cada paciente por WhatsApp con la fecha, la hora y el médico, y el paciente confirma respondiendo.',
-        puntos: ['200, 500 o 1000 mensajes al mes, según tu paquete', 'Quién ya confirmó y quién no, de un vistazo', 'Si no responde, el sistema le vuelve a escribir'],
+        puntos: [
+          `Salen solos con un paquete de mensajes aparte: ${PAQUETES} al mes`,
+          'Sin paquete, la recepción manda cada uno con un toque desde el WhatsApp de la clínica',
+          'Quién ya confirmó y quién no, de un vistazo',
+          'Si no responde, el sistema le vuelve a escribir',
+        ],
         visual: { tipo: 'chat' },
       },
       {
@@ -206,7 +232,11 @@ export const PREGUNTAS = [
   ['¿Y si no me llevo bien con la tecnología?', 'Es un botón: tocas «Dictar», hablas y revisas lo que quedó escrito. En la prueba te mostramos cómo se usa, paso a paso.'],
   ['¿Tengo que instalar algo?', 'No. Se usa en el navegador de la computadora, la tableta o el celular que ya tienes. Solo necesitas internet.'],
   ['¿Puedo contratar solo el expediente?', 'Sí. El expediente funciona sin la agenda: el médico abre la consulta del paciente que llega, la dicta y, si trabajan con folder, la recepción la imprime al terminar.'],
-  ['¿Puedo contratar solo la agenda?', 'Sí. Tienes las citas, los recordatorios automáticos por WhatsApp, el registro de pacientes y la lista de espera, sin el expediente.'],
+  ['¿Puedo contratar solo la agenda?', 'Sí. Tienes las citas, los recordatorios por WhatsApp, el registro de pacientes y la lista de espera, sin el expediente.'],
+  [
+    '¿Los mensajes de WhatsApp están incluidos en la agenda?',
+    `No. La agenda cuesta ${dolares(PRECIOS.agenda)} al mes por clínica y con ella los recordatorios los manda la recepción con un toque desde el WhatsApp de la clínica. Para que salgan solos, se suma un paquete de mensajes: ${PAQUETES} al mes.`,
+  ],
   ['¿Qué cuenta como profesional?', 'Cada médico que hace expedientes. La recepción, enfermería y administración tienen su propio usuario sin costo.'],
   ['¿Qué pasa si se me acaban los mensajes del mes?', 'Te avisamos para pasar al paquete siguiente. Mientras tanto, los recordatorios que falten se mandan con un toque desde el WhatsApp del consultorio.'],
   ['¿Puedo pasar mis pacientes desde Excel?', 'Sí. El sistema importa tus pacientes desde un Excel o un CSV: nombre, cédula o pasaporte, celular, correo, fecha de nacimiento, alergias, enfermedades, medicamentos y seguro.'],

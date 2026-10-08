@@ -6,7 +6,7 @@
 //      MOTOR=webkit para el motor de Safari.
 import assert from 'node:assert/strict';
 import pw from '../../herramientas/navegador.mjs';
-import { PRECIOS } from '../../datos/producto.mjs';
+import { PRECIOS, dolares, sumar } from '../../datos/producto.mjs';
 
 const BASE = (process.argv[2] || 'http://localhost:4900/alphateklab/').replace(/\/?$/, '/');
 const motor = pw[process.env.MOTOR || 'chromium'];
@@ -85,33 +85,39 @@ try {
     await c.close();
   });
 
-  await paso('los paquetes de mensajes cambian el precio de la agenda', async () => {
+  await paso('la agenda tiene su precio y el paquete de mensajes se suma aparte (sin paquete por defecto)', async () => {
     const { c, p } = await abrir();
-    const visible = () => p.locator('.plan--agenda .plan__cifra:visible strong').innerText();
-    assert.equal(await visible(), `$${PRECIOS.agenda[0].precio}`);
-    for (const a of PRECIOS.agenda.slice(1)) {
-      await p.locator(`.plan--agenda label:has(input[value="${a.mensajes}"])`).click();
-      assert.ok(await p.locator(`.plan--agenda input[value="${a.mensajes}"]`).isChecked());
-      assert.equal(await visible(), `$${a.precio}`);
+    assert.equal(await p.locator('.plan--agenda .plan__precio strong').innerText(), dolares(PRECIOS.agenda));
+    const total = async () => (await p.locator('.plan--agenda .plan__suma:visible').allInnerTexts()).join(' | ');
+    assert.ok(await p.locator('.plan--agenda input[value="0"]').isChecked(), 'sin paquete, por defecto');
+    assert.match(await total(), new RegExp(`con un toque[\\s\\S]*Total: \\${dolares(PRECIOS.agenda)} al mes$`));
+    for (const m of PRECIOS.mensajes.slice(1)) {
+      await p.locator(`.plan--agenda label:has(input[value="${m.mensajes}"])`).click();
+      assert.ok(await p.locator(`.plan--agenda input[value="${m.mensajes}"]`).isChecked());
+      assert.match(await total(), new RegExp(`${m.mensajes} mensajes[\\s\\S]*Total: \\${dolares(sumar(PRECIOS.agenda, m.precio))} al mes$`));
     }
+    assert.equal(await p.locator('.plan--agenda .plan__precio strong').innerText(), dolares(PRECIOS.agenda), 'el precio de la agenda no cambia');
     await c.close();
   });
 
   await paso('la calculadora suma lo que eliges', async () => {
     const { c, p } = await abrir();
     const total = () => p.locator('[data-total]').innerText();
-    const [p0, p1] = PRECIOS.agenda;
+    const [p0, p1] = PRECIOS.mensajes;
+    const exp = (n) => Array(n).fill(PRECIOS.expediente);
     assert.ok(await p.locator('[data-calculadora]').isVisible());
-    assert.equal(await total(), `$${p0.precio + 2 * PRECIOS.expediente}`);
+    assert.equal(await p.inputValue('[name="calc-mensajes"]'), '0', 'sin paquete, por defecto');
+    assert.equal(await total(), dolares(sumar(PRECIOS.agenda, p0.precio, ...exp(2))));
     await p.selectOption('[name="calc-mensajes"]', String(p1.mensajes));
-    assert.equal(await total(), `$${p1.precio + 2 * PRECIOS.expediente}`);
+    assert.equal(await total(), dolares(sumar(PRECIOS.agenda, p1.precio, ...exp(2))));
+    assert.equal(await p.locator('[data-sub="agenda"]').innerText(), dolares(sumar(PRECIOS.agenda, p1.precio)));
     // la tarjeta de la agenda sigue a la calculadora
     assert.ok(await p.locator(`.plan--agenda input[value="${p1.mensajes}"]`).isChecked());
     await p.click('[data-sumar="1"]');
     await p.click('[data-sumar="1"]');
-    assert.equal(await total(), `$${p1.precio + 4 * PRECIOS.expediente}`);
+    assert.equal(await total(), dolares(sumar(PRECIOS.agenda, p1.precio, ...exp(4))));
     await p.uncheck('[name="calc-agenda"]');
-    assert.equal(await total(), `$${4 * PRECIOS.expediente}`);
+    assert.equal(await total(), dolares(sumar(...exp(4))));
     await p.fill('[name="calc-profesionales"]', '0');
     await p.locator('[name="calc-profesionales"]').blur();
     assert.equal(await p.inputValue('[name="calc-profesionales"]'), '1', 'no baja de un profesional');
@@ -126,7 +132,7 @@ try {
       return;
     }
     await p.evaluate(() => { window.__abierto = null; window.open = (u) => { window.__abierto = u; return {}; }; });
-    await p.selectOption('[name="calc-mensajes"]', String(PRECIOS.agenda[1].mensajes));
+    await p.selectOption('[name="calc-mensajes"]', String(PRECIOS.mensajes[1].mensajes));
     await p.click('[data-elegir="calculadora"]');
     assert.equal(await p.inputValue('[data-prueba] [name="medicos"]'), '2');
     assert.ok(await p.locator('[data-prueba] [name="interes"][value="los dos"]').isChecked());
@@ -138,7 +144,7 @@ try {
       const url = await p.evaluate(() => window.__abierto);
       assert.match(url, /^https:\/\/wa\.me\/\d+\?text=/);
       const texto = decodeURIComponent(url.split('text=')[1]);
-      assert.ok(texto.includes('Clínica de Prueba') && texto.includes('Quiero probar: los dos') && texto.includes(`$${PRECIOS.agenda[1].precio}`), texto);
+      assert.ok(texto.includes('Clínica de Prueba') && texto.includes('Quiero probar: los dos') && texto.includes(dolares(PRECIOS.mensajes[1].precio)), texto);
     }
     await c.close();
   });
@@ -152,12 +158,12 @@ try {
     }
     let pedida = null;
     await p.route(/\/registro\/?(\?|$)/, (r) => { pedida = r.request().url(); r.fulfill({ status: 200, contentType: 'text/html', body: 'registro' }); });
-    await p.selectOption('[name="calc-mensajes"]', String(PRECIOS.agenda[2].mensajes));
+    await p.selectOption('[name="calc-mensajes"]', String(PRECIOS.mensajes[2].mensajes));
     await p.click('[data-sumar="1"]');
     await p.click('[data-elegir="calculadora"]');
     await p.waitForURL(/\/registro\/?\?/);
     const q = new URL(pedida).searchParams;
-    assert.deepEqual([q.get('expediente'), q.get('profesionales'), q.get('agenda'), q.get('mensajes')], ['1', '3', '1', String(PRECIOS.agenda[2].mensajes)]);
+    assert.deepEqual([q.get('expediente'), q.get('profesionales'), q.get('agenda'), q.get('mensajes')], ['1', '3', '1', String(PRECIOS.mensajes[2].mensajes)]);
     await c.close();
   });
 

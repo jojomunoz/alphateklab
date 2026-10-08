@@ -7,7 +7,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PRECIOS, PRUEBA_DIAS, PREGUNTAS, PARTES, PRODUCTO } from '../datos/producto.mjs';
+import { PRECIOS, PRUEBA_DIAS, PREGUNTAS, PARTES, PRODUCTO, dolares, sumar } from '../datos/producto.mjs';
 import { CONTACTO, REGISTRO } from '../datos/sitio.mjs';
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -30,18 +30,24 @@ test('lo publicado está al día: generar otra vez da lo mismo', () => {
 
 test('la portada dice los precios decididos, la prueba y cada pregunta', () => {
   const t = textoVisible(leer('index.html'));
-  assert.ok(t.includes(`$${PRECIOS.expediente}`), 'precio del expediente');
-  for (const a of PRECIOS.agenda) assert.ok(t.includes(`$${a.precio}`) && t.includes(String(a.mensajes)), `agenda con ${a.mensajes} mensajes`);
+  assert.ok(t.includes(`${dolares(PRECIOS.expediente)} al mes por profesional`), 'precio del expediente');
+  assert.ok(t.includes(`${dolares(PRECIOS.agenda)} al mes por clínica`), 'precio de la agenda, sin «desde»');
+  assert.doesNotMatch(t, /desde \$[\d.]+ al mes por clínica/i, 'la agenda tiene un precio, no un «desde»');
+  for (const m of PRECIOS.mensajes) {
+    if (m.mensajes) assert.ok(t.includes(`${m.mensajes} +${dolares(m.precio)}`), `el paquete de ${m.mensajes} mensajes, aparte`);
+    assert.ok(t.includes(`Total: ${dolares(sumar(PRECIOS.agenda, m.precio))} al mes`), `el total de la agenda con ${m.mensajes} mensajes`);
+  }
+  assert.ok(t.includes('Sin paquete'), 'la agenda sin paquete de mensajes');
   assert.ok(t.includes(`${PRUEBA_DIAS} días gratis`), 'la prueba');
   for (const p of PARTES) assert.ok(t.includes(p.nombre), p.nombre);
   for (const [q] of PREGUNTAS) assert.ok(t.includes(q), q);
-  // ningún otro precio con signo de dólar que no esté en los datos
-  const decididos = new Set([PRECIOS.expediente, ...PRECIOS.agenda.map((a) => a.precio)]);
-  const sueltos = [...t.matchAll(/\$(\d+)/g)].map((m) => Number(m[1])).filter((n) => !decididos.has(n));
-  // los totales de ejemplo de la calculadora salen de sumar precios decididos: solo se aceptan esos
-  const posibles = new Set();
-  for (const a of [0, ...PRECIOS.agenda.map((x) => x.precio)]) for (let n = 0; n <= 50; n++) posibles.add(a + n * PRECIOS.expediente);
-  assert.deepEqual(sueltos.filter((n) => !posibles.has(n)), [], 'un precio que no sale de datos/producto.mjs');
+  // ningún otro precio con signo de dólar que no esté en los datos: los decididos y las sumas de la agenda con su
+  // paquete y del expediente por profesional (en centavos, para que 14.99 + 15 sea 29.99)
+  const c = (n) => Math.round(n * 100);
+  const posibles = new Set(PRECIOS.mensajes.map((m) => c(m.precio)));
+  for (const a of [0, ...PRECIOS.mensajes.map((m) => c(PRECIOS.agenda) + c(m.precio))]) for (let n = 0; n <= 50; n++) posibles.add(a + n * c(PRECIOS.expediente));
+  const sueltos = [...t.matchAll(/\$(\d+(?:\.\d+)?)/g)].map((m) => m[1]).filter((n) => !posibles.has(c(Number(n))));
+  assert.deepEqual(sueltos, [], 'un precio que no sale de datos/producto.mjs');
 });
 
 test('sin códigos internos ni textos de la agencia a la vista', () => {
@@ -90,7 +96,7 @@ test('los datos estructurados se leen y llevan los precios', () => {
   const app = ld['@graph'].find((n) => n['@type'] === 'SoftwareApplication');
   assert.ok(app, 'sin SoftwareApplication');
   const precios = app.offers.map((o) => o.price).sort((a, b) => a - b);
-  assert.deepEqual(precios, [...PRECIOS.agenda.map((a) => a.precio), PRECIOS.expediente].sort((a, b) => a - b));
+  assert.deepEqual(precios, [PRECIOS.agenda, ...PRECIOS.mensajes.filter((m) => m.mensajes).map((m) => m.precio), PRECIOS.expediente].sort((a, b) => a - b));
   assert.ok(ld['@graph'].some((n) => n['@type'] === 'FAQPage'));
 });
 
