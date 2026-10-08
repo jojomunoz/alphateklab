@@ -451,6 +451,9 @@ function prueba() {
 </section>`;
 }
 
+// El nombre del sitio que muestra Google junto a los resultados (sale del WebSite de la portada).
+const SITIO_LD = { '@type': 'WebSite', '@id': `${URL_BASE}#sitio`, url: URL_BASE, name: 'alphateklab', alternateName: `${P.PRODUCTO} de alphateklab`, inLanguage: 'es-PA', publisher: { '@id': `${URL_BASE}#organizacion` } };
+
 function datosEstructurados() {
   const org = { '@type': 'Organization', '@id': `${URL_BASE}#organizacion`, name: 'alphateklab', url: URL_BASE, logo: `${URL_BASE}assets/marca/favicon-180.png`, areaServed: { '@type': 'Country', name: 'Panamá' } };
   const mensual = (precio, unidad) => ({ '@type': 'UnitPriceSpecification', price: precio, priceCurrency: 'USD', unitText: unidad, billingDuration: 'P1M' });
@@ -471,7 +474,7 @@ function datosEstructurados() {
     ],
   };
   const faq = { '@type': 'FAQPage', mainEntity: PREGUNTAS.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };
-  return { '@context': 'https://schema.org', '@graph': [org, app, faq] };
+  return { '@context': 'https://schema.org', '@graph': [org, SITIO_LD, app, faq] };
 }
 
 // En Google se ven ~60 caracteres del título y ~155 de la descripción: lo que se busca va primero.
@@ -506,7 +509,7 @@ function paginaFuncion(f) {
   const datos = {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'WebPage', '@id': url, url, name: f.titulo, description: f.descripcion, inLanguage: 'es-PA', about: { '@id': `${URL_BASE}#producto` }, isPartOf: { '@type': 'WebSite', '@id': `${URL_BASE}#sitio`, url: URL_BASE, name: P.PRODUCTO }, breadcrumb: { '@id': `${url}#migas` } },
+      { '@type': 'WebPage', '@id': url, url, name: f.titulo, description: f.descripcion, inLanguage: 'es-PA', about: { '@id': `${URL_BASE}#producto` }, isPartOf: { '@id': `${URL_BASE}#sitio` }, breadcrumb: { '@id': `${url}#migas` } },
       { '@type': 'BreadcrumbList', '@id': `${url}#migas`, itemListElement: [{ '@type': 'ListItem', position: 1, name: P.PRODUCTO, item: URL_BASE }, { '@type': 'ListItem', position: 2, name: f.miga, item: url }] },
       { '@type': 'FAQPage', mainEntity: f.preguntas.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
     ],
