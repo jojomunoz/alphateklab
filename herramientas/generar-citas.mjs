@@ -694,16 +694,16 @@ function paginaEntrar() {
   const prefijo = '../';
   return documento({
     titulo: 'Iniciar sesión · Citas Médicas de alphateklab',
-    descripcion: 'Entra a tu sistema de Citas Médicas con tu usuario.',
+    descripcion: 'Entra a tu sistema de Citas Médicas con tu usuario o tu correo.',
     prefijo,
     canonica: `${URL_BASE}entrar/`,
     robots: 'noindex',
     cuerpo: () => `<main id="contenido" class="envoltura texto-largo texto-largo--centro entrar">
   <p class="antetitulo">${icono('lock-key')}Iniciar sesión</p>
   <h1 class="texto-largo__titulo">Entra a tu sistema</h1>
-  <p>Escribe tu usuario, el que elegiste al registrarte. También es la primera parte de la dirección de tu sistema: <strong>tuusuario.${esc(DOMINIO_CLINICAS)}</strong></p>
+  <p>Escribe tu usuario o el correo con el que te registraste. El usuario también es la primera parte de la dirección de tu sistema: <strong>tuusuario.${esc(DOMINIO_CLINICAS)}</strong></p>
   <form class="entrar__form" data-entrar novalidate>
-    <label class="campo"><span>Usuario</span><input name="usuario" type="text" maxlength="80" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="tuusuario" /></label>
+    <label class="campo"><span>Usuario o correo</span><input name="usuario" type="text" maxlength="120" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="tuusuario o tu@correo.com" /></label>
     <p class="entrar__destino" data-destino aria-live="polite"></p>
     <p class="entrar__error" data-error role="alert" hidden></p>
     <button class="boton boton--senal boton--grande" type="submit">Continuar</button>
@@ -719,12 +719,16 @@ function paginaEntrar() {
     var destino = document.querySelector('[data-destino]');
     var error = document.querySelector('[data-error]');
     function avisar(texto) { error.textContent = texto; error.hidden = false; destino.textContent = ''; campo.focus(); }
-    // «luisprueba», «luisprueba.secretaria» o la dirección pegada. La clínica, si el servicio de cuentas no contesta:
-    // lo de antes del primer punto.
+    // «luisprueba», «luisprueba.secretaria», la dirección pegada o el correo de quien registró la clínica (Edwin,
+    // 8-oct: «que me permita ambos»). La clínica, si el servicio de cuentas no contesta: lo de antes del primer punto
+    // (con el correo no se puede adivinar: hace falta que conteste).
     function leer(texto) {
       var t = String(texto || '').trim().toLowerCase().replace(/\\s+/g, '');
-      if (!t) return { error: 'Escribe tu usuario.' };
-      if (t.indexOf('@') > 0) return { error: 'Con el correo no sabemos cuál es tu sistema. Escribe tu usuario: el que elegiste al registrarte.' };
+      if (!t) return { error: 'Escribe tu usuario o tu correo.' };
+      if (t.indexOf('@') >= 0) {
+        if (!/^[^@]+@[^@]+\\.[^@]+$/.test(t)) return { error: 'Revisa el correo: parece incompleto.' };
+        return { usuario: t, correo: true };
+      }
       t = t.replace(/^[a-z]+:\\/\\//, '').split('/')[0];
       var sufijo = '.' + DOMINIO;
       var usuario = t.slice(-sufijo.length) === sufijo ? t.slice(0, -sufijo.length) : t;
@@ -757,7 +761,8 @@ function paginaEntrar() {
         clearTimeout(reloj);
         if (clinica) { ir(r, clinica); return; }
         boton.disabled = false;
-        avisar('No encontramos ese usuario. Revisa cómo lo escribiste: es el que elegiste al registrarte.');
+        avisar(r.correo ? 'No encontramos una clínica registrada con ese correo. Revisa cómo lo escribiste, o entra con tu usuario.'
+          : 'No encontramos ese usuario. Revisa cómo lo escribiste: es el que elegiste al registrarte.');
       }
       var reloj = setTimeout(function () { terminar(r.clinica); }, 6000);
       fetch(CUENTAS + '/api/clinica?usuario=' + encodeURIComponent(r.usuario), { cache: 'no-store' })

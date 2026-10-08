@@ -183,16 +183,24 @@ try {
     await c.route(/^https:\/\/cuentas\.alphateklab\.com\/api\/clinica/, (r) => {
       if (caido) return r.abort();
       const u = new URL(r.request().url()).searchParams.get('usuario');
-      const slug = { 'luisprueba.secretaria': 'luisprueba', edwincutire: 'clinica-alpha' }[u];
+      const slug = { 'luisprueba.secretaria': 'luisprueba', edwincutire: 'clinica-alpha', 'edwin@ejemplo.com': 'clinica-alpha' }[u];
       return r.fulfill({ status: slug ? 200 : 404, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(slug ? { ok: true, slug } : { ok: false }) });
     });
     // El sistema de cada clínica está en otro dominio: aquí se ataja y se mira a dónde iba.
     await c.route(/^https:\/\/(?!cuentas\.)[a-z0-9-]+\.alphateklab\.com\//, (r) => r.fulfill({ status: 200, contentType: 'text/html', body: '<p>sistema de la clínica</p>' }));
     await enlace.click();
     await p.waitForURL(/\/entrar\/$/);
+    // Con el correo de quien registró la clínica, también (Edwin, 8-oct); con uno que no está, lo dice.
+    await p.fill('[name=usuario]', 'ana@ejemplo');
+    await p.click('[data-entrar] [type=submit]');
+    assert.match(await p.textContent('[data-error]'), /Revisa el correo/);
     await p.fill('[name=usuario]', 'ana@ejemplo.com');
     await p.click('[data-entrar] [type=submit]');
-    assert.match(await p.textContent('[data-error]'), /Con el correo no sabemos cuál es tu sistema/);
+    await p.locator('[data-error]', { hasText: 'No encontramos una clínica registrada con ese correo' }).waitFor();
+    await p.fill('[name=usuario]', ' Edwin@Ejemplo.com ');
+    await p.click('[data-entrar] [type=submit]');
+    await p.waitForURL(/^https:\/\/clinica-alpha\.alphateklab\.com\/entrar\.html\?usuario=edwin%40ejemplo\.com$/);
+    await p.goto(BASE + 'entrar/');
     await p.fill('[name=usuario]', 'nadie');
     await p.click('[data-entrar] [type=submit]');
     await p.locator('[data-error]', { hasText: 'No encontramos ese usuario' }).waitFor();
