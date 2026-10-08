@@ -814,6 +814,17 @@ body.citas {
   color: var(--tinta-3);
   font-size: var(--t-s);
 }
+/* el precio de antes, tachado, al lado del de ahora (Edwin, 7-oct) */
+.precio-antes {
+  color: var(--tinta-3);
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+.plan__precio .precio-antes {
+  font-size: 1.35rem;
+}
 .parte__enlace {
   align-self: flex-start;
   display: inline-flex;

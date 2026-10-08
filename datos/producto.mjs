@@ -20,6 +20,10 @@ export const PRUEBA_DIAS = 7;
 export const PRECIOS = {
   expediente: 29.99, // por profesional
   agenda: 14.99, // por clínica, sin los mensajes
+  // El precio de antes, tachado al lado del de ahora en las tarjetas y en Precios (Edwin, 7-oct en la noche: «el de
+  // expediente que aparezca un 49.99 pero tachado […], el de agenda de citas $34.99 tachado y ahora $14.99»). Los
+  // mensajes no llevan tachado. No se cobra ni se suma: solo se muestra.
+  antes: { expediente: 49.99, agenda: 34.99 },
   // Los mensajes de WhatsApp van aparte de la agenda, por paquete al mes. Sin paquete (0) los recordatorios salen igual
   // a su hora, y la recepción manda cada uno con un toque desde el WhatsApp de la clínica; con paquete salen solos.
   mensajes: [

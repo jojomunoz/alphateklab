@@ -36,6 +36,12 @@ test('la portada dice los precios decididos, la prueba y cada pregunta', () => {
   assert.ok(t.includes(`${dolares(PRECIOS.expediente)} al mes por profesional`), 'precio del expediente');
   assert.ok(t.includes(`${dolares(PRECIOS.agenda)} al mes por clínica`), 'precio de la agenda, sin «desde»');
   assert.doesNotMatch(t, /desde \$[\d.]+ al mes por clínica/i, 'la agenda tiene un precio, no un «desde»');
+  // El de antes, tachado al lado, en la tarjeta de cada parte y en Precios: dos veces cada uno.
+  const html = leer('index.html');
+  for (const id of ['expediente', 'agenda']) {
+    const tachado = `<s class="precio-antes"><span class="sr">Antes</span> ${dolares(PRECIOS.antes[id])}</s>`;
+    assert.equal(html.split(tachado).length - 1, 2, `el precio de antes del ${id}, tachado`);
+  }
   for (const m of PRECIOS.mensajes) {
     if (m.mensajes) assert.ok(t.includes(`${m.mensajes} +${dolares(m.precio)}`), `el paquete de ${m.mensajes} mensajes, aparte`);
     assert.ok(t.includes(`Total: ${dolares(sumar(PRECIOS.agenda, m.precio))} al mes`), `el total de la agenda con ${m.mensajes} mensajes`);
@@ -47,7 +53,7 @@ test('la portada dice los precios decididos, la prueba y cada pregunta', () => {
   // ningún otro precio con signo de dólar que no esté en los datos: los decididos y las sumas de la agenda con su
   // paquete y del expediente por profesional (en centavos, para que 14.99 + 15 sea 29.99)
   const c = (n) => Math.round(n * 100);
-  const posibles = new Set(PRECIOS.mensajes.map((m) => c(m.precio)));
+  const posibles = new Set([...PRECIOS.mensajes.map((m) => c(m.precio)), ...Object.values(PRECIOS.antes).map(c)]);
   for (const a of [0, ...PRECIOS.mensajes.map((m) => c(PRECIOS.agenda) + c(m.precio))]) for (let n = 0; n <= 50; n++) posibles.add(a + n * c(PRECIOS.expediente));
   const sueltos = [...t.matchAll(/\$(\d+(?:\.\d+)?)/g)].map((m) => m[1]).filter((n) => !posibles.has(c(Number(n))));
   assert.deepEqual(sueltos, [], 'un precio que no sale de datos/producto.mjs');

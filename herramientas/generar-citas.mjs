@@ -190,8 +190,11 @@ function heroe() {
 // Lo que más importa de cada parte, en grande: el dictado del expediente y los recordatorios automáticos.
 const destacado = (p) => `<div class="destacado destacado--${p.id}"><span class="destacado__icono">${icono(p.destacado.icono)}</span><p><strong>${esc(p.destacado.titulo)}</strong><span>${esc(p.destacado.texto)}</span></p></div>`;
 
+// El precio de antes, tachado, al lado del de ahora (PRECIOS.antes). El lector de pantalla dice «Antes $49.99, ahora».
+const tachado = (id) => `<s class="precio-antes"><span class="sr">Antes</span> ${dolares(P.PRECIOS.antes[id])}</s><span class="sr">, ahora</span>`;
+
 function precioDeParte(id) {
-  return `<strong class="num">${dolares(P.PRECIOS[id])}</strong>`;
+  return `${tachado(id)} <strong class="num">${dolares(P.PRECIOS[id])}</strong>`;
 }
 
 const partes = () => `<section class="seccion envoltura" id="productos" aria-labelledby="productos-titulo">
@@ -337,7 +340,7 @@ function precios() {
       <article class="plan plan--expediente revelar" data-plan="expediente">
         <div class="plan__cabeza"><span class="plan__icono">${icono(exp.icono)}</span><h3>${esc(exp.nombre)}</h3></div>
         <p class="plan__para">Por cada médico que hace expedientes. La recepción, enfermería y administración no pagan.</p>
-        <p class="plan__precio"><span class="plan__cifra plan__cifra--fija"><strong class="num">${dolares(P.PRECIOS.expediente)}</strong></span><span class="plan__unidad">${esc(exp.unidad)}</span></p>
+        <p class="plan__precio">${tachado('expediente')}<span class="plan__cifra plan__cifra--fija"><strong class="num">${dolares(P.PRECIOS.expediente)}</strong></span><span class="plan__unidad">${esc(exp.unidad)}</span></p>
         ${destacado(exp)}
         <ul class="lista-check" role="list">${exp.incluye.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
         <a class="boton boton--linea plan__boton" href="${registroCon({ expediente: 1, profesionales: 1, agenda: 0 })}" data-elegir="expediente"${enlaceRegistro}>Probar el expediente</a>
@@ -345,7 +348,7 @@ function precios() {
       <article class="plan plan--agenda revelar" data-plan="agenda">
         <div class="plan__cabeza"><span class="plan__icono">${icono(agenda.icono)}</span><h3>${esc(agenda.nombre)}</h3></div>
         <p class="plan__para">Para toda la clínica, con todos sus médicos.</p>
-        <p class="plan__precio"><span class="plan__cifra plan__cifra--fija"><strong class="num">${dolares(P.PRECIOS.agenda)}</strong></span><span class="plan__unidad">${esc(agenda.unidad)}</span></p>
+        <p class="plan__precio">${tachado('agenda')}<span class="plan__cifra plan__cifra--fija"><strong class="num">${dolares(P.PRECIOS.agenda)}</strong></span><span class="plan__unidad">${esc(agenda.unidad)}</span></p>
         ${destacado(agenda)}
         <ul class="lista-check" role="list">${agenda.incluye.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
         <fieldset class="plan__mensajes">
