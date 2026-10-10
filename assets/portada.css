@@ -75,7 +75,7 @@
   --g1: #fb923c;
   --g2: #e11d48;
 }
-.app--racha {
+.app--vuelve {
   --g1: #ec4899;
   --g2: #7c3aed;
 }
@@ -248,7 +248,7 @@
 .vidrio--sobremesa {
   --luz: #f59e0b;
 }
-.vidrio--racha {
+.vidrio--vuelve {
   --luz: #f472b6;
 }
 .vidrio--alphatend,
@@ -547,7 +547,7 @@
   --v1: rgb(245 158 11 / 0.4);
   --v2: rgb(225 29 72 / 0.28);
 }
-.vitrina--racha {
+.vitrina--vuelve {
   --v1: rgb(236 72 153 / 0.36);
   --v2: rgb(124 58 237 / 0.36);
 }
@@ -686,7 +686,7 @@ button.accion {
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.1fr);
   grid-template-areas:
     "cel barra"
-    "cel racha";
+    "cel vuelve";
   align-items: start;
 }
 .ej--food .ej-cel {
@@ -696,13 +696,13 @@ button.accion {
 .ej--food .ej-barra {
   grid-area: barra;
 }
-.ej--food .ej-racha {
-  grid-area: racha;
+.ej--food .ej-vuelve {
+  grid-area: vuelve;
 }
 @media (max-width: 559px) {
   .ej--food {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "cel" "barra" "racha";
+    grid-template-areas: "cel" "barra" "vuelve";
   }
 }
 .ej-cel,
@@ -813,14 +813,14 @@ button.accion {
   border: 1px solid var(--linea-fuerte);
 }
 
-/* Racha: la tarjeta con su degradado (rosa a violeta, el blanco contrasta), inclinada y con otra detrás. */
-.ej--racha {
+/* Vuelve: la tarjeta con su degradado (rosa a violeta, el blanco contrasta), inclinada y con otra detrás. */
+.ej--vuelve {
   display: grid;
   justify-items: center;
   padding-block: clamp(36px, 5vw, 56px) clamp(64px, 8vw, 84px);
   background: linear-gradient(135deg, color-mix(in oklab, #ec4899 16%, var(--papel)), color-mix(in oklab, #7c3aed 20%, var(--papel)));
 }
-.ej--racha::before {
+.ej--vuelve::before {
   content: "";
   position: absolute;
   width: min(62%, 330px);
@@ -831,7 +831,7 @@ button.accion {
   transform: rotate(7deg) translateX(14%);
   opacity: 0.55;
 }
-.ej-racha {
+.ej-vuelve {
   position: relative;
   width: min(100%, 360px);
   border-radius: 22px;
@@ -840,61 +840,61 @@ button.accion {
   color: #fff;
   box-shadow: 0 30px 60px -26px rgb(124 58 237 / 0.75);
 }
-.ej--racha .ej-racha {
+.ej--vuelve .ej-vuelve {
   width: min(86%, 360px);
   transform: rotate(-3deg);
 }
-.ej-racha__cabeza {
+.ej-vuelve__cabeza {
   display: flex;
   justify-content: space-between;
   gap: var(--e-2);
   font-size: var(--t-s);
   font-weight: 600;
 }
-.ej-racha__marca {
+.ej-vuelve__marca {
   font-family: var(--f-titulo);
   font-weight: 700;
 }
-.ej-racha__cuenta {
+.ej-vuelve__cuenta {
   margin-top: var(--e-5) !important;
   font-family: var(--f-titulo);
   font-weight: 700;
   font-size: 2.75rem;
   line-height: 1;
 }
-.ej-racha__cuenta span {
+.ej-vuelve__cuenta span {
   font-family: var(--f-texto);
   font-weight: 400;
   font-size: var(--t-s);
 }
-.ej-racha__sellos {
+.ej-vuelve__sellos {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
   margin-top: var(--e-5) !important;
 }
-.ej-racha__sellos i {
+.ej-vuelve__sellos i {
   aspect-ratio: 1;
   border-radius: 50%;
   border: 2px solid rgb(255 255 255 / 0.7);
 }
-.ej-racha__sellos i.lleno {
+.ej-vuelve__sellos i.lleno {
   background: #fff;
   border-color: #fff;
   box-shadow: inset 0 -3px 0 rgb(124 58 237 / 0.25);
 }
-.ej-racha__premio {
+.ej-vuelve__premio {
   margin-top: var(--e-5) !important;
   font-size: var(--t-s);
 }
-.ej-racha--chica {
+.ej-vuelve--chica {
   padding: 16px 18px;
 }
-.ej-racha--chica .ej-racha__cuenta {
+.ej-vuelve--chica .ej-vuelve__cuenta {
   margin-top: 10px !important;
   font-size: 2rem;
 }
-.ej-racha--chica .ej-racha__sellos {
+.ej-vuelve--chica .ej-vuelve__sellos {
   gap: 6px;
   margin-top: 12px !important;
 }
@@ -1033,7 +1033,7 @@ button.accion {
   --p2: #e11d48;
   background: linear-gradient(180deg, color-mix(in oklab, #fb923c 12%, var(--papel)) 0%, var(--papel) 70%);
 }
-.sm-seccion--racha {
+.sm-seccion--vuelve {
   --p1: #ec4899;
   --p2: #7c3aed;
   background: linear-gradient(180deg, color-mix(in oklab, #ec4899 11%, var(--papel)) 0%, var(--papel) 70%);
@@ -1376,6 +1376,89 @@ button.accion {
   .accion .ico,
   .sm-pasos li {
     transition: none;
+  }
+}
+
+/* ── food/: «Iniciar sesión» y «Probar gratis» arriba, cada uno con la lista de servicios para elegir ── */
+.elegir {
+  position: relative;
+}
+.elegir > summary {
+  list-style: none;
+  cursor: pointer;
+  min-height: 42px;
+}
+.elegir > summary::-webkit-details-marker {
+  display: none;
+}
+.elegir--probar > summary {
+  padding: 0.6em 1em;
+}
+.elegir__menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 60;
+  display: grid;
+  gap: 4px;
+  width: 320px;
+  padding: 10px;
+  border: 1px solid var(--linea);
+  border-radius: 18px;
+  background: var(--superficie);
+  color: var(--tinta);
+  box-shadow: var(--sombra-3);
+}
+.elegir__titulo {
+  margin: 4px 10px 6px;
+  color: var(--tinta-3);
+  font-weight: 600;
+  font-size: var(--t-xs);
+}
+.elegir__opcion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 12px;
+  color: inherit;
+  text-decoration: none;
+}
+.elegir__opcion strong {
+  display: block;
+  font-family: var(--f-titulo);
+  font-weight: 700;
+}
+.elegir__opcion small {
+  display: block;
+  margin-top: 2px;
+  color: var(--tinta-2);
+  font-size: var(--t-xs);
+  line-height: 1.4;
+}
+.elegir__opcion:focus-visible {
+  outline: 2px solid var(--foco);
+  outline-offset: 0;
+}
+@media (hover: hover) and (pointer: fine) {
+  .elegir__opcion:hover {
+    background: var(--papel-2);
+  }
+}
+/* En el teléfono la lista va de lado a lado, debajo de la barra. */
+@media (max-width: 559px) {
+  .elegir__menu {
+    position: fixed;
+    top: calc(var(--cab-alto) + 4px);
+    right: 16px;
+    left: 16px;
+    width: auto;
+  }
+}
+/* Como «Probar gratis» en med/: en el teléfono angosto va en el menú. */
+@media (max-width: 419px) {
+  .elegir--probar {
+    display: none;
   }
 }
 

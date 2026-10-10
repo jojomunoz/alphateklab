@@ -1,4 +1,4 @@
-// Portada de alphateklab con todas las categorías (Med, Food y alphatend) y la página de Food (Sobremesa, Racha, el
+// Portada de alphateklab con todas las categorías (Med, Food y alphatend) y la página de Food (Sobremesa, Vuelve, el
 // sistema a la medida y el formulario de contacto), desde datos/portada.mjs y datos/food.mjs. Med vive en med/ (la
 // escribe herramientas/generar-citas.mjs).
 //
@@ -38,7 +38,7 @@ const USADOS = [
   ...new Set([
     ...PRODUCTOS.map((p) => p.glifo),
     ...FOOD.servicios.map((s) => s.glifo),
-    ...[...FOOD.sobremesa.pasos, ...FOOD.racha.pasos].map((x) => x.icono),
+    ...[...FOOD.sobremesa.pasos, ...FOOD.vuelve.pasos].map((x) => x.icono),
   ]),
 ];
 for (const n of USADOS) if (!SIMBOLOS.has(n)) throw new Error(`Falta el ícono «${n}» en assets/iconos.svg`);
@@ -123,7 +123,7 @@ ${raiz ? `<link rel="canonical" href="${canonica}" />` : '<meta name="robots" co
 ${ICONOS}`;
 }
 
-function cabecera({ R, menu, accion }) {
+function cabecera({ R, menu, accion, movil = '' }) {
   const items = menu.map(([texto, href]) => `<li><a href="${esc(href)}">${esc(texto)}</a></li>`).join('');
   return `<header class="cab" data-cab>
   <div class="envoltura cab__fila">
@@ -136,7 +136,7 @@ function cabecera({ R, menu, accion }) {
     </div>
   </div>
   <nav class="cab__movil" id="menu-movil" aria-label="Menú" hidden>
-    <ul class="envoltura">${items}</ul>
+    <ul class="envoltura">${items}${movil}</ul>
   </nav>
 </header>`;
 }
@@ -210,11 +210,11 @@ const barra = () => `<div class="ej-barra" aria-hidden="true">
             </ul>
             <p class="ej-barra__acciones"><span class="ej-boton">Lo vimos</span><span class="ej-boton ej-boton--linea">Entregado</span></p>
           </div>`;
-const tarjetaRacha = (chica = false) => `<div class="ej-racha${chica ? ' ej-racha--chica' : ''}" aria-hidden="true">
-            <p class="ej-racha__cabeza"><span>Café de ejemplo</span><span class="ej-racha__marca">Racha</span></p>
-            <p class="ej-racha__cuenta">7 <span>de 10 sellos</span></p>
-            <p class="ej-racha__sellos">${Array.from({ length: 10 }, (_, i) => `<i class="${i < 7 ? 'lleno' : ''}"></i>`).join('')}</p>
-            ${chica ? '' : '<p class="ej-racha__premio">Al completar: un café gratis</p>'}
+const tarjetaVuelve = (chica = false) => `<div class="ej-vuelve${chica ? ' ej-vuelve--chica' : ''}" aria-hidden="true">
+            <p class="ej-vuelve__cabeza"><span>Café de ejemplo</span><span class="ej-vuelve__marca">Vuelve</span></p>
+            <p class="ej-vuelve__cuenta">7 <span>de 10 sellos</span></p>
+            <p class="ej-vuelve__sellos">${Array.from({ length: 10 }, (_, i) => `<i class="${i < 7 ? 'lleno' : ''}"></i>`).join('')}</p>
+            ${chica ? '' : '<p class="ej-vuelve__premio">Al completar: un café gratis</p>'}
           </div>`;
 
 /** Food en la portada: la mesa que pide, la barra que recibe y la tarjeta de sellos, en mosaico. */
@@ -222,14 +222,14 @@ function ejemploFood() {
   return `<div class="ej ej--food" role="img" aria-label="Ejemplo: desde el celular de la mesa 8 envían 2 hamburguesas y 4 cervezas, la barra recibe el pedido y al lado está la tarjeta de lealtad de un café, con 7 de 10 sellos">
           ${celular()}
           ${barra()}
-          ${tarjetaRacha(true)}
+          ${tarjetaVuelve(true)}
         </div>`;
 }
 
-/** Racha en la página de Food: la tarjeta como se ve en el Wallet, con el sello que se acaba de sumar. */
-function ejemploRacha() {
-  return `<div class="ej ej--racha" role="img" aria-label="Ejemplo: tarjeta Racha de un café en el Wallet, con 7 de 10 sellos; el personal acaba de sumar uno">
-          ${tarjetaRacha()}
+/** Vuelve en la página de Food: la tarjeta como se ve en el Wallet, con el sello que se acaba de sumar. */
+function ejemploVuelve() {
+  return `<div class="ej ej--vuelve" role="img" aria-label="Ejemplo: tarjeta Vuelve de un café en el Wallet, con 7 de 10 sellos; el personal acaba de sumar uno">
+          ${tarjetaVuelve()}
           <p class="ej-aviso" aria-hidden="true">${ico('check')}Sello agregado · 7 de 10</p>
         </div>`;
 }
@@ -319,6 +319,34 @@ ${pie(R)}`;
 
 // ─────────────────────────────── Food ───────────────────────────────
 
+/**
+ * Arriba, como en med/: «Iniciar sesión» (con borde) y «Probar gratis» (lleno). Cada uno abre la lista de servicios
+ * para elegir (Edwin, 10-oct). Solo van los que tienen a dónde llevar (`entrar` y `probar` en FOOD.servicios). Es un
+ * <details>: sin JavaScript también abre; js/portada.js cierra uno al abrir el otro, al tocar fuera y con Escape.
+ */
+function accesosFood() {
+  const lista = (campo) =>
+    FOOD.servicios
+      .filter((s) => s[campo])
+      .map((s) => `<a class="elegir__opcion" href="${esc(s[campo])}">${app(s.id, s.glifo, 'chica')}<span><strong>${esc(s.nombre)}</strong><small>${esc(s.resumen)}</small></span></a>`)
+      .join('');
+  const menu = (clase, boton, campo, titulo) => `<details class="elegir elegir--${clase}" data-elegir>
+        <summary class="${boton}">${clase === 'entrar' ? '<span class="cab__entrar-largo">Iniciar sesión</span><span class="cab__entrar-corto">Entrar</span>' : 'Probar gratis'}</summary>
+        <div class="elegir__menu"><p class="elegir__titulo">${esc(titulo)}</p>${lista(campo)}</div>
+      </details>`;
+  return `${menu('entrar', 'boton boton--linea cab__entrar', 'entrar', '¿A qué servicio entras?')}
+      ${menu('probar', 'boton boton--senal', 'probar', '¿Qué quieres probar?')}`;
+}
+
+/** En el menú del teléfono, los mismos destinos con su nombre (ahí «Probar gratis» de arriba no cabe). */
+function accesosFoodMovil() {
+  const S = FOOD.servicios;
+  return [
+    ...S.filter((s) => s.entrar).map((s) => `<li><a href="${esc(s.entrar)}">Iniciar sesión en ${esc(s.nombre)}</a></li>`),
+    ...S.filter((s) => s.probar).map((s) => `<li><a href="${esc(s.probar)}">Probar ${esc(s.nombre)} gratis</a></li>`),
+  ].join('');
+}
+
 function paginaFood() {
   const ruta = `${BASE}food/index.html`;
   const R = rutas(ruta);
@@ -340,12 +368,12 @@ function paginaFood() {
     .join('\n        ');
   const menu = [
     ['Sobremesa', '#sobremesa'],
-    ['Racha', '#racha'],
+    ['Vuelve', '#vuelve'],
     ['A la medida', '#medida'],
     ['Preguntas', '#preguntas'],
   ];
   const html = `${cabeza({ R, titulo: F.titulo, descripcion: F.descripcion, canonica: `${SITIO}food/` })}
-${cabecera({ R, menu, accion: '<a class="boton boton--linea cab__entrar" href="#contacto">Contactar</a>' })}
+${cabecera({ R, menu, accion: accesosFood(), movil: accesosFoodMovil() })}
 <main id="contenido">
   <section class="portada-heroe portada-heroe--producto" aria-labelledby="titulo">
     ${luces}
@@ -373,15 +401,15 @@ ${cabecera({ R, menu, accion: '<a class="boton boton--linea cab__entrar" href="#
     </div>
   </section>
 
-  <section class="sm-seccion sm-seccion--racha" id="racha" aria-labelledby="t-racha">
+  <section class="sm-seccion sm-seccion--vuelve" id="vuelve" aria-labelledby="t-vuelve">
     <div class="envoltura">
-      ${cabezaServicio('racha')}
-      <h2 class="sm-seccion__titulo" id="t-racha">${esc(F.racha.titulo)}</h2>
-      <p class="sm-seccion__bajada">${esc(F.racha.bajada)}</p>
+      ${cabezaServicio('vuelve')}
+      <h2 class="sm-seccion__titulo" id="t-vuelve">${esc(F.vuelve.titulo)}</h2>
+      <p class="sm-seccion__bajada">${esc(F.vuelve.bajada)}</p>
       <div class="sm-seccion__fila">
-        <div>${pasos(F.racha.pasos)}</div>
-        <figure class="vitrina vitrina--racha">
-          ${ejemploRacha()}
+        <div>${pasos(F.vuelve.pasos)}</div>
+        <figure class="vitrina vitrina--vuelve">
+          ${ejemploVuelve()}
           <figcaption>Tarjeta de ejemplo, con un café ficticio.</figcaption>
         </figure>
       </div>

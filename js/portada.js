@@ -93,3 +93,26 @@ for (const form of document.querySelectorAll('[data-formulario]')) {
     }
   });
 }
+
+// ── food/: «Iniciar sesión» y «Probar gratis» (<details>): uno abierto a la vez; se cierran al elegir, al tocar fuera y
+// con Escape (el foco vuelve al botón) ──
+const elegir = [...document.querySelectorAll('[data-elegir]')];
+for (const d of elegir) {
+  d.addEventListener('toggle', () => {
+    if (d.open) for (const otro of elegir) if (otro !== d) otro.open = false;
+  });
+  d.addEventListener('click', (e) => {
+    if (e.target.closest('a')) d.open = false;
+  });
+}
+document.addEventListener('click', (e) => {
+  for (const d of elegir) if (d.open && !d.contains(e.target)) d.open = false;
+});
+addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  for (const d of elegir) {
+    if (!d.open) continue;
+    d.open = false;
+    d.querySelector('summary').focus();
+  }
+});

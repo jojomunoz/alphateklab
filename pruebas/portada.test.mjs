@@ -49,6 +49,15 @@ test('Food se contacta por su formulario, que llega a FormSubmit; sin WhatsApp',
   assert.match(leer('privacidad/index.html'), /formsubmit\.co/, 'la privacidad dice a dónde va el formulario');
 });
 
+test('Food arriba: «Iniciar sesión» lleva a entrar en Vuelve y «Probar gratis» deja elegir Sobremesa o Vuelve (sin Racha)', () => {
+  const html = leer('food/index.html');
+  const menu = (clase) => html.match(new RegExp(`<details class="elegir elegir--${clase}"[\\s\\S]*?</details>`))?.[0] ?? '';
+  const destinos = (m) => [...m.matchAll(/class="elegir__opcion" href="([^"]+)"/g)].map((x) => x[1]);
+  assert.deepEqual(destinos(menu('entrar')), ['https://vuelve.alphateklab.com/entrar'], 'Iniciar sesión: solo Vuelve (Sobremesa no tiene panel en línea)');
+  assert.deepEqual(destinos(menu('probar')), ['#contacto', 'https://vuelve.alphateklab.com/registro'], 'Probar gratis: Sobremesa a su formulario y Vuelve a su registro');
+  for (const r of PAGINAS) assert.doesNotMatch(leer(r), /racha/i, `${r}: la tarjeta de lealtad se llama Vuelve (Edwin, 10-oct)`);
+});
+
 test('un solo H1 por página y cada imagen con texto alternativo y medidas', () => {
   for (const r of PAGINAS) {
     const html = leer(r);

@@ -50,7 +50,7 @@ export const PRODUCTOS = [
     },
   },
   {
-    // Food reúne los pedidos por QR (Sobremesa) y la tarjeta de lealtad (Racha); aquí no se nombran: los explica su
+    // Food reúne los pedidos por QR (Sobremesa) y la tarjeta de lealtad (Vuelve); aquí no se nombran: los explica su
     // página (Edwin, 8-oct).
     id: 'food',
     glifo: 'fork-knife',
@@ -67,7 +67,7 @@ export const PRODUCTOS = [
     ],
     acciones: [
       { texto: 'Conocer Food', href: 'food/', tipo: 'principal' },
-      // «Probar gratis» lleva al formulario de Food: Sobremesa y Racha no tienen alta propia (Edwin, 10-oct).
+      // «Probar gratis» lleva al formulario de Food: Sobremesa y Vuelve no tienen alta propia (Edwin, 10-oct).
       { texto: 'Probar gratis', href: '{contacto}', tipo: 'secundaria' },
     ],
     ejemplo: { tipo: 'food', pie: 'Pantallas de ejemplo, con negocios ficticios.' },

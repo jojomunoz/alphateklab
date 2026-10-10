@@ -5,12 +5,12 @@
 <script>try{if(localStorage.getItem('atk-tema')==='oscuro')document.documentElement.dataset.theme='dark'}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Food: pedidos por QR y tarjeta de lealtad para restaurantes y bares</title>
-<meta name="description" content="Sobremesa: tus mesas piden por QR y la barra lo ve al instante. Racha: tarjeta de lealtad en el Wallet. Y comandas, facturación e inventario a la medida." />
+<meta name="description" content="Sobremesa: tus mesas piden por QR y la barra lo ve al instante. Vuelve: tarjeta de lealtad en el Wallet. Y comandas, facturación e inventario a la medida." />
 <link rel="canonical" href="https://alphateklab.com/food/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="alphateklab" />
 <meta property="og:title" content="Food: pedidos por QR y tarjeta de lealtad para restaurantes y bares" />
-<meta property="og:description" content="Sobremesa: tus mesas piden por QR y la barra lo ve al instante. Racha: tarjeta de lealtad en el Wallet. Y comandas, facturación e inventario a la medida." />
+<meta property="og:description" content="Sobremesa: tus mesas piden por QR y la barra lo ve al instante. Vuelve: tarjeta de lealtad en el Wallet. Y comandas, facturación e inventario a la medida." />
 <meta property="og:url" content="https://alphateklab.com/food/" />
 <meta property="og:locale" content="es_LA" />
 <meta name="theme-color" content="#f6f7f9" />
@@ -21,7 +21,7 @@
 <link rel="preload" href="../assets/fuentes/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="../assets/atk.css?v=2a9624452c" />
 <link rel="stylesheet" href="../assets/citas.css?v=5fa48ede6e" />
-<link rel="stylesheet" href="../assets/portada.css?v=62bf4fc7d9" />
+<link rel="stylesheet" href="../assets/portada.css?v=2280c57a4d" />
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://alphateklab.com/#organizacion","name":"alphateklab","url":"https://alphateklab.com/","logo":"https://alphateklab.com/assets/marca/favicon-180.png"},{"@type":"WebSite","@id":"https://alphateklab.com/#sitio","url":"https://alphateklab.com/","name":"alphateklab","inLanguage":"es","publisher":{"@id":"https://alphateklab.com/#organizacion"}}]}</script>
 </head>
 <body class="portada">
@@ -30,15 +30,22 @@
 <header class="cab" data-cab>
   <div class="envoltura cab__fila">
     <a class="cab__marca" href="../"><img class="logo logo--claro" src="../assets/marca/logo-claro.svg" alt="alphateklab, inicio" width="142" height="32" /><img class="logo logo--oscuro" src="../assets/marca/logo-oscuro.svg" alt="alphateklab, inicio" width="142" height="32" /></a>
-    <nav class="cab__menu" aria-label="Principal"><ul><li><a href="#sobremesa">Sobremesa</a></li><li><a href="#racha">Racha</a></li><li><a href="#medida">A la medida</a></li><li><a href="#preguntas">Preguntas</a></li></ul></nav>
+    <nav class="cab__menu" aria-label="Principal"><ul><li><a href="#sobremesa">Sobremesa</a></li><li><a href="#vuelve">Vuelve</a></li><li><a href="#medida">A la medida</a></li><li><a href="#preguntas">Preguntas</a></li></ul></nav>
     <div class="cab__acciones">
       <button class="cab__tema" type="button" aria-pressed="false" aria-label="Usar el tema oscuro" data-tema><svg class="ico ico--luna" aria-hidden="true" focusable="false"><use href="#i-moon"></use></svg><svg class="ico ico--sol" aria-hidden="true" focusable="false"><use href="#i-sun"></use></svg></button>
-      <a class="boton boton--linea cab__entrar" href="#contacto">Contactar</a>
+      <details class="elegir elegir--entrar" data-elegir>
+        <summary class="boton boton--linea cab__entrar"><span class="cab__entrar-largo">Iniciar sesión</span><span class="cab__entrar-corto">Entrar</span></summary>
+        <div class="elegir__menu"><p class="elegir__titulo">¿A qué servicio entras?</p><a class="elegir__opcion" href="https://vuelve.alphateklab.com/entrar"><span class="app app--vuelve app--chica" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-sparkle"></use></svg></span><span><strong>Vuelve</strong><small>Tarjeta de lealtad en el celular de tus clientes.</small></span></a></div>
+      </details>
+      <details class="elegir elegir--probar" data-elegir>
+        <summary class="boton boton--senal">Probar gratis</summary>
+        <div class="elegir__menu"><p class="elegir__titulo">¿Qué quieres probar?</p><a class="elegir__opcion" href="#contacto"><span class="app app--sobremesa app--chica" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-qr-code"></use></svg></span><span><strong>Sobremesa</strong><small>Pedidos por QR desde la mesa, con timbre en la barra.</small></span></a><a class="elegir__opcion" href="https://vuelve.alphateklab.com/registro"><span class="app app--vuelve app--chica" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-sparkle"></use></svg></span><span><strong>Vuelve</strong><small>Tarjeta de lealtad en el celular de tus clientes.</small></span></a></div>
+      </details>
       <button class="cab__abrir" type="button" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir el menú" data-abrir-menu><svg class="ico ico--abrir" aria-hidden="true" focusable="false"><use href="#i-list"></use></svg><svg class="ico ico--cerrar" aria-hidden="true" focusable="false"><use href="#i-x"></use></svg></button>
     </div>
   </div>
   <nav class="cab__movil" id="menu-movil" aria-label="Menú" hidden>
-    <ul class="envoltura"><li><a href="#sobremesa">Sobremesa</a></li><li><a href="#racha">Racha</a></li><li><a href="#medida">A la medida</a></li><li><a href="#preguntas">Preguntas</a></li></ul>
+    <ul class="envoltura"><li><a href="#sobremesa">Sobremesa</a></li><li><a href="#vuelve">Vuelve</a></li><li><a href="#medida">A la medida</a></li><li><a href="#preguntas">Preguntas</a></li><li><a href="https://vuelve.alphateklab.com/entrar">Iniciar sesión en Vuelve</a></li><li><a href="#contacto">Probar Sobremesa gratis</a></li><li><a href="https://vuelve.alphateklab.com/registro">Probar Vuelve gratis</a></li></ul>
   </nav>
 </header>
 <main id="contenido">
@@ -47,11 +54,11 @@
     <div class="envoltura">
       <p class="portada-heroe__marca"><span class="app app--food app--chica" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-fork-knife"></use></svg></span>Food <span>by alphateklab</span></p>
       <h1 class="portada-heroe__titulo" id="titulo">Pedidos desde la mesa. <span class="portada-heroe__resalte">Clientes que vuelven.</span></h1>
-      <p class="portada-heroe__bajada">Dos servicios para cafeterías, bares y restaurantes: Sobremesa lleva los pedidos de tus mesas a la barra y Racha trae de vuelta a tus clientes. Y si necesitas un sistema de comandas, facturación e inventario, te lo hacemos a la medida.</p>
+      <p class="portada-heroe__bajada">Dos servicios para cafeterías, bares y restaurantes: Sobremesa lleva los pedidos de tus mesas a la barra y Vuelve hace que tus clientes regresen. Y si necesitas un sistema de comandas, facturación e inventario, te lo hacemos a la medida.</p>
       <p class="portada-heroe__acciones"><a class="accion accion--principal" href="#contacto"><span>Contactar</span><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow-right"></use></svg></a> <a class="accion accion--vidrio" href="#sobremesa"><span>Cómo funciona</span></a></p>
       <ul class="portada-heroe__vidrios portada-heroe__vidrios--tres" aria-label="Servicios de Food">
         <li><a class="vidrio vidrio--sobremesa" href="#sobremesa"><span class="vidrio__brillo" aria-hidden="true"></span><span class="vidrio__cabeza"><span class="app app--sobremesa" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-qr-code"></use></svg></span><span class="vidrio__nombre">Sobremesa</span></span><span class="vidrio__resumen">Pedidos por QR desde la mesa, con timbre en la barra.</span><span class="vidrio__ir">Ver más <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow-right"></use></svg></span></a></li>
-        <li><a class="vidrio vidrio--racha" href="#racha"><span class="vidrio__brillo" aria-hidden="true"></span><span class="vidrio__cabeza"><span class="app app--racha" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-sparkle"></use></svg></span><span class="vidrio__nombre">Racha</span></span><span class="vidrio__resumen">Tarjeta de lealtad en el celular de tus clientes.</span><span class="vidrio__ir">Ver más <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow-right"></use></svg></span></a></li>
+        <li><a class="vidrio vidrio--vuelve" href="#vuelve"><span class="vidrio__brillo" aria-hidden="true"></span><span class="vidrio__cabeza"><span class="app app--vuelve" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-sparkle"></use></svg></span><span class="vidrio__nombre">Vuelve</span></span><span class="vidrio__resumen">Tarjeta de lealtad en el celular de tus clientes.</span><span class="vidrio__ir">Ver más <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow-right"></use></svg></span></a></li>
         <li><a class="vidrio vidrio--medida" href="#medida"><span class="vidrio__brillo" aria-hidden="true"></span><span class="vidrio__cabeza"><span class="app app--medida" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-file-text"></use></svg></span><span class="vidrio__nombre">A la medida</span></span><span class="vidrio__resumen">Comandas, facturación e inventario para tu negocio.</span><span class="vidrio__ir">Ver más <svg class="ico" aria-hidden="true" focusable="false"><use href="#i-arrow-right"></use></svg></span></a></li>
       </ul>
     </div>
@@ -79,20 +86,20 @@
     </div>
   </section>
 
-  <section class="sm-seccion sm-seccion--racha" id="racha" aria-labelledby="t-racha">
+  <section class="sm-seccion sm-seccion--vuelve" id="vuelve" aria-labelledby="t-vuelve">
     <div class="envoltura">
-      <div class="producto__cabeza"><span class="app app--racha app--grande" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-sparkle"></use></svg></span><p class="producto__sector">Racha</p></div>
-      <h2 class="sm-seccion__titulo" id="t-racha">Que vuelvan, con una tarjeta de sellos en su celular</h2>
-      <p class="sm-seccion__bajada">Racha es la tarjeta de lealtad de tu local, en Apple Wallet y Google Wallet. Es un servicio aparte: puedes tenerlo solo o junto con Sobremesa.</p>
+      <div class="producto__cabeza"><span class="app app--vuelve app--grande" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-sparkle"></use></svg></span><p class="producto__sector">Vuelve</p></div>
+      <h2 class="sm-seccion__titulo" id="t-vuelve">Que vuelvan, con una tarjeta de sellos en su celular</h2>
+      <p class="sm-seccion__bajada">Vuelve es la tarjeta de lealtad de tu local, en Apple Wallet y Google Wallet. Es un servicio aparte: puedes tenerlo solo o junto con Sobremesa.</p>
       <div class="sm-seccion__fila">
         <div><ol class="sm-pasos"><li><span class="sm-pasos__icono"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-sparkle"></use></svg></span><h3>Diseñas tu tarjeta</h3><p>De sellos o de puntos, con el nombre de tu local y tu premio.</p></li><li><span class="sm-pasos__icono"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-user-plus"></use></svg></span><h3>El cliente se inscribe</h3><p>Escanea el QR del local, deja su nombre, correo y cumpleaños, y guarda la tarjeta en su Wallet.</p></li><li><span class="sm-pasos__icono"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-device-mobile"></use></svg></span><h3>Suman los sellos</h3><p>El personal escanea la tarjeta con su celular y suma el sello. Al completarla, el premio.</p></li><li><span class="sm-pasos__icono"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-envelope-simple"></use></svg></span><h3>Los vuelves a invitar</h3><p>Con tus clientes inscritos mandas promociones por correo y avisos que les llegan al Wallet.</p></li></ol></div>
-        <figure class="vitrina vitrina--racha">
-          <div class="ej ej--racha" role="img" aria-label="Ejemplo: tarjeta Racha de un café en el Wallet, con 7 de 10 sellos; el personal acaba de sumar uno">
-          <div class="ej-racha" aria-hidden="true">
-            <p class="ej-racha__cabeza"><span>Café de ejemplo</span><span class="ej-racha__marca">Racha</span></p>
-            <p class="ej-racha__cuenta">7 <span>de 10 sellos</span></p>
-            <p class="ej-racha__sellos"><i class="lleno"></i><i class="lleno"></i><i class="lleno"></i><i class="lleno"></i><i class="lleno"></i><i class="lleno"></i><i class="lleno"></i><i class=""></i><i class=""></i><i class=""></i></p>
-            <p class="ej-racha__premio">Al completar: un café gratis</p>
+        <figure class="vitrina vitrina--vuelve">
+          <div class="ej ej--vuelve" role="img" aria-label="Ejemplo: tarjeta Vuelve de un café en el Wallet, con 7 de 10 sellos; el personal acaba de sumar uno">
+          <div class="ej-vuelve" aria-hidden="true">
+            <p class="ej-vuelve__cabeza"><span>Café de ejemplo</span><span class="ej-vuelve__marca">Vuelve</span></p>
+            <p class="ej-vuelve__cuenta">7 <span>de 10 sellos</span></p>
+            <p class="ej-vuelve__sellos"><i class="lleno"></i><i class="lleno"></i><i class="lleno"></i><i class="lleno"></i><i class="lleno"></i><i class="lleno"></i><i class="lleno"></i><i class=""></i><i class=""></i><i class=""></i></p>
+            <p class="ej-vuelve__premio">Al completar: un café gratis</p>
           </div>
           <p class="ej-aviso" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg>Sello agregado · 7 de 10</p>
         </div>
@@ -122,7 +129,7 @@
         <div class="sm-contacto__texto">
           <div class="producto__cabeza"><span class="app app--food app--grande" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-envelope-simple"></use></svg></span><p class="sm-seccion__antetitulo">Contacto</p></div>
           <h2 class="sm-seccion__titulo" id="t-contacto">Cuéntanos de tu negocio</h2>
-          <p class="sm-seccion__bajada">Déjanos tu nombre, tu correo y lo que necesitas. Te escribimos para mostrarte Sobremesa y Racha funcionando y decirte cuánto cuesta.</p>
+          <p class="sm-seccion__bajada">Déjanos tu nombre, tu correo y lo que necesitas. Te escribimos para mostrarte Sobremesa y Vuelve funcionando y decirte cuánto cuesta.</p>
         </div>
         <form class="sm-form" method="post" action="https://formsubmit.co/3a73a4e7fca71a1aba1ccc3921334bad" data-formulario data-ajax="https://formsubmit.co/ajax/3a73a4e7fca71a1aba1ccc3921334bad" data-gracias="Recibimos tu mensaje. Te escribimos pronto a tu correo." data-error="No se pudo enviar. Revisa tu conexión e inténtalo otra vez.">
           <input type="hidden" name="_subject" value="Food: mensaje desde alphateklab.com" />
@@ -149,7 +156,7 @@
         <details><summary>¿Necesito comprar equipos?</summary><p>No. En la barra basta una tableta o un celular con internet, el que ya tengas.</p></details>
         <details><summary>¿Sobremesa cobra o factura?</summary><p>No. Sobremesa lleva el pedido de la mesa a la barra. La cuenta la sigues haciendo en tu sistema; si quieres uno nuevo de comandas, facturación e inventario, te lo hacemos a la medida.</p></details>
         <details><summary>¿Qué pasa si alguien se lleva o fotografía un QR?</summary><p>Desde el panel le das un código nuevo a esa mesa: el QR viejo deja de servir y se imprime el nuevo.</p></details>
-        <details><summary>¿Puedo tener solo Racha, sin los pedidos por QR?</summary><p>Sí. Son dos servicios aparte: puedes tener uno, el otro o los dos.</p></details>
+        <details><summary>¿Puedo tener solo Vuelve, sin los pedidos por QR?</summary><p>Sí. Son dos servicios aparte: puedes tener uno, el otro o los dos.</p></details>
       </div>
     </div>
   </section>
@@ -162,6 +169,6 @@
     <p class="portada-pie__nota">© 2026 alphateklab · Panamá</p>
   </div>
 </footer>
-<script type="module" src="../js/portada.js?v=54d296803d"></script>
+<script type="module" src="../js/portada.js?v=c7e1e31942"></script>
 </body>
 </html>
