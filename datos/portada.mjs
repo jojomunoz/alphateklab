@@ -2,7 +2,8 @@
 // Lo de cada producto sale de su propio sitio o de su propio código: aquí no se inventan precios ni cifras.
 
 export const PORTADA = {
-  titulo: 'alphateklab: software para negocios en Panamá',
+  // Sin «Panamá»: apuntamos también al mercado de afuera (Edwin, 10-oct).
+  titulo: 'alphateklab: software para consultorios, restaurantes y empresas',
   descripcion:
     'Med para consultorios, Food para cafeterías, bares y restaurantes, y alphatend para venderle al Estado. Elige la herramienta de tu negocio.',
   heroe: {

@@ -470,11 +470,12 @@ function prueba() {
 
 // El sitio (WebSite) es alphateklab entero: Google toma su nombre de la raíz, la portada de alphateklab, que lo declara
 // igual. Ya no lleva «Citas Médicas de alphateklab» de nombre alterno (8-oct: el sitio tiene más productos).
-const SITIO_LD = { '@type': 'WebSite', '@id': `${URL_BASE}#sitio`, url: URL_BASE, name: 'alphateklab', inLanguage: 'es-PA', publisher: { '@id': `${URL_BASE}#organizacion` } };
+const SITIO_LD = { '@type': 'WebSite', '@id': `${URL_BASE}#sitio`, url: URL_BASE, name: 'alphateklab', inLanguage: 'es', publisher: { '@id': `${URL_BASE}#organizacion` } };
 const PRODUCTO_ID = `${URL_BASE}${MED}#producto`;
 
 function datosEstructurados() {
-  const org = { '@type': 'Organization', '@id': `${URL_BASE}#organizacion`, name: 'alphateklab', url: URL_BASE, logo: `${URL_BASE}assets/marca/favicon-180.png`, areaServed: { '@type': 'Country', name: 'Panamá' } };
+  // Sin areaServed: alphateklab apunta también al mercado de afuera (Edwin, 10-oct), igual que en la portada.
+  const org = { '@type': 'Organization', '@id': `${URL_BASE}#organizacion`, name: 'alphateklab', url: URL_BASE, logo: `${URL_BASE}assets/marca/favicon-180.png` };
   const mensual = (precio, unidad) => ({ '@type': 'UnitPriceSpecification', price: precio, priceCurrency: 'USD', unitText: unidad, billingDuration: 'P1M' });
   const app = {
     '@type': 'SoftwareApplication',

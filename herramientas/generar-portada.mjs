@@ -88,13 +88,12 @@ function cabeza({ R, titulo, descripcion, canonica }) {
         name: 'alphateklab',
         url: SITIO,
         logo: `${SITIO}assets/marca/favicon-180.png`,
-        areaServed: { '@type': 'Country', name: 'Panamá' },
       },
-      { '@type': 'WebSite', '@id': `${SITIO}#sitio`, url: SITIO, name: 'alphateklab', inLanguage: 'es-PA', publisher: { '@id': `${SITIO}#organizacion` } },
+      { '@type': 'WebSite', '@id': `${SITIO}#sitio`, url: SITIO, name: 'alphateklab', inLanguage: 'es', publisher: { '@id': `${SITIO}#organizacion` } },
     ],
   };
   return `<!doctype html>
-<html lang="es-PA" data-theme="light">
+<html lang="es" data-theme="light">
 <head>
 <meta charset="utf-8" />
 <script>try{if(localStorage.getItem('atk-tema')==='oscuro')document.documentElement.dataset.theme='dark'}catch(e){}</script>
@@ -107,7 +106,7 @@ ${raiz ? `<link rel="canonical" href="${canonica}" />` : '<meta name="robots" co
 <meta property="og:title" content="${esc(titulo)}" />
 <meta property="og:description" content="${esc(descripcion)}" />
 <meta property="og:url" content="${canonica}" />
-<meta property="og:locale" content="es_PA" />
+<meta property="og:locale" content="es_LA" />
 <meta name="theme-color" content="#f6f7f9" />
 <link rel="icon" href="${R.a('assets/marca/favicon.svg')}" type="image/svg+xml" />
 <link rel="icon" href="${R.a('assets/marca/favicon-32.png')}" sizes="32x32" type="image/png" />

@@ -4,7 +4,7 @@
 // decididos.
 
 export const FOOD = {
-  titulo: 'Food: pedidos por QR y tarjeta de lealtad para restaurantes en Panamá',
+  titulo: 'Food: pedidos por QR y tarjeta de lealtad para restaurantes y bares', // sin «Panamá» (Edwin, 10-oct)
   descripcion:
     'Sobremesa: tus mesas piden por QR y la barra lo ve al instante. Racha: tarjeta de lealtad en el Wallet. Y comandas, facturación e inventario a la medida.',
   heroe: {
