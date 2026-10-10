@@ -252,7 +252,7 @@ if (form) {
     const d = new FormData(form);
     const via = e.submitter?.value || (form.dataset.whatsapp ? 'whatsapp' : 'correo');
     const texto = [
-      `Hola, quiero probar Citas Médicas ${form.dataset.dias} días gratis.`,
+      `Hola, quiero probar Med ${form.dataset.dias} días gratis.`,
       `Nombre: ${d.get('nombre')}`,
       `Clínica o consultorio: ${d.get('clinica')}`,
       `Médicos: ${d.get('medicos')}`,
@@ -267,7 +267,7 @@ if (form) {
       if (w) w.opener = null;
       else location.href = url;
     } else if (form.dataset.correo) {
-      location.href = `mailto:${form.dataset.correo}?subject=${encodeURIComponent('Prueba de Citas Médicas')}&body=${encodeURIComponent(texto)}`;
+      location.href = `mailto:${form.dataset.correo}?subject=${encodeURIComponent('Prueba de Med')}&body=${encodeURIComponent(texto)}`;
     }
   });
 }

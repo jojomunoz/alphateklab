@@ -28,7 +28,7 @@ h1 span { background: linear-gradient(100deg, #a5abff, #5fd3c4); -webkit-backgro
 .portatil div { aspect-ratio: 16 / 10; overflow: hidden; border-radius: 8px 8px 0 0; }
 .portatil img { width: 100%; display: block; }
 </style></head><body><div class="fila"><div>
-<div class="marca"><svg viewBox="0 0 128 128"><path fill="#eef1f6" fill-rule="evenodd" d="M64 20a44 44 0 1 0 0 88a44 44 0 1 0 0-88Zm0 21a23 23 0 1 1 0 46a23 23 0 1 1 0-46Z"/><path fill="#eef1f6" d="M87 20h21v63H87z"/><rect x="87" y="87" width="21" height="21" rx="3" fill="#8b93f8"/></svg><span>${PRODUCTO}<small>por alphateklab</small></span></div>
+<div class="marca"><svg viewBox="0 0 128 128"><path fill="#eef1f6" fill-rule="evenodd" d="M64 20a44 44 0 1 0 0 88a44 44 0 1 0 0-88Zm0 21a23 23 0 1 1 0 46a23 23 0 1 1 0-46Z"/><path fill="#eef1f6" d="M87 20h21v63H87z"/><rect x="87" y="87" width="21" height="21" rx="3" fill="#8b93f8"/></svg><span>${PRODUCTO}<small>by alphateklab</small></span></div>
 <h1>El expediente de tu paciente, <span>sin escribir a mano ni teclear</span></h1>
 <div class="datos"><b>Dictado con IA</b><b>${PRUEBA_DIAS} días gratis</b><b>Desde $${DESDE} al mes</b></div>
 </div><div class="portatil"><div><img src="data:image/webp;base64,${b64('assets/producto/citas-nota.webp')}"></div></div></div></body></html>`;

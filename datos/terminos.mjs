@@ -7,10 +7,10 @@ export const VIGENTE = '7 de octubre de 2026';
 
 export const SECCIONES = [
   ['Quiénes somos', [
-    'Citas Médicas es un servicio de alphateklab, en Panamá. Estos términos son el acuerdo entre alphateklab y la clínica o el consultorio que crea una cuenta («tú»). Al crear la cuenta los aceptas.',
+    'Med es un servicio de alphateklab, en Panamá. Estos términos son el acuerdo entre alphateklab y la clínica o el consultorio que crea una cuenta («tú»). Al crear la cuenta los aceptas.',
   ]],
   ['El servicio', [
-    'Citas Médicas es un sistema en línea con dos partes que se contratan por separado: el expediente clínico (con dictado por voz) y la agenda de citas (con recordatorios por WhatsApp). Tu sistema vive en su propia dirección y se usa desde el navegador.',
+    'Med es un sistema en línea con dos partes que se contratan por separado: el expediente clínico (con dictado por voz) y la agenda de citas (con recordatorios por WhatsApp). Tu sistema vive en su propia dirección y se usa desde el navegador.',
     'Tú decides quién de tu equipo entra y qué puede hacer cada persona. Cada persona es responsable de cuidar su usuario y su contraseña.',
   ]],
   ['La prueba gratis', [
@@ -38,7 +38,7 @@ export const SECCIONES = [
   ]],
   ['El dictado con IA y el uso clínico', [
     'El dictado convierte la voz en texto con inteligencia artificial. Puede equivocarse: el médico revisa lo que quedó escrito antes de guardarlo y es responsable del contenido del expediente.',
-    'Citas Médicas es una herramienta para organizar el trabajo del consultorio. No da diagnósticos ni recomendaciones médicas.',
+    'Med es una herramienta para organizar el trabajo del consultorio. No da diagnósticos ni recomendaciones médicas.',
   ]],
   ['Recordatorios por WhatsApp', [
     'Los recordatorios se mandan a los pacientes que dieron su permiso. Los paquetes son de 200, 500 o 1000 mensajes al mes; si se te acaban, te avisamos para pasar al siguiente.',

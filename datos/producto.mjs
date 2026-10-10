@@ -1,4 +1,5 @@
-// Citas Médicas: lo único que vende alphateklab desde el 7-oct-2026 (decisión de Edwin). La portada sale entera de
+// Med (se llamó Citas Médicas hasta el 10-oct-2026, cuando Edwin le puso el nombre de la portada de alphateklab): el
+// sistema de expediente y agenda para clínicas, y lo único que vendía alphateklab desde el 7-oct. La portada sale entera de
 // aquí: los precios, lo que hace cada parte, las pantallas y las preguntas. Cambiar un precio es cambiar un número.
 //
 // Decisiones de Edwin (7-oct-2026):
@@ -13,7 +14,9 @@
 // - Precios netos: van tal cual, sin sumar ITBMS. Prueba gratis de 7 días. Pago mes a mes, sin plan anual.
 // - «Profesional» es cada médico que hace expedientes; la recepción, enfermería y administración no pagan.
 
-export const PRODUCTO = 'Citas Médicas';
+export const PRODUCTO = 'Med';
+// El nombre completo, donde «Med» solo se queda corto (los títulos de las páginas, los datos estructurados).
+export const MARCA = `${PRODUCTO} by alphateklab`;
 export const PRUEBA_DIAS = 7;
 
 // Al mes, en dólares, desde el 7-oct-2026 (Edwin; los mismos de la app, citas-piloto web/js/nucleo/plan.mjs).

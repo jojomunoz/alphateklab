@@ -1,10 +1,11 @@
-# Citas Médicas, de alphateklab
+# Med by alphateklab
 
 > Sistema web para clínicas y consultorios en Panamá: el expediente clínico, que el médico dicta con IA en vez de escribirlo a mano o teclearlo, y la agenda de citas con recordatorios por WhatsApp. Se usa en el navegador de la computadora, la tableta o el celular, sin instalar nada. Cada clínica tiene su propio sistema en <clínica>.alphateklab.com.
 
 ## Páginas
 
-- [Citas Médicas](https://alphateklab.com/): el producto completo, con pantallas reales, precios, calculadora y preguntas frecuentes.
+- [alphateklab](https://alphateklab.com/): la portada, con todos los productos de alphateklab: Med, Food y alphatend.
+- [Med](https://alphateklab.com/med/): el producto completo, con pantallas reales, precios, calculadora y preguntas frecuentes.
 - [Expediente clínico electrónico con dictado por IA en Panamá](https://alphateklab.com/expediente-clinico/): El médico dicta la nota de la consulta y queda escrita por secciones. Antecedentes, signos y resultados en un solo lugar. $29.99 al mes por profesional.
 - [El expediente clínico electrónico en Panamá: lo que pide la ley](https://alphateklab.com/expediente-clinico-electronico-panama/): guía con la norma y el artículo de cada punto. Lo que dicen la Ley 68 de 2003, el Decreto 1458 de 2012 y la Ley 81 de 2019: qué lleva el expediente, la firma, cuánto se guarda y los datos.
 - [Términos del servicio](https://alphateklab.com/terminos/): la prueba, los pagos, la cancelación y los datos de los pacientes.
@@ -37,3 +38,7 @@ En dólares, al mes y netos (sin sumar ITBMS):
 ## Probarlo
 
 Una clínica crea su cuenta sola en https://alphateklab.com/registro/ y su sistema queda listo al momento.
+
+## También de alphateklab
+
+- [Food, para cafeterías, bares y restaurantes](https://alphateklab.com/food/): Sobremesa: tus mesas piden por QR y la barra lo ve al instante. Racha: tarjeta de lealtad en el Wallet. Y comandas, facturación e inventario a la medida.

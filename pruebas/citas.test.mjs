@@ -1,5 +1,6 @@
-// La portada de Citas Médicas: lo publicado está al día con datos/, dice los precios decididos, no tiene enlaces ni
-// imágenes rotas y sus datos estructurados se leen. Corre con: node --test pruebas/citas.test.mjs
+// La portada de Med (antes Citas Médicas; en med/, la raíz es la portada de alphateklab): lo publicado está al día con datos/, dice
+// los precios decididos, no tiene enlaces ni imágenes rotas y sus datos estructurados se leen.
+// Corre con: node --test pruebas/citas.test.mjs
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -15,7 +16,8 @@ const { CONTACTO, REGISTRO } = SITIO;
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 const leer = (r) => readFileSync(join(RAIZ, r), 'utf8');
-const PAGINAS = ['index.html', 'privacidad/index.html', '404.html', ...[...FUNCIONES, ...GUIAS].map((f) => `${f.ruta}index.html`)];
+const INICIO = 'med/index.html'; // la portada de Med
+const PAGINAS = [INICIO, 'privacidad/index.html', '404.html', ...[...FUNCIONES, ...GUIAS].map((f) => `${f.ruta}index.html`)];
 const textoVisible = (html) => html.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<svg[\s\S]*?<\/svg>/g, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;| /g, ' ').replace(/&[a-z#0-9]+;/g, (e) => ({ '&amp;': '&', '&quot;': '"', '&#39;': "'", '&lt;': '<', '&gt;': '>' })[e] || ' ').replace(/\s+/g, ' ');
 
 test('lo publicado está al día: generar otra vez da lo mismo', () => {
@@ -32,12 +34,12 @@ test('lo publicado está al día: generar otra vez da lo mismo', () => {
 });
 
 test('la portada dice los precios decididos, la prueba y cada pregunta', () => {
-  const t = textoVisible(leer('index.html'));
+  const t = textoVisible(leer(INICIO));
   assert.ok(t.includes(`${dolares(PRECIOS.expediente)} al mes por profesional`), 'precio del expediente');
   assert.ok(t.includes(`${dolares(PRECIOS.agenda)} al mes por clínica`), 'precio de la agenda, sin «desde»');
   assert.doesNotMatch(t, /desde \$[\d.]+ al mes por clínica/i, 'la agenda tiene un precio, no un «desde»');
   // El de antes, tachado al lado, en la tarjeta de cada parte y en Precios: dos veces cada uno.
-  const html = leer('index.html');
+  const html = leer(INICIO);
   for (const id of ['expediente', 'agenda']) {
     const tachado = `<s class="precio-antes"><span class="sr">Antes</span> ${dolares(PRECIOS.antes[id])}</s>`;
     assert.equal(html.split(tachado).length - 1, 2, `el precio de antes del ${id}, tachado`);
@@ -69,11 +71,12 @@ test('sin códigos internos ni textos de la agencia a la vista', () => {
 
 test('un solo H1 por página y el título de la portada nombra el producto', () => {
   for (const r of PAGINAS) assert.equal((leer(r).match(/<h1[\s>]/g) || []).length, 1, r);
-  assert.match(leer('index.html'), new RegExp(`<title>${PRODUCTO}`));
+  assert.match(leer(INICIO), new RegExp(`<title>${PRODUCTO}`));
 });
 
 test('nada roto: cada archivo enlazado existe y cada ancla tiene a dónde ir', () => {
-  for (const r of ['index.html', 'privacidad/index.html', ...[...FUNCIONES, ...GUIAS].map((f) => `${f.ruta}index.html`)]) {
+  // también la portada de alphateklab y Food (las escribe herramientas/generar-portada.mjs --raiz)
+  for (const r of [INICIO, 'privacidad/index.html', ...[...FUNCIONES, ...GUIAS].map((f) => `${f.ruta}index.html`), ...['index.html', 'food/index.html'].filter((x) => existsSync(join(RAIZ, x)))]) {
     const html = leer(r);
     const base = dirname(join(RAIZ, r));
     const rutas = [...html.matchAll(/(?:src|href)="([^"]+)"/g), ...html.matchAll(/srcset="([^"]+)"/g)].flatMap((m) => m[1].split(',').map((x) => x.trim().split(' ')[0]));
@@ -99,7 +102,7 @@ test('cada imagen tiene texto alternativo y medidas', () => {
 });
 
 test('los datos estructurados se leen y llevan los precios', () => {
-  const m = leer('index.html').match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  const m = leer(INICIO).match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
   assert.ok(m, 'sin JSON-LD');
   const ld = JSON.parse(m[1]);
   const app = ld['@graph'].find((n) => n['@type'] === 'SoftwareApplication');
@@ -110,10 +113,10 @@ test('los datos estructurados se leen y llevan los precios', () => {
 });
 
 test('«Probar gratis» lleva al registro si está en línea; si no, al formulario si hay a dónde mandarlo', () => {
-  const html = leer('index.html');
+  const html = leer(INICIO);
   if (REGISTRO) {
     assert.equal(/data-prueba/.test(html), false);
-    assert.ok((html.match(/href="(\.\/)?registro\//g) || []).length >= 4, 'cabecera, héroe, precios y la prueba van a registro/');
+    assert.ok((html.match(/href="\.\.\/registro\//g) || []).length >= 4, 'cabecera, héroe, precios y la prueba van a registro/ (en la raíz)');
     assert.ok(leer('registro/index.html').includes(REGISTRO), 'registro/ pasa al servicio de cuentas');
     assert.match(leer('terminos/index.html'), /Términos del servicio/);
     return;
@@ -125,7 +128,7 @@ test('«Probar gratis» lleva al registro si está en línea; si no, al formular
 
 test('«Iniciar sesión» arriba (con el registro en línea) lleva a entrar/, que pasa al sistema de la clínica', () => {
   if (!REGISTRO) return;
-  for (const r of ['index.html', 'privacidad/index.html', 'terminos/index.html']) {
+  for (const r of [INICIO, 'privacidad/index.html', 'terminos/index.html']) {
     const html = leer(r);
     assert.match(html, /<a class="boton boton--linea cab__entrar" href="[^"]*entrar\/" data-entrar-cab><span class="cab__entrar-largo">Iniciar sesión<\/span>/, `${r}: el botón arriba`);
     assert.match(html, /<li><a href="[^"]*entrar\/">Iniciar sesión<\/a><\/li>/, `${r}: y en el menú del teléfono`);
@@ -136,10 +139,10 @@ test('«Iniciar sesión» arriba (con el registro en línea) lleva a entrar/, qu
   assert.equal(leer('sitemap.xml').includes('entrar/'), false, 'no va en el sitemap');
 });
 
-test('/citasmed/ lleva a la portada y el sitemap tiene las páginas', () => {
-  assert.match(leer('citasmed/index.html'), /http-equiv="refresh" content="0; url=\.\.\/"/);
+test('/citasmed/ lleva a la portada de Med y el sitemap tiene las páginas', () => {
+  assert.match(leer('citasmed/index.html'), /http-equiv="refresh" content="0; url=\.\.\/med\/"/);
   const s = leer('sitemap.xml');
-  assert.ok(s.includes('<loc>https://alphateklab.com/</loc>') && s.includes('<loc>https://alphateklab.com/privacidad/</loc>'));
+  for (const u of ['', 'med/', 'privacidad/']) assert.ok(s.includes(`<loc>https://alphateklab.com/${u}</loc>`), `${u || 'la raíz'} en el sitemap`);
 });
 
 // ── para los buscadores ──
@@ -176,7 +179,7 @@ test('las páginas de función: en el sitemap, en el pie de todas las páginas y
   for (const f of FUNCIONES) {
     assert.ok(urls.includes(`https://alphateklab.com/${f.ruta}`), `${f.ruta} en el sitemap`);
     for (const r of PAGINAS) assert.match(leer(r), new RegExp(`<footer[\\s\\S]*href="[^"]*${f.ruta}"`), `${r}: el pie enlaza ${f.ruta}`);
-    assert.match(leer('index.html'), new RegExp(`class="producto__mas"><a href="${f.ruta}"`), `la portada enlaza ${f.ruta} desde su sección`);
+    assert.match(leer(INICIO), new RegExp(`class="producto__mas"><a href="\\.\\./${f.ruta}"`), `la portada enlaza ${f.ruta} desde su sección`);
     const html = leer(`${f.ruta}index.html`);
     const ld = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
     assert.ok(ld['@graph'].some((n) => n['@type'] === 'BreadcrumbList'), `${f.ruta}: migas`);

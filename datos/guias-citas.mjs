@@ -149,7 +149,7 @@ export const EXPEDIENTE_LEY = {
     },
     {
       id: 'citas-medicas',
-      titulo: 'Qué hace Citas Médicas con esto, y qué no',
+      titulo: 'Qué hace Med con esto, y qué no',
       bloques: [
         {
           lista: [

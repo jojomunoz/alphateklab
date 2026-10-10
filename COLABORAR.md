@@ -37,9 +37,10 @@ junto con un `preparar.sh` que clona los tres por SSH con ellas. Jonathan las re
 1. **Nada directo a `main`** salvo que Jonathan lo autorice (Jonathan y Edwin sí empujan a `main`). Los demás trabajan
    en una rama o en un fork y abren un pull request contra `main`.
 2. **Antes de empujar o de abrir el pull request**, en el sitio:
-   - `node herramientas/generar-citas.mjs`. Las páginas se generan desde `datos/` y el resultado se versiona. Los HTML
-     no se editan a mano. (En la rama `sitio-agencia`, el generador de antes: `node herramientas/generar.mjs`.)
-   - `node --test pruebas/citas.test.mjs pruebas/sintaxis.test.mjs`
+   - `node herramientas/generar-portada.mjs --raiz` y después `node herramientas/generar-citas.mjs`. Las páginas se
+     generan desde `datos/` y el resultado se versiona. Los HTML no se editan a mano. (En la rama `sitio-agencia`, el
+     generador de antes: `node herramientas/generar.mjs`.)
+   - `npm run prueba` (`node --test pruebas/citas.test.mjs pruebas/portada.test.mjs pruebas/sintaxis.test.mjs`)
    - `node pruebas/navegador/citas.mjs http://localhost:4900/alphateklab/` (y con `MOTOR=webkit`)
    - Mirarlo en el navegador a 1440 px y a 390 px, en claro y en oscuro.
 

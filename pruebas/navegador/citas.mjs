@@ -1,5 +1,5 @@
-// La portada de Citas Médicas en un navegador de verdad: nada se sale por la derecha del teléfono a la computadora,
-// sin errores en la consola ni recursos rotos, el menú del teléfono, los paquetes de mensajes, la calculadora, lo que
+// La portada de Med (med/) en un navegador de verdad: nada se sale por la derecha del teléfono a la computadora
+// (tampoco en la portada de alphateklab ni en Food), sin errores en la consola ni recursos rotos, el menú del teléfono, los paquetes de mensajes, la calculadora, lo que
 // viaja al formulario de la prueba y el mensaje que arma, las animaciones (y quietas con «reducir movimiento»), el
 // modo oscuro y el sistema de títulos.
 // Uso: node pruebas/navegador/citas.mjs <url>   (local: node herramientas/servir.mjs y http://localhost:4900/alphateklab/)
@@ -10,6 +10,8 @@ import { PRECIOS, dolares, sumar } from '../../datos/producto.mjs';
 import { FUNCIONES } from '../../datos/paginas.mjs';
 import { GUIAS } from '../../datos/guias-citas.mjs';
 const SUBPAGINAS = [...FUNCIONES, ...GUIAS].map((f) => f.ruta);
+const INICIO = 'med/'; // la portada de Med; la raíz es la portada de alphateklab
+const OTRAS = ['', 'food/']; // la portada de alphateklab y Food (herramientas/generar-portada.mjs --raiz)
 
 const BASE = (process.argv[2] || 'http://localhost:4900/alphateklab/').replace(/\/?$/, '/');
 const motor = pw[process.env.MOTOR || 'chromium'];
@@ -26,7 +28,7 @@ async function paso(nombre, fn) {
 }
 // Quieta por defecto (sin desplazamiento suave ni animaciones atadas al scroll, que mueven lo que se va a tocar);
 // la prueba de las animaciones pide movimiento.
-const abrir = async (opciones = {}, ruta = '') => {
+const abrir = async (opciones = {}, ruta = INICIO) => {
   const c = await b.newContext({ viewport: { width: 1280, height: 860 }, reducedMotion: 'reduce', ...opciones });
   const p = await c.newPage();
   await p.goto(BASE + ruta, { waitUntil: 'load' });
@@ -42,22 +44,22 @@ const recorrer = (p) => p.evaluate(async () => {
 });
 
 try {
-  await paso('nada se sale por la derecha, de 320 a 1440 px (portada, páginas de función y guías)', async () => {
+  await paso('nada se sale por la derecha, de 320 a 1440 px (portadas, Food, páginas de función y guías)', async () => {
     const malos = [];
-    for (const ruta of ['', ...SUBPAGINAS]) {
+    for (const ruta of [...OTRAS, INICIO, ...SUBPAGINAS]) {
       for (const ancho of [320, 360, 375, 390, 414, 768, 1024, 1280, 1440]) {
         const { c, p } = await abrir({ viewport: { width: ancho, height: 800 } }, ruta);
         const sobra = await p.evaluate(() => document.documentElement.scrollWidth - innerWidth);
-        if (sobra > 0) malos.push(`${ruta || 'portada'} a ${ancho} px: ${sobra} px de más`);
+        if (sobra > 0) malos.push(`${ruta || 'la raíz'} a ${ancho} px: ${sobra} px de más`);
         await c.close();
       }
     }
     assert.deepEqual(malos, []);
   });
 
-  await paso('sin errores en la consola ni recursos rotos (portada, páginas de función, guías, privacidad, /citasmed/, entrar/)', async () => {
+  await paso('sin errores en la consola ni recursos rotos (portadas, Food, páginas de función, guías, privacidad, /citasmed/, entrar/)', async () => {
     const errores = [];
-    for (const ruta of ['', ...SUBPAGINAS, 'privacidad/', 'citasmed/', 'entrar/']) {
+    for (const ruta of [...OTRAS, INICIO, ...SUBPAGINAS, 'privacidad/', 'citasmed/', 'entrar/']) {
       const c = await b.newContext({ viewport: { width: 1280, height: 860 } });
       const p = await c.newPage();
       p.on('console', (m) => m.type() === 'error' && errores.push(`${ruta}: ${m.text()}`));

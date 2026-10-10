@@ -1,6 +1,8 @@
-// Genera alphateklab.com desde el 7-oct-2026: la portada de Citas Médicas (lo único que vende alphateklab por ahora),
-// la privacidad, el 404, /citasmed/ (lleva a la portada), el sitemap y robots.txt. Todo el contenido sale de
-// datos/producto.mjs y datos/sitio.mjs; no se editan a mano los HTML generados.
+// Genera las páginas de Med (Citas Médicas hasta el 10-oct-2026): su portada en med/ (desde el 8-oct-2026; antes
+// era la raíz), las páginas de función y las guías, la privacidad, los términos, registro/, entrar/, el 404, /citasmed/
+// (lleva a med/), el sitemap, robots.txt y llms.txt. La raíz del sitio es la portada de alphateklab, con Med, Food y
+// alphatend: la escribe herramientas/generar-portada.mjs --raiz. Todo el contenido sale de datos/producto.mjs y
+// datos/sitio.mjs; no se editan a mano los HTML generados.
 // Uso: node herramientas/generar-citas.mjs
 //
 // El sitio de la agencia (catálogo, soluciones, guías y demos) quedó en la rama sitio-agencia; ver CLAUDE.md.
@@ -12,6 +14,7 @@ import { fileURLToPath } from 'node:url';
 import * as P from '../datos/producto.mjs';
 import { FUNCIONES } from '../datos/paginas.mjs';
 import { GUIAS } from '../datos/guias-citas.mjs';
+import { FOOD } from '../datos/food.mjs';
 import { ACTUALIZADO, CONTACTO as CONTACTO_DATOS, INDEXNOW, REGISTRO, URL_BASE } from '../datos/sitio.mjs';
 import * as TERMINOS from '../datos/terminos.mjs';
 
@@ -19,6 +22,16 @@ const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 // Para ver el formulario de la prueba en local antes de tener el contacto: WHATSAPP=507… CORREO=… node …
 const CONTACTO = { whatsapp: process.env.WHATSAPP || CONTACTO_DATOS.whatsapp, correo: process.env.CORREO || CONTACTO_DATOS.correo };
 const existe = (ruta) => existsSync(join(RAIZ, ruta));
+
+// La portada de Med vive en med/. En cada página, `prefijo` lleva a la raíz del sitio (las hojas de estilo,
+// las imágenes, registro/, entrar/, privacidad/, las páginas de función…) y `inicio`, a la portada de Med (sus secciones:
+// #precios, #preguntas…). El logo de alphateklab lleva a la raíz, la portada de alphateklab.
+const MED = 'med/';
+const DESDE_MED = '../'; // la raíz, vista desde med/
+const inicioDesde = (prefijo) => `${prefijo}${MED}`;
+// food/ (cafeterías, bares y restaurantes) la escribe herramientas/generar-portada.mjs --raiz: si está publicada, va
+// en el sitemap, en llms.txt y en la privacidad (su formulario de contacto).
+const HAY_FOOD = existe('food/index.html');
 
 // «9:00 a. m.», «98 %» y «$25» no se parten al final de una línea.
 const sinCorte = (t) => String(t).replace(/(\d) (a\. m\.|p\. m\.|%|°C|mmHg|lpm)/g, '$1 $2').replace(/a\. m\./g, 'a. m.').replace(/p\. m\./g, 'p. m.');
@@ -70,8 +83,8 @@ const hayContacto = Boolean(CONTACTO.whatsapp || CONTACTO.correo);
 // Con el registro en línea, «Probar gratis» lleva a crear la cuenta; sin él, a la sección de la prueba.
 // Los botones van a alphateklab.com/registro/, que pasa al registro del servicio de cuentas en cuanto responde (y
 // mientras no, lo dice en vez de dar un error): así el sitio no depende de cuándo quede en línea el servidor.
-const destinoPrueba = (prefijo) => (REGISTRO ? `${prefijo === '/' ? '/' : prefijo || './'}registro/` : `${prefijo}#prueba`);
-const registroCon = (params, prefijo = '') => (REGISTRO ? `${prefijo}registro/?${new URLSearchParams(params)}` : '#prueba');
+const destinoPrueba = (prefijo, inicio = inicioDesde(prefijo)) => (REGISTRO ? `${prefijo === '/' ? '/' : prefijo || './'}registro/` : `${inicio}#prueba`);
+const registroCon = (params, prefijo = DESDE_MED) => (REGISTRO ? `${prefijo}registro/?${new URLSearchParams(params)}` : '#prueba');
 // «Iniciar sesión» (con el registro en línea): alphateklab.com/entrar/, donde se escribe el usuario y se pasa al
 // sistema de la clínica, en <usuario>.alphateklab.com.
 const destinoEntrar = (prefijo) => `${prefijo === '/' ? '/' : prefijo || './'}entrar/`;
@@ -81,8 +94,8 @@ const PREGUNTAS = REGISTRO
   ? [...P.PREGUNTAS.map(([q, a]) => (q.startsWith('¿Cómo es la prueba') ? [q, 'Creas tu cuenta y tu sistema queda listo al momento; lo usas una semana con todo incluido. No pedimos tarjeta.'] : [q, a])), ...P.PREGUNTAS_REGISTRO]
   : P.PREGUNTAS;
 
-function cabecera(prefijo) {
-  const lista = ENLACES.map(([id, t]) => `<li><a href="${prefijo}#${id}">${t}</a></li>`).join('');
+function cabecera(prefijo, inicio) {
+  const lista = ENLACES.map(([id, t]) => `<li><a href="${inicio}#${id}">${t}</a></li>`).join('');
   return `<header class="cab" data-cab>
   <div class="envoltura cab__fila">
     <a class="cab__marca" href="${prefijo || './'}">${logo(prefijo, 'alphateklab, inicio')}</a>
@@ -90,17 +103,17 @@ function cabecera(prefijo) {
     <div class="cab__acciones">
       <button class="cab__tema" type="button" aria-pressed="false" aria-label="Usar el tema oscuro" data-tema>${icono('moon', 'ico ico--luna')}${icono('sun', 'ico ico--sol')}</button>
       ${REGISTRO ? `<a class="boton boton--linea cab__entrar" href="${destinoEntrar(prefijo)}" data-entrar-cab><span class="cab__entrar-largo">Iniciar sesión</span><span class="cab__entrar-corto">Entrar</span></a>` : ''}
-      <a class="boton boton--senal cab__cta" href="${destinoPrueba(prefijo)}">Probar gratis</a>
+      <a class="boton boton--senal cab__cta" href="${destinoPrueba(prefijo, inicio)}">Probar gratis</a>
       <button class="cab__abrir" type="button" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir el menú" data-abrir-menu>${icono('list', 'ico ico--abrir')}${icono('x', 'ico ico--cerrar')}</button>
     </div>
   </div>
   <nav class="cab__movil" id="menu-movil" aria-label="Menú" hidden>
-    <ul class="envoltura">${lista}${REGISTRO ? `<li><a href="${destinoEntrar(prefijo)}">Iniciar sesión</a></li>` : ''}<li><a class="boton boton--senal" href="${destinoPrueba(prefijo)}">Probar ${P.PRUEBA_DIAS} días gratis</a></li></ul>
+    <ul class="envoltura">${lista}${REGISTRO ? `<li><a href="${destinoEntrar(prefijo)}">Iniciar sesión</a></li>` : ''}<li><a class="boton boton--senal" href="${destinoPrueba(prefijo, inicio)}">Probar ${P.PRUEBA_DIAS} días gratis</a></li></ul>
   </nav>
 </header>`;
 }
 
-function pie(prefijo) {
+function pie(prefijo, inicio) {
   const contacto = [
     CONTACTO.whatsapp ? `<li><a href="https://wa.me/${CONTACTO.whatsapp}">WhatsApp</a></li>` : '',
     CONTACTO.correo ? `<li><a href="mailto:${esc(CONTACTO.correo)}">${esc(CONTACTO.correo)}</a></li>` : '',
@@ -108,16 +121,16 @@ function pie(prefijo) {
   return `<footer class="pie">
   <div class="envoltura pie__fila">
     <a class="pie__marca" href="${prefijo || './'}">${logo(prefijo, 'alphateklab')}</a>
-    <nav aria-label="Al pie"><ul class="pie__enlaces">${[...FUNCIONES, ...GUIAS].map((f) => `<li><a href="${prefijo || './'}${f.ruta}">${esc(f.pie || f.miga)}</a></li>`).join('')}<li><a href="${prefijo}#precios">Precios</a></li><li><a href="${prefijo}#preguntas">Preguntas</a></li><li><a href="${prefijo || './'}terminos/">Términos</a></li><li><a href="${prefijo || './'}privacidad/">Privacidad</a></li>${contacto}</ul></nav>
+    <nav aria-label="Al pie"><ul class="pie__enlaces">${[...FUNCIONES, ...GUIAS].map((f) => `<li><a href="${prefijo || './'}${f.ruta}">${esc(f.pie || f.miga)}</a></li>`).join('')}<li><a href="${inicio}#precios">Precios</a></li><li><a href="${inicio}#preguntas">Preguntas</a></li><li><a href="${prefijo || './'}terminos/">Términos</a></li><li><a href="${prefijo || './'}privacidad/">Privacidad</a></li>${contacto}</ul></nav>
   </div>
   <p class="envoltura pie__nota">Las pantallas muestran un consultorio de ejemplo con pacientes ficticios. Precios en dólares, al mes. Actualizado el ${esc(ACTUALIZADO.texto)}.</p>
 </footer>`;
 }
 
-function documento({ titulo, descripcion, prefijo, cuerpo, canonica, robots = '', datos = null, imagenOg = 'assets/og-citas.jpg' }) {
+function documento({ titulo, descripcion, prefijo, inicio = inicioDesde(prefijo), cuerpo, canonica, robots = '', datos = null, imagenOg = 'assets/og-citas.jpg' }) {
   usados = new Set();
-  const cab = cabecera(prefijo);
-  const pieHtml = pie(prefijo);
+  const cab = cabecera(prefijo, inicio);
+  const pieHtml = pie(prefijo, inicio);
   const html = typeof cuerpo === 'function' ? cuerpo() : cuerpo;
   return `<!doctype html>
 <html lang="es-PA" data-theme="light">
@@ -170,14 +183,14 @@ function heroe() {
       <h1 id="heroe-titulo" class="heroe__titulo">${resaltar(h.titulo)}</h1>
       <p class="heroe__bajada">${esc(h.bajada)}</p>
       <div class="heroe__acciones">
-        <a class="boton boton--senal boton--grande" href="${destinoPrueba('')}">Probar ${P.PRUEBA_DIAS} días gratis${icono('arrow-right')}</a>
+        <a class="boton boton--senal boton--grande" href="${destinoPrueba(DESDE_MED, '')}">Probar ${P.PRUEBA_DIAS} días gratis${icono('arrow-right')}</a>
         <a class="boton boton--linea boton--grande" href="#precios">Ver precios</a>
       </div>
       <ul class="heroe__puntos" role="list">${h.puntos.map((p) => `<li>${icono('check')}${esc(p)}</li>`).join('')}</ul>
     </div>
     <figure class="heroe__visual">
       <div class="heroe__dispositivos">
-        ${portatil('', 'citas-nota', 'La nota del médico en el expediente de un paciente de ejemplo, con un botón «Dictar» en cada sección.', { prioridad: true })}
+        ${portatil(DESDE_MED, 'citas-nota', 'La nota del médico en el expediente de un paciente de ejemplo, con un botón «Dictar» en cada sección.', { prioridad: true })}
         <div class="heroe__dictado">${dictado({ mini: true })}</div>
         <ul class="avisos" role="list" aria-hidden="true">${h.avisos.map((a, i) => `<li class="aviso aviso--${i + 1}"><span class="aviso__icono">${icono(a.icono)}</span><span><strong>${esc(a.titulo)}</strong><small>${esc(a.texto)}</small></span></li>`).join('')}</ul>
       </div>
@@ -282,8 +295,8 @@ function seccionParte(id) {
       <h2 id="${id}-titulo" class="seccion__titulo">${esc(s.titulo)}</h2>
       <p class="seccion__bajada">${esc(s.bajada)}</p>
     </div>
-    ${filasHtml(s.filas)}
-    ${funcion ? `<p class="producto__mas"><a href="${funcion.ruta}">Todo sobre el ${esc(funcion.miga.toLowerCase())}${icono('arrow-right')}</a></p>` : ''}
+    ${filasHtml(s.filas, DESDE_MED)}
+    ${funcion ? `<p class="producto__mas"><a href="${DESDE_MED}${funcion.ruta}">Todo sobre el ${esc(funcion.miga.toLowerCase())}${icono('arrow-right')}</a></p>` : ''}
   </div>
 </section>`;
 }
@@ -317,7 +330,7 @@ const accesos = () => {
       <h2 id="accesos-titulo" class="seccion__titulo">${esc(a.titulo)}</h2>
       <p class="seccion__bajada">${esc(a.bajada)}</p>
     </div>
-    <div class="fila__visual revelar">${portatil('', a.imagen, a.alt)}</div>
+    <div class="fila__visual revelar">${portatil(DESDE_MED, a.imagen, a.alt)}</div>
   </div>
   ${garantias(a.puntos)}
 </section>`;
@@ -395,7 +408,7 @@ const preguntas = (lista = PREGUNTAS) => `<section class="seccion envoltura" id=
   <div class="preguntas">${lista.map(([q, a]) => `<details class="pregunta"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div>
 </section>`;
 
-function pruebaConRegistro(prefijo = '') {
+function pruebaConRegistro(prefijo = DESDE_MED, inicio = '') {
   const t = P.PRUEBA_REGISTRO;
   return `<section class="prueba" id="prueba" aria-labelledby="prueba-titulo">
   <div class="envoltura prueba__fila prueba__fila--sola">
@@ -404,7 +417,7 @@ function pruebaConRegistro(prefijo = '') {
       <h2 id="prueba-titulo" class="seccion__titulo">${esc(t.titulo)}</h2>
       <p class="seccion__bajada">${esc(t.bajada)}</p>
       <ul class="lista-check lista-check--clara" role="list">${t.puntos.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
-      <p><a class="boton boton--senal boton--grande" href="${destinoPrueba(prefijo)}">${esc(t.boton)}${icono('arrow-right')}</a></p>
+      <p><a class="boton boton--senal boton--grande" href="${destinoPrueba(prefijo, inicio)}">${esc(t.boton)}${icono('arrow-right')}</a></p>
     </div>
   </div>
 </section>`;
@@ -455,20 +468,22 @@ function prueba() {
 </section>`;
 }
 
-// El nombre del sitio que muestra Google junto a los resultados (sale del WebSite de la portada).
-const SITIO_LD = { '@type': 'WebSite', '@id': `${URL_BASE}#sitio`, url: URL_BASE, name: 'alphateklab', alternateName: `${P.PRODUCTO} de alphateklab`, inLanguage: 'es-PA', publisher: { '@id': `${URL_BASE}#organizacion` } };
+// El sitio (WebSite) es alphateklab entero: Google toma su nombre de la raíz, la portada de alphateklab, que lo declara
+// igual. Ya no lleva «Citas Médicas de alphateklab» de nombre alterno (8-oct: el sitio tiene más productos).
+const SITIO_LD = { '@type': 'WebSite', '@id': `${URL_BASE}#sitio`, url: URL_BASE, name: 'alphateklab', inLanguage: 'es-PA', publisher: { '@id': `${URL_BASE}#organizacion` } };
+const PRODUCTO_ID = `${URL_BASE}${MED}#producto`;
 
 function datosEstructurados() {
   const org = { '@type': 'Organization', '@id': `${URL_BASE}#organizacion`, name: 'alphateklab', url: URL_BASE, logo: `${URL_BASE}assets/marca/favicon-180.png`, areaServed: { '@type': 'Country', name: 'Panamá' } };
   const mensual = (precio, unidad) => ({ '@type': 'UnitPriceSpecification', price: precio, priceCurrency: 'USD', unitText: unidad, billingDuration: 'P1M' });
   const app = {
     '@type': 'SoftwareApplication',
-    '@id': `${URL_BASE}#producto`,
-    name: P.PRODUCTO,
+    '@id': PRODUCTO_ID,
+    name: P.MARCA,
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
     inLanguage: 'es-PA',
-    url: URL_BASE,
+    url: `${URL_BASE}${MED}`,
     description: sinMarcas(P.HEROE.bajada),
     provider: { '@id': `${URL_BASE}#organizacion` },
     offers: [
@@ -482,15 +497,17 @@ function datosEstructurados() {
 }
 
 // En Google se ven ~60 caracteres del título y ~155 de la descripción: lo que se busca va primero.
-const TITULO_INICIO = `${P.PRODUCTO}: expediente clínico con IA y agenda médica en Panamá`;
+// «citas médicas» se queda en el título: es lo que se busca (el producto se llamó así hasta el 10-oct).
+const TITULO_INICIO = `${P.PRODUCTO}: expediente clínico con IA y agenda de citas médicas en Panamá`;
 const DESCRIPCION_INICIO = `El médico dicta la nota de cada consulta y el sistema la escribe con IA. Agenda de citas con recordatorios por WhatsApp. Desde ${dolares(P.DESDE)} al mes, ${P.PRUEBA_DIAS} días gratis.`;
 
 function paginaInicio() {
   return documento({
     titulo: TITULO_INICIO,
     descripcion: DESCRIPCION_INICIO,
-    prefijo: '',
-    canonica: URL_BASE,
+    prefijo: DESDE_MED,
+    inicio: '',
+    canonica: `${URL_BASE}${MED}`,
     datos: datosEstructurados(),
     cuerpo: () => `<main id="contenido">
 ${heroe()}
@@ -513,8 +530,8 @@ function paginaFuncion(f) {
   const datos = {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'WebPage', '@id': url, url, name: f.titulo, description: f.descripcion, inLanguage: 'es-PA', about: { '@id': `${URL_BASE}#producto` }, isPartOf: { '@id': `${URL_BASE}#sitio` }, breadcrumb: { '@id': `${url}#migas` } },
-      { '@type': 'BreadcrumbList', '@id': `${url}#migas`, itemListElement: [{ '@type': 'ListItem', position: 1, name: P.PRODUCTO, item: URL_BASE }, { '@type': 'ListItem', position: 2, name: f.miga, item: url }] },
+      { '@type': 'WebPage', '@id': url, url, name: f.titulo, description: f.descripcion, inLanguage: 'es-PA', about: { '@id': PRODUCTO_ID }, isPartOf: { '@id': `${URL_BASE}#sitio` }, breadcrumb: { '@id': `${url}#migas` } },
+      { '@type': 'BreadcrumbList', '@id': `${url}#migas`, itemListElement: [{ '@type': 'ListItem', position: 1, name: P.PRODUCTO, item: `${URL_BASE}${MED}` }, { '@type': 'ListItem', position: 2, name: f.miga, item: url }] },
       { '@type': 'FAQPage', mainEntity: f.preguntas.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
     ],
   };
@@ -537,13 +554,13 @@ function paginaFuncion(f) {
   <div class="heroe__fondo" aria-hidden="true"></div>
   <div class="envoltura heroe__fila">
     <div class="heroe__texto">
-      <nav class="migas" aria-label="Estás en"><ol><li><a href="${prefijo}">${esc(P.PRODUCTO)}</a></li><li aria-current="page">${esc(f.miga)}</li></ol></nav>
+      <nav class="migas" aria-label="Estás en"><ol><li><a href="${inicioDesde(prefijo)}">${esc(P.PRODUCTO)}</a></li><li aria-current="page">${esc(f.miga)}</li></ol></nav>
       <p class="antetitulo">${icono('stethoscope')}${esc(f.antetitulo)}</p>
       <h1 id="heroe-titulo" class="heroe__titulo">${esc(f.h1)}</h1>
       <p class="heroe__bajada">${esc(f.bajada)}</p>
       <div class="heroe__acciones">
         <a class="boton boton--senal boton--grande" href="${registroCon(f.registro, prefijo)}">${esc(f.boton)}${icono('arrow-right')}</a>
-        <a class="boton boton--linea boton--grande" href="${prefijo}#precios">Ver precios</a>
+        <a class="boton boton--linea boton--grande" href="${inicioDesde(prefijo)}#precios">Ver precios</a>
       </div>
       <ul class="heroe__puntos" role="list">${f.puntos.map((x) => `<li>${icono('check')}${esc(x)}</li>`).join('')}</ul>
     </div>
@@ -573,7 +590,7 @@ ${seccionPuntos('audio', f.audio)}
     <p class="antetitulo">${icono('currency-circle-dollar')}Precio</p>
     <h2 id="precio-titulo" class="seccion__titulo">${esc(f.precio.titulo)}</h2>
     ${f.precio.textos.map((x) => `<p>${esc(x)}</p>`).join('\n    ')}
-    <p class="plan__acciones"><a class="boton boton--senal" href="${registroCon(f.registro, prefijo)}">${esc(f.boton)} ${P.PRUEBA_DIAS} días gratis</a> <a class="boton boton--linea" href="${prefijo}#precios">Ver todos los precios</a></p>
+    <p class="plan__acciones"><a class="boton boton--senal" href="${registroCon(f.registro, prefijo)}">${esc(f.boton)} ${P.PRUEBA_DIAS} días gratis</a> <a class="boton boton--linea" href="${inicioDesde(prefijo)}#precios">Ver todos los precios</a></p>
   </div>
 </section>
 ${preguntas(f.preguntas)}
@@ -598,8 +615,8 @@ function paginaGuia(g) {
   const datos = {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'Article', '@id': `${url}#guia`, headline: g.h1, description: g.descripcion, inLanguage: 'es-PA', datePublished: g.publicada, dateModified: g.revisada.iso, mainEntityOfPage: url, author: { '@id': `${URL_BASE}#organizacion` }, publisher: { '@id': `${URL_BASE}#organizacion` }, isPartOf: { '@id': `${URL_BASE}#sitio` }, about: { '@id': `${URL_BASE}#producto` }, citation: g.fuentes.map(([, u]) => u) },
-      { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: P.PRODUCTO, item: URL_BASE }, { '@type': 'ListItem', position: 2, name: g.miga, item: url }] },
+      { '@type': 'Article', '@id': `${url}#guia`, headline: g.h1, description: g.descripcion, inLanguage: 'es-PA', datePublished: g.publicada, dateModified: g.revisada.iso, mainEntityOfPage: url, author: { '@id': `${URL_BASE}#organizacion` }, publisher: { '@id': `${URL_BASE}#organizacion` }, isPartOf: { '@id': `${URL_BASE}#sitio` }, about: { '@id': PRODUCTO_ID }, citation: g.fuentes.map(([, u]) => u) },
+      { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: P.PRODUCTO, item: `${URL_BASE}${MED}` }, { '@type': 'ListItem', position: 2, name: g.miga, item: url }] },
     ],
   };
   return documento({
@@ -609,7 +626,7 @@ function paginaGuia(g) {
     canonica: url,
     datos,
     cuerpo: () => `<main id="contenido" class="envoltura texto-largo guia">
-  <nav class="migas" aria-label="Estás en"><ol><li><a href="${prefijo}">${esc(P.PRODUCTO)}</a></li><li aria-current="page">${esc(g.miga)}</li></ol></nav>
+  <nav class="migas" aria-label="Estás en"><ol><li><a href="${inicioDesde(prefijo)}">${esc(P.PRODUCTO)}</a></li><li aria-current="page">${esc(g.miga)}</li></ol></nav>
   <p class="antetitulo">${icono('book-open-text')}Guía</p>
   <h1 class="texto-largo__titulo">${esc(g.h1)}</h1>
   <p class="guia__bajada">${esc(g.bajada)}</p>
@@ -625,8 +642,8 @@ function paginaGuia(g) {
 function paginaPrivacidad() {
   const prefijo = '../';
   return documento({
-    titulo: 'Privacidad · Citas Médicas de alphateklab',
-    descripcion: 'Qué datos trata alphateklab.com, qué pasa con los datos de los pacientes en Citas Médicas y con el audio del dictado con IA.',
+    titulo: `Privacidad · ${P.MARCA}`,
+    descripcion: `Qué datos trata alphateklab.com, qué pasa con los datos de los pacientes en ${P.PRODUCTO} y con el audio del dictado con IA.`,
     prefijo,
     canonica: `${URL_BASE}privacidad/`,
     cuerpo: () => `<main id="contenido" class="envoltura texto-largo">
@@ -634,9 +651,13 @@ function paginaPrivacidad() {
   <h1 class="texto-largo__titulo">Privacidad</h1>
   <p class="texto-largo__fecha">Vigente desde el ${esc(ACTUALIZADO.texto)}. Se rige por la Ley 81 de 2019 de protección de datos personales de Panamá y su reglamento, el Decreto Ejecutivo 285 de 2021.</p>
   <h2>Este sitio</h2>
-  <p>No usa cookies, ni analítica, ni píxeles de redes sociales, ni formularios que envíen datos a un servidor.</p>
+  <p>No usa cookies, ni analítica, ni píxeles de redes sociales${HAY_FOOD ? '' : ', ni formularios que envíen datos a un servidor'}.</p>${
+    HAY_FOOD
+      ? `\n  <p id="contacto">El formulario de contacto de Food (<a href="${prefijo}food/#contacto">alphateklab.com/food/</a>) manda tu nombre, tu correo y tu mensaje a FormSubmit (formsubmit.co), un servicio que nos los reenvía por correo. Los usamos solo para responderte.</p>`
+      : ''
+  }
   <p>El formulario para pedir la prueba arma el mensaje en tu navegador. Solo sale de tu equipo si tú lo mandas por WhatsApp o por correo, y desde ahí rigen las políticas de esos servicios. Las fuentes y las imágenes se sirven desde este mismo sitio.</p>
-  <h2>El sistema Citas Médicas</h2>
+  <h2>El sistema ${esc(P.PRODUCTO)}</h2>
   <p>Los datos de los pacientes que un consultorio guarda en el sistema son de ese consultorio. Antes de guardarlos, el paciente acepta su uso según la Ley 81 de 2019, en la recepción o desde su teléfono, y queda la fecha y la forma en que lo aceptó.</p>
   <h2 id="dictado">El dictado con IA</h2>
   <p>Cuando un médico dicta en el expediente, el audio de ese fragmento pasa por nuestro servidor, sin guardarse, hasta AssemblyAI, un servicio de transcripción de voz médica con servidores en Estados Unidos. AssemblyAI devuelve el texto y, apenas llega, le pedimos que borre la transcripción y el audio. Lo que queda es el texto que el médico revisa y guarda en el expediente de su consultorio.</p>
@@ -652,8 +673,8 @@ function paginaPrivacidad() {
 function paginaPuenteRegistro() {
   const prefijo = '../';
   return documento({
-    titulo: 'Crear mi cuenta · Citas Médicas de alphateklab',
-    descripcion: 'Crea tu cuenta de Citas Médicas: 7 días gratis, sin tarjeta.',
+    titulo: `Crear mi cuenta · ${P.MARCA}`,
+    descripcion: `Crea tu cuenta de ${P.PRODUCTO}: ${P.PRUEBA_DIAS} días gratis, sin tarjeta.`,
     prefijo,
     canonica: `${URL_BASE}registro/`,
     robots: 'noindex',
@@ -693,8 +714,8 @@ function paginaPuenteRegistro() {
 function paginaEntrar() {
   const prefijo = '../';
   return documento({
-    titulo: 'Iniciar sesión · Citas Médicas de alphateklab',
-    descripcion: 'Entra a tu sistema de Citas Médicas con tu usuario o tu correo.',
+    titulo: `Iniciar sesión · ${P.MARCA}`,
+    descripcion: `Entra a tu sistema de ${P.PRODUCTO} con tu usuario o tu correo.`,
     prefijo,
     canonica: `${URL_BASE}entrar/`,
     robots: 'noindex',
@@ -782,8 +803,8 @@ function paginaEntrar() {
 function paginaTerminos() {
   const prefijo = '../';
   return documento({
-    titulo: 'Términos del servicio · Citas Médicas de alphateklab',
-    descripcion: 'Las condiciones de Citas Médicas: la prueba, los pagos, la cancelación y los datos de tus pacientes.',
+    titulo: `Términos del servicio · ${P.MARCA}`,
+    descripcion: `Las condiciones de ${P.PRODUCTO}: la prueba, los pagos, la cancelación y los datos de tus pacientes.`,
     prefijo,
     canonica: `${URL_BASE}terminos/`,
     cuerpo: () => `<main id="contenido" class="envoltura texto-largo">
@@ -799,7 +820,7 @@ function paginaTerminos() {
 function pagina404() {
   const prefijo = '/';
   return documento({
-    titulo: 'Esta página no existe · Citas Médicas de alphateklab',
+    titulo: 'Esta página no existe · alphateklab',
     descripcion: 'La página que buscas no existe.',
     prefijo,
     canonica: `${URL_BASE}404.html`,
@@ -807,30 +828,31 @@ function pagina404() {
     cuerpo: () => `<main id="contenido" class="envoltura texto-largo texto-largo--centro">
   <p class="antetitulo">${icono('question')}Error 404</p>
   <h1 class="texto-largo__titulo">Esta página no existe</h1>
-  <p>alphateklab ahora se dedica a ${esc(P.PRODUCTO)}: el expediente clínico que el médico dicta con IA, sin escribir ni teclear, y la agenda con recordatorios por WhatsApp.</p>
-  <p><a class="boton boton--senal" href="${prefijo}">Ver ${esc(P.PRODUCTO)}</a></p>
+  <p>La dirección cambió o no existe. Empieza por la portada de alphateklab, o ve directo a ${esc(P.PRODUCTO)}: el expediente clínico que el médico dicta con IA y la agenda con recordatorios por WhatsApp.</p>
+  <p><a class="boton boton--senal" href="${prefijo}">Ir a la portada</a> <a class="boton boton--linea" href="${inicioDesde(prefijo)}">Ver ${esc(P.PRODUCTO)}</a></p>
 </main>`,
   });
 }
 
-// /citasmed/: la dirección que se pensó primero para el producto; ahora el producto es todo el sitio.
+// /citasmed/: la dirección que se pensó primero para el producto; lleva a su portada, en med/.
 const paginaCitasmed = () => `<!doctype html>
 <html lang="es-PA">
 <head>
 <meta charset="utf-8" />
 <title>${esc(P.PRODUCTO)} · alphateklab</title>
-<link rel="canonical" href="${URL_BASE}" />
+<link rel="canonical" href="${URL_BASE}${MED}" />
 <meta name="robots" content="noindex" />
-<meta http-equiv="refresh" content="0; url=../" />
+<meta http-equiv="refresh" content="0; url=../${MED}" />
 </head>
 <body>
-<p><a href="../">${esc(P.PRODUCTO)}</a></p>
+<p><a href="../${MED}">${esc(P.PRODUCTO)}</a></p>
 </body>
 </html>
 `;
 
 // Lo que va al sitemap y a IndexNow: lo que se quiere ver en los buscadores (registro, entrar y el 404 llevan noindex).
-const INDEXABLES = ['', ...FUNCIONES.map((f) => f.ruta), ...GUIAS.map((g) => g.ruta), 'terminos/', 'privacidad/'];
+// La raíz es la portada de alphateklab (generar-portada.mjs --raiz).
+const INDEXABLES = ['', MED, ...FUNCIONES.map((f) => f.ruta), ...GUIAS.map((g) => g.ruta), ...(HAY_FOOD ? ['food/'] : []), 'terminos/', 'privacidad/'];
 
 const sitemap = () => `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -845,13 +867,14 @@ function llms() {
   const exp = P.PARTES.find((p) => p.id === 'expediente');
   const agenda = P.PARTES.find((p) => p.id === 'agenda');
   const paquetes = P.PRECIOS.mensajes.filter((m) => m.mensajes).map((m) => `${m.mensajes} por ${dolares(m.precio)}`).join(', ').replace(/, ([^,]+)$/, ' o $1');
-  return `# ${P.PRODUCTO}, de alphateklab
+  return `# ${P.MARCA}
 
 > Sistema web para clínicas y consultorios en Panamá: el expediente clínico, que el médico dicta con IA en vez de escribirlo a mano o teclearlo, y la agenda de citas con recordatorios por WhatsApp. Se usa en el navegador de la computadora, la tableta o el celular, sin instalar nada. Cada clínica tiene su propio sistema en <clínica>.alphateklab.com.
 
 ## Páginas
 
-- [${P.PRODUCTO}](${URL_BASE}): el producto completo, con pantallas reales, precios, calculadora y preguntas frecuentes.
+- [alphateklab](${URL_BASE}): la portada, con todos los productos de alphateklab: ${P.PRODUCTO}, Food y alphatend.
+- [${P.PRODUCTO}](${URL_BASE}${MED}): el producto completo, con pantallas reales, precios, calculadora y preguntas frecuentes.
 ${FUNCIONES.map((f) => `- [${f.titulo.replace(/ · .*$/, '')}](${URL_BASE}${f.ruta}): ${f.descripcion}`).join('\n')}
 ${GUIAS.map((g) => `- [${g.h1}](${URL_BASE}${g.ruta}): guía con la norma y el artículo de cada punto. ${g.descripcion}`).join('\n')}
 - [Términos del servicio](${URL_BASE}terminos/): la prueba, los pagos, la cancelación y los datos de los pacientes.
@@ -872,7 +895,11 @@ ${PREGUNTAS.filter(([q]) => !/mensajes/i.test(q)).map(([q, a]) => `- ${q} ${a}`)
 ## Probarlo
 
 Una clínica crea su cuenta sola en ${URL_BASE}registro/ y su sistema queda listo al momento.
-`;
+${HAY_FOOD ? `
+## También de alphateklab
+
+- [Food, para cafeterías, bares y restaurantes](${URL_BASE}food/): ${FOOD.descripcion}
+` : ''}`;
 }
 
 // SALIDA=<carpeta> escribe en otra parte (la prueba lo usa para ver que lo publicado está al día).
@@ -882,7 +909,7 @@ const escribir = (ruta, contenido) => {
   writeFileSync(join(SALIDA, ruta), contenido);
 };
 
-escribir('index.html', paginaInicio());
+escribir(`${MED}index.html`, paginaInicio());
 escribir('privacidad/index.html', paginaPrivacidad());
 for (const f of FUNCIONES) escribir(`${f.ruta}index.html`, paginaFuncion(f));
 for (const g of GUIAS) escribir(`${g.ruta}index.html`, paginaGuia(g));
@@ -895,4 +922,4 @@ escribir('sitemap.xml', sitemap());
 escribir('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${URL_BASE}sitemap.xml\n`);
 escribir(`${INDEXNOW}.txt`, INDEXNOW);
 escribir('llms.txt', llms());
-console.log(`Generado: portada de ${P.PRODUCTO}, términos, privacidad, 404, /citasmed/, sitemap y robots.txt.${REGISTRO ? ` «Probar gratis» lleva al registro (${REGISTRO}).` : hayContacto ? '' : ' Sin registro ni contacto en datos/sitio.mjs: la portada sale sin el formulario de la prueba.'}`);
+console.log(`Generado: portada de ${P.PRODUCTO} (${MED}), páginas de función, guías, términos, privacidad, 404, /citasmed/, sitemap, robots.txt y llms.txt.${REGISTRO ? ` «Probar gratis» lleva al registro (${REGISTRO}).` : hayContacto ? '' : ' Sin registro ni contacto en datos/sitio.mjs: la portada sale sin el formulario de la prueba.'}`);

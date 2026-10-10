@@ -1,13 +1,20 @@
-# alphateklab · sitio de Citas Médicas (desde el 7-oct-2026)
+# alphateklab · portada de productos y sitio de Citas Médicas
 
-Desde el 7-oct-2026 alphateklab.com vende solo **Citas Médicas**, el sistema de agenda y expediente para clínicas y
-consultorios (decisión de Edwin). La portada es una sola página larga, con privacidad, 404 y /citasmed/ (lleva a la
-portada). El sitio de la agencia (catálogo de servicios, soluciones por negocio, guías, demos, cotizador) quedó entero
+**Desde el 8-oct-2026** (Edwin) la raíz de alphateklab.com es la **portada de alphateklab**, con sus productos: **Med**
+(en `med/`; se llamó Citas Médicas hasta el 10-oct, `PRODUCTO` en `datos/producto.mjs`), **Food** (cafeterías, bares y restaurantes: pedidos por QR y tarjeta de lealtad, en `food/`)
+y **alphatend** (su propio dominio). La genera `herramientas/generar-portada.mjs` desde `datos/portada.mjs` y
+`datos/food.mjs`; ver «Portada y Food» abajo.
+
+Del 7 al 8-oct alphateklab.com vendía solo **Citas Médicas**, el sistema de agenda y expediente para clínicas y
+consultorios (decisión de Edwin): su portada es una sola página larga (desde el 8-oct en `med/`), con privacidad, 404
+y /citasmed/ (lleva a `med/`). El sitio de la agencia (catálogo de servicios, soluciones por negocio, guías, demos, cotizador) quedó entero
 en la rama **`sitio-agencia`**; para volver a él: `git checkout sitio-agencia -- .` sobre `main` (o publicar esa rama).
 
-- **Generar:** `node herramientas/generar-citas.mjs`. Escribe `index.html`, `privacidad/`, `terminos/`, `404.html`,
-  `citasmed/`, `sitemap.xml` y `robots.txt`; con el registro en línea (`REGISTRO` en `datos/sitio.mjs`), también
-  `registro/` y `entrar/`. No se editan a mano los HTML generados. Ojo: en los scripts que van dentro de una plantilla
+- **Generar, en este orden:** `node herramientas/generar-portada.mjs --raiz` (la raíz, `index.html`, y `food/`) y
+  después `node herramientas/generar-citas.mjs`. Este escribe `med/` (la portada de Citas Médicas), las páginas de
+  función y las guías, `privacidad/`, `terminos/`, `404.html`, `citasmed/`, `sitemap.xml`, `robots.txt` y `llms.txt`
+  (el sitemap, llms.txt y la privacidad nombran `food/` si está); con el registro en línea (`REGISTRO` en
+  `datos/sitio.mjs`), también `registro/` y `entrar/`, que siguen en la raíz. No se editan a mano los HTML generados. Ojo: en los scripts que van dentro de una plantilla
   del generador, las barras invertidas van dobles (`\\s`, `\\/`); si no, se pierden y el script no corre.
 - **Contenido:**
   - Todo sale de `datos/producto.mjs`: los precios, las dos partes (Agenda y Expediente), las filas de funciones, la
@@ -52,10 +59,23 @@ en la rama **`sitio-agencia`**; para volver a él: `git checkout sitio-agencia -
   - `node herramientas/imagenes-citas.mjs <carpeta>` las pasa a WebP en `assets/producto/citas-*.webp`.
   - `node herramientas/og-citas.mjs` rehace `assets/og-citas.jpg`, la imagen al compartir.
 - **Pruebas (cerrojos):**
-  - `node --test pruebas/citas.test.mjs pruebas/sintaxis.test.mjs` revisa que lo publicado esté al día con `datos/`,
-    los precios, los enlaces, las imágenes y los datos estructurados.
-  - `node pruebas/navegador/citas.mjs <url>` (también con `MOTOR=webkit`) revisa de 320 a 1440 px, la consola, el
-    menú, los paquetes, la calculadora, el formulario, las animaciones, el modo oscuro y los títulos.
+  - `npm run prueba` (`node --test pruebas/citas.test.mjs pruebas/portada.test.mjs pruebas/sintaxis.test.mjs`) revisa
+    que lo publicado esté al día con `datos/`, los precios, los enlaces, las imágenes, los datos estructurados y el
+    formulario de Food.
+  - `node pruebas/navegador/citas.mjs <url>` (también con `MOTOR=webkit`) revisa de 320 a 1440 px (también la raíz y
+    Food), la consola, el menú, los paquetes, la calculadora, el formulario, las animaciones, el modo oscuro y los
+    títulos.
+- **Portada y Food (8-oct):**
+  - La vista previa sin publicar: `node herramientas/generar-portada.mjs` escribe `portada-nueva/` (noindex). No se
+    versiona.
+  - Food no tiene WhatsApp: «Contactar» lleva a su formulario (nombre, correo y lo que necesitan), que manda
+    FormSubmit (formsubmit.co) al `destino` de `datos/food.mjs`. Sin destino, `--raiz` no genera. El primer envío
+    desde el sitio publicado le llega a ese correo para activar el formulario.
+  - El caso real de Food son pantallas del sistema de pedidos por QR de un restaurante: no se nombra al restaurante
+    ni se ve su logo (pedido de Edwin).
+  - `med.alphateklab.com` y `food.alphateklab.com` van hoy al servidor de las clínicas (comodín `*.alphateklab.com`):
+    para usarlos, que lleven a `med/` y `food/` desde ese servidor y quedar reservados para que ninguna clínica los
+    tome.
   - Correr las dos contra local y contra el sitio en vivo después de cada push.
 - **Buscadores (8-oct):**
   - **Páginas de función:** la portada resume y `datos/paginas.mjs` da el detalle de cada parte en su propia página: hoy `expediente-clinico/`.
