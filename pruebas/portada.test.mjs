@@ -26,9 +26,11 @@ test('lo publicado está al día: generar otra vez da lo mismo', () => {
   }
 });
 
-test('la portada lleva a Med (med/), a Food (food/), a «Iniciar sesión» (entrar/) y a alphatend', () => {
+test('la portada lleva a Med (med/), a Food (food/), a «Iniciar sesión» (entrar/), a alphatend y a «Probar gratis» de cada uno', () => {
   const html = leer('index.html');
   for (const href of ['med/', 'food/', 'food/#contacto', 'entrar/', 'https://alphatend.com/']) assert.ok(html.includes(`href="${href}"`), href);
+  // «Probar gratis»: Med al registro, Food a su formulario y alphatend a su alta (Edwin, 10-oct)
+  for (const href of ['registro/', 'food/#contacto', 'https://alphatend.com/entrar?gratis=1']) assert.match(html, new RegExp(`href="${href.replace(/[?.]/g, '\\$&')}"[^>]*><span>Probar gratis</span>`), `Probar gratis → ${href}`);
   assert.doesNotMatch(html, /med\.alphateklab\.com|portada-nueva|noindex/, 'ni el subdominio, ni la vista previa, ni fuera de los buscadores');
 });
 

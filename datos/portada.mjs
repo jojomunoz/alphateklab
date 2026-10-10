@@ -36,7 +36,8 @@ export const PRODUCTOS = [
     ],
     acciones: [
       { texto: 'Conocer Med', href: 'med/', tipo: 'principal' },
-      { texto: 'Iniciar sesión', href: 'entrar/', tipo: 'secundaria' },
+      // «Probar gratis» en vez de «Iniciar sesión» (Edwin, 10-oct): el registro de siempre; entrar sigue arriba.
+      { texto: 'Probar gratis', href: 'registro/', tipo: 'secundaria' },
     ],
     ejemplo: {
       tipo: 'captura',
@@ -66,7 +67,8 @@ export const PRODUCTOS = [
     ],
     acciones: [
       { texto: 'Conocer Food', href: 'food/', tipo: 'principal' },
-      { texto: 'Contactar', href: '{contacto}', tipo: 'secundaria' },
+      // «Probar gratis» lleva al formulario de Food: Sobremesa y Racha no tienen alta propia (Edwin, 10-oct).
+      { texto: 'Probar gratis', href: '{contacto}', tipo: 'secundaria' },
     ],
     ejemplo: { tipo: 'food', pie: 'Pantallas de ejemplo, con negocios ficticios.' },
   },
@@ -83,7 +85,11 @@ export const PRODUCTOS = [
       'Cada aviso trae el monto de referencia, la fecha de cierre, los renglones y el enlace al proceso oficial.',
       'Empiezas gratis, sin tarjeta.',
     ],
-    acciones: [{ texto: 'Ir a alphatend', href: 'https://alphatend.com/', tipo: 'principal' }],
+    acciones: [
+      { texto: 'Ir a alphatend', href: 'https://alphatend.com/', tipo: 'principal' },
+      // El mismo destino que «Empieza gratis, sin tarjeta» en alphatend.com (Edwin, 10-oct).
+      { texto: 'Probar gratis', href: 'https://alphatend.com/entrar?gratis=1', tipo: 'secundaria' },
+    ],
     ejemplo: {
       tipo: 'captura',
       claro: 'assets/producto/alphatend-800.webp',
