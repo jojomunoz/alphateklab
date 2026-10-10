@@ -299,7 +299,7 @@ function paginaPortada() {
   }).join('\n  ');
   const menu = PRODUCTOS.map((p) => [p.nombre, `#${p.id}`]);
   const html = `${cabeza({ R, titulo: PORTADA.titulo, descripcion: PORTADA.descripcion, canonica: SITIO })}
-${cabecera({ R, menu, accion: `<a class="boton boton--linea cab__entrar" href="${R.a('entrar/')}"><span class="cab__entrar-largo">Entrar a Med</span><span class="cab__entrar-corto">Entrar</span></a>` })}
+${cabecera({ R, menu, accion: '' /* la portada es de todos los productos: cada uno entra desde su página (Edwin, 10-oct) */ })}
 <main id="contenido">
   <section class="portada-heroe" aria-labelledby="titulo">
     ${luces}

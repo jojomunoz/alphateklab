@@ -28,7 +28,9 @@ test('lo publicado está al día: generar otra vez da lo mismo', () => {
 
 test('la portada lleva a Med (med/), a Food (food/), a «Iniciar sesión» (entrar/), a alphatend y a «Probar gratis» de cada uno', () => {
   const html = leer('index.html');
-  for (const href of ['med/', 'food/', 'food/#contacto', 'entrar/', 'https://alphatend.com/']) assert.ok(html.includes(`href="${href}"`), href);
+  for (const href of ['med/', 'food/', 'food/#contacto', 'https://alphatend.com/']) assert.ok(html.includes(`href="${href}"`), href);
+  // Arriba, nada de «Entrar a Med»: la portada es de todos los productos y cada uno entra desde su página (Edwin, 10-oct).
+  assert.ok(!html.includes('Entrar a Med') && !/<header[\s\S]*?href="entrar\/"[\s\S]*?<\/header>/.test(html), 'sin «Entrar a Med» en la barra');
   // «Probar gratis»: Med al registro, Food a su formulario y alphatend a su alta (Edwin, 10-oct)
   for (const href of ['registro/', 'food/#contacto', 'https://alphatend.com/entrar?gratis=1']) assert.match(html, new RegExp(`href="${href.replace(/[?.]/g, '\\$&')}"[^>]*><span>Probar gratis</span>`), `Probar gratis → ${href}`);
   assert.doesNotMatch(html, /med\.alphateklab\.com|portada-nueva|noindex/, 'ni el subdominio, ni la vista previa, ni fuera de los buscadores');
